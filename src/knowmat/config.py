@@ -3,13 +3,11 @@ Global configuration and environment handling for KnowMat 2.0.
 
 This module attempts to locate and load environment variables from a
 ``.env`` file if present.  It also ensures that critical secrets such as
-``OPENAI_API_KEY`` and ``LANGCHAIN_API_KEY`` are set.  When these
-variables are missing the code will prompt interactively for them at runtime.
+``LLM_API_KEY`` are set.  When required variables are missing the code will
+prompt interactively for them at runtime.
 
-In addition, the module sets environment variables to enable LangSmith
-tracing.  Setting ``LANGCHAIN_TRACING_V2=true`` enables the v2 tracer and
-``LANGCHAIN_PROJECT=KnowMat2`` names the project so that traces from
-different runs are grouped together.
+In addition, this module can configure LangSmith tracing when a
+``LANGCHAIN_API_KEY`` is provided.
 """
 
 import os
@@ -32,23 +30,36 @@ if _env_path:
     load_dotenv(_env_path, override=False)
 
 
-def _set_env(var: str) -> None:
-    """Prompt for an environment variable if it is not already set.
+def _set_env(var: str, required: bool = True) -> None:
+    """Prompt for an environment variable when required and missing.
 
     Parameters
     ----------
     var: str
         Name of the environment variable to ensure.
+    required: bool
+        Whether this variable is required for runtime execution.
     """
-    if var not in os.environ:
+    if required and var not in os.environ:
         import getpass
         os.environ[var] = getpass.getpass(f"{var}: ")
 
 
-# Ensure that API keys required by LangChain and OpenAI are present
-_set_env("OPENAI_API_KEY")
-_set_env("LANGCHAIN_API_KEY")
+# Ensure that the primary LLM key exists.
+_set_env("LLM_API_KEY", required=True)
 
-# Enable LangSmith tracing by default for this project
-os.environ.setdefault("LANGCHAIN_TRACING_V2", "true")
-os.environ.setdefault("LANGCHAIN_PROJECT", "KnowMat2")
+# Keep LangSmith key optional.
+_set_env("LANGCHAIN_API_KEY", required=False)
+
+# Provide OpenAI-compatible env aliases for libraries that still read OPENAI_*.
+if os.getenv("LLM_API_KEY") and not os.getenv("OPENAI_API_KEY"):
+    os.environ["OPENAI_API_KEY"] = os.environ["LLM_API_KEY"]
+if os.getenv("LLM_BASE_URL") and not os.getenv("OPENAI_BASE_URL"):
+    os.environ["OPENAI_BASE_URL"] = os.environ["LLM_BASE_URL"]
+
+# LangSmith tracing is optional. Enable by default only if API key is provided.
+if os.getenv("LANGCHAIN_API_KEY"):
+    os.environ.setdefault("LANGCHAIN_TRACING_V2", "true")
+    os.environ.setdefault("LANGCHAIN_PROJECT", "KnowMat2")
+else:
+    os.environ.setdefault("LANGCHAIN_TRACING_V2", "false")

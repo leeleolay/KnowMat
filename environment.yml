@@ -62,8 +62,10 @@ dependencies:
     # OPENAI
      - openai==1.93.2
       
-    # DOCLING (Advanced PDF Parsing)
-     - docling==2.51.0
+    # PADDLEOCR-VL (Advanced PDF Parsing)
+     - paddlepaddle>=3.0.0
+     - paddleocr>=3.0.0
+     - pymupdf==1.24.13
       
     # PYDANTIC (Schema Validation)
      - pydantic==2.11.7

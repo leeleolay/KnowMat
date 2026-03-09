@@ -10,13 +10,13 @@
 
 ## Overview
 
-**KnowMat** is an advanced, AI-powered Agentic pipeline that automatically extracts structured, machine-readable materials science data from unstructured scientific literature (PDFs). Built on **LangGraph** and powered by **OpenAI GPT models**, KnowMat orchestrates multiple intelligent agents that collaborate to parse papers, extract compositions, processing conditions, characterization details, and material properties with high accuracy.
+**KnowMat** is an advanced, AI-powered Agentic pipeline that automatically extracts structured, machine-readable materials science data from unstructured scientific literature (`.pdf` / `.txt`). Built on **LangGraph** and powered by **OpenAI-compatible LLM APIs** (including ERNIE/Qianfan), KnowMat orchestrates multiple intelligent agents that collaborate to parse papers, extract compositions, processing conditions, characterization details, and material properties with high accuracy.
 
 ### Key Capabilities
 
-- **Research-scale extraction**: Batch process entire folders of PDFs
+- **Research-scale extraction**: Batch process entire folders of PDF/TXT files
 - **High accuracy**: Multi-agent architecture with iterative refinement (up to 3 extraction/evaluation cycles)
-- **Advanced PDF parsing**: Uses **Docling** for superior text and table extraction, and structure preservation
+- **Advanced PDF parsing**: Uses **PaddleOCR-VL** for robust OCR-based PDF parsing
 - **Two-stage validation**: Rule-based aggregation + LLM-based hallucination correction
 - **Property standardization**: Automatic mapping of property names to standard forms
 - **Quality assurance**: Confidence scoring, flagging system for human review (if necessary), and human review guides
@@ -27,10 +27,10 @@
 ## Key Features
 
 ### 🤖 **Multi-Agent Architecture**
-- **Parser Agent**: Docling-based PDF parsing with advanced table extraction
-  - Intelligently handles both text and tables
-  - Preserves table structure and converts to HTML/PNG formats
-  - Ensures tables are properly integrated into the extraction context
+- **Parser Agent**: PaddleOCR-VL based PDF parsing
+  - Converts PDF pages to images and runs OCR page-by-page
+  - Stores page images and raw OCR output for debugging
+  - Produces clean text for downstream extraction
 - **Subfield Detection Agent**: Identifies paper type (experimental/computational/ML) and tailors extraction prompts
 - **Extraction Agent**: GPT-5 powered structured data extraction using TrustCall
 - **Evaluation Agent**: Iterative quality assessment with confidence scoring (up to 3 cycles)
@@ -49,7 +49,7 @@
   - Value types: exact, lower_bound, upper_bound, range, qualitative
 
 ### 🔬 **Property Standardization**
-- Automatic mapping of property names to standard forms using GPT-5-mini
+- Automatic mapping of property names to standard forms using the configured LLM
 - Handles symbols, abbreviations, and domain-specific terminology
 
 ### 🛡️ **Quality Assurance**
@@ -64,7 +64,7 @@
 - Comprehensive JSON output with extraction metadata
 - Human-readable analysis reports
 - LangSmith tracing integration for debugging
-- Per-agent model configuration (mix GPT-5 and GPT-5-mini for cost optimization)
+- Per-agent model configuration for cost/quality optimization
 
 ---
 
@@ -78,13 +78,14 @@ data/processed/
     ├── <PaperName>_extraction.json          # Final structured data
     ├── <PaperName>_analysis_report.txt      # Human-readable summary
     ├── <PaperName>_runs.json                # All extraction runs with metadata
-    └── docling_parse/
-        ├── <PaperName>_final_output.md      # Parsed markdown text
-        ├── table_html/
-        │   └── <PaperName>-table-N.html     # Tables as HTML (visualizable in browser)
-        └── table_images/
-            ├── <PaperName>-table-N.png      # Table images
-            └── <PaperName>-table-N.png.b64.txt
+    ├── paddleocrvl_parse/                    # Only for PDF inputs
+    │   ├── <PaperName>_final_output.md       # Parsed markdown text
+    │   ├── <PaperName>_parse_metadata.json   # OCR parser metadata
+    │   ├── page_images/                      # Rendered page images
+    │   └── ocr_raw/                          # Raw OCR output per page
+    └── txt_parse/                            # Only for TXT inputs
+        ├── <PaperName>_final_output.md
+        └── <PaperName>_parse_metadata.json
 ```
 
 ---
@@ -94,7 +95,7 @@ data/processed/
 ### Prerequisites
 
 1. **Python 3.11** with Conda
-2. **OpenAI API Key** (for GPT-5/GPT-5-mini models)
+2. **OpenAI-compatible LLM API key** (e.g. ERNIE/Qianfan)
 3. **LangChain API Key** (optional, for LangSmith tracing)
 
 ### Setup Steps
@@ -110,46 +111,43 @@ data/processed/
    conda env create -f environment.yml
    conda activate KnowMat
    ```
+   If `paddleocr` installation reports missing backend wheels, install `paddlepaddle` for your platform first and rerun the command.
+   If you will process PDF files, pre-download PaddleOCR-VL model files into the project folder:
+   ```bash
+   python scripts/download_paddleocrvl_models.py --model-dir models/paddleocrvl1_5
+   ```
 
 3. **Configure API Keys**:
-   
-   **Obtaining API Keys:**
-   
-   - **OpenAI API Key** (required):
-     1. Visit [https://platform.openai.com](https://platform.openai.com)
-     2. Sign up or log in to your account
-     3. Navigate to API Keys section
-     4. Click "Create new secret key" and copy it
-     5. **Important**: Save the key immediately; you won't be able to view it again
-   
-   - **LangChain API Key** (optional, for LangSmith tracing):
-     1. Visit [https://smith.langchain.com](https://smith.langchain.com)
-     2. Sign up or log in to your account
-     3. Navigate to Settings → API Keys
-     4. Click "Create API Key" and copy it
-     5. Note: LangSmith tracing is optional but recommended for debugging
-   
-   **Setting API Keys:**
-   
-   Rename the provided example file `.env_example` to `.env` and add your API keys:
+
+   Rename the provided example file `.env_example` to `.env` and add your values:
    ```bash
-   OPENAI_API_KEY=<your_openai_api_key_here>
+   LLM_API_KEY=<your_llm_api_key_here>
+   LLM_BASE_URL=<your_openai_compatible_base_url>
+   LLM_MODEL=<your_model_name_or_endpoint>
+   PADDLEOCRVL_MODEL_DIR=models/paddleocrvl1_5
    LANGCHAIN_API_KEY=<your_langchain_api_key_here>  # Optional
-   LANGCHAIN_TRACING_V2=true  # Enable tracing (optional)
+   LANGCHAIN_TRACING_V2=false  # Optional
    ```
-   
+
+   ERNIE/Qianfan example:
+   ```bash
+   LLM_API_KEY="bce-v3/xxxx"
+   LLM_BASE_URL="https://qianfan.bj.baidubce.com/v2"
+   LLM_MODEL="ep_xxxxx"
+   ```
+
    Alternatively, set as environment variables:
    ```bash
    # Windows PowerShell
-   $env:OPENAI_API_KEY="your_key"
-   $env:LANGCHAIN_API_KEY="your_key"  # Optional
-   
+   $env:LLM_API_KEY="your_key"
+   $env:LLM_BASE_URL="https://qianfan.bj.baidubce.com/v2"
+   $env:LLM_MODEL="ep_xxxxx"
+
    # Linux/Mac
-   export OPENAI_API_KEY="your_key"
-   export LANGCHAIN_API_KEY="your_key"  # Optional
+   export LLM_API_KEY="your_key"
+   export LLM_BASE_URL="https://qianfan.bj.baidubce.com/v2"
+   export LLM_MODEL="ep_xxxxx"
    ```
-   
-   If not set, KnowMat will prompt you interactively on first run.
 
 4. **Verify Installation**:
    ```bash
@@ -162,54 +160,64 @@ data/processed/
 
 ### Basic Command Line Usage
 
-Process a single folder of PDFs:
+Process a single folder of files (`.pdf` and/or `.txt`):
 
 ```bash
-python -m knowmat --pdf-folder path/to/pdfs --output-dir output/directory
+python -m knowmat --input-folder path/to/files --output-dir output/directory
 ```
+
+Behavior:
+- `.pdf` -> uses local PaddleOCR-VL 1.5 model for parsing, then LLM extraction.
+- `.txt` -> skips OCR and directly runs LLM extraction using `LLM_API_KEY/LLM_BASE_URL/LLM_MODEL`.
 
 ### Advanced Options
 
 ```bash
 python -m knowmat \
-    --pdf-folder path/to/pdfs \
+    --input-folder path/to/files \
     --output-dir output/directory \
-    --max-runs 3 \
-    --extraction-model gpt-5 \
-    --evaluation-model gpt-5 \
-    --manager-model gpt-5 \
-    --subfield-model gpt-5-mini \
-    --flagging-model gpt-5-mini
+    --max-runs 1 \
+    --workers 4 \
+    --extraction-model ${LLM_MODEL} \
+    --evaluation-model ${LLM_MODEL} \
+    --manager-model ${LLM_MODEL} \
+    --subfield-model ${LLM_MODEL} \
+    --flagging-model ${LLM_MODEL}
 ```
 
 ### Command Line Arguments
 
 | Argument | Description | Default |
 |----------|-------------|---------|
-| `--pdf-folder` | Path to folder containing PDFs (required) | - |
+| `--input-folder` | Path to folder containing `.pdf`/`.txt` files | - |
+| `--pdf-folder` | Legacy alias of `--input-folder` | - |
 | `--output-dir` | Directory for outputs | - |
-| `--max-runs` | Maximum extraction/evaluation cycles | `3` |
-| `--subfield-model` | Model for subfield detection | `gpt-5-mini` |
-| `--extraction-model` | Model for data extraction | `gpt-5` |
-| `--evaluation-model` | Model for quality evaluation | `gpt-5` |
-| `--manager-model` | Model for validation (Stage 2) | `gpt-5` |
-| `--flagging-model` | Model for final quality assessment | `gpt-5-mini` |
+| `--max-runs` | Maximum extraction/evaluation cycles | `1` |
+| `--workers` | Number of files processed concurrently | `1` |
+| `--full-pipeline` | Enable full multi-stage pipeline | `False` |
+| `--enable-property-standardization` | Enable optional property matching post-process | `False` |
+| `--subfield-model` | Model for subfield detection | `LLM_MODEL` |
+| `--extraction-model` | Model for data extraction | `LLM_MODEL` |
+| `--evaluation-model` | Model for quality evaluation | `LLM_MODEL` |
+| `--manager-model` | Model for validation (Stage 2) | `LLM_MODEL` |
+| `--flagging-model` | Model for final quality assessment | `LLM_MODEL` |
 
 ### Python API
 
 ```python
 from knowmat.orchestrator import run
+import os
 
 result = run(
-    pdf_path="path/to/paper.pdf",
+    pdf_path="path/to/paper.pdf",  # Also supports .txt path
     output_dir="data/processed",
     max_runs=3,
     # Per-agent overrides:
-    subfield_model="gpt-5-mini",
-    extraction_model="gpt-5",
-    evaluation_model="gpt-5",
-    manager_model="gpt-5",
-    flagging_model="gpt-5-mini",
+    subfield_model=os.getenv("LLM_MODEL"),
+    extraction_model=os.getenv("LLM_MODEL"),
+    evaluation_model=os.getenv("LLM_MODEL"),
+    manager_model=os.getenv("LLM_MODEL"),
+    flagging_model=os.getenv("LLM_MODEL"),
 )
 
 print(f"Extracted {len(result['final_data']['compositions'])} compositions")
@@ -281,7 +289,7 @@ print(f"Flagged: {result['flag']}")
 │   └── properties.json     <- Property database for standardization
 │
 ├── data/
-│   ├── raw/                <- Original, immutable PDF files
+│   ├── raw/                <- Original, immutable source files (.pdf/.txt)
 │   └── processed/          <- Extracted structured data
 │       └── <PaperName>/    <- Per-paper output folders
 │
@@ -297,7 +305,7 @@ print(f"Flagged: {result['flag']}")
 │       ├── prompt_generator.py <- Dynamic prompt generation
 │       ├── post_processing.py  <- Property standardization
 │       └── nodes/          <- Agent implementations
-│           ├── docling_parse_pdf.py  <- Parser agent
+│           ├── paddleocrvl_parse_pdf.py  <- Parser agent
 │           ├── subfield_detection.py <- Subfield agent
 │           ├── extraction.py         <- Extraction agent
 │           ├── evaluation.py         <- Evaluation agent
@@ -334,7 +342,7 @@ KnowMat's unique two-stage manager architecture separates data merging from vali
 
 ### Property Standardization
 
-The PostProcessor uses GPT-5-mini to intelligently map extracted property names to standard forms.
+The PostProcessor uses the configured LLM to intelligently map extracted property names to standard forms.
 
 **Example Mappings**:
 - "Dimensionless figure of merit ZT" → "thermoelectric figure of merit"
@@ -348,15 +356,15 @@ Process hundreds of papers efficiently:
 
 ```bash
 # Process entire folder
-python -m knowmat --pdf-folder data/raw/papers --output-dir data/processed
+python -m knowmat --input-folder data/raw/papers --output-dir data/processed
 
 # Console shows progress for each paper
-Processing PDF 1/150: paper001.pdf
-Processing PDF 2/150: paper002.pdf
+Processing file 1/150: paper001.pdf
+Processing file 2/150: notes002.txt
 ...
 
 # Final summary
-Total PDFs: 150
+Total files: 150
 Successful: 147
 Failed: 3
 Flagged for review: 23
@@ -380,31 +388,18 @@ Access your traces at: https://smith.langchain.com/
 
 ## Model Selection and Cost Optimization
 
-KnowMat supports per-agent model configuration, allowing you to balance cost and accuracy:
+KnowMat supports per-agent model configuration, allowing you to balance cost and accuracy.
+When using ERNIE/Qianfan, set `LLM_MODEL` and optionally override per-agent models.
 
 ### Recommended Configuration (Production)
 
 ```bash
---subfield-model gpt-5-mini      # Simple classification task - lightweight model sufficient
---extraction-model gpt-5         # Complex structured extraction - needs advanced reasoning
---evaluation-model gpt-5         # Critical accuracy assessment - requires deep understanding
---manager-model gpt-5            # Hallucination detection/correction - needs strong reasoning
---flagging-model gpt-5-mini      # Binary flagging decision - simple task
+--subfield-model ${LLM_MODEL}
+--extraction-model ${LLM_MODEL}
+--evaluation-model ${LLM_MODEL}
+--manager-model ${LLM_MODEL}
+--flagging-model ${LLM_MODEL}
 ```
-
-**Cost per paper**: ~$0.75-1.30 (varies by paper length and complexity)
-
-### Budget Configuration
-
-```bash
---subfield-model gpt-5-mini
---extraction-model gpt-5-mini
---evaluation-model gpt-5-mini
---manager-model gpt-5-mini
---flagging-model gpt-5-mini
-```
-
-**Cost per paper**: ~$0.15-0.30 (reduced accuracy)
 
 ---
 
@@ -414,16 +409,18 @@ KnowMat supports per-agent model configuration, allowing you to balance cost and
 
 **1. API Key Errors**
 ```
-Error: OPENAI_API_KEY not set
+Error: LLM_API_KEY not set
 ```
-**Solution**: Obtain an OpenAI API key from [https://platform.openai.com](https://platform.openai.com) and configure it according to the [Configure API Keys](#configure-api-keys) section in the Installation instructions. You can create a `.env` file or set it as an environment variable:
+**Solution**: Configure `LLM_API_KEY`, `LLM_BASE_URL`, and `LLM_MODEL` according to the [Configure API Keys](#configure-api-keys) section.
 ```bash
-export OPENAI_API_KEY="your_key"
+export LLM_API_KEY="your_key"
+export LLM_BASE_URL="https://qianfan.bj.baidubce.com/v2"
+export LLM_MODEL="ep_xxxxx"
 ```
 
-**2. Docling Parsing Failures**
+**2. PaddleOCR-VL Parsing Failures**
 ```
-Error: Docling parsing failed
+Error: Failed to parse PDF with PaddleOCR-VL
 ```
 **Solution**: Ensure PDF is not corrupted or password-protected. Try re-downloading the PDF.
 
@@ -482,7 +479,7 @@ This project is licensed under the MIT License - see [LICENSE.txt](LICENSE.txt) 
 
 - Built with [PyScaffold](https://pyscaffold.org/)
 - Powered by [LangGraph](https://github.com/langchain-ai/langgraph) and [LangChain](https://github.com/langchain-ai/langchain)
-- PDF parsing by [Docling](https://github.com/DS4SD/docling)
+- PDF parsing by [PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR)
 - Inspired by the MI-Agent architecture
 
 ---

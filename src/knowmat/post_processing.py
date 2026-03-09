@@ -27,7 +27,8 @@ class PostProcessor:
         extracted_data_file: str = None,
         llm_client: Optional[openai.OpenAI] = None,
         api_key: Optional[str] = None,
-        gpt_model: str = "gpt-5-mini",
+        base_url: Optional[str] = None,
+        gpt_model: Optional[str] = None,
     ):
         """
         Initializes the PostProcessor with GPT-based matching.
@@ -36,26 +37,33 @@ class PostProcessor:
             properties_file (str): Path to the JSON file containing allowed properties.
             extracted_data_file (str, optional): Path to the CSV file containing extracted property data.
             llm_client (openai.OpenAI, optional): OpenAI client. Created if not provided.
-            api_key (str, optional): OpenAI API key. Required if llm_client not provided.
-            gpt_model (str): Model to use for matching (default "gpt-5-mini").
+            api_key (str, optional): LLM API key. Required if llm_client not provided.
+            base_url (str, optional): OpenAI-compatible base URL.
+            gpt_model (str, optional): Model to use for matching.
         """
         self.properties_file = properties_file
         self.extracted_data_file = extracted_data_file
-        self.gpt_model = gpt_model
+        self.gpt_model = gpt_model or os.getenv("LLM_MODEL", "gpt-5-mini")
         
         # Load properties and create lookup
         self.property_lookup = self.load_properties()
         
         # Initialize OpenAI client
         if llm_client is None and api_key is None:
-            api_key = os.getenv("OPENAI_API_KEY")
+            api_key = os.getenv("LLM_API_KEY") or os.getenv("OPENAI_API_KEY")
             if not api_key:
                 raise ValueError(
-                    "No OpenAI API key provided. Set OPENAI_API_KEY environment variable "
+                    "No LLM API key provided. Set LLM_API_KEY environment variable "
                     "or pass api_key parameter."
                 )
+
+        if llm_client is None and base_url is None:
+            base_url = os.getenv("LLM_BASE_URL") or os.getenv("OPENAI_BASE_URL")
         
-        self.llm_client = llm_client or openai.OpenAI(api_key=api_key)
+        client_kwargs = {"api_key": api_key}
+        if base_url:
+            client_kwargs["base_url"] = base_url
+        self.llm_client = llm_client or openai.OpenAI(**client_kwargs)
         
         # Statistics tracking
         self.match_stats = {

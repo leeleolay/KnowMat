@@ -23,12 +23,25 @@ hold onto stale language model instances and makes it straightforward to
 adjust the model name or temperature via environment variables.
 """
 
+import os
 from typing import List, Optional, Dict, Any
 from pydantic import BaseModel, Field
 from langchain_openai import ChatOpenAI
 from trustcall import create_extractor
 
 from knowmat.app_config import settings
+
+
+def _llm_connection_kwargs() -> Dict[str, str]:
+    """Build optional connection kwargs for OpenAI-compatible endpoints."""
+    kwargs: Dict[str, str] = {}
+    api_key = os.getenv("LLM_API_KEY") or os.getenv("OPENAI_API_KEY")
+    base_url = os.getenv("LLM_BASE_URL") or os.getenv("OPENAI_BASE_URL")
+    if api_key:
+        kwargs["api_key"] = api_key
+    if base_url:
+        kwargs["base_url"] = base_url
+    return kwargs
 
 
 def get_llm(agent_type: str = "default") -> ChatOpenAI:
@@ -60,20 +73,18 @@ def get_llm(agent_type: str = "default") -> ChatOpenAI:
     
     model = model_map.get(agent_type, settings.model_name)
     
+    base_kwargs = {
+        "model": model,
+        "request_timeout": 1200,  # 20 minute timeout per API call (not per pipeline)
+        "max_retries": 3,  # Retry failed requests up to 3 times
+        **_llm_connection_kwargs(),
+    }
+
     # GPT-5 models don't support temperature parameter
     if any(gpt5_variant in model for gpt5_variant in ["gpt-5", "gpt-5-mini", "gpt-5-nano"]):
-        return ChatOpenAI(
-            model=model,
-            request_timeout=1200,  # 20 minute timeout per API call (not per pipeline)
-            max_retries=3,  # Retry failed requests up to 3 times
-        )
+        return ChatOpenAI(**base_kwargs)
     else:
-        return ChatOpenAI(
-            model=model, 
-            temperature=settings.temperature,
-            request_timeout=1200,  # 20 minute timeout per API call (not per pipeline)
-            max_retries=3,
-        )
+        return ChatOpenAI(temperature=settings.temperature, **base_kwargs)
 
 
 class _LazyExtractor:

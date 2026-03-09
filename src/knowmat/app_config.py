@@ -3,7 +3,7 @@ Application configuration for KnowMat 2.0.
 
 This module defines a ``Settings`` class using pydantic's ``BaseSettings``
 mechanism to manage environment‑configurable options such as the default
-output directory, the OpenAI model to use and the generation temperature.
+output directory, the model to use and the generation temperature.
 
 Environment variables are prefixed with ``KNOWMAT2_``.  For example,
 ``KNOWMAT2_OUTPUT_DIR`` overrides the default output directory and
@@ -11,7 +11,16 @@ Environment variables are prefixed with ``KNOWMAT2_``.  For example,
 ``Settings`` for supported options.
 """
 
+import os
+from dotenv import load_dotenv, find_dotenv
 from pydantic_settings import BaseSettings
+
+# Load .env early so model defaults can read LLM_MODEL before settings instantiation.
+_env_path = find_dotenv(usecwd=True)
+if _env_path:
+    load_dotenv(_env_path, override=False)
+
+DEFAULT_LLM_MODEL = os.getenv("LLM_MODEL", "gpt-5")
 
 
 class Settings(BaseSettings):
@@ -24,7 +33,8 @@ class Settings(BaseSettings):
         ``"data"`` relative to the current working directory.
 
     model_name: str
-        The name of the ChatOpenAI model to use as fallback.  Defaults to ``"gpt-5"``.
+        The default model name for all agents.  Defaults to ``LLM_MODEL`` when
+        set, otherwise ``"gpt-5"``.
 
     temperature: float
         Sampling temperature when generating with the language model.  A
@@ -32,33 +42,33 @@ class Settings(BaseSettings):
         Note: GPT-5 models don't support custom temperature settings.
     
     subfield_model: str
-        Model for subfield detection agent. Defaults to ``"gpt-5-mini"``.
+        Model for subfield detection agent. Defaults to ``LLM_MODEL``.
     
     extraction_model: str
-        Model for extraction agent. Defaults to ``"gpt-5"``.
+        Model for extraction agent. Defaults to ``LLM_MODEL``.
     
     evaluation_model: str
-        Model for evaluation agent. Defaults to ``"gpt-5"``.
+        Model for evaluation agent. Defaults to ``LLM_MODEL``.
     
     manager_model: str
         Model for validation agent (Stage 2: hallucination correction).
         Note: "manager_model" name kept for backward compatibility.
-        Defaults to ``"gpt-5"``.
+        Defaults to ``LLM_MODEL``.
     
     flagging_model: str
-        Model for flagging/quality assessment agent. Defaults to ``"gpt-5-mini"``.
+        Model for flagging/quality assessment agent. Defaults to ``LLM_MODEL``.
     """
 
     output_dir: str = "data"
-    model_name: str = "gpt-5"  # Fallback default
+    model_name: str = DEFAULT_LLM_MODEL
     temperature: float = 0.0  # Note: ignored for GPT-5 models
     
     # Per-agent model configuration
-    subfield_model: str = "gpt-5-mini"
-    extraction_model: str = "gpt-5"
-    evaluation_model: str = "gpt-5"
-    manager_model: str = "gpt-5"
-    flagging_model: str = "gpt-5-mini"
+    subfield_model: str = DEFAULT_LLM_MODEL
+    extraction_model: str = DEFAULT_LLM_MODEL
+    evaluation_model: str = DEFAULT_LLM_MODEL
+    manager_model: str = DEFAULT_LLM_MODEL
+    flagging_model: str = DEFAULT_LLM_MODEL
 
     class Config:
         env_prefix = "KNOWMAT2_"
