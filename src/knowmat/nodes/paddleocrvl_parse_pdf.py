@@ -117,6 +117,140 @@ def _convert_html_to_markdown(text: str) -> str:
     return text.strip()
 
 
+# ---------------------------------------------------------------------------
+# Section heading normalisation & noise filtering
+# ---------------------------------------------------------------------------
+
+_SPACED_TITLE_RE = re.compile(r'^(#+\s+)?([A-Z](?:\s[A-Z]){3,})$')
+
+_SECTION_PATTERNS: List[Tuple[re.Pattern, str]] = [
+    (re.compile(r'^(?:#+\s*)?A\s*B\s*S\s*T\s*R\s*A\s*C\s*T\s*$', re.IGNORECASE), '## ABSTRACT'),
+    (re.compile(r'^(?:#+\s*)?ABSTRACT\s*$', re.IGNORECASE), '## ABSTRACT'),
+    (re.compile(r'^(?:#+\s*)?ARTICLE\s+INFO\s*$', re.IGNORECASE), '## ARTICLE INFO'),
+    (re.compile(r'^(?:#+\s*)?KEYWORDS?\s*:?\s*$', re.IGNORECASE), '## Keywords'),
+    (re.compile(r'^(?:#+\s*)?(ACKNOWLEDGEMENTS?|ACKNOWLEDGMENTS?)\s*$', re.IGNORECASE), '## Acknowledgements'),
+    (re.compile(r'^(?:#+\s*)?CRediT\s+authorship\s+contribution\s+statement\s*$', re.IGNORECASE), '## CRediT Authorship'),
+    (re.compile(r'^(?:#+\s*)?DECLARATION\s+OF\s+(COMPETING\s+)?INTEREST.*$', re.IGNORECASE), '## Declaration of Interest'),
+    (re.compile(r'^(?:#+\s*)?DATA\s+AVAILABILITY.*$', re.IGNORECASE), '## Data Availability'),
+    (re.compile(r'^(?:#+\s*)?SUPPLEMENTARY\s+(DATA|MATERIAL|INFORMATION).*$', re.IGNORECASE), '## Supplementary Material'),
+    # Numbered sections: "1. Introduction", "2.1. Sample preparation", etc.
+    (re.compile(r'^(?:#+\s*)?(\d+(?:\.\d+)*\.?)\s+(.+)$'), None),
+]
+
+_NOISE_LINE_PATTERNS: List[Tuple[re.Pattern, bool]] = [
+    # (pattern, skip_if_contains_doi)
+    # Journal name lines — may contain DOI on the same line, so skip filtering if DOI present
+    (re.compile(r'^Materials Science and Engineering', re.IGNORECASE), True),
+    (re.compile(r'^Acta Materialia', re.IGNORECASE), True),
+    (re.compile(r'^Journal of Materials Science', re.IGNORECASE), True),
+    (re.compile(r'^International Journal of Plasticity', re.IGNORECASE), True),
+    (re.compile(r'^Journal of Alloys and Compounds', re.IGNORECASE), True),
+    (re.compile(r'^Scripta Materialia', re.IGNORECASE), True),
+    (re.compile(r'^Additive Manufacturing', re.IGNORECASE), True),
+    # Lines that never contain DOI
+    (re.compile(r'^Contents lists available at ScienceDirect', re.IGNORECASE), False),
+    (re.compile(r'^Available online', re.IGNORECASE), False),
+    (re.compile(r'^Received \d+', re.IGNORECASE), False),
+    (re.compile(r'^Accepted \d+', re.IGNORECASE), False),
+    (re.compile(r'^journal homepage', re.IGNORECASE), False),
+    (re.compile(r'^https?://www\.(sciencedirect|elsevier|springer|wiley)', re.IGNORECASE), False),
+    (re.compile(r'^Full length article\s*$', re.IGNORECASE), False),
+    (re.compile(r'^\d{4}-\d{3}[\dX]/\s*©', re.IGNORECASE), False),
+    (re.compile(r'^©\s*\d{4}', re.IGNORECASE), False),
+    (re.compile(r'^Elsevier', re.IGNORECASE), False),
+    (re.compile(r'^\* Corresponding author', re.IGNORECASE), False),
+    (re.compile(r'^\*\* Corresponding author', re.IGNORECASE), False),
+    (re.compile(r'^E-mail address', re.IGNORECASE), False),
+    (re.compile(r'^\d+$'), False),  # bare page numbers
+]
+
+
+def _is_noise_line(line: str) -> bool:
+    """Return True if *line* looks like a header/footer/metadata noise line.
+
+    Lines that match a journal-name pattern but also contain a DOI are kept,
+    because the DOI is valuable for downstream extraction.
+    """
+    stripped = line.strip()
+    if not stripped:
+        return False
+    has_doi = bool(_DOI_RE.search(stripped)) or bool(_DOI_URL_RE.search(stripped))
+    for pat, skip_if_doi in _NOISE_LINE_PATTERNS:
+        if pat.match(stripped):
+            if skip_if_doi and has_doi:
+                return False  # keep the line — it contains a DOI
+            return True
+    return False
+
+
+def _structure_sections(text: str) -> str:
+    """Normalise heading levels and filter noise lines from parsed text.
+
+    - Converts inconsistent ``###`` / ``####`` / ``#####`` headings to ``##``.
+    - Recognises common section titles and standardises them.
+    - Removes lines that are obviously journal headers, copyright, or page numbers.
+    - Joins spaced-out titles like ``A B S T R A C T`` into ``ABSTRACT``.
+    """
+    output_lines: List[str] = []
+
+    for line in text.splitlines():
+        stripped = line.strip()
+
+        # Skip noise lines
+        if _is_noise_line(stripped):
+            continue
+
+        # Try to match known section titles
+        matched = False
+        for pat, replacement in _SECTION_PATTERNS:
+            m = pat.match(stripped)
+            if m:
+                if replacement:
+                    output_lines.append("")
+                    output_lines.append(replacement)
+                    output_lines.append("")
+                else:
+                    # Numbered section: normalise to ## level
+                    sec_num = m.group(1).rstrip(".")
+                    sec_title = m.group(2).strip()
+                    output_lines.append("")
+                    output_lines.append(f"## {sec_num}. {sec_title}")
+                    output_lines.append("")
+                matched = True
+                break
+
+        if matched:
+            continue
+
+        # Normalise spaced-out all-caps titles (e.g. "K E Y W O R D S")
+        m = _SPACED_TITLE_RE.match(stripped)
+        if m:
+            collapsed = m.group(2).replace(" ", "")
+            output_lines.append("")
+            output_lines.append(f"## {collapsed}")
+            output_lines.append("")
+            continue
+
+        # Normalise remaining headings to ## level (flatten deep nesting)
+        heading_match = re.match(r'^(#{3,6})\s+(.*)', stripped)
+        if heading_match:
+            title = heading_match.group(2).strip()
+            output_lines.append(f"## {title}")
+            continue
+
+        # Remove "## Page N" markers from PDF OCR output (not useful for LLM)
+        if re.match(r'^##\s+Page\s+\d+\s*$', stripped):
+            output_lines.append("")
+            continue
+
+        output_lines.append(line)
+
+    result = "\n".join(output_lines)
+    # Collapse excessive blank lines
+    result = re.sub(r"\n{3,}", "\n\n", result)
+    return result.strip()
+
+
 def _default_model_dir() -> Path:
     """Return the default local model directory in this project."""
     repo_root = Path(__file__).resolve().parents[3]
@@ -300,7 +434,11 @@ def _extract_pdf_with_paddleocrvl(pdf_path: str, output_dir: str, model_dir: Pat
 
     engine, backend = _create_ocr_engine(model_dir=model_dir)
 
+    _HEADER_LINES = 5
+    _FOOTER_LINES = 3
+
     page_blocks: List[str] = []
+    page_level_meta: List[Dict[str, Any]] = []
     first_page_full_text = ""
     doc = fitz.open(str(pdf))
     try:
@@ -323,6 +461,14 @@ def _extract_pdf_with_paddleocrvl(pdf_path: str, output_dir: str, model_dir: Pat
             page_text = "\n".join(lines).strip()
             page_blocks.append(f"## Page {page_idx}\n\n{page_text}")
 
+            # Collect per-page debug metadata (header/footer/preview)
+            page_level_meta.append({
+                "page": page_idx,
+                "header_text": "\n".join(lines[:_HEADER_LINES]),
+                "footer_text": "\n".join(lines[-_FOOTER_LINES:]) if len(lines) >= _FOOTER_LINES else "",
+                "line_count": len(lines),
+            })
+
             # Capture full first-page text (OCR + PyMuPDF) for DOI search
             if page_idx == 1:
                 pymupdf_text = page.get_text("text") or ""
@@ -343,6 +489,7 @@ def _extract_pdf_with_paddleocrvl(pdf_path: str, output_dir: str, model_dir: Pat
         "image_dir": str(image_dir),
         "ocr_raw_dir": str(raw_dir),
         "doi": doi,
+        "page_level_metadata": page_level_meta,
     }
     return merged, metadata
 
@@ -377,13 +524,18 @@ def parse_pdf_with_paddleocrvl(state: KnowMatState) -> dict:
         parse_output_dir.mkdir(parents=True, exist_ok=True)
 
         raw_text = _read_txt_file(source_path)
-        # Convert any residual HTML to clean markdown
+        # Convert any residual HTML to clean markdown, then structure sections
         md_text = _convert_html_to_markdown(raw_text)
+        md_text = _structure_sections(md_text)
         cleaned_text = _strip_references_section(md_text)
         stem = source_path.stem
 
         # Try to extract DOI from the text itself (first ~5000 chars)
         doi = _extract_doi_from_text(cleaned_text[:5000])
+
+        # Inject DOI at the top so the LLM can see it
+        if doi and doi not in cleaned_text:
+            cleaned_text = f"DOI: {doi}\n\n{cleaned_text}"
 
         final_md_path = parse_output_dir / f"{stem}_final_output.md"
         with open(final_md_path, "w", encoding="utf-8") as f:
@@ -411,7 +563,13 @@ def parse_pdf_with_paddleocrvl(state: KnowMatState) -> dict:
 
     try:
         extracted_text, metadata = _extract_pdf_with_paddleocrvl(str(source_path), str(parse_output_dir), model_dir)
-        cleaned_text = _strip_references_section(extracted_text)
+        structured_text = _structure_sections(extracted_text)
+        cleaned_text = _strip_references_section(structured_text)
+
+        # Inject DOI at the top of paper_text so the LLM can also see it
+        doi_from_ocr = metadata.get("doi")
+        if doi_from_ocr and doi_from_ocr not in cleaned_text:
+            cleaned_text = f"DOI: {doi_from_ocr}\n\n{cleaned_text}"
 
         pdf_name = source_path.stem
         final_md_path = parse_output_dir / f"{pdf_name}_final_output.md"
@@ -423,7 +581,8 @@ def parse_pdf_with_paddleocrvl(state: KnowMatState) -> dict:
             "backend": metadata.get("backend", "paddleocrvl"),
             "model_dir": metadata.get("model_dir"),
             "pages": metadata.get("pages"),
-            "doi": metadata.get("doi"),
+            "doi": doi_from_ocr,
+            "page_level_metadata": metadata.get("page_level_metadata"),
         }
 
         meta_path = parse_output_dir / f"{pdf_name}_parse_metadata.json"
