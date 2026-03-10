@@ -17,6 +17,9 @@ __pycache__/*
 # Environment variables (contains API keys - do not commit!)
 .env
 
+# Cursor IDE (optional: remove this line if you need to share .cursor via git)
+.cursor/
+
 # Project files
 .ropeproject
 .project

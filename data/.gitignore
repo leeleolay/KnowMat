@@ -3,6 +3,8 @@
 # Except this file and .gitignore in sub directories
 !.gitignore
 !raw
+!raw/*
 !external
 !processed
+!processed/*
 !interim

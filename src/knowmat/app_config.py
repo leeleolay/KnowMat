@@ -28,14 +28,18 @@ class Settings(BaseSettings):
 
     Attributes
     ----------
+    input_dir: str
+        Default folder where raw ``.pdf``/``.txt`` files are stored. Defaults to
+        ``"data/raw"`` relative to the current working directory.
+
     output_dir: str
         Where extracted results and artifacts will be written.  Defaults to
-        ``"data"`` relative to the current working directory.
-
+        ``"data/processed"`` relative to the current working directory.
+    
     model_name: str
         The default model name for all agents.  Defaults to ``LLM_MODEL`` when
         set, otherwise ``"gpt-5"``.
-
+    
     temperature: float
         Sampling temperature when generating with the language model.  A
         temperature of 0 yields deterministic outputs.  The default is 0.0.
@@ -59,7 +63,9 @@ class Settings(BaseSettings):
         Model for flagging/quality assessment agent. Defaults to ``LLM_MODEL``.
     """
 
-    output_dir: str = "data"
+    # IO defaults (can be overridden by env or CLI)
+    input_dir: str = "data/raw"
+    output_dir: str = "data/processed"
     model_name: str = DEFAULT_LLM_MODEL
     temperature: float = 0.0  # Note: ignored for GPT-5 models
     

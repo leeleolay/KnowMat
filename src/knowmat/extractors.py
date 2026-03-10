@@ -25,7 +25,7 @@ adjust the model name or temperature via environment variables.
 
 import os
 from typing import List, Optional, Dict, Any
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 from langchain_openai import ChatOpenAI
 from trustcall import create_extractor
 
@@ -222,8 +222,11 @@ class Property(BaseModel):
     measurement_condition: Optional[str] = Field(
         default=None,
         description=(
-            "Conditions under which the property was measured (e.g., temperature, pressure, "
-            "sample geometry, heating rate). Use null if not provided."
+            "Conditions under which the property was measured. "
+            "CRITICAL: If a test temperature is mentioned, ALWAYS start with 'at XXX K' or 'at XXX °C'. "
+            "Then add other conditions (pressure, sample geometry, heating rate, strain rate). "
+            "Examples: 'at 298 K; strain rate 1e-3 /s', 'at 1073 K; heating rate 20 K/min; Ar atmosphere'. "
+            "Use null if not provided."
         )
     )
     
@@ -239,21 +242,166 @@ class Property(BaseModel):
 class CompositionProperties(BaseModel):
     """Represents the properties, processing conditions, and characterisation for a composition."""
 
-    composition: str = Field(description="The chemical composition of the material.")
+    composition: str = Field(
+        default="",
+        description="The chemical composition of the material as written in the paper (including any abbreviations)."
+    )
+
+    role: Optional[str] = Field(
+        default="Target",
+        description=(
+            "Material role in this paper. "
+            "'Target' = synthesized, processed, or tested in this work (has original experimental data). "
+            "'Reference' = only cited from other papers for comparison (no original data). "
+            "Default to 'Target' if unclear."
+        )
+    )
+    
+    composition_normalized: Optional[str] = Field(
+        default=None,
+        description=(
+            "Normalized chemical formula containing ONLY element symbols and numbers. "
+            "Remove any parenthetical abbreviations or sample codes. "
+            "E.g., 'Ti42Hf21Nb21V16 (T42)' → 'Ti42Hf21Nb21V16', "
+            "'FeCoCrNiMo0.5' → 'Fe22.22Co22.22Cr22.22Ni22.22Mo11.11'."
+        )
+    )
+    
+    source_doi: Optional[str] = Field(
+        default=None,
+        description=(
+            "The DOI of the paper if found in the text. "
+            "E.g., '10.1016/j.msea.2024.147225'. Use null if not found."
+        )
+    )
+    
+    main_phase: Optional[str] = Field(
+        default=None,
+        description=(
+            "Primary crystal structure identified from XRD, EBSD, or similar characterization. "
+            "Use standard abbreviations: BCC, FCC, HCP, amorphous, or combinations like 'FCC + L12', 'BCC + sigma'. "
+            "Use null if not mentioned."
+        )
+    )
+    
+    has_precipitates: bool = Field(
+        default=False,
+        description=(
+            "Whether any secondary phases or precipitates are mentioned in the microstructure description. "
+            "Examples: sigma phase, mu phase, L12, NbC, carbides, nitrides. "
+            "Set to true if ANY precipitates are mentioned, false otherwise."
+        )
+    )
+    
+    grain_size_avg_um: Optional[float] = Field(
+        default=None,
+        description=(
+            "Average grain size in micrometers (μm). "
+            "If reported in nanometers, convert to micrometers (divide by 1000). "
+            "Use null if not reported."
+        )
+    )
+    
     processing_conditions: str = Field(
+        default="not provided",
         description="Processing conditions applied to the material, or 'not provided'."
     )
-    characterisation: Dict[str, str] = Field(
+
+    processing_params: Optional[Dict[str, Any]] = Field(
+        default=None,
         description=(
-            "Characterisation techniques and their findings keyed by technique names."
+            "Structured key process parameters extracted from the text. "
+            "Use standardised keys: "
+            "Laser_Power_W (float), Scan_Speed_mm_s (float), "
+            "Layer_Thickness_um (float), Hatch_Spacing_um (float), "
+            "Preheat_Temperature_C (float), Shielding_Gas (str, e.g. 'Ar'), "
+            "Oxygen_Content_ppm (float), Build_Orientation (str, e.g. 'Parallel-BD'). "
+            "Include ONLY parameters with explicit values in the paper. "
+            "Use null if no structured parameters can be extracted."
+        )
+    )
+
+    build_orientation: Optional[str] = Field(
+        default=None,
+        description=(
+            "Build/loading direction for this specific sample/condition entry. "
+            "Examples: 'Parallel-BD', 'Perpendicular-BD', 'X-Y plane', 'X-Z plane', "
+            "'Horizontal', 'Vertical', '45deg'. "
+            "CRITICAL: If the paper reports properties for the same composition in "
+            "different directions, create SEPARATE composition entries for each direction "
+            "and set this field accordingly. Use null if not applicable."
+        )
+    )
+
+    process_category: Optional[str] = Field(
+        default=None,
+        description=(
+            "Manufacturing process category. Use one of: "
+            "AM_DED, AM_LPBF, AM_SLM, SPS, Arc_Melting, HeatTreat, Casting, or Unknown. "
+            "AM_DED: Directed Energy Deposition / LENS. "
+            "AM_LPBF: Laser Powder Bed Fusion. "
+            "AM_SLM: Selective Laser Melting. "
+            "SPS: Spark Plasma Sintering. "
+            "HeatTreat: Heat treatment, annealing, aging. "
+            "Casting: Arc melting, melt spinning, casting."
+        )
+    )
+
+    xrd_details: Optional[str] = Field(
+        default=None,
+        description=(
+            "XRD instrument, scan parameters, and phase identification results. "
+            "Example: 'XRD (D8 Advance, Cu-Ka, 40kV/40mA, 20-100 deg, 1.5 deg/min); "
+            "single BCC phase identified; dislocation density 3.36e14 m-2'. "
+            "Do NOT mix microstructure morphology descriptions here."
+        )
+    )
+
+    microstructure_description: Optional[str] = Field(
+        default=None,
+        description=(
+            "Microstructure morphology from SEM/EBSD/TEM observations. "
+            "Include grain shape, size distribution, phase morphology, texture, "
+            "columnar vs equiaxed, precipitate distribution, etc. "
+            "Example: 'Equiaxed grains on XY plane (mean 200 um); columnar grains on "
+            "XZ plane; single BCC phase; no secondary phases observed'. "
+            "Do NOT include XRD instrument parameters here."
+        )
+    )
+
+    grain_size_text: Optional[str] = Field(
+        default=None,
+        description=(
+            "Original text describing grain size measurements, including method and "
+            "any direction-dependent values. Example: 'XY plane equiaxed ~200 um; "
+            "XZ plane columnar 10.4 um (vertical) / 6.72 um (horizontal), measured by "
+            "line intercept and area methods'."
+        )
+    )
+    
+    characterisation: Dict[str, str] = Field(
+        default_factory=dict,
+        description=(
+            "Characterisation techniques and their findings keyed by technique names. "
+            "Use structured keys: 'XRD', 'Microstructure', 'EBSD', 'TEM', 'SEM', 'APT', etc. "
+            "'XRD' should contain phase identification and instrument details. "
+            "'Microstructure' should contain grain morphology and distribution descriptions."
         )
     )
     properties_of_composition: List[Property] = Field(
+        default_factory=list,
         description="List of standard properties extracted for this composition."
     )
     # non_standard_properties_of_composition: List[Property] = Field(
     #     description="List of non‑standard properties extracted for this composition."
     # )
+
+    @model_validator(mode="after")
+    def fill_composition_from_normalized(self) -> "CompositionProperties":
+        """When LLM returns only composition_normalized, use it as composition."""
+        if not self.composition and self.composition_normalized:
+            return self.model_copy(update={"composition": self.composition_normalized})
+        return self
 
 
 class CompositionList(BaseModel):
