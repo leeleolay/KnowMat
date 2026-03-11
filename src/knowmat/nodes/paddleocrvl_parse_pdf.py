@@ -10,6 +10,7 @@ and converts any residual HTML in pre-existing .txt files to clean markdown.
 import os
 import json
 import re
+import tempfile
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -38,7 +39,7 @@ def _extract_doi_from_text(text: str) -> Optional[str]:
 
 
 # ---------------------------------------------------------------------------
-# HTML â†’ markdown conversion for .txt inputs
+# HTML â†?markdown conversion for .txt inputs
 # ---------------------------------------------------------------------------
 
 _HTML_IMG_RE = re.compile(r'<div[^>]*>\s*<img[^>]*/>\s*</div>', re.IGNORECASE)
@@ -103,19 +104,57 @@ def _html_table_to_markdown(html: str) -> str:
 
 def _convert_html_to_markdown(text: str) -> str:
     """Convert residual HTML markup in OCR/txt output to clean markdown."""
-    # Convert HTML tables to markdown tables
-    text = _HTML_TABLE_BLOCK_RE.sub(lambda m: _html_table_to_markdown(m.group(0)), text)
-    # Remove image divs entirely (keep only figure captions which are separate lines)
-    text = _HTML_IMG_RE.sub("", text)
-    # Remove remaining <div> wrappers but keep content
-    text = _HTML_DIV_OPEN_RE.sub("", text)
-    text = _HTML_DIV_CLOSE_RE.sub("", text)
-    # Strip any remaining HTML tags
-    text = _HTML_TAG_RE.sub("", text)
-    # Clean up excessive blank lines
-    text = re.sub(r"\n{3,}", "\n\n", text)
-    return text.strip()
+    if not text:
+        return ""
+    if "<" not in text and ">" not in text:
+        return text.strip()
 
+    converted = text
+    try:
+        from bs4 import BeautifulSoup  # type: ignore
+    except Exception:
+        # Fallback to regex-based stripping
+        converted = _HTML_TABLE_BLOCK_RE.sub(lambda m: _html_table_to_markdown(m.group(0)), converted)
+        converted = _HTML_IMG_RE.sub("", converted)
+        converted = _HTML_DIV_OPEN_RE.sub("", converted)
+        converted = _HTML_DIV_CLOSE_RE.sub("", converted)
+        converted = _HTML_TAG_RE.sub("", converted)
+    else:
+        soup = BeautifulSoup(converted, "html.parser")
+        for table in soup.find_all("table"):
+            md_table = _html_table_to_markdown(str(table))
+            table.replace_with(f"\n{md_table}\n")
+        for br in soup.find_all("br"):
+            br.replace_with("\n")
+        block_tags = [
+            "p",
+            "div",
+            "section",
+            "article",
+            "header",
+            "footer",
+            "li",
+            "ul",
+            "ol",
+            "tr",
+            "td",
+            "th",
+            "h1",
+            "h2",
+            "h3",
+            "h4",
+            "h5",
+            "h6",
+        ]
+        for tag in soup.find_all(block_tags):
+            if tag.string is None:
+                tag.insert_before("\n")
+                tag.insert_after("\n")
+        converted = soup.get_text("\n")
+        converted = _HTML_TAG_RE.sub("", converted)
+
+    converted = re.sub(r"\n{3,}", "\n\n", converted)
+    return converted.strip()
 
 # ---------------------------------------------------------------------------
 # Section heading normalisation & noise filtering
@@ -139,7 +178,7 @@ _SECTION_PATTERNS: List[Tuple[re.Pattern, str]] = [
 
 _NOISE_LINE_PATTERNS: List[Tuple[re.Pattern, bool]] = [
     # (pattern, skip_if_contains_doi)
-    # Journal name lines â€” may contain DOI on the same line, so skip filtering if DOI present
+    # Journal name lines â€?may contain DOI on the same line, so skip filtering if DOI present
     (re.compile(r'^Materials Science and Engineering', re.IGNORECASE), True),
     (re.compile(r'^Acta Materialia', re.IGNORECASE), True),
     (re.compile(r'^Journal of Materials Science', re.IGNORECASE), True),
@@ -178,7 +217,7 @@ def _is_noise_line(line: str) -> bool:
     for pat, skip_if_doi in _NOISE_LINE_PATTERNS:
         if pat.match(stripped):
             if skip_if_doi and has_doi:
-                return False  # keep the line â€” it contains a DOI
+                return False  # keep the line â€?it contains a DOI
             return True
     return False
 
@@ -412,7 +451,7 @@ def _extract_doi_from_pdf_metadata(pdf_path: str) -> Optional[str]:
     return None
 
 
-def _extract_pdf_with_paddleocrvl(pdf_path: str, output_dir: str, model_dir: Path) -> Tuple[str, Dict[str, Any]]:
+def _extract_pdf_with_paddleocrvl(pdf_path: str, output_dir: str, model_dir: Path, save_intermediate: bool = True) -> Tuple[str, Dict[str, Any]]:
     """Render PDF pages, run OCR, and return merged text with metadata.
 
     Also extracts DOI from the first page text and PDF-level metadata.
@@ -427,10 +466,16 @@ def _extract_pdf_with_paddleocrvl(pdf_path: str, output_dir: str, model_dir: Pat
 
     pdf = Path(pdf_path)
     out_dir = Path(output_dir)
-    image_dir = out_dir / "page_images"
-    raw_dir = out_dir / "ocr_raw"
-    image_dir.mkdir(parents=True, exist_ok=True)
-    raw_dir.mkdir(parents=True, exist_ok=True)
+    temp_dir = None
+    if save_intermediate:
+        image_dir = out_dir / "page_images"
+        raw_dir = out_dir / "ocr_raw"
+        image_dir.mkdir(parents=True, exist_ok=True)
+        raw_dir.mkdir(parents=True, exist_ok=True)
+    else:
+        temp_dir = tempfile.TemporaryDirectory()
+        image_dir = Path(temp_dir.name)
+        raw_dir = None
 
     engine, backend = _create_ocr_engine(model_dir=model_dir)
 
@@ -447,8 +492,9 @@ def _extract_pdf_with_paddleocrvl(pdf_path: str, output_dir: str, model_dir: Pat
             page.get_pixmap(dpi=300, alpha=False).save(str(image_path))
 
             raw = _run_ocr(engine, image_path)
-            with open(raw_dir / f"page-{page_idx:04d}.json", "w", encoding="utf-8") as f:
-                json.dump(raw, f, ensure_ascii=False, indent=2, default=str)
+            if raw_dir is not None:
+                with open(raw_dir / f"page-{page_idx:04d}.json", "w", encoding="utf-8") as f:
+                    json.dump(raw, f, ensure_ascii=False, indent=2, default=str)
 
             lines: List[str] = []
             _collect_text(raw, lines)
@@ -459,6 +505,7 @@ def _extract_pdf_with_paddleocrvl(pdf_path: str, output_dir: str, model_dir: Pat
                 lines = [x.strip() for x in fallback.splitlines() if x.strip()]
 
             page_text = "\n".join(lines).strip()
+            page_text = _convert_html_to_markdown(page_text)
             page_blocks.append(f"## Page {page_idx}\n\n{page_text}")
 
             # Collect per-page debug metadata (header/footer/preview)
@@ -475,8 +522,10 @@ def _extract_pdf_with_paddleocrvl(pdf_path: str, output_dir: str, model_dir: Pat
                 first_page_full_text = page_text + "\n" + pymupdf_text
     finally:
         doc.close()
+        if temp_dir is not None:
+            temp_dir.cleanup()
 
-    # --- DOI extraction: PDF metadata â†’ first page OCR+text â†’ whole doc ---
+    # --- DOI extraction: PDF metadata â†?first page OCR+text â†?whole doc ---
     doi = _extract_doi_from_pdf_metadata(str(pdf))
     if not doi:
         doi = _extract_doi_from_text(first_page_full_text)
@@ -487,7 +536,7 @@ def _extract_pdf_with_paddleocrvl(pdf_path: str, output_dir: str, model_dir: Pat
         "model_dir": str(model_dir),
         "pages": len(page_blocks),
         "image_dir": str(image_dir),
-        "ocr_raw_dir": str(raw_dir),
+        "ocr_raw_dir": str(raw_dir) if raw_dir is not None else None,
         "doi": doi,
         "page_level_metadata": page_level_meta,
     }
@@ -514,14 +563,15 @@ def parse_pdf_with_paddleocrvl(state: KnowMatState) -> dict:
     input_path = state.get("pdf_path")
     if not input_path:
         raise ValueError("No input file path provided in state for parse_pdf_with_paddleocrvl node.")
-
+    save_intermediate = bool(state.get("save_intermediate", True))
     output_dir = state.get("output_dir", ".")
     source_path = Path(input_path)
     suffix = source_path.suffix.lower()
 
-    if suffix == ".txt":
-        parse_output_dir = Path(output_dir) / "txt_parse"
-        parse_output_dir.mkdir(parents=True, exist_ok=True)
+    if suffix in (".txt", ".md"):
+        parse_output_dir = Path(output_dir) / "txt_parse" if save_intermediate else Path(output_dir)
+        if save_intermediate:
+            parse_output_dir.mkdir(parents=True, exist_ok=True)
 
         raw_text = _read_txt_file(source_path)
         # Convert any residual HTML to clean markdown, then structure sections
@@ -537,32 +587,39 @@ def parse_pdf_with_paddleocrvl(state: KnowMatState) -> dict:
         if doi and doi not in cleaned_text:
             cleaned_text = f"DOI: {doi}\n\n{cleaned_text}"
 
-        final_md_path = parse_output_dir / f"{stem}_final_output.md"
-        with open(final_md_path, "w", encoding="utf-8") as f:
-            f.write(cleaned_text)
-        print(f"Saved txt parsed output to: {final_md_path}")
+        if save_intermediate:
+            final_md_path = parse_output_dir / f"{stem}_final_output.md"
+            with open(final_md_path, "w", encoding="utf-8") as f:
+                f.write(cleaned_text)
+            print(f"Saved txt parsed output to: {final_md_path}")
 
         doc_meta: Dict[str, Any] = {
             "backend": "txt-direct",
             "source_file": str(source_path),
             "doi": doi,
         }
-        meta_path = parse_output_dir / f"{stem}_parse_metadata.json"
-        with open(meta_path, "w", encoding="utf-8") as f:
-            json.dump(doc_meta, f, ensure_ascii=False, indent=2)
-        print(f"Saved parser metadata to: {meta_path}")
+        if save_intermediate:
+            meta_path = parse_output_dir / f"{stem}_parse_metadata.json"
+            with open(meta_path, "w", encoding="utf-8") as f:
+                json.dump(doc_meta, f, ensure_ascii=False, indent=2)
+            print(f"Saved parser metadata to: {meta_path}")
 
         return {"paper_text": cleaned_text, "document_metadata": doc_meta}
 
-    if suffix != ".pdf":
-        raise ValueError(f"Unsupported file type: {source_path.suffix}. Only .pdf and .txt are supported.")
-
-    parse_output_dir = Path(output_dir) / "paddleocrvl_parse"
-    parse_output_dir.mkdir(parents=True, exist_ok=True)
+    if suffix != ".pdf" and suffix not in (".txt", ".md"):
+        raise ValueError(f"Unsupported file type: {source_path.suffix}. Only .pdf, .txt, and .md are supported.")
+    parse_output_dir = Path(output_dir) / "paddleocrvl_parse" if save_intermediate else Path(output_dir)
+    if save_intermediate:
+        parse_output_dir.mkdir(parents=True, exist_ok=True)
     model_dir = _default_model_dir()
 
     try:
-        extracted_text, metadata = _extract_pdf_with_paddleocrvl(str(source_path), str(parse_output_dir), model_dir)
+        extracted_text, metadata = _extract_pdf_with_paddleocrvl(
+            str(source_path),
+            str(parse_output_dir),
+            model_dir,
+            save_intermediate=save_intermediate,
+        )
         structured_text = _structure_sections(extracted_text)
         cleaned_text = _strip_references_section(structured_text)
 
@@ -572,10 +629,11 @@ def parse_pdf_with_paddleocrvl(state: KnowMatState) -> dict:
             cleaned_text = f"DOI: {doi_from_ocr}\n\n{cleaned_text}"
 
         pdf_name = source_path.stem
-        final_md_path = parse_output_dir / f"{pdf_name}_final_output.md"
-        with open(final_md_path, "w", encoding="utf-8") as f:
-            f.write(cleaned_text)
-        print(f"Saved final markdown output to: {final_md_path}")
+        if save_intermediate:
+            final_md_path = parse_output_dir / f"{pdf_name}_final_output.md"
+            with open(final_md_path, "w", encoding="utf-8") as f:
+                f.write(cleaned_text)
+            print(f"Saved final markdown output to: {final_md_path}")
 
         doc_meta = {
             "backend": metadata.get("backend", "paddleocrvl"),
@@ -585,11 +643,18 @@ def parse_pdf_with_paddleocrvl(state: KnowMatState) -> dict:
             "page_level_metadata": metadata.get("page_level_metadata"),
         }
 
-        meta_path = parse_output_dir / f"{pdf_name}_parse_metadata.json"
-        with open(meta_path, "w", encoding="utf-8") as f:
-            json.dump(metadata, f, ensure_ascii=False, indent=2)
-        print(f"Saved parser metadata to: {meta_path}")
+        if save_intermediate:
+            meta_path = parse_output_dir / f"{pdf_name}_parse_metadata.json"
+            with open(meta_path, "w", encoding="utf-8") as f:
+                json.dump(metadata, f, ensure_ascii=False, indent=2)
+            print(f"Saved parser metadata to: {meta_path}")
 
         return {"paper_text": cleaned_text, "document_metadata": doc_meta}
     except Exception as exc:
         raise RuntimeError(f"Failed to parse PDF with PaddleOCR-VL: {str(exc)}") from exc
+
+
+
+
+
+

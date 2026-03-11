@@ -1,4 +1,4 @@
-"""
+﻿"""
 Entry point for running the KnowMat 2.0 pipeline via the command line.
 
 Usage
@@ -7,7 +7,7 @@ Usage
 
     python -m knowmat --input-folder path/to/files [--output-dir out] [--max-runs 1]
 
-This will parse all supported files (PDF/TXT) in the given folder, run the
+This will parse all supported files (PDF/TXT/MD) in the given folder, run the
 agentic extraction workflow and write the results to the specified output
 directory. Each file is processed
 sequentially. The final JSON, rationale and intermediate run records are saved
@@ -16,21 +16,32 @@ separately for each paper.
 
 import argparse
 import json
+import os
+import sys
 import threading
 import time
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import ThreadPoolExecutor, as_completed, wait, FIRST_COMPLETED
 from pathlib import Path
 
 from knowmat.nodes.paddleocrvl_parse_pdf import parse_pdf_with_paddleocrvl
 from knowmat.orchestrator import run
 from knowmat.app_config import settings
 
-# 进度打印间隔（秒）
+# 杩涘害鎵撳嵃闂撮殧锛堢锛?
 _PROGRESS_INTERVAL_SEC = 60
 
+def _ensure_utf8_output() -> None:
+    """Best-effort: make stdout/stderr emit UTF-8."""
+    try:
+        if hasattr(sys.stdout, "reconfigure"):
+            sys.stdout.reconfigure(encoding="utf-8")
+        if hasattr(sys.stderr, "reconfigure"):
+            sys.stderr.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
 
 def _run_with_elapsed_progress(description: str, current_file: str, fn, *args, **kwargs):
-    """在子线程中执行 fn，主线程每 _PROGRESS_INTERVAL_SEC 秒打印一次「仍在处理中，已等待约 N 分钟」。"""
+    """Run fn in a thread and print progress periodically."""
     result_holder: list = []
     exc_holder: list = []
 
@@ -55,64 +66,14 @@ def _run_with_elapsed_progress(description: str, current_file: str, fn, *args, *
     return result_holder[0] if result_holder else None
 
 
-def _prepare_txt_inputs(input_folder: Path, pdf_files: list[Path], existing_txt_files: list[Path]) -> list[Path]:
-    """Ensure each PDF has a corresponding TXT sidecar, returning all TXT paths.
-
-    - If a TXT with the same stem as a PDF already exists, it is reused directly.
-    - If no TXT exists for a PDF, PaddleOCR-VL is invoked to create one, and the
-      cleaned text is saved as <stem>.txt in the same folder.
-    - Only TXT files are returned for downstream processing so the main pipeline
-      always runs on plain text inputs.
-    """
-    txt_by_stem = {p.stem: p for p in existing_txt_files}
-
-    if pdf_files:
-        ocr_root = input_folder / "_ocr_cache"
-        for pdf in pdf_files:
-            stem = pdf.stem
-            if stem in txt_by_stem:
-                continue
-
-            print(f"\nNo TXT found for {pdf.name}. Running OCR to create {stem}.txt ...")
-            parse_output_dir = ocr_root / stem
-            parse_output_dir.mkdir(parents=True, exist_ok=True)
-
-            state = {
-                "pdf_path": str(pdf),
-                "output_dir": str(parse_output_dir),
-            }
-
-            try:
-                result = _run_with_elapsed_progress(
-                    "OCR", pdf.name, parse_pdf_with_paddleocrvl, state
-                )  # type: ignore[arg-type]
-            except Exception as exc:  # pragma: no cover - defensive
-                print(f"[ERROR] Failed to OCR {pdf.name}: {exc}")
-                continue
-
-            text = result.get("paper_text") if isinstance(result, dict) else None
-            if not text:
-                print(f"[ERROR] OCR returned no text for {pdf.name}, skipping.")
-                continue
-
-            txt_path = input_folder / f"{stem}.txt"
-            txt_path.write_text(text, encoding="utf-8")
-            txt_by_stem[stem] = txt_path
-            print(f"Saved OCR text to: {txt_path}")
-            pages = result.get("metadata", {}).get("pages") if isinstance(result, dict) else None
-            if pages is not None:
-                print(f"[OCR] 完成; {pdf.name}: 共{pages}页")
-
-    return sorted(txt_by_stem.values(), key=lambda x: x.name.lower())
-
-
 def main(argv: list[str] | None = None) -> None:
-    parser = argparse.ArgumentParser(description="Run the KnowMat 2.0 extraction pipeline for PDF/TXT inputs.")
+    parser = argparse.ArgumentParser(description="Run the KnowMat 2.0 extraction pipeline for PDF/TXT/MD inputs.")
     parser.add_argument("--input-folder", default=None, help="Path to the folder containing PDF/TXT files to process.")
     parser.add_argument("--pdf-folder", default=None, help="Legacy alias of --input-folder.")
     parser.add_argument("--output-dir", default=None, help="Directory to write outputs to (default: ./knowmat_output).")
     parser.add_argument("--max-runs", type=int, default=1, help="Maximum extraction/evaluation cycles per paper.")
     parser.add_argument("--workers", type=int, default=1, help="Number of files to process concurrently.")
+    parser.add_argument("--ocr-workers", type=int, default=1, help="Number of PDFs to OCR concurrently (GPU is usually best with 1).")
     parser.add_argument("--full-pipeline", action="store_true", help="Enable full multi-stage pipeline.")
     parser.add_argument(
         "--enable-property-standardization",
@@ -137,14 +98,18 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument("--evaluation-model", default=None, help="Model for evaluation agent.")
     parser.add_argument("--manager-model", default=None, help="Model for validation agent (Stage 2: hallucination correction).")
     parser.add_argument("--flagging-model", default=None, help="Model for flagging/quality assessment agent.")
+    parser.add_argument("--ocr-log-level", default=None, help="OCR/PaddleX log level (e.g., DEBUG, INFO, WARNING). Overrides PADDLE_PDX_LOG_LEVEL if set.")
     
     args = parser.parse_args(argv)
+    if args.ocr_log_level:
+        os.environ["PADDLE_PDX_LOG_LEVEL"] = args.ocr_log_level
+    _ensure_utf8_output()
     
-    # 优先级：CLI (--input-folder / --pdf-folder) > 环境变量 KNOWMAT2_INPUT_DIR > 默认 "data/raw"
+    # 浼樺厛绾э細CLI (--input-folder / --pdf-folder) > 鐜鍙橀噺 KNOWMAT2_INPUT_DIR > 榛樿 "data/raw"
     input_folder_arg = args.input_folder or args.pdf_folder or settings.input_dir
     input_folder = Path(input_folder_arg)
     if not input_folder.exists():
-        # 若目录不存在，则创建空目录并提示用户
+        # 鑻ョ洰褰曚笉瀛樺湪锛屽垯鍒涘缓绌虹洰褰曞苟鎻愮ず鐢ㄦ埛
         print(f"Input folder not found, creating: {input_folder}")
         input_folder.mkdir(parents=True, exist_ok=True)
     
@@ -156,45 +121,138 @@ def main(argv: list[str] | None = None) -> None:
         [p for p in input_folder.iterdir() if p.is_file() and p.suffix.lower() == ".pdf"],
         key=lambda x: x.name.lower(),
     )
-    existing_txt_files = sorted(
-        [p for p in input_folder.iterdir() if p.is_file() and p.suffix.lower() == ".txt"],
+    def _is_text_candidate(path: Path) -> bool:
+        if not path.is_file() or path.suffix.lower() not in (".txt", ".md"):
+            return False
+        rel_parts = path.relative_to(input_folder).parts
+        skip_dirs = {"_ocr_cache", "_bad_txt", "processed"}
+        if any(part in skip_dirs for part in rel_parts):
+            return False
+        return True
+
+    text_files = sorted(
+        [p for p in input_folder.rglob("*") if _is_text_candidate(p)],
         key=lambda x: x.name.lower(),
     )
+    text_by_stem = {}
+    for p in text_files:
+        stem = p.stem
+        if stem in text_by_stem and text_by_stem[stem].suffix.lower() == ".md":
+            continue
+        if p.suffix.lower() == ".md":
+            text_by_stem[stem] = p
+        elif stem not in text_by_stem:
+            text_by_stem[stem] = p
+
+    existing_txt_files = sorted(text_by_stem.values(), key=lambda x: x.name.lower())
 
     if not pdf_files and not existing_txt_files:
-        print(f"Error: No supported files (.pdf/.txt) found in: {input_folder}")
-        print("Please place your PDF/TXT files into this folder or specify --input-folder explicitly.")
+        print(f"Error: No supported files (.pdf/.txt/.md) found in: {input_folder}")
+        print("Please place your PDF/TXT/MD files into this folder or specify --input-folder explicitly.")
         return
 
-    processing_files = _prepare_txt_inputs(input_folder, pdf_files, existing_txt_files)
-    if not processing_files:
-        print(f"Error: No TXT files available for processing in: {input_folder}")
-        return
-
-    # 如果指定了 --only，则只保留匹配给定文件名或 stem 的文件
     if args.only:
         requested = set(args.only)
-        before = len(processing_files)
-        processing_files = [
-            p for p in processing_files
-            if p.stem in requested or p.name in requested
-        ]
-        if not processing_files:
-            print(f"Error: No TXT files matched --only filter in: {input_folder}")
+        before_pdf = len(pdf_files)
+        before_txt = len(existing_txt_files)
+        pdf_files = [p for p in pdf_files if p.stem in requested or p.name in requested]
+        existing_txt_files = [p for p in existing_txt_files if p.stem in requested or p.name in requested]
+        if not pdf_files and not existing_txt_files:
+            print(f"Error: No files matched --only filter in: {input_folder}")
             print(f"Requested: {', '.join(sorted(requested))}")
             return
         else:
-            print(f"\nFiltered files with --only ({before} -> {len(processing_files)} to process)")
+            print(f"\nFiltered files with --only (pdf: {before_pdf} -> {len(pdf_files)}, txt: {before_txt} -> {len(existing_txt_files)})")
 
-    print(f"\nFound {len(processing_files)} TXT files to process")
-    print("=" * 60)
-    
-    # 计算当前运行实际使用的输出根目录（CLI > 配置默认值）
+    txt_by_stem = {p.stem: p for p in existing_txt_files}
+    pdfs_missing_txt = [p for p in pdf_files if p.stem not in txt_by_stem]
+
+    if not existing_txt_files and not pdfs_missing_txt:
+        print(f"Error: No text/markdown files available for processing in: {input_folder}")
+        return
+
+    if existing_txt_files:
+        print(f"\nQueued {len(existing_txt_files)} existing text files for extraction")
+    if pdfs_missing_txt:
+        print(f"Queued {len(pdfs_missing_txt)} PDFs for OCR")
+
+    # 璁＄畻褰撳墠杩愯瀹為檯浣跨敤鐨勮緭鍑烘牴鐩綍锛圕LI > 閰嶇疆榛樿鍊硷級
+
+    def _ocr_pdf_to_md(pdf: Path) -> Path | None:
+        stem = pdf.stem
+        print(f"\nNo MD found for {pdf.name}. Running OCR to create {stem}.md ...")
+        paper_dir = input_folder / stem
+        paper_dir.mkdir(parents=True, exist_ok=True)
+        parse_output_dir = paper_dir
+        parse_output_dir.mkdir(parents=True, exist_ok=True)
+        state = {
+            "pdf_path": str(pdf),
+            "output_dir": str(parse_output_dir),
+            "save_intermediate": False,
+        }
+        try:
+            result = _run_with_elapsed_progress("OCR", pdf.name, parse_pdf_with_paddleocrvl, state)
+        except Exception as exc:
+            print(f"[ERROR] Failed to OCR {pdf.name}: {exc}")
+            return None
+        text = result.get("paper_text") if isinstance(result, dict) else None
+        if not text:
+            print(f"[ERROR] OCR returned no text for {pdf.name}, skipping.")
+            return None
+        md_path = paper_dir / f"{stem}.md"
+        md_path.write_text(text, encoding="utf-8")
+        print(f"Saved OCR markdown to: {md_path}")
+        pages = result.get("metadata", {}).get("pages") if isinstance(result, dict) else None
+        if pages is not None:
+            print(f"[OCR] 完成; {pdf.name}: {pages} 页")
+        return md_path
+
+    def _ensure_md(text_path: Path) -> Path | None:
+        stem = text_path.stem
+        paper_dir = input_folder / stem
+        paper_dir.mkdir(parents=True, exist_ok=True)
+        md_path = paper_dir / f"{stem}.md"
+        if text_path.suffix.lower() == ".md" and text_path.resolve() == md_path.resolve():
+            return md_path
+        # Convert txt/md into cleaned markdown via parser
+        state = {
+            "pdf_path": str(text_path),
+            "output_dir": str(paper_dir),
+            "save_intermediate": False,
+        }
+        try:
+            result = _run_with_elapsed_progress("TXT->MD", text_path.name, parse_pdf_with_paddleocrvl, state)
+        except Exception as exc:
+            print(f"[ERROR] Failed to normalize {text_path.name}: {exc}")
+            return None
+        text = result.get("paper_text") if isinstance(result, dict) else None
+        if not text:
+            print(f"[ERROR] Normalization returned no text for {text_path.name}, skipping.")
+            return None
+        md_path.write_text(text, encoding="utf-8")
+        print(f"Saved normalized markdown to: {md_path}")
+        return md_path
+
+    def _log_summary(summary: dict) -> None:
+        if summary.get("success"):
+            if summary.get("skipped"):
+                print(f"\nSkipped (already processed): {summary.get('file')}")
+                print(f"   Output: {summary.get('output_dir')}")
+                print(f"   Materials: {summary.get('compositions', 0)}")
+            else:
+                flag_str = "[FLAGGED]" if summary.get("flag") else "[OK]"
+                print(f"\nFinished extraction: {summary.get('file')}")
+                print(f"   Status: {flag_str}")
+                print(f"   Output: {summary.get('output_dir')}")
+                print(f"   Materials: {summary.get('compositions', 0)}")
+        else:
+            print(f"\nError processing {summary.get('file')}: {summary.get('error')}")
+
     root_output_dir = Path(args.output_dir or settings.output_dir)
 
     def _process_one(file_path: Path) -> dict:
         try:
-            # 如果该论文已经有成功的抽取结果，且未显式要求重跑，则直接跳过
+            # 濡傛灉璇ヨ鏂囧凡缁忔湁鎴愬姛鐨勬娊鍙栫粨鏋滐紝涓旀湭鏄惧紡瑕佹眰閲嶈窇锛屽垯鐩存帴璺宠繃
             base_name = file_path.stem
             paper_output_dir = root_output_dir / base_name
             extraction_path = paper_output_dir / f"{base_name}_extraction.json"
@@ -216,7 +274,7 @@ def main(argv: list[str] | None = None) -> None:
                 }
 
             result = _run_with_elapsed_progress(
-                "大模型解析",
+                "LLM",
                 file_path.name,
                 run,
                 pdf_path=str(file_path),
@@ -247,44 +305,50 @@ def main(argv: list[str] | None = None) -> None:
 
     results_summary = []
     workers = max(1, args.workers)
-    if workers == 1:
-        for i, file_path in enumerate(processing_files, 1):
-            print(f"\n{'='*60}")
-            print(f"Processing file {i}/{len(processing_files)}: {file_path.name}")
-            print(f"{'='*60}\n")
-            summary = _process_one(file_path)
-            results_summary.append(summary)
-            if summary["success"]:
-                if summary.get("skipped"):
-                    print(f"\nSkipped (already processed): {file_path.name}")
-                    print(f"   Output: {summary.get('output_dir')}")
-                    print(f"   Materials: {summary.get('compositions', 0)}")
+    ocr_workers = max(1, args.ocr_workers)
+
+    with ThreadPoolExecutor(max_workers=workers) as llm_pool, ThreadPoolExecutor(max_workers=ocr_workers) as ocr_pool:
+        llm_futures = {}
+        ocr_futures = {}
+
+        def _submit_llm(path: Path) -> None:
+            fut = llm_pool.submit(_process_one, path)
+            llm_futures[fut] = path
+
+        # Submit existing text files immediately (normalize to MD)
+        for text_path in sorted(existing_txt_files, key=lambda x: x.name.lower()):
+            md_path = _ensure_md(text_path)
+            if md_path:
+                _submit_llm(md_path)
+
+        # Start OCR for PDFs missing TXT
+        for pdf in pdfs_missing_txt:
+            ocr_futures[ocr_pool.submit(_ocr_pdf_to_md, pdf)] = pdf
+
+        if not llm_futures and not ocr_futures:
+            print(f"Error: No work to process in: {input_folder}")
+            return
+
+        while ocr_futures or llm_futures:
+            done, _ = wait(set(ocr_futures.keys()) | set(llm_futures.keys()), return_when=FIRST_COMPLETED)
+            for fut in done:
+                if fut in ocr_futures:
+                    pdf = ocr_futures.pop(fut)
+                    try:
+                        txt_path = fut.result()
+                    except Exception as exc:
+                        print(f"[ERROR] OCR failed for {pdf.name}: {exc}")
+                        continue
+                    if txt_path:
+                        _submit_llm(txt_path)
                 else:
-                    flag_str = "[FLAGGED]" if summary.get("flag") else "[OK]"
-                    print(f"\n[大模型解析] 完成; {file_path.name}")
-                    print(f"Finished extraction: {file_path.name}")
-                    print(f"   Status: {flag_str}")
-                    print(f"   Output: {summary.get('output_dir')}")
-                    print(f"   Materials: {summary.get('compositions', 0)}")
-            else:
-                print(f"\nError processing {file_path.name}: {summary.get('error')}")
-    else:
-        print(f"Running with {workers} workers...")
-        with ThreadPoolExecutor(max_workers=workers) as pool:
-            fut_map = {pool.submit(_process_one, p): p for p in processing_files}
-            for fut in as_completed(fut_map):
-                summary = fut.result()
-                results_summary.append(summary)
-                if summary["success"]:
-                    if summary.get("skipped"):
-                        print(f"[SKIPPED] {summary['file']}: {summary.get('compositions', 0)} materials (already processed)")
-                    else:
-                        flag_str = "[FLAGGED]" if summary.get("flag") else "[OK]"
-                        print(f"[大模型解析] 完成; {summary['file']}")
-                        print(f"{flag_str} {summary['file']}: {summary.get('compositions', 0)} materials")
-                else:
-                    print(f"[ERROR] {summary['file']}: {summary.get('error')}")
-    
+                    path = llm_futures.pop(fut)
+                    try:
+                        summary = fut.result()
+                    except Exception as exc:
+                        summary = {"file": path.name, "success": False, "error": str(exc)}
+                    results_summary.append(summary)
+                    _log_summary(summary)
     # Print final summary
     print(f"\n{'='*60}")
     print("PROCESSING SUMMARY")
@@ -319,3 +383,27 @@ def main(argv: list[str] | None = None) -> None:
 
 if __name__ == "__main__":  # pragma: no cover
     main()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

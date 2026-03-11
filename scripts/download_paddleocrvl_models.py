@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Pre-download PaddleOCR/PaddleOCR-VL models into a project-local directory."""
 
 import argparse
@@ -24,7 +24,9 @@ def main() -> None:
     model_dir.mkdir(parents=True, exist_ok=True)
 
     os.environ["PADDLEOCR_HOME"] = str(model_dir)
+    os.environ.setdefault("PADDLE_PDX_CACHE_HOME", str(model_dir))
     print(f"PADDLEOCR_HOME={model_dir}")
+    print(f"PADDLE_PDX_CACHE_HOME={os.environ.get('PADDLE_PDX_CACHE_HOME')}")
 
     try:
         from paddleocr import PaddleOCRVL  # type: ignore
@@ -55,3 +57,7 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+
+
+

@@ -760,3 +760,17 @@ Unrecognized function call PatchFunction
 
 - GitHub Issues：<https://github.com/hasan-sayeed/KnowMat2/issues>
 - Email：hasan.sayeed@utah.edu
+
+## PaddleOCR-VL GPU (Windows / RTX 50-series)
+
+For Windows users with RTX 50-series (Blackwell), use the GPU setup script:
+
+```powershell
+.\scripts\setup_paddleocrvl_gpu.ps1
+```
+
+This installs the GPU PaddlePaddle build and PaddleOCR-VL dependencies, sets GPU runtime defaults, and downloads models into the project cache (models/paddleocrvl1_5).
+
+Notes:
+- The script sets `KNOWMAT_OCR_DEVICE=gpu:0` and `PADDLE_PDX_CACHE_HOME=models/paddleocrvl1_5`.
+- Server backends like vLLM/sglang are for dedicated serving environments; on Windows, use native Paddle GPU inference.
