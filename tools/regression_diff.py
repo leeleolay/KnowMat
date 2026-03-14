@@ -34,9 +34,9 @@ if sys.platform == "win32":
 class RegressionDiff:
     """回归对比工具核心类"""
     
-    def __init__(self, workspace_root: Path):
+    def __init__(self, workspace_root: Path, ai_results_dir: Optional[Path] = None):
         self.workspace_root = workspace_root
-        self.ai_results_dir = workspace_root / "data" / "processed"
+        self.ai_results_dir = Path(ai_results_dir) if ai_results_dir else (workspace_root / "data" / "processed")
         self.gt_results_dir = workspace_root / "手工标注结果"
         self.reports_dir = workspace_root / "reports"
         self.reports_dir.mkdir(exist_ok=True)
@@ -1189,7 +1189,14 @@ def main_gt(args):
     
     # 执行对比
     workspace_root = Path(__file__).parent.parent
-    differ = RegressionDiff(workspace_root)
+    ai_dir = getattr(args, "ai_dir", None)
+    if ai_dir is None:
+        ai_dir = workspace_root / "data" / "output"  # 默认使用当前 pipeline 输出目录
+    else:
+        ai_dir = (Path(ai_dir) if not Path(ai_dir).is_absolute() else Path(ai_dir)).resolve()
+        if not ai_dir.is_absolute():
+            ai_dir = workspace_root / ai_dir
+    differ = RegressionDiff(workspace_root, ai_results_dir=ai_dir)
     
     print(f"[GT 模式] 开始回归对比，论文编号: {paper_ids}")
     print("=" * 60)
@@ -1298,6 +1305,7 @@ def main():
     parser_gt = subparsers.add_parser("gt", help="AI vs Ground Truth 对比（需要手工标注）")
     parser_gt.add_argument("--all", action="store_true", help="对比全部 6 篇论文")
     parser_gt.add_argument("--papers", nargs="+", type=int, help="指定论文编号")
+    parser_gt.add_argument("--ai-dir", default=None, help="AI 抽取结果目录，默认 data/output（当前 pipeline 输出）")
     parser_gt.add_argument("--format", choices=["markdown", "json", "both"], default="both", help="输出格式")
     parser_gt.add_argument("--output", help="输出文件路径（不含扩展名）")
     
