@@ -12,6 +12,7 @@ import os
 import json
 import re
 import tempfile
+import threading
 from concurrent.futures import ThreadPoolExecutor, Future
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
@@ -43,17 +44,17 @@ def _extract_doi_from_text(text: str) -> Optional[str]:
 
 
 # ---------------------------------------------------------------------------
-# HTML �?markdown conversion for .txt inputs
+# HTML �?markdown conversion for .txt inputs
 # ---------------------------------------------------------------------------
 
-_HTML_IMG_RE = re.compile(r'<div[^>]*>\s*<img[^>]*/>\s*</div>', re.IGNORECASE)
-_HTML_DIV_OPEN_RE = re.compile(r'<div[^>]*>', re.IGNORECASE)
-_HTML_DIV_CLOSE_RE = re.compile(r'</div>', re.IGNORECASE)
-_HTML_TABLE_BLOCK_RE = re.compile(
-    r'<table[^>]*>.*?</table>', re.IGNORECASE | re.DOTALL
-)
 _HTML_TAG_RE = re.compile(r'</?[a-zA-Z][^>]*>')
 _LATEX_DISPLAY_RE = re.compile(r'\$\$\s*(.*?)\s*\$\$', re.DOTALL)
+
+_BLOCK_TAGS = [
+    "p", "div", "section", "article", "header", "footer",
+    "li", "ul", "ol", "tr", "td", "th",
+    "h1", "h2", "h3", "h4", "h5", "h6",
+]
 
 
 def _html_table_to_markdown(html: str) -> str:
@@ -107,56 +108,37 @@ def _html_table_to_markdown(html: str) -> str:
 
 
 def _convert_html_to_markdown(text: str) -> str:
-    """Convert residual HTML markup in OCR/txt output to clean markdown."""
+    """Convert residual HTML markup in OCR/txt output to clean markdown.
+
+    Uses BeautifulSoup for robust DOM-based cleaning with ``_HTML_TAG_RE``
+    as a final safety-net for any residual tags.
+    """
     if not text:
         return ""
     if "<" not in text and ">" not in text:
         return text.strip()
 
-    converted = text
-    try:
-        from bs4 import BeautifulSoup  # type: ignore
-    except ImportError:
-        # Fallback to regex-based stripping
-        converted = _HTML_TABLE_BLOCK_RE.sub(lambda m: _html_table_to_markdown(m.group(0)), converted)
-        converted = _HTML_IMG_RE.sub("", converted)
-        converted = _HTML_DIV_OPEN_RE.sub("", converted)
-        converted = _HTML_DIV_CLOSE_RE.sub("", converted)
-        converted = _HTML_TAG_RE.sub("", converted)
-    else:
-        soup = BeautifulSoup(converted, "html.parser")
-        for table in soup.find_all("table"):
-            md_table = _html_table_to_markdown(str(table))
-            table.replace_with(f"\n{md_table}\n")
-        for br in soup.find_all("br"):
-            br.replace_with("\n")
-        block_tags = [
-            "p",
-            "div",
-            "section",
-            "article",
-            "header",
-            "footer",
-            "li",
-            "ul",
-            "ol",
-            "tr",
-            "td",
-            "th",
-            "h1",
-            "h2",
-            "h3",
-            "h4",
-            "h5",
-            "h6",
-        ]
-        for tag in soup.find_all(block_tags):
-            if tag.string is None:
-                tag.insert_before("\n")
-                tag.insert_after("\n")
-        converted = soup.get_text("\n")
-        converted = _HTML_TAG_RE.sub("", converted)
+    from bs4 import BeautifulSoup  # type: ignore
 
+    soup = BeautifulSoup(text, "html.parser")
+
+    for table in soup.find_all("table"):
+        md_table = _html_table_to_markdown(str(table))
+        table.replace_with(f"\n{md_table}\n")
+
+    for div in soup.find_all("div"):
+        if div.find("img") and not div.get_text(strip=True):
+            div.decompose()
+
+    for br in soup.find_all("br"):
+        br.replace_with("\n")
+    for tag in soup.find_all(_BLOCK_TAGS):
+        if tag.string is None:
+            tag.insert_before("\n")
+            tag.insert_after("\n")
+
+    converted = soup.get_text("\n")
+    converted = _HTML_TAG_RE.sub("", converted)
     converted = re.sub(r"\n{3,}", "\n\n", converted)
     return converted.strip()
 
@@ -165,10 +147,8 @@ def _html_table_to_structured(html: str) -> Optional[Dict[str, Any]]:
     """Parse a <table> HTML string into a structured columns/rows dict."""
     if "<table" not in html.lower():
         return None
-    try:
-        from bs4 import BeautifulSoup  # type: ignore
-    except ImportError:
-        return None
+
+    from bs4 import BeautifulSoup  # type: ignore
 
     soup = BeautifulSoup(html, "html.parser")
     table = soup.find("table")
@@ -309,8 +289,8 @@ _NOISE_LINE_PATTERNS: List[Tuple[re.Pattern, bool]] = [
     (re.compile(r'^journal homepage', re.IGNORECASE), False),
     (re.compile(r'^https?://www\.(sciencedirect|elsevier|springer|wiley)', re.IGNORECASE), False),
     (re.compile(r'^Full length article\s*$', re.IGNORECASE), False),
-    (re.compile(r'^\d{4}-\d{3}[\dX]/\s*�', re.IGNORECASE), False),
-    (re.compile(r'^�\s*\d{4}', re.IGNORECASE), False),
+    (re.compile(r'^\d{4}-\d{3}[\dX]/\s*�', re.IGNORECASE), False),
+    (re.compile(r'^�\s*\d{4}', re.IGNORECASE), False),
     (re.compile(r'^Elsevier', re.IGNORECASE), False),
     (re.compile(r'^\* Corresponding author', re.IGNORECASE), False),
     (re.compile(r'^\*\* Corresponding author', re.IGNORECASE), False),
@@ -332,7 +312,7 @@ def _is_noise_line(line: str) -> bool:
     for pat, skip_if_doi in _NOISE_LINE_PATTERNS:
         if pat.match(stripped):
             if skip_if_doi and has_doi:
-                return False  # keep the line �?it contains a DOI
+                return False  # keep the line �?it contains a DOI
             return True
     return False
 
@@ -416,6 +396,9 @@ def _prepare_ocr_home(model_dir: Path) -> None:
     """Ensure local model directory exists and is used by PaddleOCR."""
     model_dir.mkdir(parents=True, exist_ok=True)
     os.environ["PADDLEOCR_HOME"] = str(model_dir)
+    # 跳过模型源连通性检查，避免离线/内网环境长时间等待或报错
+    if "PADDLE_PDX_DISABLE_MODEL_SOURCE_CHECK" not in os.environ:
+        os.environ["PADDLE_PDX_DISABLE_MODEL_SOURCE_CHECK"] = "True"
 
 
 def _create_ocr_engine(model_dir: Path) -> Tuple[Any, str]:
@@ -425,11 +408,22 @@ def _create_ocr_engine(model_dir: Path) -> Tuple[Any, str]:
     try:
         from paddleocr import PaddleOCRVL  # type: ignore
 
-        for kwargs in ({}, {"lang": "en"}, {"model_dir": str(model_dir)}, {"lang": "en", "model_dir": str(model_dir)}):
+        # PaddleOCRVL 仅支持无参构造，模型路径由 PADDLEOCR_HOME / 环境与缓存决定
+        for kwargs in [{}]:
             try:
                 return PaddleOCRVL(**kwargs), "paddleocrvl"
             except TypeError:
                 continue
+            except Exception as exc:
+                err_msg = str(exc).lower()
+                if "dependency error" in err_msg or "pipeline creation" in err_msg or "could not find files" in err_msg:
+                    logger.warning(
+                        "PaddleOCR-VL init failed (%s), falling back to PaddleOCR: %s",
+                        type(exc).__name__,
+                        exc,
+                    )
+                    break
+                raise
     except ImportError:
         logger.info("PaddleOCR-VL not available, falling back to PaddleOCR")
 
@@ -479,6 +473,63 @@ def _run_ocr(engine: Any, image_path: Path) -> Any:
         return engine(img)
 
     raise RuntimeError("OCR engine does not expose a known inference method.")
+
+
+def _supports_batch_predict(engine: Any) -> bool:
+    """Detect whether the OCR engine supports batch inference."""
+    if hasattr(engine, "predict_batch"):
+        return True
+    if hasattr(engine, "predict"):
+        try:
+            import inspect
+            sig = inspect.signature(engine.predict)
+            for param in sig.parameters.values():
+                if param.annotation in ("list", "List", List):
+                    return True
+        except (ValueError, TypeError):
+            pass
+    return False
+
+
+def _run_ocr_batch(
+    engine: Any, image_paths: List[Path], batch_size: int
+) -> List[Any]:
+    """Run OCR on images in batches. Returns results indexed by page order."""
+    results: List[Any] = [None] * len(image_paths)
+    for start in range(0, len(image_paths), batch_size):
+        chunk = image_paths[start : start + batch_size]
+        str_paths = [str(p) for p in chunk]
+        try:
+            batch_raw = engine.predict_batch(str_paths)
+        except (TypeError, AttributeError):
+            batch_raw = [_run_ocr(engine, p) for p in chunk]
+        for j, raw in enumerate(batch_raw):
+            results[start + j] = raw
+    return results
+
+
+_OCR_MAX_WORKERS_DEFAULT = 2
+
+
+def _run_ocr_parallel(
+    engine: Any, image_paths: List[Path], max_workers: int
+) -> List[Any]:
+    """Run OCR on images with bounded concurrency via a semaphore."""
+    if max_workers <= 1:
+        return [_run_ocr(engine, p) for p in image_paths]
+
+    results: List[Any] = [None] * len(image_paths)
+    sem = threading.Semaphore(max_workers)
+
+    def _worker(idx: int, path: Path) -> None:
+        with sem:
+            results[idx] = _run_ocr(engine, path)
+
+    with ThreadPoolExecutor(max_workers=max_workers) as pool:
+        futures = [pool.submit(_worker, i, p) for i, p in enumerate(image_paths)]
+        for fut in futures:
+            fut.result()
+    return results
 
 
 def _collect_text(obj: Any, out: List[str]) -> None:
@@ -601,7 +652,9 @@ def _extract_pdf_with_paddleocrvl(pdf_path: str, output_dir: str, model_dir: Pat
     """Render PDF pages, run OCR, and return merged text + metadata + structured items.
 
     Page rendering is parallelised across threads (PyMuPDF releases the GIL).
-    OCR remains serial to avoid GPU memory contention.  Intermediate JSON
+    OCR uses batch inference when the engine supports it (``OCR_BATCH_SIZE``),
+    otherwise bounded parallel workers (``OCR_MAX_WORKERS``, default 2).
+    Set ``OCR_MAX_WORKERS=1`` to force serial execution.  Intermediate JSON
     writes are submitted to a background thread pool so they don't block the
     main OCR loop.
     """
@@ -611,9 +664,18 @@ def _extract_pdf_with_paddleocrvl(pdf_path: str, output_dir: str, model_dir: Pat
         raise ImportError(
             "PyMuPDF is required for PaddleOCR parsing. Install with: pip install pymupdf"
         ) from exc
+    import shutil
 
     pdf = Path(pdf_path)
     out_dir = Path(output_dir)
+    # Windows/部分依赖对路径中的非 ASCII（如下标 ₄₂）支持不佳，复制到临时 ASCII 路径再处理
+    _temp_pdf_ctx = None
+    work_pdf = pdf
+    if not all(ord(c) < 128 for c in pdf_path):
+        _temp_pdf_ctx = tempfile.TemporaryDirectory()
+        work_pdf = Path(_temp_pdf_ctx.name) / "source.pdf"
+        shutil.copy2(pdf_path, work_pdf)
+
     temp_dir = None
     if save_intermediate:
         image_dir = out_dir / "page_images"
@@ -631,131 +693,134 @@ def _extract_pdf_with_paddleocrvl(pdf_path: str, output_dir: str, model_dir: Pat
     _FOOTER_LINES = 3
 
     # --- Phase 1: parallel page rendering ---
-    doc = fitz.open(str(pdf))
+    doc = fitz.open(str(work_pdf))
     total_pages = len(doc)
     first_page_pymupdf_text = doc[0].get_text("text") if total_pages > 0 else ""
     doc.close()
 
     render_args = [
-        (str(pdf), idx, 300, str(image_dir)) for idx in range(1, total_pages + 1)
+        (str(work_pdf), idx, 300, str(image_dir)) for idx in range(1, total_pages + 1)
     ]
     num_workers = min(_MAX_RENDER_WORKERS, max(1, os.cpu_count() or 1), total_pages)
     with ThreadPoolExecutor(max_workers=num_workers) as render_pool:
         image_paths: List[Path] = list(render_pool.map(_render_page, render_args))
 
-    # --- Phase 2: serial OCR + background JSON writes ---
+    # --- Phase 2: OCR (batch / parallel / serial) + background JSON writes ---
     page_blocks: List[str] = []
     page_level_meta: List[Dict[str, Any]] = []
     ocr_items: List[Dict[str, Any]] = []
     first_page_full_text = first_page_pymupdf_text
 
-    bg_io_pool = ThreadPoolExecutor(max_workers=2)
     bg_futures: List[Future] = []
+    vl_results: List[Any] = []
 
-    try:
-        vl_results: List[Any] = []
-        for page_idx, image_path in enumerate(image_paths, start=1):
-            raw = _run_ocr(engine, image_path)
+    if _supports_batch_predict(engine):
+        batch_size = int(os.getenv("OCR_BATCH_SIZE", "4"))
+        logger.info("Using batch OCR inference (batch_size=%d)", batch_size)
+        raw_results = _run_ocr_batch(engine, image_paths, batch_size)
+    else:
+        max_ocr_workers = int(os.getenv("OCR_MAX_WORKERS", str(_OCR_MAX_WORKERS_DEFAULT)))
+        if max_ocr_workers > 1:
+            logger.info("Using parallel OCR inference (max_workers=%d)", max_ocr_workers)
+        raw_results = _run_ocr_parallel(engine, image_paths, max_ocr_workers)
 
-            if raw_dir is not None:
-                dest = raw_dir / f"page-{page_idx:04d}.json"
-                bg_futures.append(bg_io_pool.submit(_save_ocr_json, raw, dest))
+    with ThreadPoolExecutor(max_workers=2) as bg_io_pool:
+        try:
+            for page_idx, raw in enumerate(raw_results, start=1):
+                if raw is not None and raw_dir is not None:
+                    dest = raw_dir / f"page-{page_idx:04d}.json"
+                    bg_futures.append(bg_io_pool.submit(_save_ocr_json, raw, dest))
 
-            if backend == "paddleocrvl":
-                if isinstance(raw, list):
-                    vl_results.extend(raw)
+                if backend == "paddleocrvl":
+                    if raw is not None:
+                        if isinstance(raw, list):
+                            vl_results.extend(raw)
+                        else:
+                            vl_results.append(raw)
                 else:
-                    vl_results.append(raw)
-            else:
-                lines: List[str] = []
-                _collect_text(raw, lines)
-                lines = _normalize_lines(lines)
+                    lines: List[str] = []
+                    _collect_text(raw, lines)
+                    lines = _normalize_lines(lines)
 
-                if not lines:
-                    doc = fitz.open(str(pdf))
-                    try:
-                        fallback = doc[page_idx - 1].get_text("text")
-                    finally:
-                        doc.close()
-                    lines = [x.strip() for x in fallback.splitlines() if x.strip()]
+                    if not lines:
+                        doc = fitz.open(str(work_pdf))
+                        try:
+                            fallback = doc[page_idx - 1].get_text("text")
+                        finally:
+                            doc.close()
+                        lines = [x.strip() for x in fallback.splitlines() if x.strip()]
 
-                page_text = "\n".join(lines).strip()
+                    page_text = "\n".join(lines).strip()
+                    page_text = _convert_html_to_markdown(page_text)
+                    page_blocks.append(f"## Page {page_idx}\n\n{page_text}")
+
+                    page_level_meta.append({
+                        "page": page_idx,
+                        "header_text": "\n".join(lines[:_HEADER_LINES]),
+                        "footer_text": "\n".join(lines[-_FOOTER_LINES:]) if len(lines) >= _FOOTER_LINES else "",
+                        "line_count": len(lines),
+                    })
+
+                if page_idx == 1:
+                    if backend == "paddleocrvl":
+                        first_page_full_text = first_page_pymupdf_text
+                    else:
+                        first_page_full_text = page_text + "\n" + first_page_pymupdf_text
+        finally:
+            if temp_dir is not None:
+                for fut in bg_futures:
+                    fut.result()
+                temp_dir.cleanup()
+
+        # --- Phase 3: PaddleOCR-VL batch post-processing ---
+        if backend == "paddleocrvl" and vl_results:
+            try:
+                restructured = engine.restructure_pages(
+                    vl_results,
+                    merge_tables=True,
+                    relevel_titles=True,
+                    concatenate_pages=True,
+                )
+                restructured = list(restructured)
+            except (RuntimeError, ValueError, TypeError) as exc:
+                logger.warning("restructure_pages failed for %s: %s", pdf, exc, exc_info=True)
+                restructured = []
+
+            for idx, res in enumerate(restructured, start=1):
+                try:
+                    md_info = res._to_markdown(pretty=True, show_formula_number=False)
+                    page_text = md_info.get("markdown_texts", "")
+                except (AttributeError, TypeError, KeyError) as exc:
+                    logger.warning("_to_markdown failed for page %d of %s: %s", idx, pdf, exc)
+                    page_text = ""
                 page_text = _convert_html_to_markdown(page_text)
-                page_blocks.append(f"## Page {page_idx}\n\n{page_text}")
+                if page_text:
+                    page_blocks.append(page_text)
 
+                lines = [ln for ln in page_text.splitlines() if ln.strip()]
                 page_level_meta.append({
-                    "page": page_idx,
+                    "page": idx,
                     "header_text": "\n".join(lines[:_HEADER_LINES]),
                     "footer_text": "\n".join(lines[-_FOOTER_LINES:]) if len(lines) >= _FOOTER_LINES else "",
                     "line_count": len(lines),
                 })
 
-            if page_idx == 1:
-                if backend == "paddleocrvl":
-                    first_page_full_text = first_page_pymupdf_text
-                else:
-                    first_page_full_text = page_text + "\n" + first_page_pymupdf_text
-    finally:
-        if temp_dir is not None:
-            # Wait for background writes before cleaning up temp dir
-            for fut in bg_futures:
-                fut.result()
-            temp_dir.cleanup()
-
-    # --- Phase 3: PaddleOCR-VL batch post-processing ---
-    if backend == "paddleocrvl" and vl_results:
-        try:
-            restructured = engine.restructure_pages(
-                vl_results,
-                merge_tables=True,
-                relevel_titles=True,
-                concatenate_pages=True,
-            )
-            restructured = list(restructured)
-        except (RuntimeError, ValueError, TypeError) as exc:
-            logger.warning("restructure_pages failed for %s: %s", pdf, exc, exc_info=True)
-            restructured = []
-
-        for idx, res in enumerate(restructured, start=1):
-            try:
-                md_info = res._to_markdown(pretty=True, show_formula_number=False)
-                page_text = md_info.get("markdown_texts", "")
-            except (AttributeError, TypeError, KeyError) as exc:
-                logger.warning("_to_markdown failed for page %d of %s: %s", idx, pdf, exc)
-                page_text = ""
-            page_text = _convert_html_to_markdown(page_text)
-            if page_text:
-                page_blocks.append(page_text)
-
-            lines = [ln for ln in page_text.splitlines() if ln.strip()]
-            page_level_meta.append({
-                "page": idx,
-                "header_text": "\n".join(lines[:_HEADER_LINES]),
-                "footer_text": "\n".join(lines[-_FOOTER_LINES:]) if len(lines) >= _FOOTER_LINES else "",
-                "line_count": len(lines),
-            })
-
-            try:
-                blocks = res["parsing_res_list"]
-            except (KeyError, TypeError, IndexError):
-                blocks = getattr(res, "parsing_res_list", [])
-            for block in blocks or []:
-                item = _block_to_item(block)
-                if item:
-                    item["page"] = idx
-                    ocr_items.append(item)
-
-    # Wait for any remaining background writes
-    for fut in bg_futures:
-        fut.result()
-    bg_io_pool.shutdown(wait=False)
+                try:
+                    blocks = res["parsing_res_list"]
+                except (KeyError, TypeError, IndexError):
+                    blocks = getattr(res, "parsing_res_list", [])
+                for block in blocks or []:
+                    item = _block_to_item(block)
+                    if item:
+                        item["page"] = idx
+                        ocr_items.append(item)
 
     merged = "\n\n".join(page_blocks).strip()
 
     if not ocr_items and merged:
         ocr_items = _text_to_paragraph_items(merged)
 
-    doi = _extract_doi_from_pdf_metadata(str(pdf))
+    doi = _extract_doi_from_pdf_metadata(str(work_pdf))
     if not doi:
         doi = _extract_doi_from_text(first_page_full_text)
 

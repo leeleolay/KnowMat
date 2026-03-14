@@ -21,7 +21,7 @@ Important fields
   JSON‑serialisable dictionary.
 * ``run_results``: A list of dictionaries summarising each evaluation run.
   Each entry contains at least ``run_id``, ``confidence_score``,
-  ``rationale``, ``suggested_prompt`` and ``extracted_data``.
+  ``rationale``, ``suggested_prompt`` and ``extracted_data_path``.
 * ``run_count``: The number of extraction/evaluation cycles that have
   occurred so far.  Used by the orchestrator to limit retries.
 * ``max_runs``: The maximum number of extraction/evaluation cycles to
@@ -36,6 +36,8 @@ Important fields
   extraction.
 """
 
+import json
+from pathlib import Path
 from typing import TypedDict, List, Optional, Dict, Any
 
 
@@ -118,7 +120,12 @@ class TargetSchema(TypedDict, total=False):
 # ---------------------------------------------------------------------------
 
 class EvaluationRun(TypedDict, total=False):
-    """Structure used to record the outcome of an individual evaluation run."""
+    """Structure used to record the outcome of an individual evaluation run.
+
+    ``extracted_data_path`` holds a filesystem path to the JSON file
+    containing the full extraction for this run, keeping the in-memory
+    state lightweight.  Use :func:`load_run_extraction` to read it back.
+    """
 
     run_id: int
     confidence_score: float
@@ -126,7 +133,7 @@ class EvaluationRun(TypedDict, total=False):
     missing_fields: Optional[List[str]]
     hallucinated_fields: Optional[List[str]]
     suggested_prompt: Optional[str]
-    extracted_data: Dict[str, Any]
+    extracted_data_path: str
 
 
 class KnowMatState(TypedDict, total=False):
@@ -163,3 +170,24 @@ class KnowMatState(TypedDict, total=False):
     confidence_rationale: Optional[str]
     needs_human_review: Optional[bool]
     flag: bool
+
+    # Post-processing controls
+    enable_property_standardization: bool
+    qa_report: Optional[Dict[str, Any]]
+
+
+def load_run_extraction(run: "EvaluationRun") -> Dict[str, Any]:
+    """Load the full extraction dict for an evaluation run from disk.
+
+    Falls back to an empty dict if the file cannot be read.
+    """
+    path_str = run.get("extracted_data_path", "")
+    if not path_str:
+        return {}
+    p = Path(path_str)
+    if not p.exists():
+        return {}
+    try:
+        return json.loads(p.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return {}

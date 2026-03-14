@@ -12,7 +12,7 @@
 
 ### 核心能力
 
-- **科研级批处理**：可批量处理整个目录中的 PDF/TXT 文件
+- **科研级批处理**：可批量处理整个目录中的 PDF/TXT 文件；支持**两阶段**：先仅跑 OCR（`--ocr-only`），再统一跑大模型抽取
 - **高准确度**：多代理架构，支持最多 3 轮抽取/评估迭代优化
 - **高级 PDF 解析**：使用 **PaddleOCR-VL** 进行 OCR 解析
 - **两阶段校验**：规则聚合 + LLM 幻觉修正
@@ -73,22 +73,32 @@
 
 ## 输出目录结构
 
-每篇论文会生成一个独立目录：
+- **输入目录**（默认 `data/raw/`）：用户放置待处理 PDF 及 .txt/.md 的目录。**OCR 中间产物**（`.md` 与 `.json`）始终写在此目录下，按论文分子目录：`<input-folder>/<论文基名>/<论文基名>.md` 与 `<论文基名>.json`。
+- **输出目录**（默认 `data/output/`）：**仅存放 LLM 抽取结果**（`_extraction.json`、`_analysis_report.txt`、`_runs.json`、`_qa_report.json` 等），与 raw 分离。可通过 `--output-dir` 覆盖。
+
+**输入目录**（如 `data/raw/`）下仅包含 PDF 与 OCR 产出：
 
 ```text
-data/processed/
+data/raw/
+├── <PaperName>.pdf
+└── <PaperName>/
+    ├── <PaperName>.md                       # OCR 产出
+    ├── <PaperName>.json                     # OCR 结构化
+    ├── paddleocrvl_parse/                   # 仅 PDF 且 save_intermediate 时
+    │   ├── page_images/
+    │   └── ocr_raw/
+    └── txt_parse/                           # TXT 输入时
+```
+
+**输出目录**（默认 `data/output/`）下为每篇论文的抽取结果：
+
+```text
+data/output/
 └── <PaperName>/
     ├── <PaperName>_extraction.json          # 最终结构化结果
     ├── <PaperName>_analysis_report.txt      # 可读分析报告
     ├── <PaperName>_runs.json                # 各轮抽取详情
-    ├── paddleocrvl_parse/                   # 仅 PDF 输入时生成
-    │   ├── <PaperName>_final_output.md
-    │   ├── <PaperName>_parse_metadata.json
-    │   ├── page_images/
-    │   └── ocr_raw/
-    └── txt_parse/                           # TXT 输入时生成
-        ├── <PaperName>_final_output.md
-        └── <PaperName>_parse_metadata.json
+    └── <PaperName>_qa_report.json           # 质量与复核标记
 ```
 
 ---
@@ -119,11 +129,13 @@ conda activate KnowMat
 ```
 
 如 `paddleocr` 安装时提示缺少后端 wheel，请先为你的平台安装 `paddlepaddle` 后再重试。  
-如果要处理 PDF，建议预下载 PaddleOCR-VL 模型到项目目录：
+若要处理 PDF，建议预下载 PaddleOCR-VL 模型到项目目录：
 
 ```bash
 python scripts/download_paddleocrvl_models.py --model-dir models/paddleocrvl1_5
 ```
+
+Windows GPU 或 macOS（含 Apple Silicon）的一键安装与设备配置见文末 **[PaddleOCR-VL GPU / Apple Silicon](#paddleocr-vl-gpu-apple-silicon)**。
 
 3. **配置 API Key**
 
@@ -172,35 +184,44 @@ python -m knowmat --help
 
 ### 推荐目录与自动处理逻辑
 
-请将待抽取论文统一放在：
+**输入**：用户将待处理的 PDF 或 .txt/.md 放在 **`data/raw/`**。不指定 `--input-folder` 时，默认从此目录读取。OCR 产出的 .md/.json 始终写回 **`data/raw/<论文基名>/`**，与原文同区。
+
+**输出**：**LLM 抽取结果**默认写入 **`data/output/`**，与 raw 分离。不指定 `--output-dir` 时使用 `data/output`；指定后则写入该目录下的 `<论文基名>/`。
+
+程序按「同名文件基名」执行：
+
+1. 若已存在同名的 `xxx.txt` 或 `xxx/xxx.md`（如先前 OCR 生成），则**直接进入大模型抽取**（或仅在 `--ocr-only` 时**跳过**该文件）；
+2. 若存在 `xxx.pdf` 且不存在对应 `xxx/xxx.md` 或 `xxx.txt`，先对 PDF 做 OCR，在 **输入目录** 下生成 `xxx/xxx.md` 与 `xxx/xxx.json`，再用该 .md 进入大模型抽取；
+3. 同一基名下已有 .md 或 .txt 时优先复用，不重复 OCR；
+4. 使用 **`--force-rerun`** 时，会重新对所有 PDF 做 OCR 并重新抽取，忽略已有 .md 与 extraction JSON。
+
+**两阶段用法（先批量 OCR，再跑大模型）**：使用 `--ocr-only` 仅跑 OCR，生成全部 `<input>/<论文基名>/<论文基名>.md` 与 `.json` 后，去掉该参数再运行即只做 LLM 抽取，结果写入 `data/output/`（见下文「仅跑 OCR」）。
+
+默认目录下的布局示例：
 
 ```text
-data/raw/
+data/raw/                    # 输入 + OCR 中间产物
+├── 论文A.pdf
+├── 论文A/
+│   ├── 论文A.md
+│   └── 论文A.json
+└── ...
+
+data/output/                 # 抽取结果（默认）
+├── 论文A/
+│   ├── 论文A_extraction.json
+│   ├── 论文A_analysis_report.txt
+│   ├── 论文A_runs.json
+│   └── 论文A_qa_report.json
+└── ...
 ```
 
-程序运行时会按“同名文件基名”执行以下逻辑：
-
-1. 若存在 `xxx.txt`，直接用该 TXT 进入大模型抽取；
-2. 若存在 `xxx.pdf` 且不存在同名 `xxx.txt`，先调用 PaddleOCR 解析 PDF，自动生成 `data/raw/xxx.txt`，再用该 TXT 进入大模型抽取；
-3. 若 `xxx.pdf` 与 `xxx.txt` 同时存在，优先复用现有 TXT，不重复 OCR。
-
-默认输出位置为：
-
-```text
-data/processed/
-```
-
-每篇论文的结果在：
-
-```text
-data/processed/<论文基名>/
-```
-
-其中重点查看：
+重点查看输出目录中的：
 
 - `<论文基名>_extraction.json`：结构化抽取结果
 - `<论文基名>_analysis_report.txt`：分析报告
 - `<论文基名>_runs.json`：多轮运行明细
+- `<论文基名>_qa_report.json`：质量与复核标记
 
 ### 基础命令行用法
 
@@ -210,18 +231,36 @@ data/processed/<论文基名>/
 python -m knowmat
 ```
 
-等价于从 `data/raw` 读取输入，并输出到 `data/processed`。  
+等价于：从 **`data/raw`** 读取输入，OCR 中间产物写回 **`data/raw/<论文基名>/`**，LLM 抽取结果写入 **`data/output/<论文基名>/`**。
 
-也可以指定自定义目录（会覆盖默认值）：
+指定输入/输出目录：
 
 ```bash
-python -m knowmat --input-folder path/to/files --output-dir output/directory
+python -m knowmat --input-folder path/to/files
+# OCR 在 path/to/files/<论文基名>/，抽取结果在 data/output/<论文基名>/
+
+python -m knowmat --input-folder path/to/files --output-dir path/to/output
+# OCR 在 path/to/files/ 下，LLM 抽取结果在 path/to/output/<论文基名>/ 下
 ```
 
 行为说明：
 
-- `.pdf`：先使用本地 PaddleOCR-VL 1.5 解析，再进行 LLM 抽取
-- `.txt`：跳过 OCR，直接进入 LLM 抽取流程
+- **`.pdf`**：若无对应 .md，先用 PaddleOCR-VL 解析，在输入目录下生成 `<基名>/<基名>.md` 与 `.json`，再进行 LLM 抽取；结果写入输出目录。
+- **`.txt` / 已有 `.md`**：跳过 OCR，直接进入 LLM 抽取，结果写入输出目录。
+
+### 仅跑 OCR（两阶段用法）
+
+若希望先批量跑完 OCR，再统一或分批跑大模型解析，可使用 `--ocr-only`：
+
+```bash
+# 第一步：只对 PDF 做 OCR，输出到 <input-folder>/<论文基名>/<论文基名>.md 和 .json
+python -m knowmat --input-folder path/to/pdfs --ocr-only
+
+# 第二步：去掉 --ocr-only，对已生成的 .md 做 LLM 抽取（不会重复 OCR），结果写入 data/output
+python -m knowmat --input-folder path/to/pdfs
+```
+
+适用场景：OCR 耗时较长时可先集中跑完；或需在不同机器/环境分别跑 OCR 与 LLM 时使用。
 
 ### 进阶参数示例
 
@@ -244,14 +283,17 @@ python -m knowmat \
 
 | 参数 | 说明 | 默认值 |
 |------|------|--------|
-| `--input-folder` | 输入目录（包含 `.pdf`/`.txt`） | `data/raw` |
+| `--input-folder` | 输入目录（用户放置待处理 PDF/.txt/.md 的目录） | `data/raw` |
 | `--pdf-folder` | `--input-folder` 的旧别名 | - |
-| `--output-dir` | 输出目录 | `data/processed` |
+| `--output-dir` | 抽取结果输出目录；不指定时为 `data/output`，与输入（raw）分离 | `data/output` |
+| `--ocr-only` | 仅跑 OCR，不跑 LLM 抽取；输出为 `<input-folder>/<基名>/<基名>.md` 与 `.json` | `False` |
+| `--ocr-workers` | 并发 OCR 的 PDF 数量（有 GPU 时建议 1） | `1` |
+| `--ocr-log-level` | OCR/PaddleX 日志级别（如 DEBUG、INFO、WARNING） | - |
 | `--max-runs` | 每篇论文的最大抽取/评估轮数 | `1` |
-| `--workers` | 并发处理文件数 | `1` |
+| `--workers` | 并发处理文件数（LLM 抽取） | `1` |
 | `--full-pipeline` | 启用完整多阶段流水线 | `False` |
 | `--enable-property-standardization` | 启用属性标准化后处理 | `False` |
-| `--force-rerun` | 即使已有 `_extraction.json` 也强制重跑所有论文 | `False` |
+| `--force-rerun` | 强制重新 OCR 并重新抽取所有论文，忽略已有 .md 与 `_extraction.json` | `False` |
 | `--only` | 仅处理指定文件（按 stem 或完整文件名匹配，可传多个） | - |
 | `--subfield-model` | 子领域识别模型 | `LLM_MODEL` |
 | `--extraction-model` | 抽取模型 | `LLM_MODEL` |
@@ -266,8 +308,8 @@ from knowmat.orchestrator import run
 import os
 
 result = run(
-    pdf_path="path/to/paper.pdf",  # 也支持 .txt
-    output_dir="data/processed",
+    pdf_path="path/to/paper.pdf",  # 也支持 .txt / .md
+    output_dir="data/output",
     max_runs=3,
     subfield_model=os.getenv("LLM_MODEL"),
     extraction_model=os.getenv("LLM_MODEL"),
@@ -333,18 +375,27 @@ print(f"Flagged: {result['flag']}")
 ├── CONTRIBUTING.md         <- 项目贡献指南
 ├── LICENSE.txt             <- MIT 许可证
 ├── README.md               <- 项目说明文档（当前文件）
+├── Dockerfile              <- 容器构建定义
 ├── environment.yml         <- Conda 环境依赖定义
 ├── pyproject.toml          <- 构建系统配置
+├── requirements.txt       <- pip 依赖列表
 ├── setup.cfg               <- 包元数据与依赖配置
 ├── setup.py                <- 安装脚本（已弱化，建议使用 pip install -e .）
+├── tox.ini                 <- 多环境测试配置
+├── .coveragerc             <- 覆盖率配置
+├── .gitignore
+├── .isort.cfg              <- isort 排序配置
+├── .pre-commit-config.yaml <- 预提交钩子配置
+├── .readthedocs.yml        <- Read the Docs 构建配置
 │
-├── configs/                <- 配置文件目录
-│   └── properties.json     <- 属性标准化词库
+├── configs/                <- 配置文件目录（可选，词库可放在 src/knowmat/）
 │
 ├── data/                   <- 数据目录
-│   ├── raw/                <- 原始输入目录（放待抽取的 .pdf/.txt）
-│   └── processed/          <- 抽取结果输出目录
-│       └── <PaperName>/    <- 按论文分组的输出子目录
+│   ├── raw/                <- 原始输入与 OCR 中间产物（.pdf/.txt + <PaperName>/*.md, *.json）
+│   ├── output/             <- 抽取结果输出目录（默认）
+│   │   └── <PaperName>/    <- 按论文分组的抽取结果
+│   ├── external/           <- 外部数据或中间产物
+│   └── interim/            <- 临时中间数据
 │
 ├── src/                    <- 源代码目录
 │   └── knowmat/            <- 主包
@@ -357,26 +408,52 @@ print(f"Flagged: {result['flag']}")
 │       ├── extractors.py   <- TrustCall/Pydantic 抽取结构定义
 │       ├── prompt_generator.py <- 动态提示词生成
 │       ├── post_processing.py  <- 属性标准化后处理
+│       ├── schema_converter.py <- 内部格式到目标 HEA  schema 转换（domain_rules 驱动）
+│       ├── report_writer.py    <- 抽取分析报告生成
+│       ├── domain_rules.py     <- 领域规则加载器（读 domain_rules.yaml）
+│       ├── domain_rules.yaml   <- 领域规则配置（相推断、沉淀检测、工艺分类等）
+│       ├── properties.json     <- 属性标准化词库
 │       └── nodes/          <- 各代理节点实现
 │           ├── paddleocrvl_parse_pdf.py  <- PDF/TXT 解析节点（含 OCR 逻辑）
-│           ├── subfield_detection.py      <- 子领域识别节点
-│           ├── extraction.py              <- 结构化抽取节点
-│           ├── evaluation.py              <- 抽取质量评估节点
-│           ├── aggregator.py              <- Manager 第 1 阶段：规则聚合
-│           ├── validator.py               <- Manager 第 2 阶段：LLM 校验修正
-│           └── flagging.py                <- 最终质量标记节点
+│           ├── docling_parse_pdf.py      <- 兼容层：原 docling 接口 → PaddleOCR-VL
+│           ├── subfield_detection.py     <- 子领域识别节点
+│           ├── extraction.py             <- 结构化抽取节点
+│           ├── evaluation.py             <- 抽取质量评估节点
+│           ├── aggregator.py             <- Manager 第 1 阶段：规则聚合
+│           ├── validator.py              <- Manager 第 2 阶段：LLM 校验修正
+│           ├── schema_convert.py         <- 内部格式 → 目标 schema 转换节点
+│           ├── standardize.py            <- 属性名标准化节点（可选，依赖 properties.json）
+│           └── flagging.py               <- 最终质量标记节点
 │
 ├── tools/                  <- 开发工具集
 │   ├── regression_diff.py  <- 回归测试工具（AI vs GT 对比）
 │   └── README.md           <- 工具使用说明
 │
-├── reports/                <- 回归测试报告输出目录
-│   ├── regression_*.md     <- Markdown 格式报告
-│   └── regression_*.json   <- JSON 格式报告
+├── scripts/                <- 脚本与环境准备
+│   ├── compare_to_manual.py       <- 与人工标注对比
+│   ├── download_paddleocrvl_models.py <- PaddleOCR-VL 模型下载
+│   ├── train_model.py             <- 模型训练脚本
+│   ├── setup_paddleocrvl_gpu.ps1  <- Windows GPU 环境配置
+│   └── setup_paddleocrvl_macos.sh <- macOS 环境配置
+│
+├── reports/                <- 回归与 QA 报告输出目录
+│   ├── regression_*.md    <- Markdown 格式报告
+│   └── regression_*.json  <- JSON 格式报告
 │
 ├── tests/                  <- 单元测试（pytest）
+│   └── conftest.py         <- pytest  fixtures
+│
 ├── notebooks/              <- 数据分析与实验笔记
+│   ├── create_annotation.ipynb <- 标注创建
+│   └── template.ipynb      <- 实验模板
+│
+├── models/                 <- 本地模型存放目录（.gitignore）
+├── references/             <- 参考文档或资料
 └── docs/                   <- 文档目录（Sphinx，已同步中文说明）
+    ├── conf.py             <- Sphinx 配置
+    ├── Makefile            <- 文档构建
+    ├── index.md, readme.md, changelog.md, contributing.md, authors.md, license.md
+    └── _static/            <- 静态资源
 ```
 
 ---
@@ -411,7 +488,7 @@ PostProcessor 会将抽取出的属性名称映射为标准术语。
 ### 批处理能力
 
 ```bash
-python -m knowmat --input-folder data/raw/papers --output-dir data/processed
+python -m knowmat --input-folder data/raw/papers --output-dir data/output
 ```
 
 控制台示例：
@@ -590,15 +667,33 @@ Error: LLM_API_KEY not set
 
 解决：确保设置 `LLM_API_KEY`、`LLM_BASE_URL`、`LLM_MODEL`。
 
-**2）PaddleOCR-VL 解析失败**
+**2）401 invalid_model / 识别不出材料**
+
+```text
+Error code: 401 - invalid_model ... The model does not exist or you do not have access to it.
+```
+
+原因：大模型抽取阶段被 API 拒绝，因此不会生成材料抽取结果（`_extraction.json` 等）。
+
+解决：检查 `.env` 中的 **`LLM_MODEL`**。
+- **千帆（Qianfan）**：必须填写在控制台创建的**推理端点 ID**（形如 `ep_xxxxx`），不能是模型简称；并确认当前 API Key 对应账号有该端点的访问权限。
+- 若使用其他 OpenAI 兼容 API，填写对方要求的模型名或端点 ID。
+
+**3）PaddleOCR-VL 解析失败**
 
 ```text
 Error: Failed to parse PDF with PaddleOCR-VL
+A dependency error occurred during pipeline creation.
+信息: 用提供的模式无法找到文件。
 ```
 
-解决：检查 PDF 是否损坏或加密，必要时重新下载。
+解决：
+- 检查 PDF 是否损坏或加密，必要时重新下载。
+- **依赖错误 / “Could not find files for the given pattern(s)”**：若 PaddleOCR-VL 初始化失败（依赖或 pipeline 创建报错），程序会**自动回退到经典 PaddleOCR** 继续执行；若仍失败，多为 PaddlePaddle 运行环境问题。Windows 请安装 [Visual C++ Redistributable](https://learn.microsoft.com/zh-cn/cpp/windows/latest-supported-vc-redist)；使用 GPU 时确认 CUDA/cuDNN 与 Paddle 版本匹配；可参考文末 **PaddleOCR-VL GPU / Apple Silicon** 按平台安装。
+- **“用提供的模式无法找到文件”**：若 PDF 路径或文件名含非 ASCII 字符（如下标 ₄₂、中文等），程序会自动复制到临时 ASCII 路径再解析；若仍报错，可先重命名为纯英文路径再试。
+- 需跳过“Checking connectivity to the model hosters”时，可设置环境变量 `PADDLE_PDX_DISABLE_MODEL_SOURCE_CHECK=True`（离线或内网时常用）；程序在创建引擎时也会自动尝试设置。
 
-**3）属性标准化失败**
+**4）属性标准化失败**
 
 ```text
 Warning: Property standardization failed
@@ -606,7 +701,7 @@ Warning: Property standardization failed
 
 解决：确认属性配置文件存在且为合法 JSON。
 
-**4）ERNIE 接口报 Unrecognized function call PatchFunction**
+**5）ERNIE 接口报 Unrecognized function call PatchFunction**
 
 ```text
 Unrecognized function call PatchFunction
@@ -615,7 +710,6 @@ Unrecognized function call PatchFunction
 说明：该提示来自 **LLM 客户端**（TrustCall/LangChain）在解析 ERNIE/千帆 API 的**返回结果**时发现工具调用名不是我们请求的 `CompositionList`，而是 `PatchFunction`。**ERNIE 官方文档中未公开该接口**，很可能是其 OpenAI 兼容层或内部实现返回的非标准工具名。
 
 影响：客户端无法按预期解析工具调用，可能伴随 `CompositionList` 的校验错误；我们已在 schema 中为必填字段增加默认值，部分返回仍可通过校验并写入结果（QA 会标记需复核）。
-。
 
 ---
 

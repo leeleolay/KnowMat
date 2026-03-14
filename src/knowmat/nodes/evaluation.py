@@ -15,6 +15,8 @@ should be accepted as‑is and sets ``needs_rerun`` to False.
 """
 
 import json
+import os
+from pathlib import Path
 from typing import Dict, Any, List
 
 from knowmat.extractors import evaluation_extractor, EvaluationFeedback
@@ -176,8 +178,15 @@ def evaluate_data(state: KnowMatState) -> Dict[str, Any]:
         rationale = eval_dict["rationale"]
         needs_rerun_from_llm = True
     
-    # Compose the evaluation run record
+    # Persist extraction data to disk to keep state lightweight
     run_id = run_count + 1
+    output_dir = state.get("output_dir", ".")
+    runs_dir = Path(output_dir) / "runs"
+    runs_dir.mkdir(parents=True, exist_ok=True)
+    extraction_path = runs_dir / f"run_{run_id}_extraction.json"
+    with open(extraction_path, "w", encoding="utf-8") as fp:
+        json.dump(extracted_data, fp, ensure_ascii=False, indent=2)
+
     record: EvaluationRun = {
         "run_id": run_id,
         "confidence_score": confidence,
@@ -185,7 +194,7 @@ def evaluate_data(state: KnowMatState) -> Dict[str, Any]:
         "missing_fields": eval_dict.get("missing_fields"),
         "hallucinated_fields": eval_dict.get("hallucinated_fields"),
         "suggested_prompt": eval_dict.get("update_prompt"),
-        "extracted_data": extracted_data,
+        "extracted_data_path": str(extraction_path),
     }
     run_results.append(record)
     # Update the extraction prompt if suggested

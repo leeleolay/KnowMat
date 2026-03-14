@@ -16,8 +16,6 @@ from langgraph.graph import StateGraph, START, END
 from langgraph.checkpoint.memory import MemorySaver
 
 from knowmat.states import KnowMatState
-from knowmat.post_processing import PostProcessor
-from knowmat.schema_converter import SchemaConverter
 from knowmat.report_writer import write_comprehensive_report
 from knowmat.nodes.paddleocrvl_parse_pdf import parse_pdf_with_paddleocrvl
 from knowmat.nodes.subfield_detection import detect_sub_field
@@ -26,6 +24,8 @@ from knowmat.nodes.evaluation import evaluate_data
 from knowmat.nodes.aggregator import aggregate_runs
 from knowmat.nodes.validator import validate_and_correct
 from knowmat.nodes.flagging import assess_final_quality
+from knowmat.nodes.standardize import standardize_properties
+from knowmat.nodes.schema_convert import convert_to_target_schema
 from knowmat.app_config import Settings, settings
 from knowmat.config import _env_path
 
@@ -48,7 +48,13 @@ def evaluation_condition(state: KnowMatState) -> str:
 
 
 def build_graph(full_pipeline: bool = True) -> StateGraph:
-    """Construct the LangGraph for KnowMat 2.0 with two-stage manager."""
+    """Construct the LangGraph for KnowMat 2.0 with two-stage manager.
+
+    When *full_pipeline* is True the graph includes subfield detection,
+    iterative evaluation, aggregation, validation, flagging, optional
+    property standardization, and schema conversion -- all as tracked
+    graph nodes with checkpoint support.
+    """
     builder = StateGraph(KnowMatState)
 
     builder.add_node("parse_pdf", parse_pdf_with_paddleocrvl)
@@ -57,13 +63,17 @@ def build_graph(full_pipeline: bool = True) -> StateGraph:
     builder.add_edge(START, "parse_pdf")
     if not full_pipeline:
         builder.add_edge("parse_pdf", "extract_data")
-        builder.add_edge("extract_data", END)
+        builder.add_node("convert_schema", convert_to_target_schema)
+        builder.add_edge("extract_data", "convert_schema")
+        builder.add_edge("convert_schema", END)
     else:
         builder.add_node("detect_sub_field", detect_sub_field)
         builder.add_node("evaluate_data", evaluate_data)
         builder.add_node("aggregate_runs", aggregate_runs)
         builder.add_node("validate_and_correct", validate_and_correct)
         builder.add_node("assess_final_quality", assess_final_quality)
+        builder.add_node("standardize_properties", standardize_properties)
+        builder.add_node("convert_schema", convert_to_target_schema)
 
         builder.add_edge("parse_pdf", "detect_sub_field")
         builder.add_edge("detect_sub_field", "extract_data")
@@ -73,7 +83,9 @@ def build_graph(full_pipeline: bool = True) -> StateGraph:
         )
         builder.add_edge("aggregate_runs", "validate_and_correct")
         builder.add_edge("validate_and_correct", "assess_final_quality")
-        builder.add_edge("assess_final_quality", END)
+        builder.add_edge("assess_final_quality", "standardize_properties")
+        builder.add_edge("standardize_properties", "convert_schema")
+        builder.add_edge("convert_schema", END)
 
     return builder.compile(checkpointer=MemorySaver())
 
@@ -172,6 +184,7 @@ def run(
         "run_count": 0,
         "run_results": [],
         "max_runs": max_runs,
+        "enable_property_standardization": enable_property_standardization,
     }
 
     thread_id = f"knowmat2_{base_name}_{uuid.uuid4().hex[:8]}"
@@ -187,66 +200,53 @@ def run(
         final_data = final_state.get("latest_extracted_data", {})
     flag = final_state.get("flag", False) if full_pipeline else False
 
-    # Optional property standardisation
-    if enable_property_standardization and final_data and final_data.get("compositions"):
-        print("\nStandardizing property names...")
-        try:
-            properties_file = os.path.join(os.path.dirname(__file__), "properties.json")
-            api_key = os.getenv("LLM_API_KEY") or os.getenv("OPENAI_API_KEY")
-            base_url = os.getenv("LLM_BASE_URL") or os.getenv("OPENAI_BASE_URL")
-
-            if not api_key:
-                print("Warning: LLM_API_KEY not found. Skipping property standardization.")
-            elif not os.path.exists(properties_file):
-                print(f"Warning: properties.json not found at {properties_file}. Skipping.")
-            else:
-                processor = PostProcessor(
-                    properties_file=properties_file,
-                    api_key=api_key,
-                    base_url=base_url,
-                    gpt_model=settings.flagging_model or settings.model_name,
-                )
-                mock_result = [{"data": final_data}]
-                processor.update_extracted_json(mock_result)
-                final_data = mock_result[0]["data"]
-                processor._print_match_stats()
-                print("Property standardization complete\n")
-        except Exception as e:
-            print(f"Warning: Property standardization failed: {e}")
-            print("Continuing with non-standardized properties.\n")
-
-    # Convert to target schema
-    converter = SchemaConverter()
-    final_data = converter.convert(
-        final_data,
-        pdf_path,
-        paper_text=final_state.get("paper_text"),
-        document_metadata=final_state.get("document_metadata"),
-    )
-
-    # Write final extraction JSON
+    # --- Write outputs to disk ---
     output_path = os.path.join(paper_output_dir, f"{base_name}_extraction.json")
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(final_data, f, ensure_ascii=False, indent=2)
     print(f"Saved extraction to {output_path}")
 
-    # Write comprehensive analysis report
     report_path = os.path.join(paper_output_dir, f"{base_name}_analysis_report.txt")
     with open(report_path, "w", encoding="utf-8") as f:
         write_comprehensive_report(f, final_state)
     print(f"Saved analysis report to {report_path}")
 
-    # Write run details for debugging
     runs_path = os.path.join(paper_output_dir, f"{base_name}_runs.json")
     with open(runs_path, "w", encoding="utf-8") as f:
         json.dump(final_state.get("run_results", []), f, ensure_ascii=False, indent=2)
 
-    # Generate QA Report
+    # --- Generate QA Report (pure computation, no LLM) ---
+    qa_report = _build_qa_report(base_name, final_data, final_state)
+
+    qa_path = os.path.join(paper_output_dir, f"{base_name}_qa_report.json")
+    with open(qa_path, "w", encoding="utf-8") as f:
+        json.dump(qa_report, f, ensure_ascii=False, indent=2)
+    print(f"Saved QA report to {qa_path}")
+
+    if qa_report.get("red_line_triggers"):
+        triggers = qa_report["red_line_triggers"]
+        print(f"\n[RED LINE] QA check failed: {', '.join(triggers)}")
+        print(f"           Human review REQUIRED for {base_name}")
+
+    return {
+        "final_data": final_data,
+        "flag": flag,
+        "output_dir": paper_output_dir,
+        "final_confidence_score": final_state.get("final_confidence_score"),
+        "aggregation_rationale": final_state.get("aggregation_rationale"),
+        "human_review_guide": final_state.get("human_review_guide"),
+    }
+
+
+def _build_qa_report(base_name: str, final_data: dict, final_state: dict) -> dict:
+    """Build the QA report dict from final extraction results."""
     materials = final_data.get("Materials", [])
     all_samples = [s for m in materials for s in m.get("Processed_Samples", [])]
     all_tests = [t for s in all_samples for t in s.get("Performance_Tests", [])]
 
-    unknown_process_count = sum(1 for s in all_samples if s.get("Process_Category") == "Unknown")
+    unknown_process_count = sum(
+        1 for s in all_samples if s.get("Process_Category") == "Unknown"
+    )
     phase_filled_count = sum(1 for s in all_samples if s.get("Main_Phase"))
     phase_filled_rate = phase_filled_count / len(all_samples) if all_samples else 0
 
@@ -260,7 +260,7 @@ def run(
         if unknown_ratio > 0.5:
             red_line_triggers.append("HIGH_UNKNOWN_PROCESS_RATIO")
 
-    qa_report = {
+    return {
         "paper_name": base_name,
         "pipeline_version": "knowmat-2.0.1",
         "materials_target_count": len(materials),
@@ -272,22 +272,4 @@ def run(
         "needs_review": len(red_line_triggers) > 0,
         "red_line_triggers": red_line_triggers,
         "final_confidence_score": final_state.get("final_confidence_score"),
-    }
-
-    qa_path = os.path.join(paper_output_dir, f"{base_name}_qa_report.json")
-    with open(qa_path, "w", encoding="utf-8") as f:
-        json.dump(qa_report, f, ensure_ascii=False, indent=2)
-    print(f"Saved QA report to {qa_path}")
-
-    if red_line_triggers:
-        print(f"\n[RED LINE] QA check failed: {', '.join(red_line_triggers)}")
-        print(f"           Human review REQUIRED for {base_name}")
-
-    return {
-        "final_data": final_data,
-        "flag": flag,
-        "output_dir": paper_output_dir,
-        "final_confidence_score": final_state.get("final_confidence_score"),
-        "aggregation_rationale": final_state.get("aggregation_rationale"),
-        "human_review_guide": final_state.get("human_review_guide"),
     }

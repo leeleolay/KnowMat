@@ -10,6 +10,8 @@ from __future__ import annotations
 import textwrap
 from typing import IO, Any, Dict, List
 
+from knowmat.states import load_run_extraction
+
 
 def write_comprehensive_report(f: IO[str], final_state: Dict[str, Any]) -> None:
     """Write a comprehensive analysis report to the file handle *f*."""
@@ -120,7 +122,7 @@ def _write_per_run_analysis(f: IO[str], state: Dict[str, Any]) -> None:
             wrapped = textwrap.fill(suggestions, width=80, subsequent_indent="  ")
             f.write(f"  {wrapped}\n\n")
 
-        extracted_data = run.get("extracted_data", {})
+        extracted_data = load_run_extraction(run)
         compositions = extracted_data.get("compositions", [])
         f.write(f"Compositions Extracted: {len(compositions)}\n")
         if compositions:
