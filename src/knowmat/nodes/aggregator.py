@@ -21,7 +21,7 @@ NOT responsible for:
 
 import json
 from typing import Dict, Any, List
-from knowmat.states import KnowMatState
+from knowmat.states import KnowMatState, load_run_extraction
 
 
 def aggregate_runs(state: KnowMatState) -> Dict[str, Any]:
@@ -59,10 +59,9 @@ def aggregate_runs(state: KnowMatState) -> Dict[str, Any]:
         }
     
     if len(run_results) == 1:
-        # Only one run - nothing to merge
         single_run = run_results[0]
         return {
-            "aggregated_data": single_run.get("extracted_data", {}),
+            "aggregated_data": load_run_extraction(single_run),
             "aggregation_notes": f"Single run (ID {single_run.get('run_id')}, confidence {single_run.get('confidence_score', 0.0):.2f}).",
         }
     
@@ -78,9 +77,8 @@ def aggregate_runs(state: KnowMatState) -> Dict[str, Any]:
     confidences = [f"{r.get('confidence_score', 0.0):.2f}" for r in sorted_runs]
     print(f"  Run confidences: {confidences}")
     
-    # Use highest-confidence run as base
     base_run = sorted_runs[0]
-    base_data = base_run.get("extracted_data", {})
+    base_data = load_run_extraction(base_run)
     base_compositions = base_data.get("compositions", [])
     
     print(f"  Base run: ID {base_run.get('run_id')} (confidence {base_run.get('confidence_score', 0.0):.2f})")
@@ -100,8 +98,8 @@ def aggregate_runs(state: KnowMatState) -> Dict[str, Any]:
     compositions_added = 0
     properties_merged = 0
     
-    for run in sorted_runs[1:]:  # Skip base run
-        run_data = run.get("extracted_data", {})
+    for run in sorted_runs[1:]:
+        run_data = load_run_extraction(run)
         run_compositions = run_data.get("compositions", [])
         
         for comp in run_compositions:

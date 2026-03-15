@@ -1,4 +1,4 @@
-﻿"""
+"""
 Entry point for running the KnowMat 2.0 pipeline via the command line.
 
 Usage
@@ -70,7 +70,7 @@ def main(argv: list[str] | None = None) -> None:
     parser = argparse.ArgumentParser(description="Run the KnowMat 2.0 extraction pipeline for PDF/TXT/MD inputs.")
     parser.add_argument("--input-folder", default=None, help="Path to the folder containing PDF/TXT files to process.")
     parser.add_argument("--pdf-folder", default=None, help="Legacy alias of --input-folder.")
-    parser.add_argument("--output-dir", default=None, help="Directory to write outputs to (default: ./knowmat_output).")
+    parser.add_argument("--output-dir", default=None, help="Directory for extraction results (default: data/output). OCR intermediates stay under input-folder.")
     parser.add_argument("--max-runs", type=int, default=1, help="Maximum extraction/evaluation cycles per paper.")
     parser.add_argument("--workers", type=int, default=1, help="Number of files to process concurrently.")
     parser.add_argument("--ocr-workers", type=int, default=1, help="Number of PDFs to OCR concurrently (GPU is usually best with 1).")
@@ -83,7 +83,7 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument(
         "--force-rerun",
         action="store_true",
-        help="Re-run all files even if extraction outputs already exist.",
+        help="Re-run OCR and extraction for all files (ignore existing .md and extraction JSON).",
     )
     parser.add_argument(
         "--only",
@@ -91,7 +91,12 @@ def main(argv: list[str] | None = None) -> None:
         default=None,
         help="Only process files whose stem or full name matches any of the given values.",
     )
-    
+    parser.add_argument(
+        "--ocr-only",
+        action="store_true",
+        help="Only run OCR on PDFs (no LLM extraction). Writes <input>/<stem>/<stem>.md and <stem>.json. Run without --ocr-only to extract from these .md into data/output.",
+    )
+
     # Per-agent model overrides
     parser.add_argument("--subfield-model", default=None, help="Model for subfield detection agent.")
     parser.add_argument("--extraction-model", default=None, help="Model for extraction agent.")
@@ -116,6 +121,12 @@ def main(argv: list[str] | None = None) -> None:
     if not input_folder.is_dir():
         print(f"Error: Path is not a directory: {input_folder}")
         return
+
+    # OCR 中间产物（.md / .json）始终在 input_folder 下按论文子目录存放（如 data/raw/论文A/论文A.md）
+    # 抽取结果（extraction JSON、报告等）写入 output_dir，默认 data/output，与 raw 分离
+    extraction_output_dir = args.output_dir if args.output_dir else settings.output_dir
+    print(f"Input (raw + OCR intermediates): {input_folder}")
+    print(f"Extraction output:               {extraction_output_dir}")
 
     pdf_files = sorted(
         [p for p in input_folder.iterdir() if p.is_file() and p.suffix.lower() == ".pdf"],
@@ -165,16 +176,23 @@ def main(argv: list[str] | None = None) -> None:
             print(f"\nFiltered files with --only (pdf: {before_pdf} -> {len(pdf_files)}, txt: {before_txt} -> {len(existing_txt_files)})")
 
     txt_by_stem = {p.stem: p for p in existing_txt_files}
-    pdfs_missing_txt = [p for p in pdf_files if p.stem not in txt_by_stem]
+    # 强制重跑时对所有 PDF 重新 OCR；否则仅对尚无 .md/.txt 的 PDF 做 OCR
+    pdfs_missing_txt = list(pdf_files) if args.force_rerun else [p for p in pdf_files if p.stem not in txt_by_stem]
 
     if not existing_txt_files and not pdfs_missing_txt:
         print(f"Error: No text/markdown files available for processing in: {input_folder}")
         return
 
-    if existing_txt_files:
-        print(f"\nQueued {len(existing_txt_files)} existing text files for extraction")
-    if pdfs_missing_txt:
-        print(f"Queued {len(pdfs_missing_txt)} PDFs for OCR")
+    if args.ocr_only:
+        if not pdfs_missing_txt:
+            print("No PDFs need OCR (all have corresponding .md/.txt). Nothing to do.")
+            return
+        print(f"\n[OCR-only] Queued {len(pdfs_missing_txt)} PDFs for OCR (no LLM extraction).")
+    else:
+        if existing_txt_files:
+            print(f"\nQueued {len(existing_txt_files)} existing text files for extraction")
+        if pdfs_missing_txt:
+            print(f"Queued {len(pdfs_missing_txt)} PDFs for OCR")
 
     # 璁＄畻褰撳墠杩愯瀹為檯浣跨敤鐨勮緭鍑烘牴鐩綍锛圕LI > 閰嶇疆榛樿鍊硷級
 
@@ -253,13 +271,15 @@ def main(argv: list[str] | None = None) -> None:
                 print(f"   Output: {summary.get('output_dir')}")
                 print(f"   Materials: {summary.get('compositions', 0)}")
         else:
-            print(f"\nError processing {summary.get('file')}: {summary.get('error')}")
+            err = summary.get("error", "")
+            print(f"\nError processing {summary.get('file')}: {err}")
+            if "401" in err and ("invalid_model" in err or "does not exist" in err.lower()):
+                print("   → 请检查 .env：LLM_MODEL 需为千帆控制台创建的端点 ID（如 ep_xxxxx），且当前账号有该模型/端点访问权限。")
 
-    root_output_dir = Path(args.output_dir or settings.output_dir)
+    root_output_dir = Path(extraction_output_dir)
 
     def _process_one(file_path: Path) -> dict:
         try:
-            # 濡傛灉璇ヨ鏂囧凡缁忔湁鎴愬姛鐨勬娊鍙栫粨鏋滐紝涓旀湭鏄惧紡瑕佹眰閲嶈窇锛屽垯鐩存帴璺宠繃
             base_name = file_path.stem
             paper_output_dir = root_output_dir / base_name
             extraction_path = paper_output_dir / f"{base_name}_extraction.json"
@@ -285,7 +305,7 @@ def main(argv: list[str] | None = None) -> None:
                 file_path.name,
                 run,
                 pdf_path=str(file_path),
-                output_dir=args.output_dir,
+                output_dir=extraction_output_dir,
                 model_name=None,  # Use defaults from settings
                 max_runs=args.max_runs,
                 subfield_model=args.subfield_model,
@@ -322,11 +342,12 @@ def main(argv: list[str] | None = None) -> None:
             fut = llm_pool.submit(_process_one, path)
             llm_futures[fut] = path
 
-        # Submit existing text files immediately (normalize to MD)
-        for text_path in sorted(existing_txt_files, key=lambda x: x.name.lower()):
-            md_path = _ensure_md(text_path)
-            if md_path:
-                _submit_llm(md_path)
+        # 非强制重跑时，对已有 .md/.txt 直接做抽取；强制重跑时只对 OCR 产出做抽取，避免重复
+        if not args.ocr_only and not args.force_rerun:
+            for text_path in sorted(existing_txt_files, key=lambda x: x.name.lower()):
+                md_path = _ensure_md(text_path)
+                if md_path:
+                    _submit_llm(md_path)
 
         # Start OCR for PDFs missing TXT
         for pdf in pdfs_missing_txt:
@@ -345,8 +366,12 @@ def main(argv: list[str] | None = None) -> None:
                         txt_path = fut.result()
                     except Exception as exc:
                         print(f"[ERROR] OCR failed for {pdf.name}: {exc}")
+                        if args.ocr_only:
+                            results_summary.append({"file": pdf.name, "success": False, "error": str(exc)})
                         continue
-                    if txt_path:
+                    if args.ocr_only:
+                        results_summary.append({"file": pdf.name, "success": txt_path is not None})
+                    elif txt_path:
                         _submit_llm(txt_path)
                 else:
                     path = llm_futures.pop(fut)
@@ -358,32 +383,40 @@ def main(argv: list[str] | None = None) -> None:
                     _log_summary(summary)
     # Print final summary
     print(f"\n{'='*60}")
-    print("PROCESSING SUMMARY")
+    if args.ocr_only:
+        print("OCR-ONLY SUMMARY")
+    else:
+        print("PROCESSING SUMMARY")
     print(f"{'='*60}\n")
-    
-    successful = sum(1 for r in results_summary if r['success'])
+
+    successful = sum(1 for r in results_summary if r["success"])
     failed = len(results_summary) - successful
-    
+
     print(f"Total files: {len(results_summary)}")
     print(f"Successful: {successful}")
     print(f"Failed: {failed}")
-    
-    if successful > 0:
-        flagged = sum(1 for r in results_summary if r['success'] and r.get('flag'))
+
+    if not args.ocr_only and successful > 0:
+        flagged = sum(1 for r in results_summary if r["success"] and r.get("flag"))
         print(f"Flagged for review: {flagged}")
-        total_compositions = sum(r.get('compositions', 0) for r in results_summary if r['success'])
+        total_compositions = sum(r.get("compositions", 0) for r in results_summary if r["success"])
         print(f"Total materials: {total_compositions}")
-    
+
+    if args.ocr_only:
+        print("\nOCR output: each PDF -> <input-folder>/<stem>/<stem>.md and <stem>.json")
+        print("Run again without --ocr-only to run LLM extraction on these .md files.")
     print(f"\n{'='*60}\n")
-    
+
     # Print individual results
     for r in results_summary:
-        if r['success']:
-            if r.get("skipped"):
+        if r["success"]:
+            if args.ocr_only:
+                print(f"[OK] {r['file']}: OCR done -> <stem>.md + <stem>.json")
+            elif r.get("skipped"):
                 print(f"[SKIPPED] {r['file']}: {r.get('compositions', 0)} materials (already processed)")
             else:
-                flag_icon = "[FLAGGED]" if r['flag'] else "[OK]"
-                print(f"{flag_icon} {r['file']}: {r['compositions']} materials")
+                flag_icon = "[FLAGGED]" if r.get("flag") else "[OK]"
+                print(f"{flag_icon} {r['file']}: {r.get('compositions', 0)} materials")
         else:
             print(f"[ERROR] {r['file']}: {r.get('error', 'Unknown error')}")
 

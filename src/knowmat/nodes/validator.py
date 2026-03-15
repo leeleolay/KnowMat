@@ -23,7 +23,7 @@ import json
 from typing import Dict, Any
 
 from knowmat.extractors import manager_extractor, ManagerFeedback, CompositionList
-from knowmat.states import KnowMatState
+from knowmat.states import KnowMatState, load_run_extraction
 
 
 def validate_and_correct(state: KnowMatState) -> Dict[str, Any]:
@@ -550,8 +550,8 @@ def _fallback_to_best_run(run_results):
     
     sorted_runs = sorted(run_results, key=lambda r: r.get("confidence_score", 0.0), reverse=True)
     best_run = sorted_runs[0]
-    
-    final_data = best_run.get("extracted_data", {})
+
+    final_data = load_run_extraction(best_run)
     
     return {
         "final_data": final_data,

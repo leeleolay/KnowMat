@@ -33,8 +33,9 @@ class Settings(BaseSettings):
         ``"data/raw"`` relative to the current working directory.
 
     output_dir: str
-        Where extracted results and artifacts will be written.  Defaults to
-        ``"data/processed"`` relative to the current working directory.
+        Where extracted results and artifacts will be written (LLM extraction
+        JSON, reports, etc.).  Defaults to ``"data/output"`` so that raw/OCR
+        (data/raw) and extraction output are kept separate.
     
     model_name: str
         The default model name for all agents.  Defaults to ``LLM_MODEL`` when
@@ -65,7 +66,7 @@ class Settings(BaseSettings):
 
     # IO defaults (can be overridden by env or CLI)
     input_dir: str = "data/raw"
-    output_dir: str = "data/processed"
+    output_dir: str = "data/output"
     model_name: str = DEFAULT_LLM_MODEL
     temperature: float = 0.0  # Note: ignored for GPT-5 models
     

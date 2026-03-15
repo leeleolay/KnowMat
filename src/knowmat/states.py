@@ -21,7 +21,7 @@ Important fields
   JSON‑serialisable dictionary.
 * ``run_results``: A list of dictionaries summarising each evaluation run.
   Each entry contains at least ``run_id``, ``confidence_score``,
-  ``rationale``, ``suggested_prompt`` and ``extracted_data``.
+  ``rationale``, ``suggested_prompt`` and ``extracted_data_path``.
 * ``run_count``: The number of extraction/evaluation cycles that have
   occurred so far.  Used by the orchestrator to limit retries.
 * ``max_runs``: The maximum number of extraction/evaluation cycles to
@@ -36,11 +36,96 @@ Important fields
   extraction.
 """
 
+import json
+from pathlib import Path
 from typing import TypedDict, List, Optional, Dict, Any
 
 
+# ---------------------------------------------------------------------------
+# OCR / document metadata types
+# ---------------------------------------------------------------------------
+
+class OcrPageMeta(TypedDict):
+    """Per-page metadata produced by the OCR stage."""
+
+    page_number: int
+    text_length: int
+    has_tables: bool
+    has_figures: bool
+
+
+class DocumentMetadata(TypedDict, total=False):
+    """Structured metadata extracted from a parsed PDF/TXT document."""
+
+    doi: Optional[str]
+    title: Optional[str]
+    total_pages: int
+    page_meta: List[OcrPageMeta]
+    ocr_engine: str
+    ocr_items: List[Dict[str, Any]]
+
+
+# ---------------------------------------------------------------------------
+# Target-schema types (output of SchemaConverter)
+# ---------------------------------------------------------------------------
+
+class PerformanceTest(TypedDict, total=False):
+    """A single mechanical / physical test result."""
+
+    Test_ID: str
+    Test_Temperature_K: Optional[int]
+    Property_Type: Optional[str]
+    Property_Value: float
+    Property_Unit: Optional[str]
+
+
+class ProcessedSample(TypedDict, total=False):
+    """One processing condition / sample within a material."""
+
+    Sample_ID: str
+    Process_Category: str
+    Process_Text_For_AI: str
+    Key_Params_JSON: Dict[str, Any]
+    Main_Phase: str
+    Microstructure_Text_For_AI: str
+    Has_Precipitates: bool
+    Grain_Size_avg_um: Optional[float]
+    Performance_Tests: List[PerformanceTest]
+
+
+class TargetMaterial(TypedDict, total=False):
+    """One material entry in the target HEA schema."""
+
+    description: str
+    Mat_ID: str
+    Alloy_Name_Raw: str
+    Formula_Normalized: str
+    Composition_JSON: Dict[str, float]
+    Source_DOI: str
+    Source_File: str
+    Processed_Samples: List[ProcessedSample]
+
+
+class TargetSchema(TypedDict, total=False):
+    """Top-level target schema produced by SchemaConverter."""
+
+    Dataset_Description: str
+    schema_version: str
+    pipeline_version: str
+    Materials: List[TargetMaterial]
+
+
+# ---------------------------------------------------------------------------
+# Pipeline state types
+# ---------------------------------------------------------------------------
+
 class EvaluationRun(TypedDict, total=False):
-    """Structure used to record the outcome of an individual evaluation run."""
+    """Structure used to record the outcome of an individual evaluation run.
+
+    ``extracted_data_path`` holds a filesystem path to the JSON file
+    containing the full extraction for this run, keeping the in-memory
+    state lightweight.  Use :func:`load_run_extraction` to read it back.
+    """
 
     run_id: int
     confidence_score: float
@@ -48,7 +133,7 @@ class EvaluationRun(TypedDict, total=False):
     missing_fields: Optional[List[str]]
     hallucinated_fields: Optional[List[str]]
     suggested_prompt: Optional[str]
-    extracted_data: Dict[str, Any]
+    extracted_data_path: str
 
 
 class KnowMatState(TypedDict, total=False):
@@ -60,7 +145,7 @@ class KnowMatState(TypedDict, total=False):
     
     # PDF parsing results
     paper_text: str
-    document_metadata: Optional[Dict[str, Any]]
+    document_metadata: Optional[DocumentMetadata]
     
     # Sub-field detection results
     sub_field: Optional[str]
@@ -85,3 +170,24 @@ class KnowMatState(TypedDict, total=False):
     confidence_rationale: Optional[str]
     needs_human_review: Optional[bool]
     flag: bool
+
+    # Post-processing controls
+    enable_property_standardization: bool
+    qa_report: Optional[Dict[str, Any]]
+
+
+def load_run_extraction(run: "EvaluationRun") -> Dict[str, Any]:
+    """Load the full extraction dict for an evaluation run from disk.
+
+    Falls back to an empty dict if the file cannot be read.
+    """
+    path_str = run.get("extracted_data_path", "")
+    if not path_str:
+        return {}
+    p = Path(path_str)
+    if not p.exists():
+        return {}
+    try:
+        return json.loads(p.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return {}
