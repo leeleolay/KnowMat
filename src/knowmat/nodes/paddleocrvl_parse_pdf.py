@@ -30,6 +30,7 @@ from knowmat.pdf.section_normalizer import (
     strip_references_section,
     structure_sections,
 )
+from knowmat.app_config import settings
 from knowmat.states import KnowMatState
 
 logger = logging.getLogger(__name__)
@@ -247,7 +248,9 @@ def parse_pdf_with_paddleocrvl(state: KnowMatState) -> dict:
         raw_text = _read_txt_file(source_path)
         md_text = structure_sections(convert_html_to_markdown(raw_text))
         md_text = normalize_alloy_strings(md_text)
-        cleaned_text = strip_references_section(md_text)
+        cleaned_text = (
+            strip_references_section(md_text) if settings.trim_references_section else md_text
+        )
         stem = source_path.stem
 
         doi = extract_first_doi(cleaned_text[:5000])
@@ -281,7 +284,11 @@ def parse_pdf_with_paddleocrvl(state: KnowMatState) -> dict:
         )
         structured_text = structure_sections(extracted_text)
         structured_text = normalize_alloy_strings(structured_text)
-        cleaned_text = strip_references_section(structured_text)
+        cleaned_text = (
+            strip_references_section(structured_text)
+            if settings.trim_references_section
+            else structured_text
+        )
         doi_from_ocr = metadata.get("doi")
         if doi_from_ocr and doi_from_ocr not in cleaned_text:
             cleaned_text = f"DOI: {doi_from_ocr}\n\n{cleaned_text}"

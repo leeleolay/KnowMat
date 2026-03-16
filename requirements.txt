@@ -1,11 +1,11 @@
-# KnowMat 基础依赖（与 environment.yml 中 pip 部分一致，CPU 版 Paddle，跨平台）
-# 仅用 pip 安装时：pip install -r requirements.txt
-# 需要 GPU：见 requirements-gpu.txt 与 docs/platforms.md
+# KnowMat basic dependencies (consistent with pip section in environment.yml, CPU version of Paddle, cross-platform)
+# To install using pip only: pip install -r requirements.txt
+# For GPU: see requirements-gpu.txt and docs/platforms.md
 
-# 项目本体（可编辑安装）
+# Project itself (editable installation)
 -e .
 
-# LangChain & 编排
+# LangChain & Orchestration
 langchain==0.3.26
 langchain-community==0.3.27
 langchain-openai==0.3.27
@@ -15,12 +15,12 @@ trustcall==0.0.39
 # OpenAI / API
 openai==1.93.2
 
-# PaddleOCR-VL（PDF 解析，CPU 版；GPU 用 requirements-gpu.txt）
+# PaddleOCR-VL (PDF parsing, CPU version; for GPU use requirements-gpu.txt)
 paddlepaddle>=3.0.0
 paddleocr[all]
 pymupdf==1.24.13
 
-# OCR 相关传递依赖
+# OCR related transitive dependencies
 beautifulsoup4>=4.12
 lxml>=6.0
 cssselect>=1.4
@@ -28,11 +28,11 @@ einops>=0.8
 openpyxl>=3.1
 premailer>=3.10
 
-# 校验与配置
+# Validation and Configuration
 pydantic==2.11.7
 pydantic-settings>=2.0.0
 python-dotenv==1.1.1
 colorlog==6.9.0
 PyYAML>=6.0
 
-# 向量与嵌入（可选：如需属性标准化，请参见 setup.cfg extra 'standardization'）
+# Vector & Embeddings (Optional: for attribute standardization, see setup.cfg extra 'standardization')

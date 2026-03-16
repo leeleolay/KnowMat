@@ -52,15 +52,23 @@ def extract_data(state: KnowMatState) -> Dict[str, Any]:
         {"role": "user", "content": user_prompt},
         {"role": "user", "content": "Provide your response using the tool."},
     ]
+    full_prompt = system_prompt + "\n\n" + user_prompt + "\n\n" + (
+        "Provide your response using the tool."
+    )
     try:
         result = extraction_extractor.invoke({"messages": messages})
     except Exception:
-        full_prompt = system_prompt + "\n\n" + user_prompt + "\n\n" + (
-            "Provide your response using the tool."
-        )
         result = extraction_extractor.invoke(full_prompt)
     # TrustCall 返回结构中，responses 可能为空列表，需要安全访问
-    responses = result.get("responses") or []
+    responses = (result or {}).get("responses") or []
+    if not responses:
+        # Some TrustCall versions accept {"messages": ...} without raising, but return no tool calls.
+        # Fallback to the legacy single-string prompt to preserve backwards compatibility.
+        try:
+            fallback_result = extraction_extractor.invoke(full_prompt)
+        except Exception:
+            fallback_result = None
+        responses = (fallback_result or {}).get("responses") or []
     if not responses:
         # 如果没有有效响应，则不更新状态，后续节点会看到 latest_extracted_data 为空
         return {}

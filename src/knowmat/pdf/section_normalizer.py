@@ -144,12 +144,27 @@ def structure_sections(text: str) -> str:
 
 def strip_references_section(text: str) -> str:
     out: List[str] = []
+    skipping_refs = False
+
     for line in text.splitlines():
         stripped = line.strip()
-        if re.match(r"^#+\s*(references?|bibliography|citations?)\s*$", stripped, re.IGNORECASE):
-            break
-        if re.match(r"^(references?|bibliography|citations?)\s*$", stripped, re.IGNORECASE):
-            break
-        out.append(line)
+
+        # Check for References start
+        if re.match(r"^#+\s*(references?|bibliography|citations?)\s*$", stripped, re.IGNORECASE) or re.match(
+            r"^(references?|bibliography|citations?)\s*$", stripped, re.IGNORECASE
+        ):
+            skipping_refs = True
+            continue
+
+        # Check for Appendix / Supplementary start to stop skipping
+        # Matches lines starting with # (header) and containing Appendix or Supplementary
+        if skipping_refs and re.match(r"^#+\s*(appendix|supplementary)\b.*$", stripped, re.IGNORECASE):
+            skipping_refs = False
+            out.append(line)
+            continue
+
+        if not skipping_refs:
+            out.append(line)
+
     return "\n".join(out).strip()
 

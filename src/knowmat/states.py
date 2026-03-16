@@ -11,8 +11,8 @@ Important fields
 
 * ``pdf_path``: The path to the PDF file being processed.  Set at the
   beginning of the run.
-* ``paper_text``: The extracted plain text of the paper with the
-  references removed.
+* ``paper_text``: The extracted plain text of the paper. By default, the
+  full text is preserved; references trimming is optional via config.
 * ``sub_field``: The detected sub‑field of materials science (e.g.
   experimental, computational, simulation, machine learning, hybrid).
 * ``updated_prompt``: The extraction prompt with adjustments suggested by

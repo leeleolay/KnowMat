@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Pre-download PaddleOCR/PaddleOCR-VL models into a project-local directory."""
+"""Pre-download PaddleOCR-VL 1.0 models into a project-local directory."""
 
 import argparse
 import os
@@ -8,15 +8,15 @@ from pathlib import Path
 
 def default_model_dir() -> Path:
     repo_root = Path(__file__).resolve().parents[1]
-    return repo_root / "models" / "paddleocrvl1_5"
+    return repo_root / "models" / "paddleocrvl1_0"
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Download PaddleOCR-VL related model files to local directory.")
+    parser = argparse.ArgumentParser(description="Download PaddleOCR-VL 1.0 related model files to local directory.")
     parser.add_argument(
         "--model-dir",
         default=None,
-        help="Target model cache directory (default: ./models/paddleocrvl1_5)",
+        help="Target model cache directory (default: ./models/paddleocrvl1_0)",
     )
     args = parser.parse_args()
 
@@ -32,10 +32,18 @@ def main() -> None:
         from paddleocr import PaddleOCRVL  # type: ignore
 
         try:
-            PaddleOCRVL(model_dir=str(model_dir))
+            # Try to initialize with pipeline_version="v1" for 1.0 models
+            PaddleOCRVL(model_dir=str(model_dir), pipeline_version="v1")
         except TypeError:
-            PaddleOCRVL()
-        print("PaddleOCRVL initialized successfully. Model files should be cached locally.")
+            print("Warning: `pipeline_version` argument not supported. Falling back to default initialization.")
+            print("This might download the default model (likely 1.5) instead of 1.0 if your paddleocr version is new.")
+            # Fallback if pipeline_version is not supported (older versions might be 1.0 by default)
+            try:
+                PaddleOCRVL(model_dir=str(model_dir))
+            except TypeError:
+                PaddleOCRVL()
+        
+        print("PaddleOCRVL 1.0 initialized successfully. Model files should be cached locally.")
         return
     except Exception:
         pass
@@ -47,7 +55,7 @@ def main() -> None:
             PaddleOCR(use_angle_cls=True, lang="en")
         except TypeError:
             PaddleOCR(lang="en")
-        print("PaddleOCR initialized successfully. Model files should be cached locally.")
+        print("PaddleOCR initialized successfully (fallback). Model files should be cached locally.")
         return
     except Exception as exc:
         raise RuntimeError(
@@ -57,7 +65,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
-
-
-

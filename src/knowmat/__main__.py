@@ -104,10 +104,13 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument("--manager-model", default=None, help="Model for validation agent (Stage 2: hallucination correction).")
     parser.add_argument("--flagging-model", default=None, help="Model for flagging/quality assessment agent.")
     parser.add_argument("--ocr-log-level", default=None, help="OCR/PaddleX log level (e.g., DEBUG, INFO, WARNING). Overrides PADDLE_PDX_LOG_LEVEL if set.")
+    parser.add_argument("--paddleocrvl-version", default=None, help="PaddleOCR-VL version to use: '1.5' (default) or '1.0'.")
     
     args = parser.parse_args(argv)
     if args.ocr_log_level:
         os.environ["PADDLE_PDX_LOG_LEVEL"] = args.ocr_log_level
+    if args.paddleocrvl_version:
+        os.environ["PADDLEOCRVL_VERSION"] = args.paddleocrvl_version
     _ensure_utf8_output()
     
     # 优先级：CLI (--input-folder / --pdf-folder) > 环境变量 KNOWMAT2_INPUT_DIR > 默认 "data/raw"
