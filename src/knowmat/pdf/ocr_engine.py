@@ -13,7 +13,11 @@ from typing import Any, List, Tuple
 def default_model_dir() -> Path:
     """Return the default local model directory in this project."""
     repo_root = Path(__file__).resolve().parents[3]
-    model_dir = os.getenv("PADDLEOCRVL_MODEL_DIR", str(repo_root / "models" / "paddleocrvl1_5"))
+    
+    version = os.getenv("PADDLEOCRVL_VERSION", "1.5")
+    default_subdir = "paddleocrvl1_0" if version == "1.0" else "paddleocrvl1_5"
+    
+    model_dir = os.getenv("PADDLEOCRVL_MODEL_DIR", str(repo_root / "models" / default_subdir))
     return Path(model_dir).expanduser().resolve()
 
 
@@ -31,7 +35,13 @@ def create_ocr_engine(model_dir: Path) -> Tuple[Any, str]:
     try:
         from paddleocr import PaddleOCRVL  # type: ignore
 
-        for kwargs in [{}]:
+        version = os.getenv("PADDLEOCRVL_VERSION", "1.5")
+        candidates = []
+        if version == "1.0":
+            candidates.append({"pipeline_version": "v1"})
+        candidates.append({})
+
+        for kwargs in candidates:
             try:
                 return PaddleOCRVL(**kwargs), "paddleocrvl"
             except TypeError:

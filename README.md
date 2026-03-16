@@ -29,7 +29,7 @@
 - **Parser Agent**：基于 PaddleOCR-VL 的 PDF 解析
   - 将 PDF 页面转图片并逐页 OCR
   - 保存页面图片和 OCR 原始结果，便于调试
-  - 生成用于后续抽取的清洗文本
+  - 生成用于后续抽取的清洗文本（默认保留全文，不再默认截断 References 之后内容）
 - **Subfield Detection Agent**：识别论文类型（实验/计算/机器学习）并动态调整提示词
 - **Extraction Agent**：基于 TrustCall 的结构化数据抽取
 - **Evaluation Agent**：抽取质量评估与置信度评分（最多 3 轮）
@@ -163,6 +163,8 @@ LLM_API_KEY=<你的_llm_api_key>
 LLM_BASE_URL=<你的_openai_兼容_base_url>
 LLM_MODEL=<你的模型名称或端点>
 PADDLEOCRVL_MODEL_DIR=models/paddleocrvl1_5
+PADDLEOCRVL_VERSION=1.5               # 1.5 (default) or 1.0
+KNOWMAT2_TRIM_REFERENCES_SECTION=false      # 默认 false：保留 References 后正文；true：按旧行为截断
 LANGCHAIN_API_KEY=<你的_langchain_api_key>  # 可选
 LANGCHAIN_TRACING_V2=false                  # 可选
 ```
@@ -217,6 +219,8 @@ conda install nvidia::cudnn cuda-version=12
 
 ```bash
 python scripts/download_paddleocrvl_models.py --model-dir models/paddleocrvl1_5
+# Optional: Download PaddleOCR-VL 1.0 models
+python scripts/download_paddleocrvl_1.0_models.py --model-dir models/paddleocrvl1_0
 ```
 
 ### 开发者工作流
@@ -228,16 +232,6 @@ python -m pip install --upgrade pip
 pip install -e ".[dev]"
 pytest
 ```
-
-#### CI
-
-仓库内包含 GitHub Actions 工作流（`.github/workflows/ci.yml`），在推送到 `main`/`master` 或 PR 时自动执行：
-
-- 依赖安装（含 `.[dev]`）
-- 代码风格检查：`ruff`、`black --check`
-- 类型检查：`mypy`
-- 单元测试：`pytest`
-
 #### Prompt 模板维护
 
 当前核心提示词集中在 `prompts/`，代码通过 `src/knowmat/prompt_loader.py` 统一加载。

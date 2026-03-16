@@ -63,6 +63,10 @@ class Settings(BaseSettings):
     
     flagging_model: str
         Model for flagging/quality assessment agent. Defaults to ``LLM_MODEL``.
+
+    trim_references_section: bool
+        Whether to trim content after References/Bibliography/Citations during parsing.
+        Defaults to ``False`` to preserve full text (including appendix/supplementary).
     """
 
     # IO defaults (can be overridden by env or CLI)
@@ -77,6 +81,7 @@ class Settings(BaseSettings):
     evaluation_model: str = DEFAULT_LLM_MODEL
     manager_model: str = DEFAULT_LLM_MODEL
     flagging_model: str = DEFAULT_LLM_MODEL
+    trim_references_section: bool = False
 
     model_config = ConfigDict(env_prefix="KNOWMAT2_")
 

@@ -16,6 +16,7 @@ should be accepted as‑is and sets ``needs_rerun`` to False.
 
 import json
 import os
+from pathlib import Path
 from typing import Dict, Any, List
 
 from knowmat.extractors import evaluation_extractor, EvaluationFeedback
