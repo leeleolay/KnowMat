@@ -17,6 +17,11 @@ import re
 from collections import defaultdict
 from typing import Any, Dict, List, Optional, Tuple
 
+try:
+    from pymatgen.core import Composition as _PymatgenComposition
+except ImportError:
+    _PymatgenComposition = None
+
 from knowmat.domain_rules import DomainRules, default_rules
 from knowmat.states import TargetSchema
 
@@ -395,16 +400,32 @@ class SchemaConverter:
     def build_composition_json(formula: str) -> dict:
         """Convert formula string like ``Ti42Hf21Nb21V16`` to a composition dict.
 
-        Supports formulas where element amounts are omitted (defaults to 1),
-        e.g. ``FeCoCrNiMo0.5``.
+        Preferentially uses ``pymatgen.core.Composition`` for robust parsing
+        (handles complex formulas, parentheses, fractional stoichiometry, etc.)
+        and converts to molar-percentage (at%).  Falls back to regex-based
+        parsing when *pymatgen* is not installed or the formula is unparseable.
         """
         comp: Dict[str, float] = {}
         if not formula:
             return comp
+
         cleaned = re.sub(r"[()[\]{}]", "", formula)
-        cleaned = cleaned.translate(
+        cleaned: str = cleaned.translate(
             str.maketrans({"₀": "0", "₁": "1", "₂": "2", "₃": "3", "₄": "4", "₅": "5", "₆": "6", "₇": "7", "₈": "8", "₉": "9"})
         )
+        # Strip everything except element letters, digits and decimal points
+        # so that separators like '-', '/', ' ' don't confuse pymatgen
+        # e.g. "Ni-21.49Cr-13.13W" → "Ni21.49Cr13.13W"
+        sanitized = re.sub(r"[^A-Za-z0-9.]", "", cleaned)
+        if _PymatgenComposition is not None:
+            try:
+                pmg_comp = _PymatgenComposition(sanitized)
+                frac_dict = pmg_comp.fractional_composition.as_dict()
+                return {el: round(frac * 100, 2) for el, frac in frac_dict.items()}
+            except Exception:
+                logger.debug(
+                    "pymatgen failed to parse '%s', falling back to regex", formula
+                )
 
         # Match element tokens with optional numeric amount (default 1.0)
         for element, amount in re.findall(r"([A-Z][a-z]?)(\d+(?:\.\d+)?)?", cleaned):
