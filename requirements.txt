@@ -36,3 +36,7 @@ colorlog==6.9.0
 PyYAML>=6.0
 
 # Vector & Embeddings (Optional: for attribute standardization, see setup.cfg extra 'standardization')
+
+
+# Composition parsing
+pymatgen
