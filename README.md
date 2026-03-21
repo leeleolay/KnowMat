@@ -14,7 +14,8 @@
 
 - **科研级批处理**：可批量处理整个目录中的 PDF/TXT 文件；支持**两阶段**：先仅跑 OCR（`--ocr-only`），再统一跑大模型抽取
 - **高准确度**：多代理架构，支持最多 3 轮抽取/评估迭代优化
-- **高级 PDF 解析**：使用 **PaddleOCR-VL** 进行 OCR 解析
+- **双引擎高精度 OCR**：采用 **PaddleOCR-VL 1.5**（宏观版面与阅读顺序）结合 **PP-StructureV3**（微观复杂表格与公式精修）的 Coarse-to-Fine 架构
+- **公式与表格增强**：支持精准提取复杂 HTML 跨行表格与高保真 LaTeX 公式（自动修复化学式上下标）
 - **两阶段校验**：规则聚合 + LLM 幻觉修正
 - **属性标准化**：自动将属性名称映射为标准形式
 - **质量保障**：置信度打分、人工复核标记与复核指南
@@ -26,10 +27,10 @@
 
 ### 🤖 多代理架构
 
-- **Parser Agent**：基于 PaddleOCR-VL 的 PDF 解析
-  - 将 PDF 页面转图片并逐页 OCR
-  - 保存页面图片和 OCR 原始结果，便于调试
-  - 生成用于后续抽取的清洗文本（默认保留全文，不再默认截断 References 之后内容）
+- **Parser Agent**：基于双引擎协同的 PDF 解析
+  - **PaddleOCR-VL 1.5**：进行整页版面分析与高速正文 OCR
+  - **PP-StructureV3**：对表格、公式区域进行高 DPI 智能路由裁剪与精修（TSR / Formula 还原）
+  - 生成高质量、结构化的清洗文本（过滤页眉页脚、坐标碎片，自动转译化学式如 $Ti_{42}Hf_{21}$）
 - **Subfield Detection Agent**：识别论文类型（实验/计算/机器学习）并动态调整提示词
 - **Extraction Agent**：基于 TrustCall 的结构化数据抽取
 - **Evaluation Agent**：抽取质量评估与置信度评分（最多 3 轮）
@@ -223,6 +224,10 @@ python scripts/download_paddleocrvl_models.py --model-dir models/paddleocrvl1_5
 python scripts/download_paddleocrvl_1.0_models.py --model-dir models/paddleocrvl1_0
 ```
 
+> **提示**：如果不手动下载模型，**首次运行时会自动下载**。程序会在初始化 OCR 引擎时检查 `models/paddleocrvl1_5/` 目录，若不存在则自动从官方源下载模型文件。自动下载可能需要较长时间（取决于网络状况），建议首次使用前手动下载。
+> 
+> **PP-StructureV3 模型说明**:PP-StructureV3 不是一个单独的模型，而是一个**集成管道**,它由多个子模型组成 (表格识别、公式识别、布局检测等)。这些子模型会在首次调用 `PPStructureV3()` 时**自动下载**到 `models/paddleocrvl1_5/official_models` 目录，**无需手动下载**。
+
 ### 开发者工作流
 
 #### 本地开发与测试
@@ -247,6 +252,135 @@ pytest
 ```bash
 python scripts/validate_prompts.py
 ```
+
+---
+
+## OCR 模型说明与处理流程
+
+### 使用的 OCR 模型
+
+KnowMat 采用**三级协同**的 OCR 架构，结合 PaddleOCR-VL 1.5 的高速推理与 PP-StructureV3 的精确修复:
+
+| 模型 | 作用 | 处理内容 | 耗时占比 |
+|------|------|---------|---------|
+| **PP-DocLayoutV3** | 文档布局检测 | 识别标题、段落、表格、图片、页眉页脚等区域 | ~5% |
+| **PaddleOCR-VL-1.5-0.9B** | 视觉语言 OCR 主引擎 | 全文 OCR、公式识别、表格内容初步识别 | ~40% |
+| **PP-StructureV3** | 结构化分析专家 | 表格 (TSR) 和公式区域的高精度重识别 | ~55% |
+
+**内部子模型** (自动加载，无需手动配置):
+- 文本检测模型 (DB/DB++)
+- 文本识别模型 (SVTR/CRNN)
+- 表格结构识别模型 (TSR)
+- 公式识别模型 (LaTeX 专用)
+- 印章检测模型
+- 文字方向分类器
+
+### OCR 处理流程详解
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│ 第 1 步：PDF 页面渲染 (300 DPI)                               │
+│ - 使用 PyMuPDF 将 PDF 每页渲染为 PNG 图像                      │
+│ - 并行渲染 (最多 4 线程)                                      │
+│ - 输出：page_images/page-0001.png, page-0002.png, ...      │
+└─────────────────────────────────────────────────────────────┘
+                            ↓
+┌─────────────────────────────────────────────────────────────┐
+│ 第 2 步：PP-DocLayoutV3 布局检测                              │
+│ - 识别每页的文本、表格、公式、图片区域                        │
+│ - 输出每个区域的边界框 (bbox) 和类型标签                      │
+│ - 与 PaddleOCR-VL 集成，自动执行                             │
+└─────────────────────────────────────────────────────────────┘
+                            ↓
+┌─────────────────────────────────────────────────────────────┐
+│ 第 3 步：PaddleOCR-VL-1.5 批量 OCR 推理                        │
+│ - 输入：300 DPI 页面图像 + 布局信息                           │
+│ - 批量处理 (batch_size=4, GPU 加速)                          │
+│ - 输出：全文 OCR 结果 (包含表格和公式初步识别)                 │
+│ - 特点：高速、阅读顺序正确、支持图文混合                     │
+└─────────────────────────────────────────────────────────────┘
+                            ↓
+┌─────────────────────────────────────────────────────────────┐
+│ 第 4 步：restructure_pages 后处理                            │
+│ - 将 VL 输出转换为结构化 Markdown                            │
+│ - 合并相邻块、标题层级重排、页面拼接                         │
+│ - 过滤页眉页脚等噪声内容                                     │
+└─────────────────────────────────────────────────────────────┘
+                            ↓
+┌─────────────────────────────────────────────────────────────┐
+│ 第 5 步：PP-StructureV3 表格公式精修 (最耗时)                  │
+│ - 检测表格/公式区域，使用 400 DPI 重新渲染                     │
+│ - 对每个区域单独运行 TSR 和 Formula 模型                      │
+│ - 用精修结果替换第 3 步的对应内容                              │
+│ - 这是准确度高但速度慢的主要原因                             │
+└─────────────────────────────────────────────────────────────┘
+                            ↓
+┌─────────────────────────────────────────────────────────────┐
+│ 第 6 步：化学公式增强 OCR                                     │
+│ - 检测匹配元素模式的段落 (如 Ti42Hf21Nb21V16)                 │
+│ - 裁剪对应区域并以 400 DPI 重拍                              │
+│ - 再次 OCR 提高下标和小数精度                                │
+│ - 输出：修正后的化学式文本                                   │
+└─────────────────────────────────────────────────────────────┘
+                            ↓
+┌─────────────────────────────────────────────────────────────┐
+│ 第 7 步：后处理与标准化                                       │
+│ - 章节结构识别 (structure_sections)                         │
+│ - 合金命名标准化 (normalize_alloy_strings)                  │
+│ - 参考文献过滤 (可选)                                        │
+│ - 输出：最终 Markdown + 结构化 JSON                          │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### 处理时间参考
+
+基于 RTX 4060 (8GB 显存) 的测试数据:
+
+| PDF 类型 | 页数 | 总耗时 | 主要耗时阶段 |
+|---------|------|--------|-------------|
+| 纯文本论文 | 10 页 | ~8-12 分钟 | PaddleOCR-VL 推理 |
+| 含少量表格 | 15 页 | ~15-20 分钟 | PP-StructureV3 精修 |
+| 材料科学论文 (多表格/公式) | 20 页 | ~25-35 分钟 | PP-StructureV3 精修 + 化学公式重 OCR |
+
+**显存与速度（环境变量）**:
+
+| 变量 | 默认 | 说明 |
+|------|------|------|
+| `OCR_BATCH_SIZE` | `2` | VL 批推理页数；8GB 显存可再设为 `1` 降低峰值 |
+| `OCR_RENDER_DPI` | `300` | 页面渲染分辨率；`200` 可省显存与时间，略降细字质量 |
+| `KNOWMAT_SKIP_PPSTRUCTURE_REFINE` | **默认不设置（关闭）** | 仅当手动设为 `1` / `true` 时才跳过 PP-StructureV3 精修与化学式裁剪重 OCR（省显存/时间，**表格与公式质量下降**）。**推荐保持不设置**，以保证 KnowMat 设计效果。 |
+| `KNOWMAT_SKIP_CHEM_REOCR` | **默认不设置（关闭）** | 仅当手动设为 `1` / `true` 且在未跳过 Structure 时，才跳过化学式段落重 OCR。 |
+
+每份 PDF 处理结束后会**释放** PP-StructureV3 缓存并调用 `paddle` 的 `empty_cache()`，减轻连续多份 PDF 时的 **CUDA OOM**。若仍 OOM，**优先**尝试：`OCR_BATCH_SIZE=1`、`OCR_RENDER_DPI=200`、关闭其他占用 GPU 的程序；**仅在可接受效果降级时**再考虑设置 `KNOWMAT_SKIP_PPSTRUCTURE_REFINE=1`。
+
+Windows 上若出现 sklearn KMeans 内存警告，可先执行：`set OMP_NUM_THREADS=1`（PowerShell：`$env:OMP_NUM_THREADS="1"`）。
+
+### 模型目录结构
+
+```
+models/paddleocrvl1_5/
+├── official_models/
+│   ├── PP-DocLayoutV3/          # 布局检测模型
+│   │   ├── inference.pdmodel
+│   │   └── inference.pdiparams
+│   ├── PaddleOCR-VL-1.5/        # 主 OCR 模型 (0.9B 参数)
+│   │   ├── config.json
+│   │   ├── generation_config.json
+│   │   └── model.safetensors
+│   ├── PP-FormulaNet_plus-L/    # 公式识别 (PP-StructureV3 子模型)
+│   ├── SLANet_plus/             # 表格结构识别 (PP-StructureV3 子模型)
+│   ├── RT-DETR-L_*/             # 表格单元格检测 (PP-StructureV3 子模型)
+│   └── ...                      # 其他子模型
+└── ppstructurev3/               # PP-StructureV3 管道缓存 (可选)
+    ├── table/                   # 表格识别模型
+    └── formula/                 # 公式识别模型
+```
+
+**重要说明**:
+- **PP-StructureV3 的子模型已经集成在 `official_models/` 中**,不需要单独的 `ppstructurev3/` 目录
+- 首次调用 `PPStructureV3()` 时，PaddleOCR 会自动检查并下载缺失的子模型
+- 默认下载位置：`~/.paddleocr/models/` (用户主目录) 或 `PADDLEOCR_HOME` 环境变量指定的位置
+- 如果 `official_models/` 中已有子模型 (如 `PP-FormulaNet_plus-L`, `SLANet_plus` 等),则不会重复下载
 
 ---
 
@@ -497,10 +631,12 @@ print(f"Flagged: {result['flag']}")
 │       ├── pdf/            <- PDF 解析子包（拆分模块）
 │       │   ├── __init__.py            <- 子包初始化
 │       │   ├── blocks.py              <- PDF 文档块（段落、表格、图片等）解析
+│       │   ├── table_structure.py     <- PP-Structure/TSR 区域路由与二次精读
+│       │   ├── block_filter.py        <- 基于几何 bbox 的图像与碎片噪声过滤
 │       │   ├── doi_extractor.py       <- 从 PDF 中自动识别并提取 DOI
-│       │   ├── html_cleaner.py        <- PDF 转 HTML 后内容结构清洗与规范化
-│       │   ├── ocr_engine.py          <- OCR 引擎接口（如 PaddleOCR），实现图片转文本
-│       │   └── section_normalizer.py  <- 章节与分段结构标准化（规范章节标题等）
+│       │   ├── html_cleaner.py        <- PDF 转 HTML 后内容结构清洗与规范化（支持上下标修复）
+│       │   ├── ocr_engine.py          <- OCR 引擎接口（对接 PaddleOCR-VL 1.5）
+│       │   └── section_normalizer.py  <- 章节、化学式模式与希腊字母的标准化
 │       └── nodes/          <- 各代理节点实现
 │           ├── __init__.py
 │           ├── paddleocrvl_parse_pdf.py  <- PDF/TXT 解析节点（含 OCR 逻辑）
@@ -520,6 +656,7 @@ print(f"Flagged: {result['flag']}")
 │
 ├── scripts/                <- 脚本与环境准备
 │   ├── compare_to_manual.py       <- 与人工标注对比
+│   ├── ocr_regression_report.py   <- OCR-only 解析质量专项回归评估（化学式、表格、小数点）
 │   ├── download_paddleocrvl_models.py <- PaddleOCR-VL 模型下载
 │   ├── setup_env.ps1              <- Windows 一键环境部署（Conda + Paddle + OCR）
 │   ├── setup_env.sh               <- Linux/macOS 一键环境部署

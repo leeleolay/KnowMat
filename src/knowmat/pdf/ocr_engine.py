@@ -2,12 +2,16 @@
 
 from __future__ import annotations
 
+import gc
+import logging
 import os
 import re
 import threading
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from typing import Any, List, Tuple
+
+logger = logging.getLogger(__name__)
 
 
 def default_model_dir() -> Path:
@@ -29,16 +33,32 @@ def _prepare_ocr_home(model_dir: Path) -> None:
 
 
 def create_ocr_engine(model_dir: Path) -> Tuple[Any, str]:
-    """Create a PaddleOCR-VL engine, or fallback to PaddleOCR."""
+    """Create a PaddleOCR-VL engine, or fallback to PaddleOCR.
+
+    Engine parameters are aligned with the StarRiver community pipeline
+    (model_settings extracted from StarRiver OCR outputs):
+      - use_layout_detection=True: enables PP-Structure layout detection
+      - use_seal_recognition=True: detect seal/stamp regions
+      - format_block_content=True: format block content for downstream use
+      - merge_layout_blocks=True: merge adjacent blocks of same type
+    """
     _prepare_ocr_home(model_dir)
 
     try:
         from paddleocr import PaddleOCRVL  # type: ignore
 
         version = os.getenv("PADDLEOCRVL_VERSION", "1.5")
+        # Parameters aligned with StarRiver community pipeline model_settings.
+        star_aligned_kwargs: dict = {
+            "use_layout_detection": True,
+            "use_seal_recognition": True,
+            "format_block_content": True,
+            "merge_layout_blocks": True,
+        }
         candidates = []
         if version == "1.0":
             candidates.append({"pipeline_version": "v1"})
+        candidates.append(star_aligned_kwargs)
         candidates.append({})
 
         for kwargs in candidates:
@@ -73,6 +93,26 @@ def create_ocr_engine(model_dir: Path) -> Tuple[Any, str]:
     raise RuntimeError("Failed to initialize PaddleOCR engine.")
 
 
+def try_release_paddle_gpu_memory() -> None:
+    """Best-effort: free Paddle GPU allocations between PDFs (reduces OOM on 8GB cards)."""
+    gc.collect()
+    try:
+        import paddle  # type: ignore
+
+        is_cuda = False
+        if hasattr(paddle.device, "is_compiled_with_cuda"):
+            is_cuda = bool(paddle.device.is_compiled_with_cuda())
+        elif hasattr(paddle, "is_compiled_with_cuda"):
+            is_cuda = bool(paddle.is_compiled_with_cuda())
+        if is_cuda:
+            try:
+                paddle.device.cuda.empty_cache()
+            except Exception:
+                pass
+    except Exception:
+        pass
+
+
 def _run_ocr(engine: Any, image_path: Path) -> Any:
     img = str(image_path)
     if hasattr(engine, "predict"):
@@ -93,8 +133,21 @@ def _run_ocr(engine: Any, image_path: Path) -> Any:
 
 
 def supports_batch_predict(engine: Any) -> bool:
+    """Check if the engine supports batch prediction.
+    
+    For PaddleOCR-VL 1.5, also check for predict_batch method existence
+    or try to infer from class name and available methods.
+    """
+    # Direct check for explicit batch method
     if hasattr(engine, "predict_batch"):
         return True
+    
+    # PaddleOCR-VL specific check: if it has restructure_pages, it's the VL version
+    # which should support batch via predict or predict_batch
+    if hasattr(engine, "restructure_pages"):
+        return True
+    
+    # Fallback: check predict signature for list annotation
     if hasattr(engine, "predict"):
         try:
             import inspect
@@ -103,8 +156,13 @@ def supports_batch_predict(engine: Any) -> bool:
             for param in sig.parameters.values():
                 if param.annotation in ("list", "List", List):
                     return True
+                # Also check for list[str] or List[str] patterns
+                param_str = str(param.annotation)
+                if "list" in param_str.lower() and "str" in param_str.lower():
+                    return True
         except (ValueError, TypeError):
             pass
+    
     return False
 
 
@@ -123,6 +181,12 @@ def run_ocr_batch(engine: Any, image_paths: List[Path], batch_size: int) -> List
 
 
 def run_ocr_parallel(engine: Any, image_paths: List[Path], max_workers: int) -> List[Any]:
+    if max_workers > 1:
+        logger.warning(
+            "OCR_MAX_WORKERS=%d ignored: shared OCR engine is not safe for concurrent inference; using 1.",
+            max_workers,
+        )
+        max_workers = 1
     if max_workers <= 1:
         return [_run_ocr(engine, p) for p in image_paths]
 

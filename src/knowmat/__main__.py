@@ -351,6 +351,8 @@ def main(argv: list[str] | None = None) -> None:
                 md_path = _ensure_md(text_path)
                 if md_path:
                     _submit_llm(md_path)
+                else:
+                    results_summary.append({"file": text_path.name, "success": False, "error": "Normalization failed"})
 
         # Start OCR for PDFs missing TXT
         for pdf in pdfs_missing_txt:
@@ -369,13 +371,14 @@ def main(argv: list[str] | None = None) -> None:
                         txt_path = fut.result()
                     except Exception as exc:
                         print(f"[ERROR] OCR failed for {pdf.name}: {exc}")
-                        if args.ocr_only:
-                            results_summary.append({"file": pdf.name, "success": False, "error": str(exc)})
+                        results_summary.append({"file": pdf.name, "success": False, "error": f"OCR failed: {exc}"})
                         continue
                     if args.ocr_only:
                         results_summary.append({"file": pdf.name, "success": txt_path is not None})
                     elif txt_path:
                         _submit_llm(txt_path)
+                    else:
+                        results_summary.append({"file": pdf.name, "success": False, "error": "OCR returned no result"})
                 else:
                     path = llm_futures.pop(fut)
                     try:
