@@ -31,6 +31,7 @@ from knowmat.pdf.ocr_cache import (
 from knowmat.pdf.ocr_engine import (
     create_ocr_engine,
     default_model_dir,
+    ensure_paddle_device_from_env,
     normalize_lines,
     paddleocr_raw_to_lines,
     run_ocr_batch,
@@ -463,6 +464,15 @@ def _extract_pdf_with_paddleocrvl(
                             else getattr(block, "block_bbox", None)
                         )
                         is_noise = blabel in _LAYOUT_NOISE_LABELS
+                        
+                        # Filter out general layout noise based on bbox position for header/footer
+                        if bbox is not None and len(bbox) == 4:
+                            _, y0, _, y1 = bbox
+                            # Use typical PDF dimensions (e.g. 842 points height) as heuristic if needed
+                            # but simple fractional check works if we assume 1.0 is max
+                            # Since we don't have page height here, we rely primarily on blabel
+                            pass
+                            
                         item = block_to_item(block)
                         if item:
                             item["page"] = pdf_page
@@ -582,6 +592,8 @@ def _extract_pdf_with_paddleocrvl(
         release_ppstructurev3_pipeline()
         # Release Paddle GPU memory
         try_release_paddle_gpu_memory()
+        # After close()/pipeline drop/empty_cache, Paddle may leave Place(undefined:0); fix for next PDF.
+        ensure_paddle_device_from_env()
         # Cleanup temporary directories
         if temp_dir is not None:
             temp_dir.cleanup()

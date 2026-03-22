@@ -23,6 +23,8 @@ import threading
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
+from knowmat.pdf.ocr_engine import ensure_paddle_device_from_env
+
 logger = logging.getLogger(__name__)
 
 # Labels that PP-Structure / PaddleOCR-VL may return for layout regions.
@@ -82,6 +84,7 @@ def release_ppstructurev3_pipeline() -> None:
                         logger.debug("Released GPU memory after PP-StructureV3 pipeline cleanup")
                     except Exception:
                         pass
+                ensure_paddle_device_from_env()
             except Exception:
                 pass
 
@@ -443,11 +446,9 @@ def reocr_chem_formula_blocks(
     """
     import re
 
-    # Lightweight element pattern for detection (does not need to be exhaustive).
-    _ELEM_PAT = re.compile(
-        r"\b(?:Ti|Hf|Nb|Ta|Mo|Zr|Al|V|Cr|Mn|Fe|Co|Ni|Cu|W|Si|C|N|B|Re|Ru|Pd|Pt|Au|Ag)"
-        r"\d+(?:[.,]\d+)?"
-    )
+    # Lightweight element pattern for detection (using full element list from section_normalizer).
+    from .section_normalizer import _ELEMENT_PAT, is_noise_line
+    _ELEM_PAT = re.compile(r"\b(?:" + _ELEMENT_PAT + r")\d+(?:[.,]\d+)?")
 
     crops_dir = work_dir / "chem_crops"
     modified = 0

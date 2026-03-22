@@ -234,6 +234,10 @@ _MATERIALS_CONTEXT_KEYWORDS = frozenset({
     "MPa", "GPa", "temperature", "thermal", "melting", "solidification",
     "NbMoTaW", "HEA", "MPEA", "RHEA", "RMPEA", "high-entropy",
     "refractory", "superalloy", "intermetallic",
+    # Added general materials science keywords
+    "conductivity", "bandgap", "anode", "cathode", "battery", "semiconductor", 
+    "polymer", "doping", "dielectric", "piezoelectric", "magnetic", "optical", 
+    "catalyst", "electrolyte",
     # Element names for additional context
     "titanium", "niobium", "tantalum", "tungsten", "molybdenum", "hafnium",
     "vanadium", "chromium", "nickel", "cobalt", "iron", "aluminum", "zirconium",
@@ -244,17 +248,7 @@ _MATERIALS_CONTEXT_KEYWORDS = frozenset({
 # (ASCII comma is handled separately inside chemical formula contexts.)
 _DECIMAL_NOISE_RE = re.compile(r"(\d)[，、·。](\d)")
 
-ALLOY_OCR_FIXES: List[Tuple[re.Pattern, str]] = [
-    (re.compile(r"\bNb15\s*Ta1[oO]\s*W75\b"), "Nb15Ta10W75"),
-    (re.compile(r"\bNb1[sS]\s*Ta10\s*W75\b"), "Nb15Ta10W75"),
-    (re.compile(r"\bNb15\s*Ta1[oO]0\s*W75\b"), "Nb15Ta10W75"),
-    (re.compile(r"\bNb15\s+Ta10\s*W75\b"), "Nb15Ta10W75"),
-    (re.compile(r"\bNb15\s*Ta10\s+W75\b"), "Nb15Ta10W75"),
-    (re.compile(r"\bNb15\s*Ta10\s*W\s*,"), "Nb15Ta10W75,"),
-    (re.compile(r"\(Nb15\s*Ta1[oO]\s*W75\)"), "(Nb15Ta10W75)"),
-    (re.compile(r"\(Nb15\s*Ta10\s+W75\)"), "(Nb15Ta10W75)"),
-    (re.compile(r"\(Nb15\s+Ta10\s*W75\)"), "(Nb15Ta10W75)"),
-]
+ALLOY_OCR_FIXES: List[Tuple[re.Pattern, str]] = []
 
 SPACED_TITLE_RE = re.compile(r"^(#+\s+)?([A-Z](?:\s[A-Z]){3,})$")
 
@@ -272,25 +266,16 @@ SECTION_PATTERNS: List[Tuple[re.Pattern, str | None]] = [
 ]
 
 NOISE_LINE_PATTERNS: List[Tuple[re.Pattern, bool]] = [
-    (re.compile(r"^Materials Science and Engineering\s+\d", re.IGNORECASE), True),
-    (re.compile(r"^Materials Science\s*&\s*Engineering\s+A\s+\d", re.IGNORECASE), True),
-    (re.compile(r"^tence\s*&\s*Englneering\s+A\s+\d", re.IGNORECASE), True),
-    (re.compile(r"^Acta Materialia\s+\d", re.IGNORECASE), True),
-    (re.compile(r"^Journal of Materials Science\s+\d", re.IGNORECASE), True),
-    (re.compile(r"^International Journal of Plasticity\s+\d", re.IGNORECASE), True),
-    (re.compile(r"^Journal of Alloys and Compounds\s+\d", re.IGNORECASE), True),
-    (re.compile(r"^Scripta Materialia\s+\d", re.IGNORECASE), True),
-    (re.compile(r"^Additive Manufacturing\s+\d", re.IGNORECASE), True),
-    (re.compile(r"^Contents lists available at ScienceDirect", re.IGNORECASE), False),
+    (re.compile(r"^Contents lists available at", re.IGNORECASE), False),
     (re.compile(r"^Available online", re.IGNORECASE), False),
     (re.compile(r"^Received \d+", re.IGNORECASE), False),
     (re.compile(r"^Accepted \d+", re.IGNORECASE), False),
     (re.compile(r"^journal homepage", re.IGNORECASE), False),
-    (re.compile(r"^https?://www\.(sciencedirect|elsevier|springer|wiley)", re.IGNORECASE), False),
+    (re.compile(r"^https?://www\.(sciencedirect|elsevier|springer|wiley|nature|science|acs)", re.IGNORECASE), False),
     (re.compile(r"^Full length article\s*$", re.IGNORECASE), False),
     (re.compile(r"^\d{4}-\d{3}[\dX]/\s*�", re.IGNORECASE), False),
     (re.compile(r"^�\s*\d{4}", re.IGNORECASE), False),
-    (re.compile(r"^Elsevier", re.IGNORECASE), False),
+    (re.compile(r"^(Elsevier|Springer|Wiley|ACS)", re.IGNORECASE), False),
     (re.compile(r"^\* Corresponding author", re.IGNORECASE), False),
     (re.compile(r"^\*\* Corresponding author", re.IGNORECASE), False),
     (re.compile(r"^E-mail address", re.IGNORECASE), False),
@@ -302,10 +287,6 @@ NOISE_LINE_PATTERNS: List[Tuple[re.Pattern, bool]] = [
     (re.compile(r"^(STRUCTURE|PROPERTIES|MODELLING|MODELIINC|PROCESSING)\s*$"), False),
     (re.compile(r"^Check\s+for\s*$", re.IGNORECASE), False),
     (re.compile(r"^updates?\s*$", re.IGNORECASE), False),
-    (re.compile(r"^Acta\s+Materialia\s*$", re.IGNORECASE), False),
-    (re.compile(r"^Actd\s+Materialia\b", re.IGNORECASE), False),
-    (re.compile(r"^Materialia\s*$", re.IGNORECASE), False),
-    (re.compile(r"^Acta\s*$", re.IGNORECASE), False),
     (re.compile(r"^[A-Z]\.\s+\w+\s+et\s+al\.?\s*$", re.IGNORECASE), False),
     (re.compile(r"^(obs|diff|cal)\.?\s*$", re.IGNORECASE), False),
     (re.compile(r"^[=\\-]\s*$"), False),
@@ -331,18 +312,9 @@ NOISE_LINE_PATTERNS: List[Tuple[re.Pattern, bool]] = [
 # Journal masthead / page-header OCR (Elsevier MSEA and similar)
 # ---------------------------------------------------------------------------
 _MASTHEAD_LINE_PATTERNS: List[re.Pattern[str]] = [
-    # Optional Markdown hashes; ``##?`` alone would require a leading ``#`` (wrong for plain "MATERIALS").
-    re.compile(r"^(?:#{1,2}\s*)?Materials\s*$", re.IGNORECASE),
-    re.compile(r"^SCIENCE\s*$", re.IGNORECASE),
-    re.compile(r"^&\s*$"),
-    re.compile(r"^ENGINEERING\s*$", re.IGNORECASE),
-    re.compile(r"^Materials Science & Engineering A\s*$", re.IGNORECASE),
-    re.compile(r"^Structural Materials:\s*$", re.IGNORECASE),
-    re.compile(r"^Properties,\s*$", re.IGNORECASE),
-    re.compile(r"^Microstructure and\s*$", re.IGNORECASE),
-    re.compile(r"^Processing\s*$", re.IGNORECASE),
-    re.compile(r"^Contents lists available at ScienceDirect\s*$", re.IGNORECASE),
-    re.compile(r"^ELSEVIER\s*$", re.IGNORECASE),
+    # General publisher / journal UI fragments
+    re.compile(r"^Contents lists available at", re.IGNORECASE),
+    re.compile(r"^(ELSEVIER|Springer|Wiley|ACS|Nature|Science)\s*$", re.IGNORECASE),
     re.compile(r"^journal homepage:\s*.*$", re.IGNORECASE),
     re.compile(r"^Check for\s*$", re.IGNORECASE),
     re.compile(r"^updates\s*$", re.IGNORECASE),
@@ -628,17 +600,17 @@ _GREEK_OCR_FIXES: List[Tuple[str, str, Tuple[str, ...]]] = [
 # Regex patterns for context-gated Greek symbol fixes.
 # Each tuple: (compiled_pattern, replacement, context_keywords_tuple)
 _GREEK_REGEX_FIXES: List[Tuple[re.Pattern, str, Tuple[str, ...]]] = [
-    # 'o phase' / 'o-phase' → 'σ phase' / 'σ-phase' (sigma phase in HEA/steel)
+    # 'o phase' / 'o-phase' → 'σ phase' / 'σ-phase' (sigma phase)
     (
         re.compile(r"\bo\s*(?=-?phase\b)", re.IGNORECASE),
         "σ",
-        ("phase", "precipitation", "intermetallic", "FeCoCrNi", "HEA", "steel"),
+        ("phase", "precipitation", "alloy", "material", "structure", "crystal"),
     ),
     # 'u phase' / 'u-phase' → 'μ phase' / 'μ-phase'
     (
         re.compile(r"\bu\s*(?=-?phase\b)", re.IGNORECASE),
         "μ",
-        ("phase", "precipitation", "intermetallic"),
+        ("phase", "precipitation", "alloy", "material", "structure", "crystal"),
     ),
     # standalone 'um' as unit (e.g. '10 um') → '10 μm'
     (
@@ -859,9 +831,8 @@ _FIG_SCHEMATIC_WORDS = frozenset({
     "deposition", "head", "delivery", "px", "surface", "cracks", "crack",
     "dimples", "river", "patterns", "extensive", "highly", "deformed", "areas",
     "dislocation", "pinning", "loops", "slip", "bands", "wavy", "slips",
-    "screws", "phase", "ipf", "kam", "bcc", "um", "nb", "ti", "hf", "ta", "w",
-    "mo", "cr", "ni", "fe", "co", "cu", "al", "si", "zr",
-    "this work", "rt",
+    "screws", "phase", "ipf", "kam", "um", "this work", "rt",
+    "stress", "strain", "temperature", "time", "voltage", "current", "energy"
 })
 _FIG_SOLO_ELEMENT_LINE = re.compile(r"^(" + _ELEMENT_PAT + r"|TI)\s*$", re.IGNORECASE)
 # "ig. N." missing leading F; "Figure" / "Fig." normal
@@ -869,7 +840,7 @@ _FIG_CAPTION_START = re.compile(
     r"^(?:Figure|Fig\.?|ig\.?)\s*\d+\s*[.:]",
     re.IGNORECASE,
 )
-_FIG_PANEL_MARK = re.compile(r"^\(([ivx]{1,5})\)\s*$", re.IGNORECASE)
+_FIG_PANEL_MARK = re.compile(r"^\(([ivx]{1,5}|[a-z])\)\s*$", re.IGNORECASE)
 _FIG_MILLER_SIMPLE = re.compile(r"^\([01\s\-]{3,12}\)\s*$")
 _FIG_MILLER_BRACKET = re.compile(r"^\[[\d\s\-]+\]\s*$")
 _FIG_SINGLE_PUNCT = re.compile(r"^[|│\[\]⟦⟧⟨⟩]$")
@@ -881,7 +852,7 @@ _FIG_AXIS_LINE = re.compile(
     r"^(?:Intensity|Concentration|Strain|d-spacing|r\([ÅA]\)|Engineering\s+stress|"
     r"Engineering\s+strain|Temperature|Relative\s+position|Mass\s+gain|Time\s*/\s*h|"
     r"Young'?s\s+Modulus|Lattice\s+constant|Shear\s+modulus|d-spacing\s*\(Å\)|"
-    r"Intensity\s*\(a\.u\.\)|AARE|NOTNNY|ONMN|TNPT|MMMMN|TNMT|NTOTNMT|YOWL)\b",
+    r"Intensity\s*\(a\.u\.\)|Voltage|Current|Capacity|Energy\s+Density)\b",
     re.IGNORECASE,
 )
 _FIG_COLON_MAP = re.compile(r"^:\s*[A-Za-z]{1,4}\d*\s*$")
@@ -890,61 +861,47 @@ _FIG_GIBBERISH_CAPS = re.compile(r"^(?:[A-Z]{2,3}[A-Z0-9]{2,}|[A-Z]{5,})$")
 
 
 def _is_figure_legend_fragment_line(line: str) -> bool:
-    s = line.strip()
-    if not s:
+    """Detect if a line looks like an orphan label from a figure (e.g. "FeCoCrNi", "Intensity (a.u.)")."""
+    text = line.strip()
+    if not text:
         return False
-    if is_noise_line(s):
+
+    if _FIG_CAPTION_START.match(text):
+        return False
+
+    if _FIG_AXIS_LINE.match(text):
         return True
-    if _FIG_LEGEND_ET_AL.match(s):
+
+    if _FIG_SOLO_ELEMENT_LINE.match(text):
         return True
-    m = _FIG_LEGEND_COLON_ELEM.match(s)
-    if m and m.group(1).lower() in _ELEMENT_SYMBOL_LOWER:
+    if _FIG_PANEL_MARK.match(text):
         return True
-    if _FIG_LEGEND_N_LAYER.match(s):
+    if _FIG_MILLER_SIMPLE.match(text) or _FIG_MILLER_BRACKET.match(text):
         return True
-    if _FIG_LEGEND_PHRASE.match(s):
+    if _FIG_SINGLE_PUNCT.match(text):
         return True
-    sl = s.lower()
-    if sl in _FIG_SCHEMATIC_WORDS:
+    if _FIG_SCALE_OR_UNIT.match(text):
         return True
-    m2 = _FIG_SOLO_ELEMENT_LINE.match(s)
-    if m2 and len(m2.group(1)) >= 2:
-        return True
-    if _FIG_PANEL_MARK.match(s) or _FIG_MILLER_SIMPLE.match(s) or _FIG_MILLER_BRACKET.match(s):
-        return True
-    if re.match(r"^\([\d\s\-]+\)\d*\s*$", s) and len(s) < 40:
-        return True
-    if _FIG_SINGLE_PUNCT.match(s):
-        return True
-    if _FIG_SCALE_OR_UNIT.match(s):
-        return True
-    if _FIG_AXIS_LINE.match(s):
-        return True
-    if _FIG_COLON_MAP.match(s):
-        return True
-    if re.match(r"^\*?\s*:\s*V", s):
-        return True
-    if _FIG_TIME_OX.match(s):
-        return True
-    if re.match(r"^\\mum\s*$", s) or re.match(r"^=\s*-?\s*$", s):
-        return True
-    if re.match(r"^\(L\s*[·•]\s*L\)\s*$", s):
-        return True
-    if _FIG_GIBBERISH_CAPS.match(s) and len(s) <= 16 and sl not in {"this", "work", "rt", "bcc"}:
-        if not re.search(r"[aeiouy]", sl) or len(set(sl)) <= 4:
-            return True
-    if re.match(r"^(?:Surface\s+cracks?|River\s+patterns?|Slip\s+bands?|Gas-driven\s+powder)\s*$", s, re.I):
-        return True
-    if re.match(r"^(?:Dislocation|Pinning|Wavy\s+slips?|SAED|Dimples)\s*$", s, re.I):
-        return True
-    if re.match(
-        r"^(?:Inconel|Hastelloy|CrMoNbV|FeCoCrNi|TA15|HfTiZrNbTa|Ti\d|Zr_\{35\}|Al7\.5)",
-        s,
-        re.I,
-    ):
-        return True
-    if len(s) < 55 and "_{" in s and re.match(r"^[A-Za-z0-9_\{\}\.\(\),%\+\-]+$", s):
-        return True
+
+    # Generic heuristic for short fragments
+    if len(text) <= 25:
+        # High density of symbols or mostly caps might indicate a label
+        symbol_density = sum(1 for c in text if not c.isalnum() and not c.isspace()) / len(text)
+        cap_density = sum(1 for c in text if c.isupper()) / len(text)
+        
+        # Lacks typical sentence structure
+        starts_upper = text[0].isupper()
+        ends_period = text.endswith('.')
+        
+        # If it's a short phrase without sentence structure, it's likely a fragment
+        if not (starts_upper and ends_period):
+            if symbol_density > 0.2 or cap_density > 0.3:
+                return True
+                
+            words = set(re.findall(r"[A-Za-z]+", text.lower()))
+            if words and words.issubset(_FIG_SCHEMATIC_WORDS):
+                return True
+
     return False
 
 
