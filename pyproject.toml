@@ -50,6 +50,9 @@ dev = [
   "mypy",
 ]
 
+[tool.setuptools.package-data]
+knowmat = ["data/elements.json"]
+
 [tool.setuptools_scm]
 version_scheme = "no-guess-dev"
 

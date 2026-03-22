@@ -105,7 +105,22 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument("--flagging-model", default=None, help="Model for flagging/quality assessment agent.")
     parser.add_argument("--ocr-log-level", default=None, help="OCR/PaddleX log level (e.g., DEBUG, INFO, WARNING). Overrides PADDLE_PDX_LOG_LEVEL if set.")
     parser.add_argument("--paddleocrvl-version", default=None, help="PaddleOCR-VL version to use: '1.5' (default) or '1.0'.")
-    
+    parser.add_argument(
+        "--ocr-pages",
+        default=None,
+        help="1-based pages to OCR, e.g. '1-5,8,10-12'. Default: all pages. Same as env KNOWMAT_OCR_PAGES.",
+    )
+    parser.add_argument(
+        "--skip-cached-ocr",
+        action="store_true",
+        help="Ignore saved OCR cache under _ocr_cache and re-run inference.",
+    )
+    parser.add_argument(
+        "--clear-ocr-cache",
+        action="store_true",
+        help="Remove all _ocr_cache directories under the input folder before processing.",
+    )
+
     args = parser.parse_args(argv)
     if args.ocr_log_level:
         os.environ["PADDLE_PDX_LOG_LEVEL"] = args.ocr_log_level
@@ -124,6 +139,12 @@ def main(argv: list[str] | None = None) -> None:
     if not input_folder.is_dir():
         print(f"Error: Path is not a directory: {input_folder}")
         return
+
+    if args.clear_ocr_cache:
+        from knowmat.pdf.ocr_cache import clear_all_ocr_caches_under
+
+        cleared = clear_all_ocr_caches_under(input_folder)
+        print(f"Cleared {cleared} _ocr_cache director(y/ies) under {input_folder}.")
 
     # OCR 中间产物（.md / .json）始终在 input_folder 下按论文子目录存放（如 data/raw/论文A/论文A.md）
     # 抽取结果（extraction JSON、报告等）写入 output_dir，默认 data/output，与 raw 分离
@@ -210,6 +231,8 @@ def main(argv: list[str] | None = None) -> None:
             "pdf_path": str(pdf),
             "output_dir": str(parse_output_dir),
             "save_intermediate": False,
+            "ocr_pages": args.ocr_pages,
+            "ocr_skip_cached": bool(args.skip_cached_ocr),
         }
         try:
             result = _run_with_elapsed_progress("OCR", pdf.name, parse_pdf_with_paddleocrvl, state)
@@ -247,6 +270,8 @@ def main(argv: list[str] | None = None) -> None:
             "pdf_path": str(text_path),
             "output_dir": str(paper_dir),
             "save_intermediate": False,
+            "ocr_pages": None,
+            "ocr_skip_cached": False,
         }
         try:
             result = _run_with_elapsed_progress("TXT->MD", text_path.name, parse_pdf_with_paddleocrvl, state)
@@ -336,6 +361,25 @@ def main(argv: list[str] | None = None) -> None:
     results_summary = []
     workers = max(1, args.workers)
     ocr_workers = max(1, args.ocr_workers)
+    
+    # For GPU environments, force ocr_workers=1 to prevent GPU resource contention
+    # GPU memory is shared and multiple OCR processes will cause OOM
+    try:
+        from knowmat.pdf.ocr_engine import get_gpu_memory_info
+        used_gb, total_gb = get_gpu_memory_info()
+        if total_gb > 0:
+            # GPU detected - warn if ocr_workers > 1
+            if ocr_workers > 1:
+                print(f"\nWarning: GPU detected ({total_gb:.1f} GB). Forcing --ocr-workers to 1 to prevent GPU resource contention.")
+                ocr_workers = 1
+            print(f"GPU Memory: {used_gb:.1f}/{total_gb:.1f} GB used")
+    except Exception:
+        pass
+    
+    # Also check for LLM workers - multiple concurrent LLM calls can overwhelm API limits
+    if workers > 1:
+        print(f"\nNote: --workers={workers} will run {workers} LLM extractions concurrently.")
+        print("      If you encounter rate limits, consider reducing to --workers 1.")
 
     with ThreadPoolExecutor(max_workers=workers) as llm_pool, ThreadPoolExecutor(max_workers=ocr_workers) as ocr_pool:
         llm_futures = {}

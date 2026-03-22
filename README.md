@@ -348,10 +348,20 @@ KnowMat 采用**三级协同**的 OCR 架构，结合 PaddleOCR-VL 1.5 的高速
 |------|------|------|
 | `OCR_BATCH_SIZE` | `2` | VL 批推理页数；8GB 显存可再设为 `1` 降低峰值 |
 | `OCR_RENDER_DPI` | `300` | 页面渲染分辨率；`200` 可省显存与时间，略降细字质量 |
-| `KNOWMAT_SKIP_PPSTRUCTURE_REFINE` | **默认不设置（关闭）** | 仅当手动设为 `1` / `true` 时才跳过 PP-StructureV3 精修与化学式裁剪重 OCR（省显存/时间，**表格与公式质量下降**）。**推荐保持不设置**，以保证 KnowMat 设计效果。 |
-| `KNOWMAT_SKIP_CHEM_REOCR` | **默认不设置（关闭）** | 仅当手动设为 `1` / `true` 且在未跳过 Structure 时，才跳过化学式段落重 OCR。 |
+| `OCR_PAGES_PER_RELEASE` | `0`（关闭） | 大于 `0` 时按该页数分段跑推理，段间调用 `empty_cache()`，减轻长 PDF 连续推理时的显存峰值 |
+| `OCR_MAX_RENDER_WORKERS` | `4` | PyMuPDF 渲染页图为 PNG 时的线程数上限 |
+| `OCR_HEADER_LINES` / `OCR_FOOTER_LINES` | `5` / `3` | 写入 `page_level_metadata` 时头/尾行数采样 |
+| `OCR_LOW_CONFIDENCE_THRESHOLD` | `0.5` | 低于该置信度的块所在页记入 `ocr_quality.ocr_low_confidence_pages` |
+| `KNOWMAT_OCR_LOW_CONF_ACTION` | `none` | `none`：仅统计；`tag`：对 `typer=paragraph` 且置信度低于阈值者加前缀并设 `low_confidence`；`drop`：剔除这些段落（表格/公式不受影响） |
+| `OCR_INFER_TIMEOUT_SEC` | `0`（关闭） | 大于 `0` 时为单次推理设置等待超时；超时后返回空结果并记录日志。**注意**：无法从 Python 终止已在 CUDA 中执行的线程，仅避免调用方无限阻塞 |
+| `KNOWMAT_OCR_PAGES` | （空） | 与 CLI `--ocr-pages` 相同，例如 `1-5,8`；仅 OCR 指定页（1-based） |
+| `KNOWMAT_OCR_SKIP_CACHED` | **默认不设置** | 设为 `1` / `true` 时忽略 `<output_dir>/_ocr_cache` 中已缓存的 OCR 结果，强制重跑 |
+| `KNOWMAT_OCR_NO_CACHE_WRITE` | **默认不设置** | 设为 `1` / `true` 时不在 `_ocr_cache` 写入新缓存 |
+| `KNOWMAT_SKIP_PPSTRUCTURE_REFINE` | （**已忽略**） | 历史变量；当前版本**始终**跑 PP-StructureV3 精修，设置此项不再生效。 |
+| `KNOWMAT_SKIP_CHEM_REOCR` | **默认不设置（关闭）** | 设为 `1` / `true` 时跳过化学式段落裁剪重 OCR（仍保留 StructureV3）。 |
+| `KNOWMAT_ALLOW_LEGACY_PADDLEOCR` | **默认不设置** | 设为 `1` / `true` 时，仅在 PaddleOCR-VL 无法初始化时允许降级到传统行 OCR；**仍会**跑 PP-StructureV3（版面种子 + `route_and_reocr` 精修），但无 VL 版面/`restructure_pages`；正常请勿设置。 |
 
-每份 PDF 处理结束后会**释放** PP-StructureV3 缓存并调用 `paddle` 的 `empty_cache()`，减轻连续多份 PDF 时的 **CUDA OOM**。若仍 OOM，**优先**尝试：`OCR_BATCH_SIZE=1`、`OCR_RENDER_DPI=200`、关闭其他占用 GPU 的程序；**仅在可接受效果降级时**再考虑设置 `KNOWMAT_SKIP_PPSTRUCTURE_REFINE=1`。
+每份 PDF 处理结束后会**释放** PP-StructureV3 缓存并调用 `paddle` 的 `empty_cache()`，减轻连续多份 PDF 时的 **CUDA OOM**。若仍 OOM，**优先**尝试：`OCR_BATCH_SIZE=1`、`OCR_RENDER_DPI=200`、`OCR_PAGES_PER_RELEASE=4`、关闭其他占用 GPU 的程序；必要时再设 `KNOWMAT_SKIP_CHEM_REOCR=1`（仍会跑 StructureV3）。
 
 Windows 上若出现 sklearn KMeans 内存警告，可先执行：`set OMP_NUM_THREADS=1`（PowerShell：`$env:OMP_NUM_THREADS="1"`）。
 
@@ -493,6 +503,10 @@ python -m knowmat \
 | `--ocr-only` | 仅跑 OCR，不跑 LLM 抽取；输出为 `<input-folder>/<基名>/<基名>.md` 与 `.json` | `False` |
 | `--ocr-workers` | 并发 OCR 的 PDF 数量（有 GPU 时建议 1） | `1` |
 | `--ocr-log-level` | OCR/PaddleX 日志级别（如 DEBUG、INFO、WARNING） | - |
+| `--paddleocrvl-version` | PaddleOCR-VL 版本：`1.5`（默认）或 `1.0` | - |
+| `--ocr-pages` | 仅 OCR 指定页，如 `1-5,8,10-12`（1-based）；同 `KNOWMAT_OCR_PAGES` | - |
+| `--skip-cached-ocr` | 忽略 `_ocr_cache` 中已有结果，强制重新 OCR | `False` |
+| `--clear-ocr-cache` | 处理前删除输入目录下所有 `_ocr_cache` 目录 | `False` |
 | `--max-runs` | 每篇论文的最大抽取/评估轮数 | `1` |
 | `--workers` | 并发处理文件数（LLM 抽取） | `1` |
 | `--full-pipeline` | 启用完整多阶段流水线 | `False` |
@@ -573,116 +587,81 @@ print(f"Flagged: {result['flag']}")
 
 ## 项目结构
 
+以下为仓库主要目录与职责；细枝末节以实际文件为准。
+
+### 根目录（配置与元信息）
+
 ```text
-├── AUTHORS.md              <- 开发者与维护者列表
-├── CHANGELOG.md            <- 版本变更记录（新功能与修复）
-├── CONTRIBUTING.md         <- 项目贡献指南
-├── LICENSE.txt             <- MIT 许可证
-├── README.md               <- 项目说明文档（当前文件）
-├── .env.example            <- 环境变量模板（仅占位符，不含真实密钥）
-├── Dockerfile              <- 容器构建定义
-├── environment.yml         <- Conda 环境依赖定义
-├── pyproject.toml          <- 构建系统配置
-├── requirements.txt        <- pip 依赖列表（补充安装场景）
-├── setup.cfg               <- 包元数据与依赖配置
-├── setup.py                <- 安装脚本（已弱化，建议使用 pip install -e .）
-├── tox.ini                 <- 多环境测试配置
-├── .coveragerc             <- 覆盖率配置
-├── .gitignore
-├── .github/
-│   └── workflows/
-│       └── ci.yml          <- CI：lint/type-check/test
-├── .isort.cfg              <- isort 排序配置
-├── .pre-commit-config.yaml <- 预提交钩子配置
-├── .readthedocs.yml        <- Read the Docs 构建配置
+├── README.md                 项目说明（当前文档）
+├── AUTHORS.md / CHANGELOG.md / CONTRIBUTING.md / LICENSE.txt
+├── pyproject.toml            构建与依赖（推荐 pip install -e .）
+├── setup.cfg / setup.py      传统安装入口（setup.py 已弱化）
+├── requirements.txt          补充 pip 依赖
+├── requirements-gpu.txt      GPU / Paddle 等可选依赖说明
+├── environment.yml           Conda 环境
+├── configs/                  预留配置目录（可为空）
+├── Dockerfile                容器构建
+├── tox.ini / .coveragerc     测试与覆盖率
+├── .env.example              环境变量模板（无真实密钥）
+├── .pre-commit-config.yaml / .isort.cfg
+├── .readthedocs.yml          Read the Docs（若启用）
+└── .gitignore
+```
+
+### 数据、评测与模型
+
+```text
+├── data/
+│   ├── raw/                  原始 PDF/TXT 与 OCR 产物：<论文基名>/<基名>.md、.json、_ocr_cache/
+│   ├── output/               默认抽取输出，按论文子目录存放
+│   ├── external/ / interim/  外部数据与临时中间结果
+├── evaluation/               评测脚本与结果（groundtruth/、output/、auto_score_extraction.py 等）
+├── models/                   本地 PaddleOCR-VL 等权重（通常 .gitignore）
+└── reports/                  回归与 QA 报告（regression_*.md / *.json）
+```
+
+### 提示词与源码
+
+```text
+├── prompts/                  LLM 提示模板
+│   ├── README.md
+│   ├── extraction_system_template.txt / extraction_user_template.txt
+│   ├── evaluation.yaml / flagging.yaml / subfield_detection.yaml / validator.yaml
 │
-├── prompts/                <- 提示词模板（YAML/TXT）
-│   ├── README.md                       <- 说明 prompts 文件夹用途及各模板用法
-│   ├── evaluation.yaml                 <- 评估抽取质量相关的提示词模板
-│   ├── flagging.yaml                   <- 质量标记/错误标记等相关提示词
-│   ├── subfield_detection.yaml         <- 领域或子类领域自动识别用的提示词
-│   ├── extraction_system_template.txt  <- 系统角色（System）的大模型提示模板
-│   └── extraction_user_template.txt    <- 用户输入（User）的大模型提示模板
-│
-├── data/                   <- 数据目录
-│   ├── raw/                <- 原始输入与 OCR 中间产物（.pdf/.txt + <PaperName>/*.md, *.json）
-│   ├── output/             <- 抽取结果输出目录（默认）
-│   │   └── <PaperName>/    <- 按论文分组的抽取结果
-│   ├── external/           <- 外部数据或中间产物
-│   └── interim/            <- 临时中间数据
-│
-├── src/                    <- 源代码目录
-│   └── knowmat/            <- 主包
-│       ├── __init__.py
-│       ├── __main__.py     <- CLI 入口
-│       ├── orchestrator.py <- 流水线编排（LangGraph）
-│       ├── app_config.py   <- 应用配置（默认输入/输出目录与模型配置）
-│       ├── config.py       <- 环境变量加载与运行时配置
-│       ├── states.py       <- LangGraph 状态定义
-│       ├── extractors.py   <- TrustCall/Pydantic 抽取结构定义
-│       ├── prompt_generator.py <- 动态提示词生成
-│       ├── prompt_loader.py <- 外部模板加载器（prompts/*）
-│       ├── post_processing.py  <- 属性标准化后处理
-│       ├── schema_converter.py <- 内部格式到目标 HEA  schema 转换（domain_rules 驱动）
-│       ├── report_writer.py    <- 抽取分析报告生成
-│       ├── domain_rules.py     <- 领域规则加载器（读 domain_rules.yaml）
-│       ├── domain_rules.yaml   <- 领域规则配置（相推断、沉淀检测、工艺分类等）
-│       ├── properties.json     <- 属性标准化词库
-│       ├── pdf/            <- PDF 解析子包（拆分模块）
-│       │   ├── __init__.py            <- 子包初始化
-│       │   ├── blocks.py              <- PDF 文档块（段落、表格、图片等）解析
-│       │   ├── table_structure.py     <- PP-Structure/TSR 区域路由与二次精读
-│       │   ├── block_filter.py        <- 基于几何 bbox 的图像与碎片噪声过滤
-│       │   ├── doi_extractor.py       <- 从 PDF 中自动识别并提取 DOI
-│       │   ├── html_cleaner.py        <- PDF 转 HTML 后内容结构清洗与规范化（支持上下标修复）
-│       │   ├── ocr_engine.py          <- OCR 引擎接口（对接 PaddleOCR-VL 1.5）
-│       │   └── section_normalizer.py  <- 章节、化学式模式与希腊字母的标准化
-│       └── nodes/          <- 各代理节点实现
-│           ├── __init__.py
-│           ├── paddleocrvl_parse_pdf.py  <- PDF/TXT 解析节点（含 OCR 逻辑）
-│           ├── docling_parse_pdf.py      <- 兼容层：原 docling 接口 → PaddleOCR-VL
-│           ├── subfield_detection.py     <- 子领域识别节点
-│           ├── extraction.py             <- 结构化抽取节点
-│           ├── evaluation.py             <- 抽取质量评估节点
-│           ├── aggregator.py             <- Manager 第 1 阶段：规则聚合
-│           ├── validator.py              <- Manager 第 2 阶段：LLM 校验修正
-│           ├── schema_convert.py         <- 内部格式 → 目标 schema 转换节点
-│           ├── standardize.py            <- 属性名标准化节点（可选，依赖 properties.json）
-│           └── flagging.py               <- 最终质量标记节点
-│
-├── tools/                  <- 开发工具集
-│   ├── regression_diff.py  <- 回归测试工具（AI vs GT 对比）
-│   └── README.md           <- 工具使用说明
-│
-├── scripts/                <- 脚本与环境准备
-│   ├── compare_to_manual.py       <- 与人工标注对比
-│   ├── ocr_regression_report.py   <- OCR-only 解析质量专项回归评估（化学式、表格、小数点）
-│   ├── download_paddleocrvl_models.py <- PaddleOCR-VL 模型下载
-│   ├── setup_env.ps1              <- Windows 一键环境部署（Conda + Paddle + OCR）
-│   ├── setup_env.sh               <- Linux/macOS 一键环境部署
-│   ├── validate_prompts.py        <- 模板完整性校验脚本
-│   └── train_model.py             <- 模型训练脚本
-│
-├── reports/                <- 回归与 QA 报告输出目录
-│   ├── regression_*.md    <- Markdown 格式报告
-│   └── regression_*.json  <- JSON 格式报告
-│
-├── tests/                  <- 单元测试（pytest）
-│   ├── conftest.py         <- pytest fixtures
-│   ├── test_domain_rules.py
-│   └── test_schema_converter.py
-│
-├── notebooks/              <- 数据分析与实验笔记
-│   ├── create_annotation.ipynb <- 标注创建
-│   └── template.ipynb      <- 实验模板
-│
-├── models/                 <- 本地模型存放目录（.gitignore）
-├── references/             <- 参考文档或资料
-└── docs/                   <- 文档目录（Sphinx，已同步中文说明）
-    ├── conf.py             <- Sphinx 配置
-    ├── Makefile            <- 文档构建
-    ├── index.md, readme.md, changelog.md, contributing.md, authors.md, license.md
-    └── _static/            <- 静态资源
+└── src/knowmat/              主 Python 包
+    ├── __main__.py           CLI 入口
+    ├── orchestrator.py       LangGraph 编排
+    ├── app_config.py / config.py / states.py
+    ├── extractors.py / prompt_generator.py / prompt_loader.py
+    ├── post_processing.py / schema_converter.py / report_writer.py
+    ├── domain_rules.py / domain_rules.yaml / properties.json
+    ├── data/                 包内数据（如 elements.json，化学式/元素相关）
+    ├── pdf/                  PDF/OCR 子模块
+    │   ├── ocr_engine.py / ocr_cache.py
+    │   ├── blocks.py / block_filter.py / table_structure.py
+    │   ├── html_cleaner.py / formula_formatter.py
+    │   ├── section_normalizer.py / heading_detector.py
+    │   └── doi_extractor.py
+    └── nodes/                LangGraph 节点
+        ├── paddleocrvl_parse_pdf.py / docling_parse_pdf.py
+        ├── subfield_detection.py / extraction.py / evaluation.py
+        ├── aggregator.py / validator.py / schema_convert.py
+        ├── standardize.py / flagging.py
+```
+
+### 脚本、工具、测试与文档
+
+```text
+├── scripts/                  环境搭建、模型下载、评测与辅助脚本
+│   ├── setup_env.ps1 / setup_env.sh
+│   ├── download_paddleocrvl_models.py / download_paddleocrvl_1.0_models.py
+│   ├── ocr_regression_report.py / compare_paddleocrvl_truncation.py
+│   └── compare_to_manual.py / validate_prompts.py / train_model.py
+├── tools/                    regression_diff.py 等（见 tools/README.md）
+├── tests/                    pytest：conftest、test_domain_rules、test_schema_converter、test_references_trimming
+├── notebooks/                create_annotation.ipynb、template.ipynb
+├── docs/                     Sphinx 与中文同步文档（conf.py、index.md、changelog.md 等）
+└── references/               项目内参考资料目录
 ```
 
 ---
