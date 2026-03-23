@@ -20,7 +20,7 @@ import os
 import sys
 import threading
 import time
-from concurrent.futures import ThreadPoolExecutor, as_completed, wait, FIRST_COMPLETED
+from concurrent.futures import ThreadPoolExecutor, wait, FIRST_COMPLETED
 from pathlib import Path
 
 from knowmat.nodes.paddleocrvl_parse_pdf import parse_pdf_with_paddleocrvl
