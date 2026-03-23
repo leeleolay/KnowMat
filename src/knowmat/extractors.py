@@ -448,9 +448,6 @@ class CompositionProperties(BaseModel):
         default_factory=list,
         description="List of standard properties extracted for this composition."
     )
-    # non_standard_properties_of_composition: List[Property] = Field(
-    #     description="List of non‑standard properties extracted for this composition."
-    # )
 
     @model_validator(mode="after")
     def fill_composition_from_normalized(self) -> "CompositionProperties":
