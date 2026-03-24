@@ -1,6 +1,7 @@
 import math
 
 from knowmat.schema_converter import SchemaConverter
+from knowmat import schema_converter as schema_converter_module
 
 
 converter = SchemaConverter()
@@ -35,11 +36,58 @@ def test_validate_composition_json_warns_on_sum_far_from_100():
 
 def test_build_composition_json_defaults_missing_amounts_to_one():
     comp = converter.build_composition_json("FeCoCrNiMo0.5")
-    assert comp["Fe"] == 1.0
-    assert comp["Co"] == 1.0
-    assert comp["Cr"] == 1.0
-    assert comp["Ni"] == 1.0
-    assert math.isclose(comp["Mo"], 0.5)
+    assert set(comp.keys()) == {"Fe", "Co", "Cr", "Ni", "Mo"}
+    if schema_converter_module._PymatgenComposition is not None:
+        assert math.isclose(sum(comp.values()), 100.0, rel_tol=1e-6, abs_tol=1e-6)
+        assert math.isclose(comp["Fe"], comp["Co"], rel_tol=1e-6)
+        assert math.isclose(comp["Cr"], comp["Ni"], rel_tol=1e-6)
+        assert comp["Mo"] < comp["Fe"]
+    else:
+        assert comp["Fe"] == 1.0
+        assert comp["Co"] == 1.0
+        assert comp["Cr"] == 1.0
+        assert comp["Ni"] == 1.0
+        assert math.isclose(comp["Mo"], 0.5)
+
+
+def test_build_composition_json_handles_balance_notation_without_barium_leak():
+    comp = converter.build_composition_json(
+        "NiBalCr21.49W13.13Mo2.22Fe1.57Co1.30Al0.46Mn0.34Si0.30La0.029C0.48"
+    )
+    assert "Ba" not in comp
+    assert "Ni" in comp
+    if schema_converter_module._PymatgenComposition is not None:
+        assert math.isclose(sum(comp.values()), 100.0, rel_tol=1e-6, abs_tol=1e-6)
+        assert comp["Ni"] > 50.0
+
+
+def test_build_composition_json_handles_ti_v_amount_tokens_without_crashing():
+    comp = converter.build_composition_json("Ti4V10")
+    assert "Ti" in comp
+    assert "V" in comp
+    if schema_converter_module._PymatgenComposition is not None:
+        assert math.isclose(sum(comp.values()), 100.0, rel_tol=1e-6, abs_tol=1e-6)
+
+
+def test_recover_formula_from_paper_text_prefers_explicit_balance_line():
+    paper_text = (
+        "The powder’s elemental composition is 21.49 Cr - 13.13 W - 2.22 Mo - "
+        "1.57 Fe - 1.30 Co - 0.46 Al - 0.34 Mn - 0.30 Si - 0.029 La - 0.48 C - Bal Ni "
+        "(weight percent, wt.%)."
+    )
+    recovered = converter._recover_formula_from_paper_text(
+        paper_text=paper_text,
+        comp_raw="SD3230 [As-Built, Horizontal BD]",
+        fallback_formula="Ni21.18Cr13.27W2.84Mo0.92Fe1.12Co0.88Al0.68Mn0.25Si0.43C1.59La0.008",
+        target_count=1,
+    )
+    assert recovered is not None
+    assert recovered.startswith("Ni58.681")
+    comp = converter.build_composition_json(recovered)
+    if schema_converter_module._PymatgenComposition is not None:
+        assert math.isclose(comp["Ni"], 58.681, rel_tol=1e-4, abs_tol=1e-4)
+        assert math.isclose(comp["Cr"], 21.49, rel_tol=1e-4, abs_tol=1e-4)
+        assert math.isclose(sum(comp.values()), 100.0, rel_tol=1e-6, abs_tol=1e-6)
 
 
 def test_validate_composition_json_drops_invalid_element():
@@ -48,3 +96,23 @@ def test_validate_composition_json_drops_invalid_element():
     assert "Xx" not in cleaned
     assert any("Invalid element" in w for w in warnings)
 
+
+def test_parse_key_params_tolerates_noisy_numeric_tokens():
+    params = converter.parse_key_params("laser power=10V2 W; scan speed=900 mm/s")
+    # Should not crash; best-effort extraction is acceptable.
+    assert "Scan_Speed_mm_s" in params
+
+
+def test_convert_bootstraps_datasheet_compositions_when_llm_returns_none():
+    data = {"compositions": []}
+    paper_text = (
+        "Common Name: Iodide Ti\n"
+        "Specifications and Compositions.\n"
+        "| Specification designation | Form(s) | C | H | N | O | Cu | Fe | Mn | Sn | Si | Zr | Cl | Mg | Tibal |\n"
+        "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n"
+        "| Typical %, electrolytic T1 | ... | 0.008 | ... | 0.004 | 0.037 | 0.007 | 0.009 | <0.001 | <0.020 | 0.002 | <0.001 | 0.073 | <0.001 | 99.837 |\n"
+    )
+    out = converter.convert(data, "High-Purity Ti（海绵钛）.md", paper_text=paper_text)
+    assert len(out["Materials"]) >= 1
+    comp = out["Materials"][0]["Composition_JSON"]
+    assert "Ti" in comp

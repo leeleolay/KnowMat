@@ -1,9 +1,9 @@
 {
-  "paper_name": "5-2024-IJP-在 FeCoCrNiMox",
+  "paper_name": "5-2024-IJP-在_FeCoCrNiMox",
   "pipeline_version": "knowmat-2.0.1",
   "materials_target_count": 4,
-  "samples_count": 4,
-  "properties_count": 35,
+  "samples_count": 3,
+  "properties_count": 8,
   "unknown_process_count": 0,
   "phase_filled_rate": 1.0,
   "missing_doi": 0,

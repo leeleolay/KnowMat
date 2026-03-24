@@ -14,60 +14,60 @@
 
 ### Composition Element Detection
 
-- TP/FP/FN: `55` / `0` / `1`
-- Precision/Recall/F1: `1.0000` / `0.9821` / `0.9910`
+- TP/FP/FN: `55` / `1` / `1`
+- Precision/Recall/F1: `0.9821` / `0.9821` / `0.9821`
 
 ### Composition Value Error
 
 - Count: `55`
-- MAE: `0.470749`
-- Max Abs Error: `10.519027`
-- Exact Rate: `0.563636`
-- Within Tol Rate: `0.709091`
+- MAE: `2.152303`
+- Max Abs Error: `58.991544`
+- Exact Rate: `0.672727`
+- Within Tol Rate: `0.854545`
 
 ### Performance Test Detection
 
-- TP/FP/FN: `93` / `37` / `25`
-- Precision/Recall/F1: `0.7154` / `0.7881` / `0.7500`
+- TP/FP/FN: `86` / `18` / `32`
+- Precision/Recall/F1: `0.8269` / `0.7288` / `0.7748`
 
 ### Performance Test Value Error
 
-- Count: `93`
-- MAE: `113.375591`
-- Max Abs Error: `1071.07`
-- Exact Rate: `0.623656`
-- Within Tol Rate: `0.623656`
+- Count: `86`
+- MAE: `25.838372`
+- Max Abs Error: `415.5`
+- Exact Rate: `0.802326`
+- Within Tol Rate: `0.813953`
 
 ## By Temperature (K)
 
 | Temp_K | Test TP | Test FP | Test FN | Test F1 | Value Count | Value MAE | Value MaxErr |
 |---:|---:|---:|---:|---:|---:|---:|---:|
-| 77 | 6 | 0 | 0 | 1.0000 | 6 | 101.033333 | 375.0 |
-| 298 | 43 | 5 | 1 | 0.9348 | 43 | 87.62907 | 1071.07 |
+| 77 | 4 | 2 | 2 | 0.6667 | 4 | 0.0 | 0.0 |
+| 298 | 30 | 2 | 14 | 0.7895 | 30 | 0.0 | 0.0 |
 | 673 | 2 | 0 | 0 | 1.0000 | 2 | 0.0 | 0.0 |
-| 773 | 5 | 0 | 0 | 1.0000 | 5 | 0.0 | 0.0 |
-| 873 | 21 | 0 | 5 | 0.8936 | 21 | 151.575238 | 779.07 |
-| 973 | 0 | 0 | 5 | 0.0000 | 0 | None | None |
-| 1073 | 0 | 0 | 6 | 0.0000 | 0 | None | None |
-| 1173 | 0 | 0 | 8 | 0.0000 | 0 | None | None |
-| 1273 | 4 | 8 | 0 | 0.5000 | 4 | 121.5 | 486.0 |
-| 1473 | 6 | 6 | 0 | 0.6667 | 6 | 136.766667 | 549.0 |
-| 1673 | 2 | 10 | 0 | 0.2857 | 2 | 419.5 | 839.0 |
-| 1873 | 4 | 8 | 0 | 0.5000 | 4 | 210.25 | 841.0 |
+| 773 | 4 | 1 | 1 | 0.8000 | 4 | 0.0 | 0.0 |
+| 873 | 13 | 2 | 13 | 0.6341 | 13 | 83.861538 | 415.5 |
+| 973 | 5 | 1 | 0 | 0.9091 | 5 | 143.54 | 260.0 |
+| 1073 | 6 | 0 | 0 | 1.0000 | 6 | 35.7 | 77.0 |
+| 1173 | 8 | 0 | 0 | 1.0000 | 8 | 0.0 | 0.0 |
+| 1273 | 4 | 2 | 0 | 0.8000 | 4 | 0.0 | 0.0 |
+| 1473 | 4 | 2 | 2 | 0.6667 | 4 | 0.0 | 0.0 |
+| 1673 | 2 | 4 | 0 | 0.5000 | 2 | 100.0 | 200.0 |
+| 1873 | 4 | 2 | 0 | 0.8000 | 4 | 0.0 | 0.0 |
 
 ## By Property Type
 
 | Property | Test TP | Test FP | Test FN | Test F1 | Value Count | Value MAE | Value MaxErr |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| elongation | 10 | 4 | 8 | 0.6250 | 10 | 2.44 | 12.2 |
-| elongation_compressive | 8 | 12 | 0 | 0.5714 | 8 | 0.075 | 0.6 |
+| elongation | 12 | 2 | 6 | 0.7500 | 12 | 0.3 | 2.7 |
+| elongation_compressive | 7 | 5 | 1 | 0.7000 | 7 | 0.0 | 0.0 |
 | fracture_strain | 4 | 0 | 0 | 1.0000 | 4 | 0.0 | 0.0 |
-| total_elongation | 7 | 0 | 1 | 0.9333 | 7 | 8.347143 | 28.28 |
-| ultimate_strength_compressive | 8 | 12 | 0 | 0.5714 | 8 | 33.875 | 271.0 |
-| ultimate_tensile_strength | 14 | 0 | 6 | 0.8235 | 14 | 369.871429 | 1071.07 |
-| uniform_elongation | 8 | 0 | 0 | 1.0000 | 8 | 6.91125 | 20.75 |
-| yield_strength | 22 | 1 | 10 | 0.8000 | 22 | 101.864091 | 558.62 |
-| yield_strength_compressive | 12 | 8 | 0 | 0.7500 | 12 | 226.25 | 841.0 |
+| total_elongation | 2 | 6 | 6 | 0.2500 | 2 | 0.0 | 0.0 |
+| ultimate_strength_compressive | 7 | 5 | 1 | 0.7000 | 7 | 0.0 | 0.0 |
+| ultimate_tensile_strength | 14 | 0 | 6 | 0.8235 | 14 | 73.992857 | 415.5 |
+| uniform_elongation | 2 | 0 | 6 | 0.4000 | 2 | 0.0 | 0.0 |
+| yield_strength | 26 | 0 | 6 | 0.8966 | 26 | 37.792308 | 270.0 |
+| yield_strength_compressive | 12 | 0 | 0 | 1.0000 | 12 | 16.666667 | 200.0 |
 
 ## Per Article
 
@@ -75,34 +75,34 @@
 - Composition Detection P/R/F1: `1.0000` / `1.0000` / `1.0000`
 - Composition Value MAE: `0.0` (count=4)
 - Test Detection P/R/F1: `1.0000` / `1.0000` / `1.0000`
-- Test Value MAE: `0.0` (count=8)
+- Test Value MAE: `0.125` (count=8)
 
 ### Article `2`
 - Composition Detection P/R/F1: `1.0000` / `1.0000` / `1.0000`
-- Composition Value MAE: `0.158571` (count=7)
-- Test Detection P/R/F1: `0.4590` / `1.0000` / `0.6292`
-- Test Value MAE: `106.664286` (count=28)
+- Composition Value MAE: `0.001429` (count=7)
+- Test Detection P/R/F1: `0.7222` / `0.9286` / `0.8125`
+- Test Value MAE: `7.692308` (count=26)
 
 ### Article `3`
 - Composition Detection P/R/F1: `1.0000` / `1.0000` / `1.0000`
 - Composition Value MAE: `0.0` (count=5)
-- Test Detection P/R/F1: `1.0000` / `1.0000` / `1.0000`
-- Test Value MAE: `67.355556` (count=18)
+- Test Detection P/R/F1: `0.6667` / `0.6667` / `0.6667`
+- Test Value MAE: `0.0` (count=12)
 
 ### Article `4`
-- Composition Detection P/R/F1: `1.0000` / `1.0000` / `1.0000`
-- Composition Value MAE: `2.143744` (count=11)
-- Test Detection P/R/F1: `1.0000` / `0.5000` / `0.6667`
-- Test Value MAE: `0.0` (count=8)
+- Composition Detection P/R/F1: `0.9167` / `1.0000` / `0.9565`
+- Composition Value MAE: `10.757878` (count=11)
+- Test Detection P/R/F1: `1.0000` / `1.0000` / `1.0000`
+- Test Value MAE: `0.0` (count=16)
 
 ### Article `5`
 - Composition Detection P/R/F1: `1.0000` / `0.9500` / `0.9744`
-- Composition Value MAE: `0.057895` (count=19)
-- Test Detection P/R/F1: `0.8857` / `0.9688` / `0.9254`
-- Test Value MAE: `204.675161` (count=31)
+- Composition Value MAE: `0.001053` (count=19)
+- Test Detection P/R/F1: `1.0000` / `0.2500` / `0.4000`
+- Test Value MAE: `0.0` (count=8)
 
 ### Article `6`
 - Composition Detection P/R/F1: `1.0000` / `1.0000` / `1.0000`
-- Composition Value MAE: `0.011111` (count=9)
-- Test Detection P/R/F1: `0.0000` / `0.0000` / `0.0000`
-- Test Value MAE: `None` (count=0)
+- Composition Value MAE: `0.001111` (count=9)
+- Test Detection P/R/F1: `0.8889` / `1.0000` / `0.9412`
+- Test Value MAE: `126.31875` (count=16)

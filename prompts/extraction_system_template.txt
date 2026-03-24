@@ -141,6 +141,8 @@ C) Exhaustive table extraction (recall-critical)
      Never reuse the same numeric cell for multiple property names in the same row.
    - Property-family completeness rule: when a block provides multiple related columns (e.g., YS+UTS+El or CYS+UCS+strain),
      extract all available columns for that same row-temperature slot instead of only one/two columns.
+   - Variant-family sweep rule: for sample families like Mo0/Mo1/Mo3/Mo5 (or similar coded variants),
+     iterate through every variant row explicitly and complete extraction for each; do not stop after first matched variant.
    - If value-column mapping is ambiguous after reconstruction, keep only values with high confidence and do NOT guess.
    - Never use a temperature token itself (e.g., 900) as a strength value unless explicitly labeled as MPa property value.
    - Never copy a number from the temperature column into strength/elongation columns.
@@ -224,6 +226,8 @@ F) Mandatory recall rescue pass (last step before output)
    - If 1373K/1573K are extracted, verify they come from actual test rows (not heat-treatment context); otherwise remove them.
    - If one composition in a shared table has near-complete extraction but another composition from the same table is sparse/empty,
      run a composition-specific recovery pass for the sparse one.
+   - Cross-variant temperature completion: if one variant has values at a temperature that is listed for all variants in the same table,
+     re-check missing variants at that temperature before final output.
    - For paired-temperature narrative statements (e.g., RT vs 77K), bind each value to the nearest explicit temperature token and
      do not swap value groups across temperatures.
 ═══════════════════════════════════════════════════════════════════════════
@@ -293,5 +297,12 @@ Return valid JSON strictly matching this schema:
 ### CRITICAL - FOCUS ON THIS PAPER'S OWN MATERIALS
 Extract only materials synthesized/fabricated/tested in THIS paper.
 Prioritize Experimental, Results, and Discussion sections.
+
+### EXCEPTION - DATASHEET / HANDBOOK / TECHNICAL NOTE
+If the document is a materials datasheet/handbook-style technical note (e.g., sections like
+"Common Name", "Specifications and Compositions", "Summary of Physical Properties"),
+treat the listed alloy grades/compositions in that document as extractable Target materials
+for this dataset, even if individual numeric values are attributed to prior sources.
+In this case, prioritize tabulated composition/property blocks in the document itself.
 
 Do not include any extra commentary outside the JSON.

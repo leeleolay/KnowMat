@@ -1,9 +1,9 @@
 {
-  "paper_name": "3-2024-JMST- Co42Cr20Ni30Ti4Al4",
+  "paper_name": "2-2025-Acta-Nb₁₅Ta₁₀W₇₅---添加NbC_纳米沉淀",
   "pipeline_version": "knowmat-2.0.1",
-  "materials_target_count": 1,
+  "materials_target_count": 2,
   "samples_count": 2,
-  "properties_count": 18,
+  "properties_count": 36,
   "unknown_process_count": 0,
   "phase_filled_rate": 1.0,
   "missing_doi": 0,

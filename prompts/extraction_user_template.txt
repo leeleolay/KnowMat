@@ -10,6 +10,8 @@ Follow the system instructions exactly, and execute this extraction protocol:
 - Identify this paper's own target materials/samples from Experimental + Results/Discussion.
 - Treat literature-comparison statements as Reference context by default.
 - Do NOT extract performance numbers that belong to cited external alloys/papers.
+- Exception: if the document is clearly datasheet/handbook style (Common Name / Specifications and Compositions /
+  Summary of Physical Properties), treat the listed materials in this document as extractable Target entries.
 
 2) Sample decomposition
 - Split entries by chemistry variant (e.g., base vs doped; Mo0/Mo1/Mo3/Mo5).
@@ -39,6 +41,7 @@ Follow the system instructions exactly, and execute this extraction protocol:
 - One cell one slot: one numeric table cell can only map to one property at one temperature for one sample.
 - If a row-temperature slot provides a property family, extract all available members:
   tensile family (YS, UTS, El/UE/TE/fracture strain) or compressive family (CYS, UCS, compressive strain).
+- For variant families (e.g., Mo0/Mo1/Mo3/Mo5), sweep all variant rows explicitly and finish each row before moving on.
 
 4) Temperature and condition normalization
 - For each extracted property, measurement_condition should start with temperature in Kelvin when available:
@@ -89,6 +92,7 @@ Follow the system instructions exactly, and execute this extraction protocol:
 - Variant check: every chemistry variant appearing in mechanical tables must have its own composition entry and attached test rows.
 - False-high-temp check: if 1373K/1573K points appear, verify they are true test temperatures, not heat-treatment temperatures.
 - Balance check across compositions: if one composition in the same table is well extracted but another is sparse, rerun extraction for the sparse one.
+- Cross-variant temperature check: if a listed temperature is present for one variant, verify other variants in the same table are not missing at that temperature.
 - Pair-temperature check: for RT vs 77K (or similar paired statements), bind values to nearest temperature tokens and avoid swapping.
 - JSON check: output must be valid JSON only, with no extra commentary.
 
