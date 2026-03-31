@@ -113,18 +113,42 @@ class ProcessedSample(TypedDict, total=False):
     Performance_Tests: List[PerformanceTest]
 
 
+class TextDualTrack(TypedDict):
+    """Original and simplified text anchors."""
+
+    original: str
+    simplified: str
+
+
+class ProcessInfo(TypedDict, total=False):
+    """Process-level information for one material item."""
+
+    Process_Category: str
+    Process_Text: TextDualTrack
+    Key_Params: Dict[str, Any]
+
+
+class MicrostructureInfo(TypedDict, total=False):
+    """Microstructure summary and quantitative fields."""
+
+    Microstructure_Text: TextDualTrack
+    Main_Phase: Optional[str]
+    Has_Precipitates: Optional[bool]
+    Grain_Size_avg_um: Optional[float]
+
+
 class TargetMaterial(TypedDict, total=False):
     """One material entry in the target HEA schema."""
 
     description: str
     Mat_ID: str
-    Alloy_Name_Raw: str
-    Formula_Normalized: str
-    Composition_JSON: Dict[str, float]
     Composition_Info: Dict[str, Any]
     Composition_Source: str
     Source_DOI: str
     Source_File: str
+    Process_Info: ProcessInfo
+    Microstructure_Info: MicrostructureInfo
+    Properties_Info: List[PerformanceTest]
     Processed_Samples: List[ProcessedSample]
 
 

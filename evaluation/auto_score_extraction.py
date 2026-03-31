@@ -138,10 +138,21 @@ def load_materials(path: Path, drop_zero_elements: bool, zero_eps: float) -> Lis
         comp: Dict[str, float] = {}
         raw_comp = m.get("Composition_JSON")
         if not raw_comp:
-            raw_comp = comp_info.get("Composition") or {}
+            measured_block = comp_info.get("Measured_Composition") or {}
+            nominal_block = comp_info.get("Nominal_Composition") or {}
+            raw_comp = (
+                measured_block.get("Elements_Normalized")
+                or nominal_block.get("Elements_Normalized")
+                or comp_info.get("Composition")
+                or {}
+            )
         for k, v in raw_comp.items():
             fv = to_float(v)
             if fv is None:
+                continue
+            # Negative residual "other" is typically a rounding artifact from
+            # source tables; ignore it during composition matching.
+            if str(k).lower() == "other" and fv < 0:
                 continue
             if drop_zero_elements and abs(fv) <= zero_eps:
                 continue
@@ -173,6 +184,12 @@ def load_materials(path: Path, drop_zero_elements: bool, zero_eps: float) -> Lis
                     raw_unit=t.get("Property_Unit"),
                 )
             )
+        # When both legacy and new schemas coexist, suppress exact duplicate
+        # test rows to avoid double-counting the same evidence.
+        dedup: Dict[Tuple[str, str, str, Optional[float]], TestRecord] = {}
+        for t in tests:
+            dedup[(temp_key(t.temp_k), t.property_type, t.unit, t.value)] = t
+        tests = list(dedup.values())
 
         out.append(
             MaterialRecord(

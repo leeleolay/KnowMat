@@ -1,29 +1,29 @@
 # Extraction Scoring Report
 
-- Groundtruth dir: `groundtruth`
-- Output dir: `output`
+- Groundtruth dir: `evaluation/groundtruth`
+- Output dir: `evaluation/output`
 - Drop zero elements: `False`
 - Value tolerance: `0.1`
 - Temp tolerance (K): `1.0`
 - Allow Celsius shift: `False`
 - Ignore test unit: `False`
 - Material match uses tests: `False`
-- JSON report: `/Users/zhangziyu02/Desktop/对比试验/scoring_report.json`
+- JSON report: `/Users/zhangziyu02/Desktop/太行实验室/KnowMat/evaluation/scoring_report.json`
 
 ## Overall
 
 ### Composition Element Detection
 
-- TP/FP/FN: `48` / `0` / `15`
-- Precision/Recall/F1: `1.0000` / `0.7619` / `0.8649`
+- TP/FP/FN: `60` / `0` / `0`
+- Precision/Recall/F1: `1.0000` / `1.0000` / `1.0000`
 
 ### Composition Value Error
 
-- Count: `48`
-- MAE: `0.00375`
-- Max Abs Error: `0.18`
-- Exact Rate: `0.979167`
-- Within Tol Rate: `0.979167`
+- Count: `60`
+- MAE: `0.097933`
+- Max Abs Error: `2.591`
+- Exact Rate: `0.816667`
+- Within Tol Rate: `0.916667`
 
 ### Performance Test Detection
 
@@ -40,8 +40,8 @@
 
 ### Material-Level Full Hit
 
-- Full Hit / Total: `4` / `7`
-- Hit Rate: `0.571429`
+- Full Hit / Total: `7` / `7`
+- Hit Rate: `1.0`
 
 ## By Temperature (K)
 
@@ -58,8 +58,8 @@
 ## Per Article
 
 ### Article `AYzJ5YexzHG1b1fwF_ul`
-- Composition Detection P/R/F1: `1.0000` / `0.7619` / `0.8649`
-- Composition Value MAE: `0.00375` (count=48)
-- Material Full Hit: `4/7` (hit_rate=0.571429)
+- Composition Detection P/R/F1: `1.0000` / `1.0000` / `1.0000`
+- Composition Value MAE: `0.097933` (count=60)
+- Material Full Hit: `7/7` (hit_rate=1.0)
 - Test Detection P/R/F1: `1.0000` / `1.0000` / `1.0000`
 - Test Value MAE: `0.0` (count=6)

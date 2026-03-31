@@ -14,17 +14,21 @@ def test_parse_temperature_to_k_from_at_k():
 
 def test_parse_temperature_to_k_from_celsius():
     # 25 °C ≈ 298.15 K
-    assert converter.parse_temperature_to_k("tested at 25 °C") == 298
+    assert converter.parse_temperature_to_k("tested at 25 °C") == 298.15
     # plain 'c' should still be treated as Celsius when clearly temperature
-    assert converter.parse_temperature_to_k("at 100 c in vacuum") == 373
+    assert converter.parse_temperature_to_k("at 100 c in vacuum") == 373.15
 
 
 def test_parse_temperature_to_k_from_k_without_at():
     assert converter.parse_temperature_to_k("873K tensile test") == 873
 
 
+def test_parse_temperature_to_k_for_room_temperature_alias():
+    assert converter.parse_temperature_to_k("room temperature test") == 298.15
+
+
 def test_parse_temperature_to_k_returns_none_when_no_temperature():
-    assert converter.parse_temperature_to_k("room temperature test") is None
+    assert converter.parse_temperature_to_k("tensile test under argon") is None
 
 
 def test_validate_composition_json_warns_on_sum_far_from_100():
@@ -100,7 +104,7 @@ def test_validate_composition_json_drops_invalid_element():
 def test_parse_key_params_tolerates_noisy_numeric_tokens():
     params = converter.parse_key_params("laser power=10V2 W; scan speed=900 mm/s")
     # Should not crash; best-effort extraction is acceptable.
-    assert "Scan_Speed_mm_s" in params
+    assert "Scanning_Speed_mm_s" in params
 
 
 def test_convert_bootstraps_datasheet_compositions_when_llm_returns_none():
@@ -114,5 +118,5 @@ def test_convert_bootstraps_datasheet_compositions_when_llm_returns_none():
     )
     out = converter.convert(data, "High-Purity Ti（海绵钛）.md", paper_text=paper_text)
     assert len(out["Materials"]) >= 1
-    comp = out["Materials"][0]["Composition_JSON"]
+    comp = out["Materials"][0]["Composition_Info"]["Nominal_Composition"]["Elements_Normalized"]
     assert "Ti" in comp

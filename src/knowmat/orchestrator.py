@@ -299,12 +299,27 @@ def _build_qa_report(base_name: str, final_data: dict, final_state: dict) -> dic
     materials = final_data.get("Materials", [])
     all_samples = [s for m in materials for s in m.get("Processed_Samples", [])]
     all_tests = [t for s in all_samples for t in s.get("Performance_Tests", [])]
+    if not all_tests:
+        all_tests = [t for m in materials for t in (m.get("Properties_Info", []) or [])]
 
     unknown_process_count = sum(
         1 for s in all_samples if s.get("Process_Category") == "Unknown"
     )
+    if not all_samples:
+        unknown_process_count = sum(
+            1 for m in materials if (m.get("Process_Info", {}).get("Process_Category") or "Unknown") == "Unknown"
+        )
+
     phase_filled_count = sum(1 for s in all_samples if s.get("Main_Phase"))
-    phase_filled_rate = phase_filled_count / len(all_samples) if all_samples else 0
+    sample_count_for_phase = len(all_samples)
+    if sample_count_for_phase == 0:
+        phase_filled_count = sum(
+            1
+            for m in materials
+            if (m.get("Microstructure_Info", {}) or {}).get("Main_Phase")
+        )
+        sample_count_for_phase = len(materials)
+    phase_filled_rate = phase_filled_count / sample_count_for_phase if sample_count_for_phase else 0
 
     red_line_triggers = []
     if len(materials) == 0:

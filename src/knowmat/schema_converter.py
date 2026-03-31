@@ -111,48 +111,39 @@ class SchemaConverter:
         target_compositions = self._harmonize_system_element_sets(target_compositions)
         target_count = len(target_compositions)
 
-        groups: Dict[str, list] = defaultdict(list)
-        for comp in target_compositions:
-            comp_raw = comp.get("composition", "") or ""
+        materials: List[Dict[str, Any]] = []
+        for mat_idx, comp in enumerate(target_compositions, start=1):
+            comp_raw_first = comp.get("composition", "") or ""
             formula_norm = comp.get("composition_normalized")
             if not formula_norm:
-                formula_norm = comp_raw.replace(" ", "")
+                formula_norm = comp_raw_first.replace(" ", "")
             recovered_formula = self._recover_formula_from_paper_text(
                 paper_text=paper_text,
-                comp_raw=comp_raw,
+                comp_raw=comp_raw_first,
                 fallback_formula=formula_norm,
                 target_count=target_count,
             )
             if recovered_formula:
                 formula_norm = recovered_formula
-            base_formula = re.sub(r"\s*\[.*?\]\s*$", "", formula_norm).strip()
-            if not base_formula:
-                base_formula = formula_norm
-            groups[base_formula].append(comp)
 
-        materials: List[Dict[str, Any]] = []
-
-        for mat_idx, (base_formula, comps) in enumerate(sorted(groups.items()), start=1):
-            first_comp = comps[0]
-            comp_raw_first = first_comp.get("composition", "") or ""
             # Prefer metadata / regex DOI over LLM-filled source_doi to reduce fabrication.
-            material_doi = (global_doi or "").strip() or (first_comp.get("source_doi") or "").strip() or ""
-
-            samples: List[Dict[str, Any]] = []
-            for s_idx, comp in enumerate(comps, start=1):
-                samples.append(self._build_sample(comp, mat_idx, s_idx))
+            material_doi = (global_doi or "").strip() or (comp.get("source_doi") or "").strip() or ""
+            sample = self._build_sample(comp, mat_idx, 1)
+            tests = self._order_properties(sample.get("Performance_Tests", []) or [])
+            sample_no_tests = dict(sample)
+            sample_no_tests["Performance_Tests"] = []
 
             nominal_comp = self._normalize_reported_composition(
-                first_comp.get("nominal_composition")
+                comp.get("nominal_composition")
             )
-            nominal_type = first_comp.get("nominal_composition_type")
-            measured_type = first_comp.get("measured_composition_type")
+            nominal_type = comp.get("nominal_composition_type")
+            measured_type = comp.get("measured_composition_type")
 
             inferred_nominal, inferred_nominal_type = self._infer_nominal_from_commercial_name(
                 comp_raw_first
             )
             if inferred_nominal is None:
-                process_context = first_comp.get("processing_conditions")
+                process_context = comp.get("processing_conditions")
                 if isinstance(process_context, dict):
                     process_context = json.dumps(process_context, ensure_ascii=False)
                 inferred_nominal, inferred_nominal_type = self._infer_blend_nominal_from_name(
@@ -179,16 +170,16 @@ class SchemaConverter:
             elif nominal_comp:
                 raw_comp_json = dict(nominal_comp)
                 composition_source = "nominal_composition"
-            elif self._is_commercial_shorthand(comp_raw_first, base_formula):
+            elif self._is_commercial_shorthand(comp_raw_first, formula_norm):
                 # Avoid turning commercial shorthand grades (e.g. Ti6Al4V) into
                 # stoichiometric formulas via pymatgen.
                 raw_comp_json = {}
                 composition_source = "commercial_name_only"
             else:
-                raw_comp_json = self.build_composition_json(base_formula)
+                raw_comp_json = self.build_composition_json(formula_norm)
 
             validated_comp_json, comp_warnings = self.validate_composition_json(
-                raw_comp_json, base_formula
+                raw_comp_json, formula_norm
             )
             for warning in comp_warnings:
                 logger.warning("[COMPOSITION] %s", warning)
@@ -199,27 +190,61 @@ class SchemaConverter:
                     comp_raw_first,
                 )
 
+            measured_method = (
+                comp.get("measured_composition_method")
+                or comp.get("measurement_method")
+            )
+
+            # If only parsed formula exists, keep it as nominal fallback so that
+            # composition information stays entirely inside Composition_Info.
+            nominal_out = nominal_comp
+            nominal_type_out = nominal_type
+            if (
+                nominal_out is None
+                and measured_comp is None
+                and validated_comp_json
+                and composition_source == "formula_parse"
+            ):
+                nominal_out = dict(validated_comp_json)
+                nominal_type_out = nominal_type_out or "at%"
+
+            process_text = str(sample.get("Process_Text_For_AI") or "not provided")
+            micro_text = str(sample.get("Microstructure_Text_For_AI") or "not provided")
+            process_payload = self._to_text_payload(process_text)
+            micro_payload = self._to_text_payload(micro_text)
+
+            item_label = comp.get("alloy_name_raw") or comp_raw_first or formula_norm or f"Material_{mat_idx}"
             material = {
-                "description": f"--- Material {mat_idx}: {base_formula} ---",
+                "description": f"--- Material {mat_idx}: {item_label} ---",
                 "Mat_ID": f"M{mat_idx:03d}",
-                "Alloy_Name_Raw": comp_raw_first,
-                "Formula_Normalized": base_formula,
-                "Composition_JSON": validated_comp_json,
                 "Composition_Info": {
-                    "Alloy_Name_Raw": first_comp.get("alloy_name_raw") or comp_raw_first,
+                    "Alloy_Name_Raw": comp.get("alloy_name_raw") or comp_raw_first,
                     "Nominal_Composition": {
-                        "Composition_Type": nominal_type,
-                        "Elements_Normalized": nominal_comp,
+                        "Composition_Type": nominal_type_out,
+                        "Elements_Normalized": nominal_out,
                     },
                     "Measured_Composition": {
                         "Composition_Type": measured_type,
                         "Elements_Normalized": measured_comp,
+                        "Measurment_Method": measured_method,
                     },
                 },
                 "Composition_Source": composition_source,
                 "Source_DOI": material_doi or "",
                 "Source_File": source_name,
-                "Processed_Samples": samples,
+                "Process_Info": {
+                    "Process_Category": sample.get("Process_Category") or "Unknown",
+                    "Process_Text": process_payload,
+                    "Key_Params": sample.get("Key_Params_JSON") or {},
+                },
+                "Microstructure_Info": {
+                    "Microstructure_Text": micro_payload,
+                    "Main_Phase": sample.get("Main_Phase") or None,
+                    "Has_Precipitates": sample.get("Has_Precipitates"),
+                    "Grain_Size_avg_um": sample.get("Grain_Size_avg_um"),
+                },
+                "Properties_Info": tests,
+                "Processed_Samples": [sample_no_tests],
             }
             materials.append(material)
 
@@ -247,7 +272,11 @@ class SchemaConverter:
         family_material_indices = []
         existing_codes: set[str] = set()
         for idx, mat in enumerate(materials):
-            haystack = f"{mat.get('Alloy_Name_Raw', '')} {mat.get('Formula_Normalized', '')}".lower()
+            comp_info = mat.get("Composition_Info") or {}
+            haystack = (
+                f"{mat.get('Alloy_Name_Raw', '')} {mat.get('Formula_Normalized', '')} "
+                f"{comp_info.get('Alloy_Name_Raw', '')} {comp_info.get('Formula_Normalized', '')}"
+            ).lower()
             if base_text in haystack or "_x" in haystack or "mox" in haystack:
                 family_material_indices.append(idx)
                 code = self._extract_variant_code(haystack, family_spec["variable_element"])
@@ -270,8 +299,12 @@ class SchemaConverter:
         if not replace_ambiguous:
             for idx in family_material_indices:
                 mat = materials[idx]
+                comp_info = mat.get("Composition_Info") or {}
                 code = self._extract_variant_code(
-                    f"{mat.get('Alloy_Name_Raw', '')} {mat.get('Formula_Normalized', '')}",
+                    (
+                        f"{mat.get('Alloy_Name_Raw', '')} {mat.get('Formula_Normalized', '')} "
+                        f"{comp_info.get('Alloy_Name_Raw', '')} {comp_info.get('Formula_Normalized', '')}"
+                    ),
                     family_spec["variable_element"],
                 )
                 if code in expected_codes:
@@ -281,15 +314,28 @@ class SchemaConverter:
             if variant["code"] in existing_codes:
                 continue
             clone = dict(base_material)
-            clone["Alloy_Name_Raw"] = variant["label"]
-            clone["Formula_Normalized"] = variant["normalized"]
             raw_comp_json = self.build_composition_json(variant["normalized"])
             validated_comp_json, _ = self.validate_composition_json(
                 raw_comp_json, variant["normalized"]
             )
-            clone["Composition_JSON"] = validated_comp_json
+            comp_info = dict(clone.get("Composition_Info") or {})
+            comp_info["Alloy_Name_Raw"] = variant["label"]
+            comp_info["Nominal_Composition"] = {
+                "Composition_Type": "at%",
+                "Elements_Normalized": validated_comp_json,
+            }
+            measured = dict(comp_info.get("Measured_Composition") or {})
+            measured.setdefault("Composition_Type", None)
+            measured.setdefault("Elements_Normalized", None)
+            measured.setdefault("Measurment_Method", None)
+            comp_info["Measured_Composition"] = measured
+            clone["Composition_Info"] = comp_info
+            clone.pop("Alloy_Name_Raw", None)
+            clone.pop("Formula_Normalized", None)
+            clone.pop("Composition_JSON", None)
             # Do not fabricate per-variant properties when source variant is absent.
             clone["Processed_Samples"] = []
+            clone["Properties_Info"] = []
             new_family_materials.append(clone)
 
         if not new_family_materials:
@@ -304,7 +350,15 @@ class SchemaConverter:
         # Re-index Mat_ID and description to keep schema consistent.
         for idx, mat in enumerate(retained, start=1):
             mat["Mat_ID"] = f"M{idx:03d}"
-            mat["description"] = f"--- Material {idx}: {mat.get('Formula_Normalized', '')} ---"
+            comp_info = mat.get("Composition_Info") or {}
+            label = (
+                comp_info.get("Alloy_Name_Raw")
+                or mat.get("Alloy_Name_Raw")
+                or comp_info.get("Formula_Normalized")
+                or mat.get("Formula_Normalized")
+                or ""
+            )
+            mat["description"] = f"--- Material {idx}: {label} ---"
 
         out = dict(schema_data)
         out["Materials"] = retained
@@ -792,12 +846,19 @@ class SchemaConverter:
             return cleaned
 
         if "other" not in cleaned:
-            if abs(balance_delta) > 1e-9:
+            if balance_delta > 1e-9:
                 cleaned["other"] = balance_delta
         else:
             total = sum(cleaned.values())
             if abs(total - 100.0) > 1e-9:
-                cleaned["other"] = round(cleaned["other"] + (100.0 - total), 6)
+                adjusted_other = round(cleaned["other"] + (100.0 - total), 6)
+                if adjusted_other > 1e-9:
+                    cleaned["other"] = adjusted_other
+                else:
+                    cleaned.pop("other", None)
+
+        if "other" in cleaned and cleaned["other"] <= 1e-9:
+            cleaned.pop("other", None)
 
         return cleaned
 
@@ -980,6 +1041,11 @@ class SchemaConverter:
                 nominal_comp = mat.get("Composition_JSON")
 
             measured_comp = measured_block.get("Elements_Normalized")
+            measured_method = measured_block.get("Measurment_Method")
+            if measured_method is None:
+                measured_method = measured_block.get("Measurement_Method")
+            if measured_method is None:
+                measured_method = comp_info.get("Measurement_Method")
             if measured_comp is None and isinstance(comp_info.get("Measured_Composition"), dict):
                 maybe_legacy = comp_info.get("Measured_Composition")
                 if "Elements_Normalized" not in maybe_legacy:
@@ -990,7 +1056,14 @@ class SchemaConverter:
             if samples and isinstance(samples, list):
                 proc_text = str((samples[0] or {}).get("Process_Text_For_AI") or "")
             if not proc_text:
-                proc_text = str((mat.get("Process_Info") or {}).get("Process_Text_For_AI") or "")
+                pinfo = mat.get("Process_Info") or {}
+                proc_text = str(pinfo.get("Process_Text_For_AI") or "")
+                if not proc_text:
+                    ptxt = pinfo.get("Process_Text")
+                    if isinstance(ptxt, dict):
+                        proc_text = str(ptxt.get("original") or ptxt.get("simplified") or "")
+                    elif ptxt:
+                        proc_text = str(ptxt)
 
             pseudo.append(
                 {
@@ -1007,6 +1080,7 @@ class SchemaConverter:
                     or comp_info.get("Composition_Type"),
                     "measured_composition": measured_comp,
                     "measured_composition_type": measured_block.get("Composition_Type"),
+                    "measured_composition_method": measured_method,
                 }
             )
 
@@ -1028,8 +1102,13 @@ class SchemaConverter:
 
             nominal_type = p.get("nominal_composition_type")
             measured_type = p.get("measured_composition_type")
+            measured_method = p.get("measured_composition_method")
 
-            comp_info["Alloy_Name_Raw"] = comp_info.get("Alloy_Name_Raw") or patched.get("Alloy_Name_Raw")
+            comp_info["Alloy_Name_Raw"] = (
+                comp_info.get("Alloy_Name_Raw")
+                or patched.get("Alloy_Name_Raw")
+                or p.get("composition")
+            )
             comp_info["Nominal_Composition"] = {
                 "Composition_Type": nominal_type,
                 "Elements_Normalized": nominal_comp,
@@ -1037,6 +1116,7 @@ class SchemaConverter:
             comp_info["Measured_Composition"] = {
                 "Composition_Type": measured_type,
                 "Elements_Normalized": measured_comp,
+                "Measurment_Method": measured_method,
             }
             patched["Composition_Info"] = comp_info
 
@@ -1055,7 +1135,99 @@ class SchemaConverter:
             for warning in comp_warnings:
                 logger.warning("[COMPOSITION] %s", warning)
 
-            patched["Composition_JSON"] = validated_comp_json
+            # Legacy top-level fields are removed; all composition information
+            # is expressed under Composition_Info.
+            if (
+                comp_info.get("Nominal_Composition", {}).get("Elements_Normalized") is None
+                and measured_comp is None
+                and validated_comp_json
+            ):
+                comp_info["Nominal_Composition"]["Elements_Normalized"] = validated_comp_json
+                comp_info["Nominal_Composition"]["Composition_Type"] = (
+                    comp_info["Nominal_Composition"].get("Composition_Type") or "at%"
+                )
+                patched["Composition_Info"] = comp_info
+
+            samples = patched.get("Processed_Samples") or []
+            if not patched.get("Properties_Info"):
+                flattened_tests: List[Dict[str, Any]] = []
+                graded_hint_text = (
+                    f"{patched.get('description', '')} "
+                    f"{(patched.get('Composition_Info') or {}).get('Alloy_Name_Raw', '')}"
+                ).lower()
+                for s in samples:
+                    sample_proc_text = str((s or {}).get("Process_Text_For_AI") or "").lower()
+                    graded_context = bool(
+                        re.search(
+                            r"\b(graded|gradient|stepwise|multigraded|increasing|up to \d+(?:\.\d+)?\s*(?:wt\s*%|wt%|%))\b",
+                            f"{graded_hint_text} {sample_proc_text}",
+                        )
+                    )
+                    for t in s.get("Performance_Tests", []) or []:
+                        if graded_context and t.get("Property_Value_Range"):
+                            continue
+                        flattened_tests.append(dict(t))
+                patched["Properties_Info"] = self._order_properties(flattened_tests)
+            else:
+                patched["Properties_Info"] = self._order_properties(
+                    [dict(t) for t in (patched.get("Properties_Info") or [])]
+                )
+
+            if not patched.get("Process_Info") and samples:
+                first_sample = samples[0] or {}
+                process_text = str(first_sample.get("Process_Text_For_AI") or "not provided")
+                patched["Process_Info"] = {
+                    "Process_Category": first_sample.get("Process_Category") or "Unknown",
+                    "Process_Text": self._to_text_payload(process_text),
+                    "Key_Params": self._canonicalize_key_params(first_sample.get("Key_Params_JSON") or {}),
+                }
+            elif patched.get("Process_Info"):
+                pinfo = dict(patched.get("Process_Info") or {})
+                key_params_raw = pinfo.get("Key_Params") or pinfo.get("Key_Params_JSON") or {}
+                pinfo["Key_Params"] = self._canonicalize_key_params(key_params_raw)
+                pinfo.pop("Key_Params_JSON", None)
+                ptxt = pinfo.get("Process_Text")
+                if isinstance(ptxt, str):
+                    pinfo["Process_Text"] = self._to_text_payload(ptxt)
+                elif not isinstance(ptxt, dict):
+                    alt = pinfo.get("Process_Text_For_AI")
+                    pinfo["Process_Text"] = self._to_text_payload(str(alt or "not provided"))
+                pinfo.pop("Process_Text_For_AI", None)
+                patched["Process_Info"] = pinfo
+
+            if not patched.get("Microstructure_Info") and samples:
+                first_sample = samples[0] or {}
+                micro_text = str(first_sample.get("Microstructure_Text_For_AI") or "not provided")
+                patched["Microstructure_Info"] = {
+                    "Microstructure_Text": self._to_text_payload(micro_text),
+                    "Main_Phase": first_sample.get("Main_Phase") or None,
+                    "Has_Precipitates": first_sample.get("Has_Precipitates"),
+                    "Grain_Size_avg_um": first_sample.get("Grain_Size_avg_um"),
+                }
+            elif patched.get("Microstructure_Info"):
+                minfo = dict(patched.get("Microstructure_Info") or {})
+                mtxt = minfo.get("Microstructure_Text")
+                if isinstance(mtxt, str):
+                    minfo["Microstructure_Text"] = self._to_text_payload(mtxt)
+                elif not isinstance(mtxt, dict):
+                    alt = minfo.get("Microstructure_Text_For_AI")
+                    minfo["Microstructure_Text"] = self._to_text_payload(str(alt or "not provided"))
+                minfo.pop("Microstructure_Text_For_AI", None)
+                patched["Microstructure_Info"] = minfo
+
+            if samples:
+                for s in samples:
+                    s["Performance_Tests"] = []
+                    key_params_raw = s.get("Key_Params_JSON") or s.get("Key_Params") or {}
+                    s["Key_Params_JSON"] = self._canonicalize_key_params(key_params_raw)
+                    s.pop("Key_Params", None)
+                patched["Processed_Samples"] = samples
+
+            patched.pop("Composition_JSON", None)
+            patched.pop("Alloy_Name_Raw", None)
+            patched.pop("Formula_Normalized", None)
+            if "Composition" in patched.get("Composition_Info", {}):
+                patched["Composition_Info"].pop("Composition", None)
             patched["Composition_Source"] = source
             out.append(patched)
         return out
@@ -1184,6 +1356,45 @@ class SchemaConverter:
                     except Exception:
                         pass
                 pct = (lo + hi) / 2.0 if hi >= lo else lo
+        else:
+            # Fallback for graded phrasing like:
+            # "increasing IN718 in steps of 5wt% up to 20wt%"
+            up_to = re.search(
+                r"up\s*to\s*(\d+(?:\.\d+)?)\s*(?:wt\s*%|wt%|%\s*wt|%)",
+                txt,
+                re.IGNORECASE,
+            )
+            if up_to and len(present) >= 2:
+                graded_hint = any(k in txt for k in ("graded", "gradient", "step", "increasing", "increase"))
+                hi = float(up_to.group(1))
+                lo = 0.0 if graded_hint else None
+
+                key_scores: Dict[str, int] = {}
+                for key in present:
+                    score = 0
+                    for syn in aliases.get(key, []):
+                        syn_l = str(syn).lower()
+                        if not syn_l:
+                            continue
+                        # Strong signal: "increasing/addition ... <alloy>"
+                        if re.search(
+                            rf"(?:increase|increasing|adding|added|addition|enrich(?:ed|ment)?)\s+[^.]{{0,25}}{re.escape(syn_l)}",
+                            txt,
+                        ):
+                            score += 3
+                        # Moderate signal: "<alloy> ... up to xx wt%"
+                        if re.search(
+                            rf"{re.escape(syn_l)}[^.]{{0,30}}up\s*to\s*\d+(?:\.\d+)?\s*(?:wt\s*%|wt%|%\s*wt|%)",
+                            txt,
+                        ):
+                            score += 2
+                    key_scores[key] = score
+
+                additive_key = max(key_scores.items(), key=lambda kv: kv[1])[0]
+                if key_scores.get(additive_key, 0) == 0:
+                    additive_key = present[-1]
+                if lo is not None:
+                    pct = (lo + hi) / 2.0 if hi >= lo else lo
 
         if pct is None or additive_key not in known:
             return None, None
@@ -1215,7 +1426,11 @@ class SchemaConverter:
 
         total = sum(comp.values())
         if abs(total - 100.0) > 1e-6:
-            comp["other"] = round(comp.get("other", 0.0) + (100.0 - total), 6)
+            residual = round(comp.get("other", 0.0) + (100.0 - total), 6)
+            if residual > 0:
+                comp["other"] = residual
+            else:
+                comp.pop("other", None)
         return comp, "wt%"
 
     @staticmethod
@@ -1395,10 +1610,14 @@ class SchemaConverter:
                 # For reported wt%/at% maps, keep source values and use `other` to
                 # absorb residual so total becomes 100.
                 if abs(total - 100) > 1e-6:
-                    cleaned["other"] = round(cleaned["other"] + (100.0 - total), 6)
-                    warnings.append(
-                        f"Composition sum = {total:.2f}; adjusted 'other' to close sum to 100. Formula: {formula_source}"
-                    )
+                    adjusted_other = round(cleaned["other"] + (100.0 - total), 6)
+                    if adjusted_other > 1e-9:
+                        cleaned["other"] = adjusted_other
+                        warnings.append(
+                            f"Composition sum = {total:.2f}; adjusted 'other' to close sum to 100. Formula: {formula_source}"
+                        )
+                    else:
+                        cleaned.pop("other", None)
             else:
                 # If clearly not at% already, normalise to at%.
                 if abs(total - 100) > 2:
@@ -1486,16 +1705,63 @@ class SchemaConverter:
                     params[param_name] = parsed
                     break
 
-        if re.search(r"\bargon\b", process_text, re.IGNORECASE) and "Shielding_Gas" not in params:
-            params["Shielding_Gas"] = "Ar"
-        elif re.search(r"\bnitrogen\b", process_text, re.IGNORECASE) and "Shielding_Gas" not in params:
-            params["Shielding_Gas"] = "N2"
+        if re.search(r"\bargon\b", process_text, re.IGNORECASE) and "Protective_Atmosphere" not in params:
+            params["Protective_Atmosphere"] = "Argon"
+        elif re.search(r"\bnitrogen\b", process_text, re.IGNORECASE) and "Protective_Atmosphere" not in params:
+            params["Protective_Atmosphere"] = "Nitrogen"
 
         for k, v in self._extract_energy_density_params(process_text).items():
             if k not in params:
                 params[k] = v
 
-        return params
+        return self._canonicalize_key_params(params)
+
+    def _canonicalize_key_params(self, params: Dict[str, Any]) -> Dict[str, Any]:
+        """Canonicalise process-parameter key names to the current schema."""
+        if not params:
+            return {}
+
+        out: Dict[str, Any] = {}
+        key_alias = {
+            "Scan_Speed_mm_s": "Scanning_Speed_mm_s",
+            "Shielding_Gas": "Protective_Atmosphere",
+            "Process_Gas": "Protective_Atmosphere",
+            "Preheat_Temperature_C": "Build_Plate_Temperature_K",
+            "Preheat_Temperature_K": "Build_Plate_Temperature_K",
+            "Hatch_Distance_um": "Hatch_Spacing_um",
+            "Hatch_Distance_um_Range": "Hatch_Spacing_um_Range",
+            "Energy_Density_J_mm3": "Volumetric_Energy_Density_J_mm3",
+            "Energy_Density_J_mm3_Range": "Volumetric_Energy_Density_J_mm3_Range",
+            "Energy_Density_J_mm3_FullDensification": "Volumetric_Energy_Density_J_mm3_FullDensification",
+            "Energy_Density_J_mm3_Optimal": "Volumetric_Energy_Density_J_mm3_Optimal",
+            "Energy_Density_J_mm3_Optimal_Range": "Volumetric_Energy_Density_J_mm3_Optimal_Range",
+        }
+
+        for raw_key, raw_val in params.items():
+            key = key_alias.get(str(raw_key), str(raw_key))
+            val = raw_val
+
+            if key == "Build_Plate_Temperature_K" and raw_val is not None:
+                try:
+                    num = float(raw_val)
+                    if str(raw_key).endswith("_C"):
+                        val = round(num + 273.15, 2)
+                    else:
+                        val = num
+                except Exception:
+                    val = raw_val
+
+            if key == "Protective_Atmosphere" and isinstance(val, str):
+                vv = val.strip().lower()
+                if vv in {"ar", "argon"}:
+                    val = "Argon"
+                elif vv in {"n2", "nitrogen"}:
+                    val = "Nitrogen"
+                elif vv in {"vac", "vacuum"}:
+                    val = "Vacuum"
+
+            out[key] = val
+        return out
 
     @staticmethod
     def _extract_energy_density_params(process_text: str) -> Dict[str, Any]:
@@ -1573,6 +1839,89 @@ class SchemaConverter:
 
         return "not provided"
 
+    @staticmethod
+    def _to_text_payload(text: str) -> Dict[str, str]:
+        """Return dual-track text payload with original and simplified variants."""
+        original = (text or "not provided").strip() or "not provided"
+        explicit = re.search(
+            r"original\s*:\s*(.*?)\s*(?:\|\||\n|;\s*)\s*simplified\s*:\s*(.+)$",
+            original,
+            re.IGNORECASE | re.DOTALL,
+        )
+        if explicit:
+            orig = explicit.group(1).strip() or "not provided"
+            simp = explicit.group(2).strip() or orig
+            return {"original": orig, "simplified": simp}
+        chunks = [c.strip() for c in re.split(r"[;\n]+|(?<=\.)\s+", original) if c.strip()]
+        if len(chunks) <= 1:
+            simplified = original
+        else:
+            simplified = " -> ".join(chunks[:4])
+        if len(simplified) > 500:
+            simplified = simplified[:497].rstrip() + "..."
+        return {"original": original, "simplified": simplified}
+
+    def _order_properties(self, tests: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """Order properties by required priority tiers."""
+        if not tests:
+            return []
+
+        alias = {
+            "microhardness": "Hardness_HV",
+            "hardness_hv": "Hardness_HV",
+            "hardness": "Hardness_HV",
+            "ultimate_compressive_strength": "Ultimate_Strength_Compressive",
+            "elongation": "Fracture_Elongation",
+            "fracture_strain": "Fracture_Elongation",
+            "youngs_modulus": "Elastic_Modulus",
+        }
+        tier1 = [
+            "Yield_Strength",
+            "Yield_Strength_Compressive",
+            "Ultimate_Tensile_Strength",
+            "Ultimate_Strength_Compressive",
+            "Fracture_Elongation",
+            "Elongation_Compressive",
+            "Elastic_Modulus",
+            "Hardness_HV",
+            "Hardness_HRC",
+            "Hardness_HB",
+        ]
+        tier2 = [
+            "Residual_Stress",
+            "Impact_Toughness",
+            "Fatigue_Strength",
+            "Fracture_Toughness",
+            "Thermal_Conductivity",
+            "Specific_Heat",
+            "Coefficient_of_Thermal_Expansion",
+            "Electrical_Conductivity",
+            "Electrical_Resistivity",
+            "Corrosion_Rate",
+            "Wear_Rate",
+            "Friction_Coefficient",
+        ]
+        rank1 = {name: i for i, name in enumerate(tier1)}
+        rank2 = {name: i for i, name in enumerate(tier2)}
+        normalized_tests: List[Dict[str, Any]] = []
+        for raw in tests:
+            cur = dict(raw)
+            prop = str(cur.get("Property_Type") or "").strip()
+            canonical_key = re.sub(r"[^a-z0-9]+", "_", prop.lower()).strip("_")
+            if canonical_key in alias:
+                cur["Property_Type"] = alias[canonical_key]
+            normalized_tests.append(cur)
+
+        def _rank(test: Dict[str, Any]) -> Tuple[int, int, str]:
+            p = str(test.get("Property_Type") or "")
+            if p in rank1:
+                return (0, rank1[p], p)
+            if p in rank2:
+                return (1, rank2[p], p)
+            return (2, 9999, p.lower())
+
+        return sorted(normalized_tests, key=_rank)
+
     def normalize_property_name(self, name: Optional[str]) -> Optional[str]:
         """Map a free-text property name to a standardised column name."""
         if not name:
@@ -1638,6 +1987,18 @@ class SchemaConverter:
         props = comp.get("properties_of_composition", []) or []
         tests: List[Dict[str, Any]] = []
         grain_size_from_props: Optional[float] = None
+        process_text_raw = comp.get("processing_conditions")
+        process_text_hint = ""
+        if isinstance(process_text_raw, dict):
+            process_text_hint = json.dumps(process_text_raw, ensure_ascii=False)
+        elif process_text_raw:
+            process_text_hint = str(process_text_raw)
+        graded_context = bool(
+            re.search(
+                r"\b(graded|gradient|stepwise|multigraded|increasing|up to \d+(?:\.\d+)?\s*(?:wt\s*%|wt%|%))\b",
+                f"{comp_raw} {process_text_hint}".lower(),
+            )
+        )
         for j, p in enumerate(props, start=1):
             numeric_val = p.get("value_numeric")
             prop_std_name = self.normalize_property_name(p.get("property_name"))
@@ -1654,6 +2015,14 @@ class SchemaConverter:
             value_range = p.get("value_range")
             if value_range is None and p.get("value_type") == "range":
                 value_range = p.get("value")
+            measurement_condition_txt = str(p.get("measurement_condition") or "").lower()
+            has_spatial_anchor = any(
+                kw in measurement_condition_txt for kw in ("top", "bottom", "layer", "height", "position", "zone")
+            )
+            # Gradient entries often report only an aggregate range across steps.
+            # Do not synthesize a midpoint test-point for those aggregate ranges.
+            if graded_context and value_range and not has_spatial_anchor:
+                continue
 
             value_stddev = p.get("value_stddev")
             if value_stddev is None:

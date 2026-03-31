@@ -377,6 +377,14 @@ class CompositionProperties(BaseModel):
             "Use null when unknown."
         ),
     )
+
+    measured_composition_method: Optional[str] = Field(
+        default=None,
+        description=(
+            "Measurement method for measured_composition, e.g. 'EDS', 'EDX (SEM)', 'EPMA', 'ICP-OES'. "
+            "Use null if not reported."
+        ),
+    )
     
     source_doi: Optional[str] = Field(
         default=None,
@@ -415,7 +423,11 @@ class CompositionProperties(BaseModel):
     
     processing_conditions: str = Field(
         default="not provided",
-        description="Processing conditions applied to the material, or 'not provided'."
+        description=(
+            "Processing conditions with dual-track text in one string: "
+            "'original: <verbatim source> || simplified: <concise process chain>'. "
+            "Use 'not provided' if absent."
+        )
     )
 
     processing_params: Optional[Dict[str, Any]] = Field(
@@ -423,10 +435,11 @@ class CompositionProperties(BaseModel):
         description=(
             "Structured key process parameters extracted from the text. "
             "Use standardised keys: "
-            "Laser_Power_W (float), Scan_Speed_mm_s (float), "
+            "Laser_Power_W (float), Scanning_Speed_mm_s (float), "
             "Layer_Thickness_um (float), Hatch_Spacing_um (float), "
-            "Preheat_Temperature_K (float), Shielding_Gas (str, e.g. 'Ar'), "
-            "Oxygen_Content_ppm (float), Build_Orientation (str, e.g. 'Parallel-BD'). "
+            "Build_Plate_Temperature_K (float), Protective_Atmosphere (str, e.g. 'Argon'), "
+            "Volumetric_Energy_Density_J_mm3 (float/range), Oxygen_Content_ppm (float), "
+            "Build_Orientation (str, e.g. 'Parallel-BD'). "
             "Include ONLY parameters with explicit values in the paper. "
             "Use null if no structured parameters can be extracted."
         )
@@ -471,11 +484,11 @@ class CompositionProperties(BaseModel):
     microstructure_description: Optional[str] = Field(
         default=None,
         description=(
-            "Microstructure morphology from SEM/EBSD/TEM observations. "
+            "Microstructure morphology from SEM/EBSD/TEM observations in dual-track format: "
+            "'original: <verbatim source> || simplified: <concise summary>'. "
             "Include grain shape, size distribution, phase morphology, texture, "
             "columnar vs equiaxed, precipitate distribution, etc. "
-            "Example: 'Equiaxed grains on XY plane (mean 200 um); columnar grains on "
-            "XZ plane; single BCC phase; no secondary phases observed'. "
+            "Example simplified part: 'Equiaxed grains + columnar regions; single BCC phase'. "
             "Do NOT include XRD instrument parameters here."
         )
     )

@@ -1,7 +1,7 @@
 {
   "config": {
-    "groundtruth_dir": "groundtruth",
-    "output_dir": "output",
+    "groundtruth_dir": "evaluation/groundtruth",
+    "output_dir": "evaluation/output",
     "value_tol": 0.1,
     "drop_zero_elements": false,
     "zero_eps": 0.0,
@@ -12,24 +12,24 @@
   },
   "overall": {
     "composition_detection": {
-      "tp": 48,
+      "tp": 60,
       "fp": 0,
-      "fn": 15,
+      "fn": 0,
       "precision": 1.0,
-      "recall": 0.761905,
-      "f1": 0.864865
+      "recall": 1.0,
+      "f1": 1.0
     },
     "composition_values": {
-      "count": 48,
-      "mae": 0.00375,
-      "max_abs_err": 0.18,
-      "exact_rate": 0.979167,
-      "within_tol_rate": 0.979167
+      "count": 60,
+      "mae": 0.097933,
+      "max_abs_err": 2.591,
+      "exact_rate": 0.816667,
+      "within_tol_rate": 0.916667
     },
     "material_full_hit": {
-      "full_hit": 4,
+      "full_hit": 7,
       "total": 7,
-      "hit_rate": 0.571429
+      "hit_rate": 1.0
     },
     "test_detection": {
       "tp": 6,
@@ -89,28 +89,28 @@
     {
       "article_id": "AYzJ5YexzHG1b1fwF_ul",
       "status": "ok",
-      "groundtruth_file": "groundtruth/AYzJ5YexzHG1b1fwF_ul.json",
-      "output_file": "output/AYzJ5YexzHG1b1fwF_ul/AYzJ5YexzHG1b1fwF_ul_extraction.json",
+      "groundtruth_file": "evaluation/groundtruth/AYzJ5YexzHG1b1fwF_ul.json",
+      "output_file": "evaluation/output/AYzJ5YexzHG1b1fwF_ul/AYzJ5YexzHG1b1fwF_ul_extraction.json",
       "material_match_count": 7,
       "composition_detection": {
-        "tp": 48,
+        "tp": 60,
         "fp": 0,
-        "fn": 15,
+        "fn": 0,
         "precision": 1.0,
-        "recall": 0.761905,
-        "f1": 0.864865
+        "recall": 1.0,
+        "f1": 1.0
       },
       "composition_values": {
-        "count": 48,
-        "mae": 0.00375,
-        "max_abs_err": 0.18,
-        "exact_rate": 0.979167,
-        "within_tol_rate": 0.979167
+        "count": 60,
+        "mae": 0.097933,
+        "max_abs_err": 2.591,
+        "exact_rate": 0.816667,
+        "within_tol_rate": 0.916667
       },
       "material_full_hit": {
-        "full_hit": 4,
+        "full_hit": 7,
         "total": 7,
-        "hit_rate": 0.571429
+        "hit_rate": 1.0
       },
       "test_detection": {
         "tp": 6,
@@ -136,23 +136,23 @@
           },
           "pred_material": {
             "mat_id": "M006",
-            "formula": "Ti:88.93, Al:6.40, V:4.10",
-            "alloy_name": "Ti6Al4V [As-Built]"
+            "formula": null,
+            "alloy_name": "Ti6Al4V"
           },
-          "pair_cost": 500.18,
+          "pair_cost": 0.36,
           "composition": {
-            "tp": 4,
+            "tp": 9,
             "fp": 0,
-            "fn": 5,
-            "missing_elements": [
-              "Cr",
-              "Fe",
-              "Mo",
-              "Nb",
-              "Ni"
-            ],
+            "fn": 0,
+            "missing_elements": [],
             "extra_elements": [],
             "value_errors": [
+              {
+                "element": "Fe",
+                "gt": 0.18,
+                "pred": 0.0,
+                "abs_err": 0.18
+              },
               {
                 "element": "other",
                 "gt": 0.39,
@@ -193,17 +193,15 @@
           },
           "pred_material": {
             "mat_id": "M001",
-            "formula": "Ni:52.99, Cr:19.04, Fe:18.20, Nb:4.90, Mo:2.73, Ti:0.97, Al:0.48",
-            "alloy_name": "IN718 [As-Built]"
+            "formula": null,
+            "alloy_name": "IN718"
           },
-          "pair_cost": 100.0,
+          "pair_cost": 0.0,
           "composition": {
-            "tp": 8,
+            "tp": 9,
             "fp": 0,
-            "fn": 1,
-            "missing_elements": [
-              "V"
-            ],
+            "fn": 0,
+            "missing_elements": [],
             "extra_elements": [],
             "value_errors": []
           },
@@ -239,8 +237,8 @@
           },
           "pred_material": {
             "mat_id": "M005",
-            "formula": "Ti:83.10, Al:4.2, V:3.25, Ni:5.00, Cr:1.96, Fe:1.75, Nb:0.47, Mo:0.26",
-            "alloy_name": "Ti6Al4V-10wt%IN718 [As-Built]"
+            "formula": null,
+            "alloy_name": "Ti6Al4V-10wt%IN718"
           },
           "pair_cost": 0.0,
           "composition": {
@@ -283,12 +281,12 @@
           },
           "pred_material": {
             "mat_id": "M004",
-            "formula": "Ti:74.36, Al:3.85, V:2.91, Ni:10.00, Cr:3.92, Fe:3.50, Nb:0.95, Mo:0.53",
-            "alloy_name": "Ti6Al4V-20wt%IN718 [As-Built]"
+            "formula": null,
+            "alloy_name": "Ti6Al4V-20wt%IN718"
           },
           "pair_cost": 0.0,
           "composition": {
-            "tp": 9,
+            "tp": 8,
             "fp": 0,
             "fn": 0,
             "missing_elements": [],
@@ -327,12 +325,12 @@
           },
           "pred_material": {
             "mat_id": "M003",
-            "formula": "Ti:64.74, Al:3.45, V:2.53, Ni:15.53, Cr:6.07, Fe:5.42, Nb:1.47, Mo:0.82",
-            "alloy_name": "Ti6Al4V-30wt%IN718 [As-Built]"
+            "formula": null,
+            "alloy_name": "Ti6Al4V-30wt%IN718"
           },
           "pair_cost": 0.0,
           "composition": {
-            "tp": 9,
+            "tp": 8,
             "fp": 0,
             "fn": 0,
             "missing_elements": [],
@@ -371,12 +369,12 @@
           },
           "pred_material": {
             "mat_id": "M002",
-            "formula": "Ti:56.87, Al:3.13, V:2.22, Ni:20.00, Cr:9.80, Fe:7.00, Nb:1.89, Mo:1.05",
-            "alloy_name": "Ti6Al4V-40wt%IN718 [As-Built]"
+            "formula": null,
+            "alloy_name": "Ti6Al4V-40wt%IN718"
           },
           "pair_cost": 0.0,
           "composition": {
-            "tp": 9,
+            "tp": 8,
             "fp": 0,
             "fn": 0,
             "missing_elements": [],
@@ -415,27 +413,72 @@
           },
           "pred_material": {
             "mat_id": "M007",
-            "formula": "Variable composition from Ti6Al4V to Ti6Al4V-20wt%IN718",
-            "alloy_name": "Graded Ti6Al4V-IN718 [As-Built]"
+            "formula": null,
+            "alloy_name": "Graded Ti6Al4V-IN718"
           },
-          "pair_cost": 900.0,
+          "pair_cost": 5.516,
           "composition": {
-            "tp": 0,
+            "tp": 9,
             "fp": 0,
-            "fn": 9,
-            "missing_elements": [
-              "Al",
-              "Cr",
-              "Fe",
-              "Mo",
-              "Nb",
-              "Ni",
-              "Ti",
-              "V",
-              "other"
-            ],
+            "fn": 0,
+            "missing_elements": [],
             "extra_elements": [],
-            "value_errors": []
+            "value_errors": [
+              {
+                "element": "Al",
+                "gt": 4.75,
+                "pred": 5.448,
+                "abs_err": 0.698
+              },
+              {
+                "element": "Cr",
+                "gt": 1.97,
+                "pred": 1.904,
+                "abs_err": 0.066
+              },
+              {
+                "element": "Fe",
+                "gt": 1.75,
+                "pred": 1.82,
+                "abs_err": 0.07
+              },
+              {
+                "element": "Mo",
+                "gt": 0.26,
+                "pred": 0.273,
+                "abs_err": 0.013
+              },
+              {
+                "element": "Nb",
+                "gt": 0.47,
+                "pred": 0.49,
+                "abs_err": 0.02
+              },
+              {
+                "element": "Ni",
+                "gt": 5.33,
+                "pred": 5.299,
+                "abs_err": 0.031
+              },
+              {
+                "element": "Ti",
+                "gt": 79.14,
+                "pred": 81.097,
+                "abs_err": 1.957
+              },
+              {
+                "element": "V",
+                "gt": 3.67,
+                "pred": 3.6,
+                "abs_err": 0.07
+              },
+              {
+                "element": "other",
+                "gt": 2.66,
+                "pred": 0.069,
+                "abs_err": 2.591
+              }
+            ]
           },
           "tests": []
         }
