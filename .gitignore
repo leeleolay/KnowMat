@@ -59,4 +59,4 @@ MANIFEST
 .python-version
 
 # Test files (optional: remove if you want to keep tests in git)
-tests/
+tests/venv/
