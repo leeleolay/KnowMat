@@ -20,6 +20,7 @@ Step 2: Item decomposition
 
 - One item = one unique combination of composition + process.
 - Split whenever composition, process state, sample/state label, route, orientation/loading mode, parameter level, or graded step changes.
+- If a graded route is described as pure/base layer + listed wt% steps (e.g., 5/10/15/20 wt%), output one base-layer item (0 wt%) and one item per listed step; never keep one generic multigraded item.
 - If the same item has multiple testing conditions, keep one item and place all tests in that item's `Properties_Info`.
 - If a variant is explicitly named but only sparse evidence exists, still keep a sparse item.
 
@@ -27,6 +28,7 @@ Step 3: Composition extraction (`Composition_Info`)
 
 - Fill `Role`, `Alloy_Name_Raw`, `Nominal_Composition`, and `Measured_Composition`.
 - Keep nominal and measured composition strictly separate.
+- `nominal_composition` and `measured_composition` must be flat element->number maps only; never use step keys like `{"0": {...}, "5": {...}}`. If the paper reports 0/5/10/15/20 wt% graded steps, create separate composition entries instead.
 - Normalize reported composition to 100.0, using `other` only when justified by residual balance.
 - Preserve mature commercial alloy names with null normalized arrays if no explicit numeric composition is reported.
 - Never convert trade names or polymer abbreviations into fake element formulas.
@@ -52,6 +54,8 @@ Step 6: Properties extraction (`Properties_Info`)
 - `Test_Temperature_K` is only the actual testing environment temperature, not a process temperature.
 - For ranges, keep midpoint in `Value_Numeric` and source range in `Value_Range`.
 - For mean±std, keep mean in `Value_Numeric` and std in `Value_StdDev`.
+
+- For hardness/microhardness, if unit text is omitted but context indicates Vickers hardness, set `Unit` to `HV`.
 
 Step 7: Table alignment and generalization checks
 
@@ -141,3 +145,11 @@ DECISION:
 - Do not invent plot-pixel values.
 WRONG:
 - Collapse all variants into one generic alloy item because only one averaged numeric set is available.
+
+Example N (Graded layer schedule must be expanded)
+INPUT (abstracted):
+- Process says: 42 layers pure A, then 12 layers each at 5/10/15/20 wt% B.
+DECISION:
+- Output 5 items: base layer (0 wt% B) + 5 wt% + 10 wt% + 15 wt% + 20 wt% step items.
+WRONG:
+- One item named "A-B multigraded specimen".

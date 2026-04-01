@@ -132,8 +132,16 @@ def load_materials(path: Path, drop_zero_elements: bool, zero_eps: float) -> Lis
     with path.open("r", encoding="utf-8") as f:
         data = json.load(f)
 
+    material_items = data.get("Materials")
+    if material_items is None:
+        material_items = data.get("materials")
+    if material_items is None:
+        material_items = data.get("items")
+    if not isinstance(material_items, list):
+        material_items = []
+
     out: List[MaterialRecord] = []
-    for i, m in enumerate(data.get("Materials", [])):
+    for i, m in enumerate(material_items):
         comp_info = m.get("Composition_Info") or {}
         comp: Dict[str, float] = {}
         raw_comp = m.get("Composition_JSON")
@@ -174,14 +182,19 @@ def load_materials(path: Path, drop_zero_elements: bool, zero_eps: float) -> Lis
                 )
         # New schema: Properties_Info[]
         for t in m.get("Properties_Info", []) or []:
+            prop_type = t.get("Property_Type") or t.get("Property_Name")
+            prop_unit = t.get("Property_Unit") or t.get("Unit")
+            prop_value = t.get("Property_Value")
+            if prop_value is None:
+                prop_value = t.get("Value_Numeric")
             tests.append(
                 TestRecord(
                     temp_k=normalize_temp(t.get("Test_Temperature_K")),
-                    property_type=normalize_property_type(t.get("Property_Type")),
-                    unit=normalize_unit(t.get("Property_Unit")),
-                    value=to_float(t.get("Property_Value")),
-                    raw_property_type=t.get("Property_Type"),
-                    raw_unit=t.get("Property_Unit"),
+                    property_type=normalize_property_type(prop_type),
+                    unit=normalize_unit(prop_unit),
+                    value=to_float(prop_value),
+                    raw_property_type=prop_type,
+                    raw_unit=prop_unit,
                 )
             )
         # When both legacy and new schemas coexist, suppress exact duplicate
@@ -194,8 +207,13 @@ def load_materials(path: Path, drop_zero_elements: bool, zero_eps: float) -> Lis
         out.append(
             MaterialRecord(
                 mat_id=str(m.get("Mat_ID") or comp_info.get("Mat_ID") or f"M{i+1:03d}"),
-                formula=m.get("Formula_Normalized") or comp_info.get("Formula_Normalized"),
-                alloy_name=m.get("Alloy_Name_Raw") or comp_info.get("Alloy_Name_Raw"),
+                formula=(
+                    m.get("Formula_Normalized")
+                    or m.get("Formula")
+                    or comp_info.get("Formula_Normalized")
+                    or comp_info.get("Formula")
+                ),
+                alloy_name=m.get("Alloy_Name_Raw") or m.get("Alloy_Name") or comp_info.get("Alloy_Name_Raw"),
                 composition=comp,
                 tests=tests,
             )
@@ -553,31 +571,6 @@ def build_markdown_report(report: Dict, output_json_path: Path) -> str:
     return "\n".join(lines)
 
 
-def normalize_article_id(raw_stem: str) -> str:
-    """Normalize GT file stems to canonical article ids.
-
-    Examples:
-    - AYzJ_xxx_extraction-订正 -> AYzJ_xxx
-    - AYzJ_xxx_extraction -> AYzJ_xxx
-    - AYzJ_xxx-订正 -> AYzJ_xxx
-    """
-    stem = raw_stem.strip()
-    # Remove common revision/extraction suffixes from manually corrected GT files.
-    stem = re.sub(r"(?i)_extraction[-_]?订正$", "", stem)
-    stem = re.sub(r"(?i)_extraction$", "", stem)
-    stem = re.sub(r"[-_]?订正$", "", stem)
-    return stem or raw_stem
-
-
-def article_id_candidates(raw_stem: str) -> List[str]:
-    """Return matching candidates in priority order."""
-    normalized = normalize_article_id(raw_stem)
-    ordered = [raw_stem]
-    if normalized not in ordered:
-        ordered.append(normalized)
-    return ordered
-
-
 def discover_pairs(gt_dir: Path, out_dir: Path) -> List[Tuple[str, Path, Optional[Path]]]:
     # Legacy style: groundtruth/1-data.json
     legacy_gt = sorted(gt_dir.glob("*-data.json"))
@@ -595,16 +588,12 @@ def discover_pairs(gt_dir: Path, out_dir: Path) -> List[Tuple[str, Path, Optiona
     # Generic style: groundtruth/<id>.json with output/<id>/<id>_extraction.json
     generic_gt = sorted(p for p in gt_dir.glob("*.json") if not p.name.startswith("."))
     for gt_path in generic_gt:
-        raw_article_id = gt_path.stem
-        candidate_ids = article_id_candidates(raw_article_id)
-        article_id = normalize_article_id(raw_article_id)
+        article_id = gt_path.stem
         candidates = []
-        for cid in candidate_ids:
-            candidates += sorted(out_dir.glob(f"{cid}/{cid}_extraction.json"))
-            candidates += sorted(out_dir.glob(f"{cid}-*/*_extraction.json"))
+        candidates += sorted(out_dir.glob(f"{article_id}/{article_id}_extraction.json"))
+        candidates += sorted(out_dir.glob(f"{article_id}-*/*_extraction.json"))
         if not candidates:
-            for cid in candidate_ids:
-                candidates += sorted(out_dir.glob(f"**/{cid}_extraction.json"))
+            candidates += sorted(out_dir.glob(f"**/{article_id}_extraction.json"))
         out_path = candidates[0] if candidates else None
         pairs.append((article_id, gt_path, out_path))
     return pairs
@@ -612,6 +601,34 @@ def discover_pairs(gt_dir: Path, out_dir: Path) -> List[Tuple[str, Path, Optiona
 
 def article_sort_key(article_id: str):
     return (0, int(article_id)) if article_id.isdigit() else (1, article_id)
+
+
+def resolve_input_path(raw_path: str, base_dir: Path) -> Path:
+    path = Path(raw_path)
+    if path.is_absolute():
+        return path
+
+    # Prefer script-directory-relative paths so `python <abs_script_path>` is
+    # deterministic even when invoked from another cwd that has similarly
+    # named folders.
+    base_candidate = (base_dir / path).resolve()
+    if base_candidate.exists():
+        return base_candidate
+
+    # Keep compatibility with explicit cwd-relative usage.
+    cwd_candidate = path.resolve()
+    if cwd_candidate.exists():
+        return cwd_candidate
+
+    # Last resort: script directory.
+    return base_candidate
+
+
+def resolve_output_path(raw_path: str, base_dir: Path) -> Path:
+    path = Path(raw_path)
+    if path.is_absolute():
+        return path
+    return (base_dir / path).resolve()
 
 
 def main():
@@ -660,10 +677,12 @@ def main():
     )
     args = parser.parse_args()
 
-    gt_dir = Path(args.groundtruth_dir)
-    out_dir = Path(args.output_dir)
-    report_json = Path(args.report_json)
-    report_md = Path(args.report_md)
+    script_dir = Path(__file__).resolve().parent
+
+    gt_dir = resolve_input_path(args.groundtruth_dir, script_dir)
+    out_dir = resolve_input_path(args.output_dir, script_dir)
+    report_json = resolve_output_path(args.report_json, script_dir)
+    report_md = resolve_output_path(args.report_md, script_dir)
 
     pairs_to_score = discover_pairs(gt_dir, out_dir)
     if not pairs_to_score:

@@ -21,6 +21,7 @@ Item Definition:
 - One item = one unique combination of Composition + Process.
 - Split into a new item whenever composition, process state, explicit sample/state label, route, build/loading orientation, parameter level, or graded step/layer changes.
 - Gradient materials: treat each gradient step/layer as an independent item.
+- If a graded route is described as base/pure layer plus listed wt% steps (for example 5/10/15/20 wt%), output one item for base layer (0 wt%) and one item per listed step. Never collapse into one generic multigraded item.
 - In-situ composites: treat matrix and reinforcement as separate items when composition is explicitly defined.
 - If the exact same item is tested under multiple test conditions, keep one item and place all those test records inside its `Properties_Info` list.
 - If a variant is explicitly named but only sparse evidence is available, keep a sparse item rather than collapsing it into another variant.
@@ -38,6 +39,7 @@ Composition Extraction (`Composition_Info`):
 - `Role` must be `Target` or `Reference`.
 - Strictly separate `Nominal_Composition` and `Measured_Composition`.
 - `Composition_Type` must be `wt%`, `at%`, or null.
+- `nominal_composition` and `measured_composition` must always be flat element->number maps. Never use graded-step keys such as `{"0": {...}, "5": {...}}`; graded steps must be emitted as separate composition entries.
 - Normalize elemental values to 100.0. If sum < 100 and no explicit balance element is given, add `other`. If computed `other` is negative, omit it.
 - For mature commercial alloys without explicit numeric composition, preserve `Alloy_Name_Raw` and set normalized arrays to null.
 - Do not parse trade names, polymers, or commercial aliases into fake element formulas.
@@ -67,6 +69,8 @@ Properties Extraction (`Properties_Info`):
 - `Test_Temperature_K` is only the actual testing environment temperature. Never place heat-treatment or fabrication temperatures here.
 - For ranges such as 200-230, keep midpoint in `Value_Numeric` and source string in `Value_Range`.
 - For mean±std such as 215±5, keep 215 in `Value_Numeric` and 5 in `Value_StdDev`.
+
+- For hardness or microhardness values, if the unit is omitted but context is Vickers hardness, set `Unit` to `HV` instead of null.
 
 Mandatory final audit before output:
 

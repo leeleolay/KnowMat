@@ -25,6 +25,7 @@ adjust the model name or temperature via environment variables.
 
 import logging
 import os
+import re
 import time
 from typing import List, Optional, Dict, Any
 from pydantic import BaseModel, Field, model_validator
@@ -89,6 +90,50 @@ def get_llm(agent_type: str = "default") -> ChatOpenAI:
         return ChatOpenAI(**base_kwargs)
     else:
         return ChatOpenAI(temperature=settings.temperature, **base_kwargs)
+
+
+def _coerce_numeric_leaf(value: Any) -> Optional[float]:
+    """Best-effort numeric coercion for schema recovery."""
+    if value is None or isinstance(value, bool):
+        return None
+    if isinstance(value, (int, float)):
+        return float(value)
+    txt = str(value).strip()
+    if not txt:
+        return None
+    m = re.search(r"-?\d+(?:\.\d+)?", txt)
+    if not m:
+        return None
+    try:
+        return float(m.group(0))
+    except Exception:
+        return None
+
+
+def _normalize_composition_map(payload: Any) -> Any:
+    """Normalize flat or step-keyed composition maps.
+
+    Preferred schema is a flat element->number map. Some providers may still
+    return a graded-step map such as {"0": {...}, "5": {...}}; keep that
+    recoverable shape instead of failing validation.
+    """
+    if payload is None or not isinstance(payload, dict):
+        return payload
+
+    normalized: Dict[str, Any] = {}
+    for raw_key, raw_value in payload.items():
+        key = str(raw_key).strip()
+        if not key:
+            continue
+        if isinstance(raw_value, dict):
+            nested = _normalize_composition_map(raw_value)
+            if nested:
+                normalized[key] = nested
+            continue
+        numeric = _coerce_numeric_leaf(raw_value)
+        if numeric is not None:
+            normalized[key] = numeric
+    return normalized or None
 
 
 class _LazyExtractor:
@@ -347,10 +392,13 @@ class CompositionProperties(BaseModel):
         )
     )
 
-    nominal_composition: Optional[Dict[str, float]] = Field(
+    nominal_composition: Optional[Dict[str, Any]] = Field(
         default=None,
         description=(
-            "Nominal bulk composition by element when available. Use null if not provided."
+            "Nominal bulk composition by element when available. Preferred form is a flat "
+            "element->number map such as {'Ti': 88.9, 'Al': 6.4}. "
+            "Never encode graded steps as nested percentage keys; emit separate compositions instead. "
+            "Use null if not provided."
         ),
     )
 
@@ -362,10 +410,12 @@ class CompositionProperties(BaseModel):
         ),
     )
 
-    measured_composition: Optional[Dict[str, float]] = Field(
+    measured_composition: Optional[Dict[str, Any]] = Field(
         default=None,
         description=(
             "Measured composition by element (e.g., EDS/EPMA) when available. "
+            "Preferred form is a flat element->number map. "
+            "Never encode graded steps as nested percentage keys; emit separate compositions instead. "
             "Use null if not provided."
         ),
     )
@@ -520,8 +570,19 @@ class CompositionProperties(BaseModel):
     @model_validator(mode="after")
     def fill_composition_from_normalized(self) -> "CompositionProperties":
         """When LLM returns only composition_normalized, use it as composition."""
+        updates: Dict[str, Any] = {}
         if not self.composition and self.composition_normalized:
-            return self.model_copy(update={"composition": self.composition_normalized})
+            updates["composition"] = self.composition_normalized
+
+        nominal = _normalize_composition_map(self.nominal_composition)
+        measured = _normalize_composition_map(self.measured_composition)
+        if nominal != self.nominal_composition:
+            updates["nominal_composition"] = nominal
+        if measured != self.measured_composition:
+            updates["measured_composition"] = measured
+
+        if updates:
+            return self.model_copy(update=updates)
         return self
 
 
@@ -625,7 +686,7 @@ subfield_extractor = _LazyExtractor(
 
 # The extraction output may be large, so we do not enable inserts here.
 extraction_extractor = _LazyExtractor(
-    [CompositionList], "CompositionList", enable_inserts=True, agent_type="extraction"
+    [CompositionList], "CompositionList", enable_inserts=False, agent_type="extraction"
 )
 
 evaluation_extractor = _LazyExtractor(
