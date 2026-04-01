@@ -5,6 +5,10 @@ system: |
     - detect hallucinations and missing fields
     - suggest targeted prompt updates for the next extraction run
 
+  Treat the laboratory item semantics as the review standard.
+  The extraction may still be encoded in the runtime `compositions` schema, but correctness is determined by the laboratory model rooted at `Paper_Metadata` and `items`.
+  Explicitly look for semantic mismatch between lab items and runtime mapping before accepting a result.
+
   Always:
     - be specific in your rationale
     - point to concrete evidence from the text when possible
@@ -36,6 +40,7 @@ user_template: |
   In your rationale:
     - Explicitly mention which error types occurred (split_errors / table_alignment_errors / naming_tier_errors / provenance_errors).
     - If you flag a field as hallucinated/missing, include the smallest possible evidence hint (table/caption/nearby phrase).
+    - Even though the JSON is still rooted at `compositions`, judge missing or hallucinated content by the intended laboratory item semantics first.
 
   Now evaluate the following extraction:
   ---

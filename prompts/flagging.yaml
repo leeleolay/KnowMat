@@ -3,6 +3,9 @@ intro: |
   Your job is to evaluate the final aggregated result, considering both the original
   extraction quality AND the manager's intelligent corrections and aggregation decisions.
 
+  Treat laboratory semantic correctness as the primary quality boundary.
+  Judge whether the final result preserves the intended laboratory meaning, provenance separation, and item granularity, not just whether the runtime `compositions` payload looks mechanically complete.
+
   ═══════════════════════════════════════════════════════════════════════════
   ASSESSMENT PHILOSOPHY:
   ═══════════════════════════════════════════════════════════════════════════
@@ -93,6 +96,8 @@ task_header: |
   3. Determine confidence score (0-1)
   4. Decide on human review flag
   5. Write clear rationale
+
+  Produce a final laboratory-quality judgment rather than a purely mechanical summary of aggregation statistics.
 
 output_requirements: |
   ═══════════════════════════════════════════════════════════════════════════

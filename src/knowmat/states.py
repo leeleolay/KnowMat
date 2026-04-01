@@ -88,30 +88,15 @@ class DocumentMetadata(TypedDict, total=False):
 # ---------------------------------------------------------------------------
 
 class PerformanceTest(TypedDict, total=False):
-    """A single mechanical / physical test result."""
+    """A single mechanical / physical test result in lab schema."""
 
-    Test_ID: str
+    Property_Name: Optional[str]
+    Test_Condition: Optional[str]
+    Value_Numeric: Optional[float]
+    Value_Range: Optional[str]
+    Value_StdDev: Optional[float]
+    Unit: Optional[str]
     Test_Temperature_K: Optional[float]
-    Property_Type: Optional[str]
-    Property_Value: float
-    Property_Value_Range: Optional[str]
-    Property_StdDev: Optional[float]
-    Property_Unit: Optional[str]
-
-
-class ProcessedSample(TypedDict, total=False):
-    """One processing condition / sample within a material."""
-
-    Sample_ID: str
-    Process_Category: str
-    Process_Text_For_AI: str
-    Key_Params_JSON: Dict[str, Any]
-    Main_Phase: str
-    Microstructure_Text_For_AI: str
-    Has_Precipitates: bool
-    Grain_Size_avg_um: Optional[float]
-    Performance_Tests: List[PerformanceTest]
-
 
 class TextDualTrack(TypedDict):
     """Original and simplified text anchors."""
@@ -133,32 +118,28 @@ class MicrostructureInfo(TypedDict, total=False):
 
     Microstructure_Text: TextDualTrack
     Main_Phase: Optional[str]
-    Has_Precipitates: Optional[bool]
+    Porosity_pct: Optional[float]
+    Relative_Density_pct: Optional[float]
     Grain_Size_avg_um: Optional[float]
+    Precipitate_Size_avg_nm: Optional[float]
+    Precipitate_Volume_Fraction_pct: Optional[float]
+    Advanced_Quantitative_Features: Dict[str, Any]
 
 
 class TargetMaterial(TypedDict, total=False):
-    """One material entry in the target HEA schema."""
+    """One lab-style item in the target schema."""
 
-    description: str
-    Mat_ID: str
     Composition_Info: Dict[str, Any]
-    Composition_Source: str
-    Source_DOI: str
-    Source_File: str
     Process_Info: ProcessInfo
     Microstructure_Info: MicrostructureInfo
     Properties_Info: List[PerformanceTest]
-    Processed_Samples: List[ProcessedSample]
 
 
 class TargetSchema(TypedDict, total=False):
-    """Top-level target schema produced by SchemaConverter."""
+    """Top-level lab schema produced by SchemaConverter."""
 
-    Dataset_Description: str
-    schema_version: str
-    pipeline_version: str
-    Materials: List[TargetMaterial]
+    Paper_Metadata: Dict[str, Any]
+    items: List[TargetMaterial]
 
 
 # ---------------------------------------------------------------------------
