@@ -45,22 +45,37 @@ class SchemaConverter:
         paper_text: Optional[str] = None,
         document_metadata: Optional[dict] = None,
     ) -> TargetSchema:
-        """Convert internal extraction dict to target HEA schema.
+        """Convert internal extraction dict to the lab target schema.
 
         Mirrors the original ``_to_target_schema`` logic with 3-tier DOI
         priority, Key_Params_JSON population, dedicated microstructure text,
         grain-size backfill, and build-orientation encoding.
         """
+        paper_metadata = self._resolve_paper_metadata(
+            source_path=source_path,
+            paper_text=paper_text,
+            document_metadata=document_metadata,
+            existing_metadata=(data or {}).get("Paper_Metadata") if isinstance(data, dict) else None,
+        )
         if not isinstance(data, dict):
-            return {"Dataset_Description": "High Entropy Alloy Data Extraction Template", "Materials": []}
+            return self._empty_lab_schema(paper_metadata)
+        if "Paper_Metadata" in data and "items" in data:
+            return {
+                "Paper_Metadata": paper_metadata,
+                "items": self._repair_existing_lab_items(data.get("items", []) or []),
+            }
         if "Materials" in data and "Dataset_Description" in data:
             existing_materials = data.get("Materials", []) or []
             if existing_materials:
                 repaired = self._harmonize_existing_target_materials(existing_materials)
-                patched = dict(data)
+                patched = {"Materials": repaired}
                 patched["Materials"] = repaired
-                return self._expand_variable_materials_in_target_schema(  # type: ignore[return-value]
+                expanded = self._expand_variable_materials_in_target_schema(
                     patched, paper_text
+                )
+                return self._legacy_materials_to_lab_schema(
+                    expanded.get("Materials", []) or [],
+                    paper_metadata=paper_metadata,
                 )
             source_name = os.path.basename(source_path)
             if self._is_datasheet_like_document(paper_text, source_name):
@@ -73,13 +88,9 @@ class SchemaConverter:
                     )
                     data = {"compositions": bootstrapped}
                 else:
-                    return self._expand_variable_materials_in_target_schema(  # type: ignore[return-value]
-                        data, paper_text
-                    )
+                    return self._empty_lab_schema(paper_metadata)
             else:
-                return self._expand_variable_materials_in_target_schema(  # type: ignore[return-value]
-                    data, paper_text
-                )
+                return self._empty_lab_schema(paper_metadata)
 
         compositions = data.get("compositions", []) or []
         source_name = os.path.basename(source_path)
@@ -111,7 +122,7 @@ class SchemaConverter:
         target_compositions = self._harmonize_system_element_sets(target_compositions)
         target_count = len(target_compositions)
 
-        materials: List[Dict[str, Any]] = []
+        items: List[Dict[str, Any]] = []
         for mat_idx, comp in enumerate(target_compositions, start=1):
             comp_raw_first = comp.get("composition", "") or ""
             formula_norm = comp.get("composition_normalized")
@@ -130,8 +141,6 @@ class SchemaConverter:
             material_doi = (global_doi or "").strip() or (comp.get("source_doi") or "").strip() or ""
             sample = self._build_sample(comp, mat_idx, 1)
             tests = self._order_properties(sample.get("Performance_Tests", []) or [])
-            sample_no_tests = dict(sample)
-            sample_no_tests["Performance_Tests"] = []
 
             nominal_comp = self._normalize_reported_composition(
                 comp.get("nominal_composition")
@@ -214,10 +223,9 @@ class SchemaConverter:
             micro_payload = self._to_text_payload(micro_text)
 
             item_label = comp.get("alloy_name_raw") or comp_raw_first or formula_norm or f"Material_{mat_idx}"
-            material = {
-                "description": f"--- Material {mat_idx}: {item_label} ---",
-                "Mat_ID": f"M{mat_idx:03d}",
+            item = {
                 "Composition_Info": {
+                    "Role": comp.get("role") or "Target",
                     "Alloy_Name_Raw": comp.get("alloy_name_raw") or comp_raw_first,
                     "Nominal_Composition": {
                         "Composition_Type": nominal_type_out,
@@ -226,12 +234,9 @@ class SchemaConverter:
                     "Measured_Composition": {
                         "Composition_Type": measured_type,
                         "Elements_Normalized": measured_comp,
-                        "Measurment_Method": measured_method,
+                        "Measurement_Method": measured_method,
                     },
                 },
-                "Composition_Source": composition_source,
-                "Source_DOI": material_doi or "",
-                "Source_File": source_name,
                 "Process_Info": {
                     "Process_Category": sample.get("Process_Category") or "Unknown",
                     "Process_Text": process_payload,
@@ -240,21 +245,367 @@ class SchemaConverter:
                 "Microstructure_Info": {
                     "Microstructure_Text": micro_payload,
                     "Main_Phase": sample.get("Main_Phase") or None,
-                    "Has_Precipitates": sample.get("Has_Precipitates"),
+                    "Porosity_pct": comp.get("porosity_pct"),
+                    "Relative_Density_pct": comp.get("relative_density_pct"),
                     "Grain_Size_avg_um": sample.get("Grain_Size_avg_um"),
+                    "Precipitate_Size_avg_nm": comp.get("precipitate_size_avg_nm"),
+                    "Precipitate_Volume_Fraction_pct": comp.get("precipitate_volume_fraction_pct"),
+                    "Advanced_Quantitative_Features": self._normalize_advanced_quantitative_features(
+                        comp.get("characterisation")
+                    ),
                 },
-                "Properties_Info": tests,
-                "Processed_Samples": [sample_no_tests],
+                "Properties_Info": self._build_lab_properties_from_internal(
+                    comp,
+                    fallback_tests=tests,
+                ),
             }
-            materials.append(material)
+            if not item["Composition_Info"]["Alloy_Name_Raw"]:
+                item["Composition_Info"]["Alloy_Name_Raw"] = item_label
+            items.append(item)
 
-        result = {
-            "Dataset_Description": "High Entropy Alloy Data Extraction Template",
-            "schema_version": "2.2",
-            "pipeline_version": "knowmat-2.1.0",
-            "Materials": materials,
+        return {
+            "Paper_Metadata": {
+                "Paper_Title": paper_metadata.get("Paper_Title"),
+                "DOI": paper_metadata.get("DOI"),
+            },
+            "items": items,
         }
-        return self._expand_variable_materials_in_target_schema(result, paper_text)
+
+    @staticmethod
+    def _empty_lab_schema(paper_metadata: Optional[Dict[str, Any]] = None) -> dict:
+        meta = paper_metadata or {}
+        return {
+            "Paper_Metadata": {
+                "Paper_Title": meta.get("Paper_Title"),
+                "DOI": meta.get("DOI"),
+            },
+            "items": [],
+        }
+
+    def _resolve_paper_metadata(
+        self,
+        source_path: str,
+        paper_text: Optional[str],
+        document_metadata: Optional[dict],
+        existing_metadata: Optional[dict],
+    ) -> Dict[str, Any]:
+        existing_metadata = existing_metadata or {}
+        title = (
+            existing_metadata.get("Paper_Title")
+            or existing_metadata.get("title")
+            or (document_metadata or {}).get("title")
+        )
+        doi = (
+            existing_metadata.get("DOI")
+            or existing_metadata.get("doi")
+            or (document_metadata or {}).get("doi")
+            or self.extract_first_doi(paper_text)
+        )
+        if title is not None:
+            title = str(title).strip() or None
+        if doi is not None:
+            doi = str(doi).strip() or None
+        if not title:
+            title = self._extract_title_from_paper_text(paper_text)
+        if not doi:
+            doi = None
+        return {"Paper_Title": title, "DOI": doi}
+
+    @staticmethod
+    def _extract_title_from_paper_text(paper_text: Optional[str]) -> Optional[str]:
+        if not paper_text:
+            return None
+        text = str(paper_text).replace("\r\n", "\n")
+        for line in text.split("\n"):
+            stripped = line.strip()
+            if not stripped:
+                continue
+            if stripped.startswith("## "):
+                continue
+            if stripped.startswith("# "):
+                title = stripped[2:].strip()
+                return title or None
+        return None
+
+    def _legacy_materials_to_lab_schema(
+        self,
+        materials: List[dict],
+        paper_metadata: Optional[Dict[str, Any]] = None,
+    ) -> dict:
+        items = [self._legacy_material_to_lab_item(mat) for mat in materials]
+        return {
+            "Paper_Metadata": {
+                "Paper_Title": (paper_metadata or {}).get("Paper_Title"),
+                "DOI": (paper_metadata or {}).get("DOI"),
+            },
+            "items": self._repair_existing_lab_items(items),
+        }
+
+    def _legacy_material_to_lab_item(self, material: dict) -> dict:
+        comp_info = dict(material.get("Composition_Info") or {})
+        measured = dict(comp_info.get("Measured_Composition") or {})
+        measured_method = (
+            measured.get("Measurement_Method")
+            or measured.get("Measurment_Method")
+            or comp_info.get("Measurement_Method")
+        )
+        item = {
+            "Composition_Info": {
+                "Role": comp_info.get("Role") or "Target",
+                "Alloy_Name_Raw": comp_info.get("Alloy_Name_Raw") or material.get("Alloy_Name_Raw"),
+                "Nominal_Composition": {
+                    "Composition_Type": (comp_info.get("Nominal_Composition") or {}).get("Composition_Type"),
+                    "Elements_Normalized": (comp_info.get("Nominal_Composition") or {}).get("Elements_Normalized"),
+                },
+                "Measured_Composition": {
+                    "Composition_Type": measured.get("Composition_Type"),
+                    "Elements_Normalized": measured.get("Elements_Normalized"),
+                    "Measurement_Method": measured_method,
+                },
+            },
+            "Process_Info": material.get("Process_Info") or {},
+            "Microstructure_Info": material.get("Microstructure_Info") or {},
+            "Properties_Info": material.get("Properties_Info") or [],
+        }
+        return item
+
+    def _repair_existing_lab_items(self, items: List[dict]) -> List[dict]:
+        repaired: List[dict] = []
+        for item in items:
+            comp_info = dict(item.get("Composition_Info") or {})
+            nominal = dict(comp_info.get("Nominal_Composition") or {})
+            measured = dict(comp_info.get("Measured_Composition") or {})
+            nominal_elements = self._normalize_reported_composition(
+                nominal.get("Elements_Normalized")
+            )
+            measured_elements = self._normalize_reported_composition(
+                measured.get("Elements_Normalized"),
+                preferred_balance_element=self._pick_balance_element(
+                    nominal_elements,
+                    str(comp_info.get("Alloy_Name_Raw") or ""),
+                ),
+            )
+            comp_info["Role"] = comp_info.get("Role") or "Target"
+            comp_info["Nominal_Composition"] = {
+                "Composition_Type": nominal.get("Composition_Type"),
+                "Elements_Normalized": nominal_elements,
+            }
+            comp_info["Measured_Composition"] = {
+                "Composition_Type": measured.get("Composition_Type"),
+                "Elements_Normalized": measured_elements,
+                "Measurement_Method": (
+                    measured.get("Measurement_Method")
+                    or measured.get("Measurment_Method")
+                    or comp_info.get("Measurement_Method")
+                ),
+            }
+
+            process_info = dict(item.get("Process_Info") or {})
+            process_text = process_info.get("Process_Text")
+            process_info["Process_Text"] = (
+                process_text
+                if isinstance(process_text, dict)
+                else self._to_text_payload(str(process_text or "not provided"))
+            )
+            process_info["Process_Category"] = process_info.get("Process_Category") or "Unknown"
+            process_info["Key_Params"] = self._canonicalize_key_params(
+                process_info.get("Key_Params") or process_info.get("Key_Params_JSON") or {}
+            )
+            process_info.pop("Key_Params_JSON", None)
+
+            micro_info = dict(item.get("Microstructure_Info") or {})
+            micro_text = micro_info.get("Microstructure_Text")
+            micro_info["Microstructure_Text"] = (
+                micro_text
+                if isinstance(micro_text, dict)
+                else self._to_text_payload(str(micro_text or "not provided"))
+            )
+            micro_info["Main_Phase"] = micro_info.get("Main_Phase")
+            micro_info["Porosity_pct"] = micro_info.get("Porosity_pct")
+            micro_info["Relative_Density_pct"] = micro_info.get("Relative_Density_pct")
+            micro_info["Grain_Size_avg_um"] = micro_info.get("Grain_Size_avg_um")
+            micro_info["Precipitate_Size_avg_nm"] = micro_info.get("Precipitate_Size_avg_nm")
+            micro_info["Precipitate_Volume_Fraction_pct"] = micro_info.get(
+                "Precipitate_Volume_Fraction_pct"
+            )
+            micro_info["Advanced_Quantitative_Features"] = (
+                self._normalize_advanced_quantitative_features(
+                    micro_info.get("Advanced_Quantitative_Features")
+                )
+            )
+
+            repaired.append(
+                {
+                    "Composition_Info": comp_info,
+                    "Process_Info": process_info,
+                    "Microstructure_Info": micro_info,
+                    "Properties_Info": self._repair_lab_properties(item.get("Properties_Info") or []),
+                }
+            )
+        return repaired
+
+    def _repair_lab_properties(self, properties: List[dict]) -> List[dict]:
+        repaired: List[Dict[str, Any]] = []
+        for prop in properties:
+            condition = prop.get("Test_Condition")
+            repaired.append(
+                {
+                    "Property_Name": self.normalize_property_name(
+                        prop.get("Property_Name") or prop.get("Property_Type")
+                    ),
+                    "Test_Condition": condition,
+                    "Value_Numeric": prop.get("Value_Numeric", prop.get("Property_Value")),
+                    "Value_Range": prop.get("Value_Range", prop.get("Property_Value_Range")),
+                    "Value_StdDev": prop.get("Value_StdDev", prop.get("Property_StdDev")),
+                    "Unit": prop.get("Unit", prop.get("Property_Unit")),
+                    "Test_Temperature_K": prop.get(
+                        "Test_Temperature_K",
+                        self.parse_temperature_to_k(condition),
+                    ),
+                }
+            )
+        return self._order_lab_properties(repaired)
+
+    def _build_lab_properties_from_internal(
+        self,
+        comp: dict,
+        fallback_tests: Optional[List[Dict[str, Any]]] = None,
+    ) -> List[Dict[str, Any]]:
+        props = comp.get("properties_of_composition", []) or []
+        process_text_raw = comp.get("processing_conditions")
+        process_text_hint = ""
+        if isinstance(process_text_raw, dict):
+            process_text_hint = json.dumps(process_text_raw, ensure_ascii=False)
+        elif process_text_raw:
+            process_text_hint = str(process_text_raw)
+        graded_context = bool(
+            re.search(
+                r"\b(graded|gradient|stepwise|multigraded|increasing|up to \d+(?:\.\d+)?\s*(?:wt\s*%|wt%|%))\b",
+                f"{comp.get('composition', '')} {process_text_hint}".lower(),
+            )
+        )
+        properties: List[Dict[str, Any]] = []
+        for prop in props:
+            numeric_val = prop.get("value_numeric")
+            if numeric_val is None:
+                continue
+            condition = prop.get("measurement_condition")
+            value_range = prop.get("value_range")
+            if value_range is None and prop.get("value_type") == "range":
+                value_range = prop.get("value")
+            condition_text = str(condition or "").lower()
+            has_spatial_anchor = any(
+                kw in condition_text for kw in ("top", "bottom", "layer", "height", "position", "zone")
+            )
+            if graded_context and value_range and not has_spatial_anchor:
+                continue
+            value_stddev = prop.get("value_stddev")
+            if value_stddev is None:
+                value_txt = str(prop.get("value") or "")
+                m_std = re.search(r"±\s*(-?\d+(?:\.\d+)?)", value_txt)
+                if m_std:
+                    try:
+                        value_stddev = float(m_std.group(1))
+                    except Exception:
+                        value_stddev = None
+            properties.append(
+                {
+                    "Property_Name": self.normalize_property_name(prop.get("property_name")),
+                    "Test_Condition": condition,
+                    "Value_Numeric": numeric_val,
+                    "Value_Range": value_range,
+                    "Value_StdDev": value_stddev,
+                    "Unit": prop.get("unit"),
+                    "Test_Temperature_K": self.parse_temperature_to_k(condition),
+                }
+            )
+        if properties:
+            return self._order_lab_properties(properties)
+        return self._repair_lab_properties(fallback_tests or [])
+
+    def _order_lab_properties(self, properties: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        if not properties:
+            return []
+        alias = {
+            "microhardness": "Hardness_HV",
+            "hardness_hv": "Hardness_HV",
+            "hardness": "Hardness_HV",
+            "ultimate_compressive_strength": "Ultimate_Strength_Compressive",
+            "elongation": "Fracture_Elongation",
+            "fracture_strain": "Fracture_Elongation",
+            "youngs_modulus": "Elastic_Modulus",
+        }
+        tier1 = [
+            "Yield_Strength",
+            "Yield_Strength_Compressive",
+            "Ultimate_Tensile_Strength",
+            "Ultimate_Strength_Compressive",
+            "Fracture_Elongation",
+            "Elongation_Compressive",
+            "Elastic_Modulus",
+            "Hardness_HV",
+            "Hardness_HRC",
+            "Hardness_HB",
+        ]
+        tier2 = [
+            "Residual_Stress",
+            "Impact_Toughness",
+            "Fatigue_Strength",
+            "Fracture_Toughness",
+            "Thermal_Conductivity",
+            "Specific_Heat",
+            "Coefficient_of_Thermal_Expansion",
+            "Electrical_Conductivity",
+            "Electrical_Resistivity",
+            "Corrosion_Rate",
+            "Wear_Rate",
+            "Friction_Coefficient",
+        ]
+        rank1 = {name: i for i, name in enumerate(tier1)}
+        rank2 = {name: i for i, name in enumerate(tier2)}
+        normalized: List[Dict[str, Any]] = []
+        for raw in properties:
+            cur = dict(raw)
+            prop_name = str(cur.get("Property_Name") or "").strip()
+            canonical_key = re.sub(r"[^a-z0-9]+", "_", prop_name.lower()).strip("_")
+            if canonical_key in alias:
+                cur["Property_Name"] = alias[canonical_key]
+            normalized.append(cur)
+
+        def _rank(prop: Dict[str, Any]) -> Tuple[int, int, str]:
+            name = str(prop.get("Property_Name") or "")
+            if name in rank1:
+                return (0, rank1[name], name)
+            if name in rank2:
+                return (1, rank2[name], name)
+            return (2, 9999, name.lower())
+
+        return sorted(normalized, key=_rank)
+
+    @staticmethod
+    def _normalize_advanced_quantitative_features(payload: Any) -> Dict[str, Any]:
+        if isinstance(payload, dict):
+            if "Advanced_Quantitative_Features" in payload:
+                nested = payload.get("Advanced_Quantitative_Features")
+                if isinstance(nested, dict):
+                    return {str(k): v for k, v in nested.items() if v is not None}
+                if isinstance(nested, str):
+                    try:
+                        parsed = json.loads(nested)
+                    except Exception:
+                        parsed = {}
+                    if isinstance(parsed, dict):
+                        return {str(k): v for k, v in parsed.items() if v is not None}
+                    return {}
+            return {}
+        if isinstance(payload, str):
+            try:
+                parsed = json.loads(payload)
+            except Exception:
+                return {}
+            if isinstance(parsed, dict):
+                return {str(k): v for k, v in parsed.items() if v is not None}
+        return {}
 
     def _expand_variable_materials_in_target_schema(
         self, schema_data: dict, paper_text: Optional[str]
@@ -1116,7 +1467,7 @@ class SchemaConverter:
             comp_info["Measured_Composition"] = {
                 "Composition_Type": measured_type,
                 "Elements_Normalized": measured_comp,
-                "Measurment_Method": measured_method,
+                "Measurement_Method": measured_method,
             }
             patched["Composition_Info"] = comp_info
 
@@ -1722,6 +2073,25 @@ class SchemaConverter:
             return {}
 
         out: Dict[str, Any] = {}
+        disallowed = {
+            "Relative_Density_pct",
+            "Porosity_pct",
+            "Main_Phase",
+            "Grain_Size_avg_um",
+            "Precipitate_Size_avg_nm",
+            "Precipitate_Volume_Fraction_pct",
+            "Phase_Fraction_pct",
+            "Yield_Strength",
+            "Yield_Strength_Compressive",
+            "Ultimate_Tensile_Strength",
+            "Ultimate_Strength_Compressive",
+            "Fracture_Elongation",
+            "Elongation_Compressive",
+            "Elastic_Modulus",
+            "Hardness_HV",
+            "Hardness_HRC",
+            "Hardness_HB",
+        }
         key_alias = {
             "Scan_Speed_mm_s": "Scanning_Speed_mm_s",
             "Shielding_Gas": "Protective_Atmosphere",
@@ -1739,6 +2109,8 @@ class SchemaConverter:
 
         for raw_key, raw_val in params.items():
             key = key_alias.get(str(raw_key), str(raw_key))
+            if key in disallowed:
+                continue
             val = raw_val
 
             if key == "Build_Plate_Temperature_K" and raw_val is not None:

@@ -296,50 +296,44 @@ def run(
 
 def _build_qa_report(base_name: str, final_data: dict, final_state: dict) -> dict:
     """Build the QA report dict from final extraction results."""
-    materials = final_data.get("Materials", [])
-    all_samples = [s for m in materials for s in m.get("Processed_Samples", [])]
-    all_tests = [t for s in all_samples for t in s.get("Performance_Tests", [])]
-    if not all_tests:
-        all_tests = [t for m in materials for t in (m.get("Properties_Info", []) or [])]
-
+    items = final_data.get("items") or final_data.get("Materials", [])
+    all_tests = [t for item in items for t in (item.get("Properties_Info", []) or [])]
     unknown_process_count = sum(
-        1 for s in all_samples if s.get("Process_Category") == "Unknown"
+        1
+        for item in items
+        if (item.get("Process_Info", {}).get("Process_Category") or "Unknown") == "Unknown"
     )
-    if not all_samples:
-        unknown_process_count = sum(
-            1 for m in materials if (m.get("Process_Info", {}).get("Process_Category") or "Unknown") == "Unknown"
-        )
-
-    phase_filled_count = sum(1 for s in all_samples if s.get("Main_Phase"))
-    sample_count_for_phase = len(all_samples)
-    if sample_count_for_phase == 0:
-        phase_filled_count = sum(
-            1
-            for m in materials
-            if (m.get("Microstructure_Info", {}) or {}).get("Main_Phase")
-        )
-        sample_count_for_phase = len(materials)
-    phase_filled_rate = phase_filled_count / sample_count_for_phase if sample_count_for_phase else 0
+    phase_filled_count = sum(
+        1 for item in items if (item.get("Microstructure_Info", {}) or {}).get("Main_Phase")
+    )
+    phase_filled_rate = phase_filled_count / len(items) if items else 0
+    target_count = sum(
+        1
+        for item in items
+        if (item.get("Composition_Info", {}) or {}).get("Role", "Target") == "Target"
+    )
+    paper_metadata = final_data.get("Paper_Metadata") or {}
+    missing_doi = 1 if not (paper_metadata.get("DOI")) else 0
 
     red_line_triggers = []
-    if len(materials) == 0:
+    if len(items) == 0:
         red_line_triggers.append("NO_TARGET_MATERIALS")
     if len(all_tests) == 0:
         red_line_triggers.append("NO_PROPERTIES")
-    if all_samples:
-        unknown_ratio = unknown_process_count / len(all_samples)
+    if items:
+        unknown_ratio = unknown_process_count / len(items)
         if unknown_ratio > 0.5:
             red_line_triggers.append("HIGH_UNKNOWN_PROCESS_RATIO")
 
     return {
         "paper_name": base_name,
         "pipeline_version": "knowmat-2.0.1",
-        "materials_target_count": len(materials),
-        "samples_count": len(all_samples),
+        "materials_target_count": target_count,
+        "samples_count": len(items),
         "properties_count": len(all_tests),
         "unknown_process_count": unknown_process_count,
         "phase_filled_rate": round(phase_filled_rate, 3),
-        "missing_doi": 1 if not materials or not materials[0].get("Source_DOI") else 0,
+        "missing_doi": missing_doi,
         "needs_review": len(red_line_triggers) > 0,
         "red_line_triggers": red_line_triggers,
         "final_confidence_score": final_state.get("final_confidence_score"),

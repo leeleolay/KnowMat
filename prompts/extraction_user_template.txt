@@ -1,223 +1,78 @@
-You are given OCR-parsed content from a materials-science paper.
+You will be provided with OCR-parsed text of a materials science paper.
 
 === INPUT TEXT START ===
 {paper_text}
 === INPUT TEXT END ===
 
-Follow system rules exactly. Execute this extraction workflow:
+Execute the extraction workflow below and follow the system rules exactly.
 
-1) Scope filtering first
-- Extract this paper's own target materials/samples by default.
-- Treat literature-only comparisons as Reference context.
-- Do not assign literature values to this paper's tested samples.
-- Exception: datasheet/handbook-style documents can be treated as extractable Target entries.
-- If explicit benchmark numbers from cited prior work are present (e.g., citation markers, "reported", "previous work"),
-  you may extract them as separate Reference items, but never mix them into Target sample properties.
+Follow the laboratory extraction semantics as the source of truth.
+- `Paper_Metadata` and `items` define the target semantic structure.
+- The runtime `compositions` output is only the runtime-compatible encoding of those laboratory semantics.
 
-2) Item decomposition
-- One item = one unique (composition + process state).
-- Split items by: chemistry variant, process state, orientation/loading direction, test mode, graded step/layer.
-- In-situ composites: split matrix and reinforcement when explicitly compositional.
-- If same (composition + process) has multiple test conditions, keep one item and include all tests in `properties_of_composition`.
-- If sample/state labels differ (e.g., AB, CR, PDA-873, PDA-973, PDA-1073, SLM, Cast, AA), force split into separate items.
-- Never output merged labels in one sample id (e.g., "PDA-773,PDA-973,PDA-1073" is invalid).
-- If process parameter levels define sample families (e.g., VED=50/65/83), force split one item per level.
-- If both SLM and Cast (or similar route variants) are reported with explicit rows, force split into separate items.
-- If an intermediate state label is explicitly defined (e.g., CR), keep it as a standalone item even if properties are missing.
-- Before extraction, list all explicit level tokens (e.g., VED 50/65/83, power levels) and ensure each tokened level is represented.
-- If comparative rows carry explicit alternative chemistry labels/formulas (e.g., W2, Mo2 variants), split them as separate items.
-- If a variant is explicitly named but lacks legal numeric property values in text/OCR, still keep a sparse item for it.
+Step 1: Global metadata and role distinction
 
-3) Composition extraction (strict)
-- Always fill `alloy_name_raw`.
-- Strictly decouple:
-  `nominal_composition` + `nominal_composition_type`
-  `measured_composition` + `measured_composition_type` + `measured_composition_method`
-- If only measured composition exists, set `nominal_composition` = null.
-- Keep composition types as `wt%`, `at%`, or null.
-- Formula-like strings must be normalized to 100.
-- For reported wt%/at% maps with sum < 100 and no explicit residual, add `other`.
-- If computed `other` is negative, remove `other`.
-- Keep explicit 0.00 columns from fixed-column composition tables.
-- Mature commercial alloys with no numeric composition in full paper:
-  keep `alloy_name_raw`; set normalized/nominal/measured composition fields to null.
-- Preserve state-specific names in `alloy_name_raw` when provided (e.g., PDA-873, Cast-variant, Cold-Rolled).
-- Do not overwrite all split items with one generic alloy name.
+- Extract the paper title and DOI into the root `Paper_Metadata` object.
+- Extract this paper's own materials as `Target`.
+- If explicit cited benchmark values are present, you may extract them as separate `Reference` items, but never mix them into a `Target` item.
 
-4) Process and microstructure text anchors
-- `processing_conditions` must use dual-track format:
-  `original: ... || simplified: ...`
-- `microstructure_description` must use dual-track format:
-  `original: ... || simplified: ...`
-- `original` should stay source-faithful; `simplified` should be concise and structured.
+Step 2: Item decomposition
 
-5) Process parameter extraction (`processing_params`)
-- Extract all quantified process parameters.
-- Prefer canonical keys:
-  `Laser_Power_W`, `Scanning_Speed_mm_s`, `Layer_Thickness_um`, `Hatch_Spacing_um`, `Build_Plate_Temperature_K`,
-  `Solution_Temperature_K`, `Solution_Time_h`, `Aging_Temperature_K`, `Aging_Time_h`, `Annealing_Temperature_K`, `Annealing_Time_h`,
-  `Cooling_Medium`, `Protective_Atmosphere`,
-  `Powder_Size_avg_um`, `Volumetric_Energy_Density_J_mm3`, `Oxygen_Content_ppm`,
-  `Rolling_Reduction_pct`, `Forging_Temperature_K`, `Extrusion_Ratio`.
-- For non-whitelist quantified parameters, still extract dynamic underscore keys with unit hints.
-- Multi-stage processes must use stage suffixes.
-- Spatially heterogeneous settings must use spatial suffixes.
+- One item = one unique combination of composition + process.
+- Split whenever composition, process state, sample/state label, route, orientation/loading mode, parameter level, or graded step changes.
+- If the same item has multiple testing conditions, keep one item and place all tests in that item's `Properties_Info`.
+- If a variant is explicitly named but only sparse evidence exists, still keep a sparse item.
 
-6) Property extraction (full coverage + tier order)
-- Extract all reported properties (mechanical/physical/chemical), no omission.
-- Maintain ordering priority in `properties_of_composition`:
-  Tier 1 first:
-  `Yield_Strength`, `Yield_Strength_Compressive`, `Ultimate_Tensile_Strength`, `Ultimate_Strength_Compressive`,
-  `Fracture_Elongation`, `Elongation_Compressive`, `Elastic_Modulus`, `Hardness_HV`, `Hardness_HRC`, `Hardness_HB`.
-  Tier 2 next:
-  `Residual_Stress`, `Impact_Toughness`, `Fatigue_Strength`, `Fracture_Toughness`,
-  `Thermal_Conductivity`, `Specific_Heat`, `Coefficient_of_Thermal_Expansion`,
-  `Electrical_Conductivity`, `Electrical_Resistivity`, `Corrosion_Rate`, `Wear_Rate`, `Friction_Coefficient`.
-  Tier 3 last:
-  any additional reported property with explicit dynamic underscore naming.
+Step 3: Composition extraction (`Composition_Info`)
 
-7) Table alignment and provenance safety
-- Reconstruct matrix by sample rows x temperatures x property columns.
-- Enforce header-lock, row-lock, temperature-lock, and unit-lock.
-- One table cell maps to one property slot only.
-- If mapping remains ambiguous, skip rather than guess.
-- Do not use process temperatures as test temperatures unless explicitly test conditions.
-- Build one sample anchor tuple per item before filling values:
-  (sample/state label + route + key process params).
-- Keep composition/process/properties consistent within the same anchor tuple.
-- If two tuples exist (e.g., optimized SLM vs non-optimized SLM), output two items instead of mixing values.
-- If explicit state tags are present (AB/AA/HT, as-built/as-annealed), assign rows to state buckets first,
-  then extract per bucket; never mix properties across state buckets.
-- If only family-average properties are stated, keep them at family scope; do not duplicate into each level-specific variant.
+- Fill `Role`, `Alloy_Name_Raw`, `Nominal_Composition`, and `Measured_Composition`.
+- Keep nominal and measured composition strictly separate.
+- Normalize reported composition to 100.0, using `other` only when justified by residual balance.
+- Preserve mature commercial alloy names with null normalized arrays if no explicit numeric composition is reported.
+- Never convert trade names or polymer abbreviations into fake element formulas.
 
-8) Numeric formatting rules
-- Preserve source precision in `value`.
-- Range `a-b`: `value` keeps source string, `value_type`=`range`, `value_numeric`=midpoint, `value_range`=source string.
-- Mean±std: keep source in `value`, set `value_numeric` and `value_stddev`.
-- Normalize temperatures to Kelvin (RT=298.15 K).
-- Apply K-normalization to temperature-like properties too (e.g., melting/thermal distortion temperatures).
-- Never fill `Test_Temperature_K=298.15` unless the test temperature is explicitly stated for that property evidence.
+Step 4: Process extraction (`Process_Info`)
 
-9) Microstructure quantitative extraction
-- If numeric microstructure evidence exists, do not leave text-only.
-- Prefer extracting these keys when present: `Porosity_pct`, `Relative_Density_pct`, `Main_Phase`, `Grain_Size_avg_um`,
-  `Precipitate_Size_avg_nm`, `Precipitate_Volume_Fraction_pct`, `Phase_Fraction_pct`.
-- Additional quantified microstructure features should be stored in
-  `characterisation["Advanced_Quantitative_Features"]` as a JSON-string map.
+- Build `Process_Text.original` and `Process_Text.simplified`.
+- Extract quantified variables into `Key_Params`.
+- Use canonical parameter names where possible, and dynamic keys with unit hints when needed.
+- For multistage processing, use stage suffixes such as `_Stage1_K` and never average stages.
 
-10) Final quality gate
-- Check no obvious missing variants/temperatures/property columns.
-- Check compressive data uses compressive naming.
-- Check no metadata/citation IDs exported as properties.
-- Check `processing_params` contains process controls only (no density/porosity/phase fraction/hardness/strength fields).
-- Check polymer/trade names are not misparsed into fake element formulas.
-- Check output is valid JSON only.
+Step 5: Microstructure extraction (`Microstructure_Info`)
 
-11) Mandatory self-audit before output
-- Role purity audit:
-  - Ensure Target and Reference evidence are isolated by item; never merge cited benchmark values into Target items.
-- Label coverage audit:
-  - Build a full list of sample/state labels from tables/captions/body first.
-  - Verify every discovered label has a corresponding item, unless evidence is too ambiguous.
-  - Also verify every discovered parameter level set (e.g., VED levels, route variants) has corresponding items.
-  - Verify intermediate states (e.g., CR) are not dropped even when property rows are sparse.
-- Temperature boundary audit:
-  - Verify `Test_Temperature_K` is only test-environment temperature, not process temperature.
-  - If no explicit test-temperature binding exists, keep test temperature null.
-- Physics sanity audit:
-  - Prevent MPa/GPa values from being assigned to percent strain/elongation fields.
-  - Prevent percent values from being assigned to strength fields.
+- Build `Microstructure_Text.original` and `Microstructure_Text.simplified`.
+- Extract `Main_Phase`, `Porosity_pct`, `Relative_Density_pct`, `Grain_Size_avg_um`, `Precipitate_Size_avg_nm`, and `Precipitate_Volume_Fraction_pct` whenever evidence exists.
+- Put advanced quantified microstructure metrics under `Advanced_Quantitative_Features`.
 
-Return JSON only.
+Step 6: Properties extraction (`Properties_Info`)
 
-FEW-SHOT (SHORT, GENERALIZED) — FOLLOW THE DECISION PATTERNS, NOT THE WORDING:
+- Extract all reported properties for the same item.
+- Keep strict ordering from Tier 1 to Tier 3.
+- Use compressive property names only for compressive contexts.
+- `Test_Temperature_K` is only the actual testing environment temperature, not a process temperature.
+- For ranges, keep midpoint in `Value_Numeric` and source range in `Value_Range`.
+- For mean±std, keep mean in `Value_Numeric` and std in `Value_StdDev`.
 
-Example A (Item splitting vs multi-test conditions)
-INPUT (abstracted):
-- Same nominal chemistry X, two process states: As-built and Aged.
-- Mechanical tests at RT and 873.15 K for the As-built state.
-DECISIONS:
-- As-built vs Aged => TWO items (process state changed).
-- RT + 873.15 K for As-built => ONE item with TWO property records (test condition changed).
-JSON SKETCH (illustrative shape only; keep strict schema in real output):
-{
-  "compositions": [
-    {
-      "composition": "X [As-built]",
-      "processing_conditions": "original: ... || simplified: AM -> As-built",
-      "properties_of_composition": [
-        { "property_name": "Yield_Strength", "value": "900", "unit": "MPa", "measurement_condition": "at 298.15 K; tensile" },
-        { "property_name": "Yield_Strength", "value": "520", "unit": "MPa", "measurement_condition": "at 873.15 K; tensile" }
-      ]
-    },
-    {
-      "composition": "X [Aged]",
-      "processing_conditions": "original: ... || simplified: AM -> Aging (Stage1/Stage2 if present)",
-      "properties_of_composition": [ ]
-    }
-  ]
-}
+Step 7: Table alignment and generalization checks
 
-Example B (Formula normalization + `other` completion + negative-other rule)
-INPUT (abstracted):
-- Formula-like: A B C D E0.5 (stoichiometric coefficients).
-- Reported wt% map sums to 98.5 with no residual explanation.
-DECISIONS:
-- Formula-like => normalize ratio to 100.0 by coefficients.
-- wt% sum < 100 with no residual => add `other` = 1.5 to reach 100.0.
-- If computed `other` < 0, do NOT include `other`.
-JSON SKETCH (illustrative):
-{
-  "compositions": [
-    {
-      "nominal_composition_type": "wt%",
-      "nominal_composition": { "A": 40.0, "B": 30.0, "C": 20.0, "D": 8.5, "other": 1.5 }
-    }
-  ]
-}
+- Reconstruct by header-lock, row-lock, temperature-lock, and unit-lock.
+- Do not guess from ambiguous OCR or unlabeled plot lines.
+- Build the full list of explicit labels and parameter levels before finalizing output.
+- Ensure every clearly supported variant has a corresponding item.
+- Do not overfit to one phrase pattern; preserve generalized extraction behavior across different paper layouts.
 
-Example C (Multi-stage + spatial heterogeneity in processing params)
-INPUT (abstracted):
-- Two-stage aging: 723.15 K/4 h then 873.15 K/2 h.
-- Different laser power for contour vs core.
-DECISIONS:
-- Never average stages => use `_Stage1`/`_Stage2`.
-- Spatially heterogeneous => use `_Contour`/`_Core`.
-JSON SKETCH (illustrative):
-{
-  "compositions": [
-    {
-      "processing_params": {
-        "Laser_Power_Contour_W": 200.0,
-        "Laser_Power_Core_W": 250.0,
-        "Aging_Temperature_Stage1_K": 723.15,
-        "Aging_Time_Stage1_h": 4.0,
-        "Aging_Temperature_Stage2_K": 873.15,
-        "Aging_Time_Stage2_h": 2.0
-      }
-    }
-  ]
-}
+Step 8: Mandatory final self-audit
 
-Negative Mini-Shot (Do NOT do this; correct pattern shown)
-WRONG PATTERN:
-- Averaging multi-stage aging temperatures into one value, or merging As-built + Aged into one item.
-CORRECT:
-- Keep stages as separate keys and split items by process state.
+- Check Target/Reference purity.
+- Check no explicit variant, test temperature, or property column is silently dropped.
+- Check MPa/GPa values are not assigned to percentage properties, and percentage values are not assigned to strength fields.
+- Check the final payload is valid JSON only.
 
-Example D (Name guard: do not fake formula parsing)
-INPUT (abstracted):
-- Material name is "UHMWPE"; no explicit element percentage table is provided.
-DECISION:
-- Keep `alloy_name_raw` as UHMWPE; leave nominal/measured composition null.
-WRONG:
-- Converting UHMWPE to pseudo elements (U/H/M/W/P/E).
+Important output rule:
 
-Example E (Reference-value exclusion)
-INPUT (abstracted):
-- Sentence says: "Reference yield strength of wrought alloy is 245 MPa."
-DECISION:
-- Do not store this as Target property unless explicitly measured for this paper's sample.
+- Follow the laboratory schema semantics rooted at `Paper_Metadata` and `items`, but emit the runtime internal schema rooted at `compositions`.
+- Use field mapping consistent with the system prompt so downstream pipeline stages remain compatible.
+- Do not output any prose or markdown.
 
 Example F (Label-driven split is mandatory)
 INPUT (abstracted):

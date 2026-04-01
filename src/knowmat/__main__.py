@@ -314,8 +314,8 @@ def main(argv: list[str] | None = None) -> None:
             if extraction_path.exists() and not args.force_rerun:
                 try:
                     data = json.loads(extraction_path.read_text(encoding="utf-8"))
-                    materials = data.get("Materials", [])
-                    compositions_count = len(materials)
+                    items = data.get("items") or data.get("Materials", [])
+                    compositions_count = len(items)
                 except Exception:
                     compositions_count = 0
                 print(f"Skipping {file_path.name}: existing extraction found at {extraction_path}")
@@ -345,8 +345,8 @@ def main(argv: list[str] | None = None) -> None:
                 enable_property_standardization=args.enable_property_standardization,
             )
 
-            materials = result.get("final_data", {}).get("Materials", [])
-            compositions_count = len(materials)
+            items = result.get("final_data", {}).get("items") or result.get("final_data", {}).get("Materials", [])
+            compositions_count = len(items)
             return {
                 "file": file_path.name,
                 "success": True,

@@ -28,6 +28,39 @@ _EVAL_TEMPLATES = load_yaml_templates_required(
 )
 
 
+def _build_evaluation_prompt(
+    extracted_data: Dict[str, Any],
+    paper_text: str,
+    run_results: List[EvaluationRun],
+) -> str:
+    templates = _EVAL_TEMPLATES
+    system_prompt = templates["system"].strip()
+    user_prompt = templates["user_template"].format(
+        extracted_data=json.dumps(extracted_data, ensure_ascii=False, indent=2)
+    ).strip()
+    parts = [system_prompt, "", user_prompt]
+    if run_results:
+        parts.extend(["", "PREVIOUS RUN HISTORY:", ""])
+        for run in run_results:
+            parts.append(f"Run {run.get('run_id', '?')} | Confidence: {run.get('confidence_score', 0.0):.2f}")
+            parts.append(f"Rationale: {run.get('rationale', '')}")
+            missing = run.get("missing_fields") or []
+            hallucinated = run.get("hallucinated_fields") or []
+            if missing:
+                parts.append("Missing Fields:")
+                parts.extend(f"- {field}" for field in missing)
+            if hallucinated:
+                parts.append("Hallucinated Fields:")
+                parts.extend(f"- {field}" for field in hallucinated)
+            suggested_prompt = run.get("suggested_prompt")
+            if suggested_prompt:
+                parts.append(f"Suggested Prompt Update: {suggested_prompt}")
+            parts.append("")
+    if paper_text:
+        parts.extend(["ORIGINAL PAPER TEXT:", paper_text.strip()])
+    return "\n".join(parts).strip()
+
+
 def evaluate_data(state: KnowMatState) -> Dict[str, Any]:
     """Evaluate the extracted data against the source and decide on a rerun.
 
@@ -48,19 +81,16 @@ def evaluate_data(state: KnowMatState) -> Dict[str, Any]:
     paper_text = state.get("paper_text", "")
     extracted_data = state.get("latest_extracted_data", {})
     run_count = state.get("run_count", 0)
+    run_results: List[EvaluationRun] = list(state.get("run_results", []))
 
-    # Build the evaluation prompt from external templates
-    templates = _EVAL_TEMPLATES
-    system_prompt = templates["system"]
-    user_prompt = templates["user_template"].format(
-        extracted_data=json.dumps(extracted_data, ensure_ascii=False, indent=2)
+    evaluation_prompt = _build_evaluation_prompt(
+        extracted_data=extracted_data,
+        paper_text=paper_text,
+        run_results=run_results,
     )
-    evaluation_prompt = system_prompt.strip() + "\n\n" + user_prompt.strip()
 
     result = evaluation_extractor.invoke(evaluation_prompt)
     response = result.get("responses", [None])[0]
-    # Prepare the updated run_results list
-    run_results: List[EvaluationRun] = list(state.get("run_results", []))
     if response is None:
         # No evaluation returned; accept the extraction as is
         return {

@@ -38,6 +38,73 @@ _VALIDATOR_TEMPLATES = load_yaml_templates_required(
 )
 
 
+def _first_response(result: Dict[str, Any]) -> Any:
+    responses = result.get("responses")
+    if not responses:
+        return None
+    return responses[0]
+
+
+def _coerce_final_extracted_data(final_extracted_data: Any) -> Dict[str, Any] | None:
+    if isinstance(final_extracted_data, str):
+        try:
+            final_extracted_data = json.loads(final_extracted_data)
+        except Exception:
+            return None
+    if isinstance(final_extracted_data, dict) and "compositions" in final_extracted_data:
+        return final_extracted_data
+    if hasattr(final_extracted_data, "compositions"):
+        return {"compositions": final_extracted_data.compositions}
+    return None
+
+
+def _composition_signature(comp: Dict[str, Any]) -> tuple[str, str, str]:
+    name = str(comp.get("alloy_name_raw") or comp.get("composition") or "").strip().lower()
+    process = str(comp.get("process_category") or "").strip().lower()
+    conditions = str(comp.get("processing_conditions") or "").strip().lower()
+    return name, process, conditions
+
+
+def _validator_collapsed_item_boundaries(
+    aggregated_data: Dict[str, Any],
+    final_data: Dict[str, Any],
+) -> bool:
+    aggregated = aggregated_data.get("compositions", []) or []
+    validated = final_data.get("compositions", []) or []
+    if len(aggregated) <= 1 or len(validated) >= len(aggregated):
+        return False
+    aggregated_signatures = {_composition_signature(comp) for comp in aggregated}
+    validated_signatures = {_composition_signature(comp) for comp in validated}
+    if len(validated_signatures) < len(aggregated_signatures):
+        return True
+    return not aggregated_signatures.issubset(validated_signatures)
+
+
+def _preserve_aggregated_item_boundaries(
+    aggregated_data: Dict[str, Any],
+    aggregation_notes: str,
+    aggregation_rationale: str,
+    human_review_guide: str,
+) -> Dict[str, Any]:
+    combined_rationale = (
+        f"STAGE 1 - AGGREGATION:\n{aggregation_notes}\n\n"
+        "STAGE 2 - VALIDATION & CORRECTION:\n"
+        f"{aggregation_rationale}\n\n"
+        "SAFETY OVERRIDE:\n"
+        "Validator output collapsed distinct laboratory item boundaries, so the aggregated data was preserved."
+    )
+    review_guide = (
+        human_review_guide.strip() + "\n\nPreserved aggregated item boundaries because validation collapsed distinct variants."
+        if human_review_guide.strip()
+        else "Preserved aggregated item boundaries because validation collapsed distinct variants."
+    )
+    return {
+        "final_data": aggregated_data,
+        "aggregation_rationale": combined_rationale,
+        "human_review_guide": review_guide,
+    }
+
+
 def validate_and_correct(state: KnowMatState) -> Dict[str, Any]:
     """Validate merged data and correct hallucinations.
     
@@ -89,7 +156,7 @@ def validate_and_correct(state: KnowMatState) -> Dict[str, Any]:
     
     # Invoke the validation LLM (first attempt)
     result = manager_extractor.invoke(validation_prompt)
-    response = result.get("responses", [None])[0]
+    response = _first_response(result)
     
     if response is None:
         print("Warning: Validation LLM returned no response. Using fallback.")
@@ -107,11 +174,8 @@ def validate_and_correct(state: KnowMatState) -> Dict[str, Any]:
     human_review_guide = validation_dict.get("human_review_guide", "")
     
     # Ensure proper data structure
-    if isinstance(final_extracted_data, dict) and 'compositions' in final_extracted_data:
-        final_data = final_extracted_data
-    elif hasattr(final_extracted_data, 'compositions'):
-        final_data = {"compositions": final_extracted_data.compositions}
-    else:
+    final_data = _coerce_final_extracted_data(final_extracted_data)
+    if final_data is None:
         print("Warning: Validation returned invalid data structure. Using fallback.")
         return _fallback_to_best_run(run_results)
     
@@ -175,6 +239,15 @@ def validate_and_correct(state: KnowMatState) -> Dict[str, Any]:
         else:
             print("  Retry failed. Using fallback.")
             return _fallback_to_best_run(run_results)
+
+    if _validator_collapsed_item_boundaries(aggregated_data, final_data):
+        print("  Warning: Validator collapsed distinct item boundaries. Preserving aggregated data.")
+        return _preserve_aggregated_item_boundaries(
+            aggregated_data,
+            aggregation_notes,
+            aggregation_rationale,
+            human_review_guide,
+        )
     
     # Success - validation completed
     print(f"  Validation complete: {len(compositions)} compositions validated")
@@ -246,6 +319,10 @@ def _build_validation_prompt(aggregated_data, aggregation_notes, run_results, pa
         else:
             parts.append(no_hallucinated + "\n")
 
+    if paper_text:
+        parts.append("ORIGINAL PAPER TEXT:\n")
+        parts.append(f"{paper_text}\n\n")
+
     parts.append(t.get("validation_tail", "BEGIN VALIDATION:\n"))
     return "".join(parts)
 
@@ -276,7 +353,7 @@ def _retry_validation_with_explicit_schema(aggregated_data, aggregation_notes, r
     
     # Invoke validation LLM with retry prompt
     result = manager_extractor.invoke(retry_prompt)
-    response = result.get("responses", [None])[0]
+    response = _first_response(result)
     
     if response is None:
         return None
@@ -293,11 +370,8 @@ def _retry_validation_with_explicit_schema(aggregated_data, aggregation_notes, r
     human_review_guide = validation_dict.get("human_review_guide", "")
     
     # Ensure proper structure
-    if isinstance(final_extracted_data, dict) and 'compositions' in final_extracted_data:
-        final_data = final_extracted_data
-    elif hasattr(final_extracted_data, 'compositions'):
-        final_data = {"compositions": final_extracted_data.compositions}
-    else:
+    final_data = _coerce_final_extracted_data(final_extracted_data)
+    if final_data is None:
         return None
     
     compositions = final_data.get("compositions", [])
@@ -308,6 +382,14 @@ def _retry_validation_with_explicit_schema(aggregated_data, aggregation_notes, r
     
     if not compositions or len(aggregation_rationale.strip()) < 50:
         return None
+
+    if _validator_collapsed_item_boundaries(aggregated_data, final_data):
+        return _preserve_aggregated_item_boundaries(
+            aggregated_data,
+            aggregation_notes,
+            aggregation_rationale,
+            human_review_guide,
+        )
     
     # Success - combine with aggregation notes
     combined_rationale = (
