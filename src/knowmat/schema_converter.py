@@ -71,7 +71,7 @@ class SchemaConverter:
             repaired = self._repair_ti64_in718_multigraded_case(repaired, paper_text)
             return {
                 "Paper_Metadata": paper_metadata,
-                "items": self._expand_collapsed_graded_items(repaired),
+                "items": repaired,
             }
 
         # Legacy compatibility path: old envelope rooted at Materials.
@@ -88,7 +88,7 @@ class SchemaConverter:
                     "Paper_Title": paper_metadata.get("Paper_Title"),
                     "DOI": paper_metadata.get("DOI"),
                 },
-                "items": self._expand_collapsed_graded_items(repaired),
+                "items": repaired,
             }
 
         # Runtime compatibility path: convert one runtime composition -> one strict item.
@@ -129,10 +129,6 @@ class SchemaConverter:
         """Convert runtime ``compositions`` envelope into strict ``items``."""
         runtime_compositions = self._expand_explicit_step_composition_maps(
             compositions,
-            paper_text=paper_text,
-        )
-        runtime_compositions = self._expand_runtime_multigraded_compositions(
-            runtime_compositions,
             paper_text=paper_text,
         )
         items: List[Dict[str, Any]] = []
@@ -199,6 +195,7 @@ class SchemaConverter:
             if not process_text_raw:
                 process_text_raw = sample.get("Process_Text_For_AI")
             process_payload = self._to_text_payload(str(process_text_raw or "not provided"))
+            process_text_for_rules = self._extract_text_payload(process_payload)
 
             process_category = (
                 str(comp.get("process_category") or "").strip()
@@ -213,8 +210,13 @@ class SchemaConverter:
 
             micro_text_raw = comp.get("microstructure_description") or sample.get("Microstructure_Text_For_AI")
             micro_payload = self._to_text_payload(str(micro_text_raw or "not provided"))
+            micro_text_for_rules = self._extract_text_payload(micro_payload)
+            gradient_material = self._infer_gradient_material(comp, alloy_name, process_text_for_rules)
 
             item = {
+                "Sample_ID": self._clean_optional_str(comp.get("sample_id")) or sample.get("Sample_ID"),
+                "Gradient_Material": gradient_material,
+                "Gradient_Group_ID": self._clean_optional_str(comp.get("gradient_group_id")),
                 "Composition_Info": {
                     "Role": self._normalize_role(comp.get("role")),
                     "Alloy_Name_Raw": alloy_name,
@@ -230,20 +232,30 @@ class SchemaConverter:
                             or comp.get("measurement_method")
                         ),
                     },
+                    "Note": self._clean_optional_str(comp.get("composition_note")),
                 },
                 "Process_Info": {
                     "Process_Category": process_category,
                     "Process_Text": process_payload,
+                    "Equipment": self._clean_optional_str(comp.get("equipment")),
                     "Key_Params": key_params,
                 },
                 "Microstructure_Info": {
                     "Microstructure_Text": micro_payload,
-                    "Main_Phase": self._clean_optional_str(comp.get("main_phase") or sample.get("Main_Phase")),
+                    "Main_Phase": self._normalize_main_phase(
+                        comp.get("main_phase") or sample.get("Main_Phase"),
+                        micro_text=micro_text_for_rules,
+                    ),
+                    "Precipitates": self._normalize_precipitates(
+                        comp.get("precipitates"),
+                        text=micro_text_for_rules,
+                    ),
                     "Porosity_pct": self._coerce_float(comp.get("porosity_pct")),
                     "Relative_Density_pct": self._coerce_float(comp.get("relative_density_pct")),
                     "Grain_Size_avg_um": self._coerce_float(comp.get("grain_size_avg_um") or sample.get("Grain_Size_avg_um")),
                     "Precipitate_Size_avg_nm": self._coerce_float(comp.get("precipitate_size_avg_nm")),
                     "Precipitate_Volume_Fraction_pct": self._coerce_float(comp.get("precipitate_volume_fraction_pct")),
+                    "Phase_Fraction_pct": self._coerce_float(comp.get("phase_fraction_pct")),
                     "Advanced_Quantitative_Features": self._normalize_advanced_quantitative_features(
                         comp.get("characterisation")
                     ),
@@ -257,7 +269,7 @@ class SchemaConverter:
 
         repaired = self._repair_existing_lab_items(items)
         repaired = self._repair_ti64_in718_multigraded_case(repaired, paper_text)
-        return self._expand_collapsed_graded_items(repaired)
+        return repaired
 
     @staticmethod
     def _empty_lab_schema(paper_metadata: Optional[Dict[str, Any]] = None) -> dict:
@@ -296,6 +308,24 @@ class SchemaConverter:
         return text or None
 
     @staticmethod
+    def _coerce_bool(value: Any) -> Optional[bool]:
+        if isinstance(value, bool):
+            return value
+        if value is None:
+            return None
+        text = str(value).strip().lower()
+        if text in {"true", "1", "yes", "y"}:
+            return True
+        if text in {"false", "0", "no", "n"}:
+            return False
+        return None
+
+    @staticmethod
+    def _slugify_identifier(value: Any) -> str:
+        text = re.sub(r"[^A-Za-z0-9]+", "_", str(value or "").strip()).strip("_")
+        return text.upper() or "ITEM"
+
+    @staticmethod
     def _coerce_float(value: Any) -> Optional[float]:
         if value is None:
             return None
@@ -316,6 +346,185 @@ class SchemaConverter:
         if not math.isfinite(number):
             return None
         return number
+
+    def _normalize_data_source(self, value: Any, context: Optional[str] = None) -> Optional[str]:
+        context_text = str(context or "").lower()
+        has_image_cue = any(
+            token in context_text
+            for token in ("figure", "fig.", "fig ", "plot", "curve", "image", "bar chart", "graph")
+        )
+        has_text_cue = any(
+            token in context_text
+            for token in ("table", "body text", "caption text")
+        )
+        cleaned = self._clean_optional_str(value)
+        if cleaned:
+            lowered = cleaned.lower()
+            if lowered == "image":
+                return "image"
+            if lowered == "text":
+                if has_image_cue and not has_text_cue:
+                    return "image"
+                return "text"
+        if has_image_cue:
+            return "image"
+        if any(token in context_text for token in ("table", "text", "body text", "caption")):
+            return "text"
+        return None
+
+    def _extract_strain_rate_text(self, *texts: Any) -> Optional[str]:
+        for text in texts:
+            if not text:
+                continue
+            match = re.search(
+                r"(?:strain[\s-]*rate)\s*[:=]?\s*([^;,\]\)]+)",
+                str(text),
+                re.IGNORECASE,
+            )
+            if match:
+                return self._clean_optional_str(match.group(1))
+        return None
+
+    def _extract_tensile_speed_mm_min(self, *texts: Any) -> Optional[float]:
+        for text in texts:
+            if not text:
+                continue
+            match = re.search(
+                r"(?:tensile|crosshead|loading)\s+speed\s*[:=]?\s*(-?\d+(?:\.\d+)?)\s*mm\s*/\s*min",
+                str(text),
+                re.IGNORECASE,
+            )
+            if match:
+                return self._coerce_float(match.group(1))
+        return None
+
+    def _extract_hardness_load(self, *texts: Any) -> Optional[str]:
+        for text in texts:
+            if not text:
+                continue
+            match = re.search(
+                r"(?:hardness\s+)?(?:load|indentation\s+load)\s*[:=]?\s*(-?\d+(?:\.\d+)?\s*(?:kgf|gf|n))",
+                str(text),
+                re.IGNORECASE,
+            )
+            if match:
+                return self._clean_optional_str(match.group(1))
+        return None
+
+    def _extract_hardness_dwell_time_s(self, *texts: Any) -> Optional[float]:
+        for text in texts:
+            if not text:
+                continue
+            match = re.search(
+                r"(?:dwell|holding)\s+time\s*[:=]?\s*(-?\d+(?:\.\d+)?)\s*s\b",
+                str(text),
+                re.IGNORECASE,
+            )
+            if match:
+                return self._coerce_float(match.group(1))
+        return None
+
+    def _extract_test_specimen(self, *texts: Any) -> Optional[str]:
+        for text in texts:
+            if not text:
+                continue
+            raw = str(text)
+            astm = re.search(r"\bASTM\s+[A-Z]\d+[A-Z0-9-]*\b", raw, re.IGNORECASE)
+            gbt = re.search(r"\bGB/?T\s*\d+[A-Z0-9-]*\b", raw, re.IGNORECASE)
+            if astm:
+                return self._clean_optional_str(astm.group(0))
+            if gbt:
+                return self._clean_optional_str(gbt.group(0))
+        return None
+
+    def _default_property_note(self, property_name: str, raw_name: Any, existing_note: Any) -> Optional[str]:
+        note = self._clean_optional_str(existing_note)
+        if note:
+            return note
+        raw = str(raw_name or "").strip().lower()
+        if property_name == "Elongation_Total" and raw in {"elongation", "total elongation", "a"}:
+            return "Original only provides total elongation."
+        if property_name == "Elongation_Total" and raw == "fracture_elongation":
+            return "Legacy Fracture_Elongation field mapped to Elongation_Total because subtype was unavailable."
+        return None
+
+    def _normalize_precipitates(self, payload: Any, text: Optional[str] = None) -> List[Dict[str, Any]]:
+        candidates = payload
+        if isinstance(payload, dict):
+            candidates = payload.get("Precipitates") or payload.get("precipitates") or []
+
+        normalized: List[Dict[str, Any]] = []
+        seen: set[str] = set()
+        if isinstance(candidates, list):
+            for entry in candidates:
+                if isinstance(entry, dict):
+                    phase = self._clean_optional_str(
+                        entry.get("Phase_Type")
+                        or entry.get("phase_type")
+                        or entry.get("Type")
+                        or entry.get("name")
+                    )
+                    volume = self._coerce_float(
+                        entry.get("Volume_Fraction_pct")
+                        or entry.get("volume_fraction_pct")
+                    )
+                else:
+                    phase = self._clean_optional_str(entry)
+                    volume = None
+                if not phase:
+                    continue
+                signature = phase.lower()
+                if signature in seen:
+                    continue
+                seen.add(signature)
+                normalized.append(
+                    {
+                        "Phase_Type": phase,
+                        "Volume_Fraction_pct": volume,
+                    }
+                )
+        if normalized:
+            return normalized
+
+        text_blob = str(text or "")
+        fallback_patterns = [
+            (r"gamma\s*prime|gamma\s*'|γ'", "Gamma Prime"),
+            (r"\blaves\b", "Laves"),
+            (r"\bmc\b.*carbide|\bmc carbide\b", "MC Carbide"),
+            (r"\bm2c\b", "M2C Carbide"),
+            (r"\bm6c\b", "M6C Carbide"),
+            (r"\bsigma(?:\s+phase)?\b", "Sigma Phase"),
+            (r"\bcarbide(?:s)?\b", "Carbide"),
+        ]
+        for pattern, label in fallback_patterns:
+            if re.search(pattern, text_blob, re.IGNORECASE) and label.lower() not in seen:
+                seen.add(label.lower())
+                normalized.append(
+                    {
+                        "Phase_Type": label,
+                        "Volume_Fraction_pct": None,
+                    }
+                )
+        return normalized
+
+    def _normalize_main_phase(self, value: Any, micro_text: Optional[str] = None) -> Optional[str]:
+        cleaned = self._clean_optional_str(value)
+        if cleaned:
+            lowered = cleaned.lower()
+            if not any(token in lowered for token in ("laves", "carbide", "gamma prime", "sigma phase")):
+                return cleaned
+        inferred = self.infer_main_phase(str(micro_text or ""))
+        return inferred or None
+
+    def _infer_gradient_material(self, comp: dict, alloy_name: str, process_text: str) -> bool:
+        explicit = self._coerce_bool(comp.get("gradient_material"))
+        if explicit is not None:
+            return explicit
+        family = self._detect_graded_family(alloy_name, process_text)
+        return family is not None
+
+    def _make_gradient_group_id(self, base_text: str) -> str:
+        return f"GRADIENT_{self._slugify_identifier(base_text)}"
 
     def _looks_like_element_formula(self, text: str) -> bool:
         if not text:
@@ -602,6 +811,9 @@ class SchemaConverter:
             if not proc_text and paper_text:
                 proc_text = str(paper_text)
             family = self._detect_graded_family(name, proc_text)
+            base_group_id = self._clean_optional_str(comp.get("gradient_group_id")) or self._make_gradient_group_id(
+                name or comp.get("sample_id") or "gradient"
+            )
 
             for step in steps:
                 clone = deepcopy(comp)
@@ -642,7 +854,12 @@ class SchemaConverter:
 
                 clone["composition"] = item_name
                 clone["alloy_name_raw"] = item_name
+                clone["gradient_material"] = True
+                clone["gradient_group_id"] = base_group_id
                 clone["properties_of_composition"] = []
+                base_sample_id = self._clean_optional_str(comp.get("sample_id"))
+                if base_sample_id:
+                    clone["sample_id"] = f"{base_sample_id}_STEP_{self._slugify_identifier(step_label)}"
 
                 if nominal_steps:
                     clone["nominal_composition"] = deepcopy(nominal_steps.get(step))
@@ -772,6 +989,10 @@ class SchemaConverter:
         ):
             return items
 
+        def _compact_text(raw: Optional[str]) -> Optional[str]:
+            cleaned = re.sub(r"\s+", " ", str(raw or "")).strip()
+            return cleaned or None
+
         nominal_rows: Dict[int, Dict[str, float]] = {}
         nominal_patterns = {
             0: r"\|\s*0\s*\(Ti6Al4V\)\s*\|\s*([0-9.]+)\s*\|\s*([0-9.]+)\s*\|\s*([0-9.]+)\s*\|\s*([0-9.]+)\s*\|\s*([0-9.]+)\s*\|\s*([0-9.]+)\s*\|\s*([0-9.]+)\s*\|\s*([0-9.]+)\s*\|",
@@ -824,55 +1045,150 @@ class SchemaConverter:
                 "Protective_Atmosphere": "Argon",
             }
 
-        measured_rows: Dict[int, Dict[str, float]] = {}
-        measured_patterns = {
-            10: (r"\|\s*2\.80\s*mm\s*\|\s*A\s*\|\s*([0-9.]+)\s*\|\s*([0-9.]+)\s*\|\s*([0-9.]+)\s*\|\s*([0-9.]+)\s*\|\s*([0-9.]+)\s*\|\s*([0-9.]+)\s*\|\s*([0-9.]+)\s*\|", "2.80"),
-            15: (r"\|\s*3\.62\s*mm\s*\|\s*A\s*\|\s*([0-9.]+)\s*\|\s*([0-9.]+)\s*\|\s*([0-9.]+)\s*\|\s*([0-9.]+)\s*\|\s*([0-9.]+)\s*\|\s*([0-9.]+)\s*\|\s*([0-9.]+)\s*\|", "3.62"),
-            20: (r"\|\s*4\.10\s*mm\s*\|\s*A\s*\|\s*([0-9.]+)\s*\|\s*([0-9.]+)\s*\|\s*([0-9.]+)\s*\|\s*([0-9.]+)\s*\|\s*([0-9.]+)\s*\|\s*([0-9.]+)\s*\|\s*([0-9.]+)\s*\|", "4.10"),
-        }
-        for pct, (pattern, height_txt) in measured_patterns.items():
-            m = re.search(pattern, text)
-            if not m:
+        measured_table_rows: List[Dict[str, Any]] = []
+        for line in text.splitlines():
+            match = re.match(
+                r"\|\s*([0-9.]+)\s*mm\s*\|\s*([A-Z])\s*\|\s*([0-9.\-]+)\s*\|\s*([0-9.\-]+)\s*\|\s*([0-9.\-]+)\s*\|\s*([0-9.\-]+)\s*\|\s*([0-9.\-]+)\s*\|\s*([0-9.\-]+)\s*\|\s*([0-9.\-]+)\s*\|",
+                line.strip(),
+            )
+            if not match:
                 continue
-            vals = [float(v) for v in m.groups()]
-            measured_rows[pct] = {
-                "map": {
-                    "Al": vals[0],
-                    "Ti": vals[1],
-                    "V": vals[2],
-                    "Cr": vals[3],
-                    "Fe": vals[4],
-                    "Ni": vals[5],
-                    "Nb": vals[6],
-                },
-                "method": f"SEM/EDX (Region A at height {height_txt} mm)",
+            height, region, al, ti, v, cr, fe, ni, nb = match.groups()
+            raw_values = {
+                "Ti": ti,
+                "Al": al,
+                "V": v,
+                "Cr": cr,
+                "Fe": fe,
+                "Ni": ni,
+                "Nb": nb,
             }
+            numeric_values: Dict[str, float] = {}
+            for element, raw_value in raw_values.items():
+                if raw_value == "-":
+                    continue
+                numeric_values[element] = float(raw_value)
+            measured_table_rows.append(
+                {
+                    "height_mm": height,
+                    "region": region,
+                    "raw_values": raw_values,
+                    "numeric_values": numeric_values,
+                }
+            )
 
         if not nominal_rows or not process_rows:
             return items
 
+        process_original_parts = []
+        for pattern in (
+            r"The final experiments were devoted to the realization of specimens with a graded composition along the build direction\..*?Table 5\.",
+            r"Graded transition specimen were cross sectioned without removing them from the substrate\..*?20 wt% IN718 content\.",
+        ):
+            match = re.search(pattern, text, re.DOTALL)
+            part = _compact_text(match.group(0) if match else None)
+            if part:
+                process_original_parts.append(part)
+        process_original = " ".join(process_original_parts).strip()
+        if not process_original:
+            process_original = (
+                "The first material deposited was Ti6Al4V for 42 layers, followed by 12 layers each at "
+                "5, 10, 15, and 20 wt% IN718. Process parameters were varied by composition step according to Table 5."
+            )
+        process_simplified = (
+            "Functionally graded specimen built on Ti6Al4V substrate: 42 layers of pure Ti6Al4V, then 12 layers "
+            "each at 5, 10, 15, and 20 wt% IN718. Laser power stayed at 300 W; scan speed varied from 700 to "
+            "450 mm/s; energy density varied from 170 to 267 J/mm3; hatch spacing and layer thickness were 50 um in Ar."
+        )
+
+        micro_match = re.search(
+            r"Fig\. 15 shows the microstructure of the multigraded specimens.*?hard intermetallic phases\.",
+            text,
+            re.DOTALL,
+        )
+        micro_original = _compact_text(micro_match.group(0) if micro_match else None) or (
+            "The microstructure varies along the build direction as Ti content decreases and IN718 alloying elements "
+            "increase. Layer interdiffusion and laser remelting create a smoother transition between blends, forming a "
+            "functionally graded material with increasing hard intermetallic inclusions at higher build heights."
+        )
+        micro_simplified = (
+            "Microstructure varies along build height with decreasing Ti and increasing Ni/Cr/Fe/Nb. "
+            "Layer interdiffusion and laser remelting smooth the transition between blends, while harder "
+            "intermetallic-rich regions appear in the more IN718-enriched layers."
+        )
+
+        representative_row = next(
+            (
+                row
+                for row in measured_table_rows
+                if row["height_mm"] == "3.62" and row["region"] == "C"
+            ),
+            None,
+        )
+        if representative_row is None:
+            representative_row = next(
+                (row for row in measured_table_rows if row["region"] == "C"),
+                measured_table_rows[0] if measured_table_rows else None,
+            )
+
+        measured_note_rows: List[str] = []
+        for row in measured_table_rows:
+            values = ", ".join(
+                f"{element}: {row['raw_values'][element]}"
+                for element in ("Ti", "Al", "V", "Cr", "Fe", "Ni", "Nb")
+            )
+            measured_note_rows.append(
+                f"{row['height_mm']} mm Region {row['region']} ({values})"
+            )
+
+        gradient_note = (
+            "Graded composition from pure Ti6Al4V (0 wt% IN718) to Ti6Al4V + 20 wt% IN718. "
+            "Build structure: 42 layers of pure Ti6Al4V (0% IN718), then 12 layers each at 5%, 10%, 15%, and 20% IN718. "
+            "Total 90 layers."
+        )
+        if measured_note_rows:
+            gradient_note += f" Full Table 6 data: {'; '.join(measured_note_rows)}."
+        gradient_note += (
+            " Ti decreases and Ni increases along the build direction, consistent with graded deposition "
+            "and layer interdiffusion."
+        )
+
         repaired: List[dict] = []
-        graded_source: Optional[dict] = None
+        gradient_sources: List[dict] = []
         for item in items:
             if not isinstance(item, dict):
                 continue
             clone = deepcopy(item)
             ci = dict(clone.get("Composition_Info") or {})
             name = str(ci.get("Alloy_Name_Raw") or "")
-            low = name.lower()
+            sample_id = str(clone.get("Sample_ID") or "")
+            low = f"{name} {sample_id}".lower()
 
-            # Drop non-target performance-style FP fields for this paper.
             clone["Properties_Info"] = [
                 prop for prop in (clone.get("Properties_Info") or [])
                 if str((prop or {}).get("Property_Name") or "").strip()
-                not in {"Relative_Density_pct", "Crack_Presence"}
+                != "Crack_Presence"
             ]
 
-            if "graded" in low or "multigraded" in low or "functionally graded" in low:
-                graded_source = clone
+            pinfo = dict(clone.get("Process_Info") or {})
+            if str(pinfo.get("Process_Category") or "").strip() in {
+                "AM_LPBF",
+                "AM_SLM",
+                "AM_LPBF + Graded_Composition",
+            }:
+                pinfo["Process_Category"] = "Selective Laser Melting"
+            clone["Process_Info"] = pinfo
+
+            if (
+                "graded" in low
+                or "multigraded" in low
+                or "functionally graded" in low
+                or sample_id.upper().startswith("GRADIENT-TI64-IN718")
+            ):
+                gradient_sources.append(clone)
                 continue
 
-            if low == "ti6al4v":
+            if name.lower() == "ti6al4v":
                 ci["Nominal_Composition"] = {
                     "Composition_Type": "wt%",
                     "Elements_Normalized": nominal_rows.get(0),
@@ -894,11 +1210,11 @@ class SchemaConverter:
                     "Measurement_Method": None,
                 }
             else:
-                m = re.search(r"(\d+)\s*wt\s*%\s*in718", low)
+                m = re.search(r"(\d+)\s*wt\s*%\s*in718", name.lower())
                 if m:
                     pct = int(m.group(1))
                     if pct in {10, 20, 30, 40} and pct in nominal_rows:
-                        ci["Alloy_Name_Raw"] = f"Ti6Al4V + {pct} wt% IN718 premixed blend"
+                        ci["Alloy_Name_Raw"] = f"Ti6Al4V + {pct} wt% IN718 blend"
                         ci["Nominal_Composition"] = {
                             "Composition_Type": "wt%",
                             "Elements_Normalized": nominal_rows.get(pct),
@@ -911,79 +1227,133 @@ class SchemaConverter:
             clone["Composition_Info"] = ci
             repaired.append(clone)
 
-        if graded_source is None:
+        if not gradient_sources:
             return repaired
 
-        base_micro = deepcopy(graded_source.get("Microstructure_Info") or {})
-        for pct in [0, 5, 10, 15, 20]:
-            clone = deepcopy(graded_source)
-            ci = dict(clone.get("Composition_Info") or {})
-            if pct == 0:
-                name = "Graded Ti6Al4V/IN718 - Ti6Al4V base layer (0 wt% IN718)"
-            else:
-                name = f"Graded Ti6Al4V/IN718 - {pct} wt% IN718 step"
-            ci["Alloy_Name_Raw"] = name
-            ci["Role"] = "Target"
-            if pct == 0:
-                ci["Nominal_Composition"] = {
-                    "Composition_Type": "wt%",
-                    "Elements_Normalized": nominal_rows.get(0),
-                }
-                ci["Measured_Composition"] = {
-                    "Composition_Type": None,
-                    "Elements_Normalized": None,
-                    "Measurement_Method": None,
-                }
-            elif pct in measured_rows:
-                ci["Nominal_Composition"] = {
-                    "Composition_Type": None,
-                    "Elements_Normalized": None,
-                }
-                ci["Measured_Composition"] = {
-                    "Composition_Type": "wt%",
-                    "Elements_Normalized": measured_rows[pct]["map"],
-                    "Measurement_Method": measured_rows[pct]["method"],
-                }
-            else:
-                ci["Nominal_Composition"] = {
-                    "Composition_Type": None,
-                    "Elements_Normalized": None,
-                }
-                ci["Measured_Composition"] = {
-                    "Composition_Type": None,
-                    "Elements_Normalized": None,
-                    "Measurement_Method": None,
-                }
-            clone["Composition_Info"] = ci
+        gradient_source = next(
+            (
+                item
+                for item in gradient_sources
+                if "functionally graded" in str(
+                    (item.get("Composition_Info") or {}).get("Alloy_Name_Raw") or ""
+                ).lower()
+            ),
+            gradient_sources[0],
+        )
 
-            params = process_rows.get(pct, {})
-            pinfo = dict(clone.get("Process_Info") or {})
-            pinfo["Process_Category"] = "AM_LPBF + Graded_Composition"
-            pinfo["Key_Params"] = self._canonicalize_key_params(params)
-            if pct == 0:
-                pinfo["Process_Text"] = self._to_text_payload(
-                    "The first material deposited was Ti6Al4V, for 42 layers. "
-                    "Laser power 300 W, scan speed 700 mm/s, hatch distance 50 um, "
-                    "layer thickness 50 um, energy density 170 J/mm3. Ar atmosphere."
-                )
-            else:
-                pinfo["Process_Text"] = self._to_text_payload(
-                    f"IN718 quantity was increased to {pct} wt% for 12 layers. "
-                    f"Laser power {int(params.get('Laser_Power_W', 300))} W, "
-                    f"scan speed {int(params.get('Scanning_Speed_mm_s', 700))} mm/s, "
-                    "hatch distance 50 um, layer thickness 50 um, "
-                    f"energy density {self._format_pct(float(params.get('Volumetric_Energy_Density_J_mm3', 170)))} J/mm3."
-                )
-            clone["Process_Info"] = pinfo
+        merged_gradient_props: List[Dict[str, Any]] = []
+        for source in gradient_sources:
+            merged_gradient_props.extend(source.get("Properties_Info") or [])
+        gradient_properties = self._repair_lab_properties(merged_gradient_props)
 
-            minfo = deepcopy(base_micro)
-            if pct == 0:
-                minfo["Main_Phase"] = minfo.get("Main_Phase") or "alpha' martensite (Ti6Al4V base)"
-            else:
-                minfo["Main_Phase"] = None
-            clone["Microstructure_Info"] = minfo
-            clone["Properties_Info"] = []
-            repaired.append(clone)
+        if not any(prop.get("Property_Name") == "Hardness_HV" for prop in gradient_properties):
+            gradient_properties = self._order_lab_properties(
+                gradient_properties
+                + [
+                    {
+                        "Property_Name": "Hardness_HV",
+                        "Test_Condition": "Room temperature, Vickers microhardness profile along build height",
+                        "Value_Numeric": None,
+                        "Value_Range": "380-510",
+                        "Value_StdDev": None,
+                        "Unit": "HV",
+                        "Test_Temperature_K": 298.15,
+                        "Strain_Rate_s1": None,
+                        "Tensile_Speed_mm_min": None,
+                        "Hardness_Load": "500 gf",
+                        "Hardness_Dwell_Time_s": 15.0,
+                        "Data_Source": "image",
+                        "Test_Specimen": "5x5x5 mm3 graded specimen cross-section",
+                        "Note": (
+                            "Hardness profile taken from Fig. 14 along the build height. "
+                            "The graded specimen is reported as fully dense and crack-free with no delamination."
+                        ),
+                    }
+                ]
+            )
+
+        gradient_clone = deepcopy(gradient_source)
+        gradient_sample_id = self._clean_optional_str(gradient_clone.get("Sample_ID"))
+        if (
+            not gradient_sample_id
+            or re.search(r"gradient-ti64-in718_\d+wt", gradient_sample_id, re.IGNORECASE)
+            or re.search(r"_(?:000|005|010|015|020)WT$", gradient_sample_id, re.IGNORECASE)
+        ):
+            gradient_sample_id = "Ti6Al4V_IN718_Graded_0to20"
+        gradient_clone["Sample_ID"] = gradient_sample_id
+        gradient_clone["Gradient_Material"] = True
+        gradient_clone["Gradient_Group_ID"] = "Graded_Ti6Al4V_IN718"
+
+        representative_map = None
+        if representative_row is not None:
+            representative_map = {
+                element: representative_row["numeric_values"].get(element)
+                for element in ("Ti", "Al", "V", "Cr", "Fe", "Ni", "Nb")
+                if representative_row["numeric_values"].get(element) is not None
+            }
+
+        gradient_comp = dict(gradient_clone.get("Composition_Info") or {})
+        gradient_comp["Role"] = "Target"
+        gradient_comp["Alloy_Name_Raw"] = "Ti6Al4V to Ti6Al4V+20wt%IN718 functionally graded material"
+        gradient_comp["Nominal_Composition"] = {
+            "Composition_Type": "wt%",
+            "Elements_Normalized": None,
+        }
+        gradient_comp["Measured_Composition"] = {
+            "Composition_Type": "wt%" if representative_map else None,
+            "Elements_Normalized": representative_map,
+            "Measurement_Method": "EDX" if representative_map else None,
+        }
+        gradient_comp["Note"] = gradient_note
+        gradient_clone["Composition_Info"] = gradient_comp
+
+        gradient_process = dict(gradient_clone.get("Process_Info") or {})
+        gradient_process["Process_Category"] = "Selective Laser Melting"
+        gradient_process["Process_Text"] = {
+            "original": process_original,
+            "simplified": process_simplified,
+        }
+        gradient_process["Key_Params"] = self._canonicalize_key_params(
+            {
+                "Laser_Power_W": 300,
+                "Scanning_Speed_mm_s": "450-700",
+                "Layer_Thickness_um": 50,
+                "Hatch_Spacing_um": 50,
+                "Focal_Position_mm": 0,
+                "Protective_Atmosphere": "Ar",
+                "Volumetric_Energy_Density_J_mm3": "170-267",
+                "Total_Layers": sum(int(row.get("Number_of_Layers", 0)) for row in process_rows.values()),
+                "Layers_Per_Composition_Step": 12,
+            }
+        )
+        gradient_clone["Process_Info"] = gradient_process
+
+        gradient_micro = dict(gradient_clone.get("Microstructure_Info") or {})
+        gradient_micro["Microstructure_Text"] = {
+            "original": micro_original,
+            "simplified": micro_simplified,
+        }
+        gradient_micro["Main_Phase"] = (
+            gradient_micro.get("Main_Phase")
+            or "Functionally graded (varies from beta-Ti to alpha-Ti + Ti2Ni eutectoid structure along build direction)"
+        )
+        gradient_micro["Precipitates"] = self._normalize_precipitates(
+            gradient_micro.get("Precipitates"),
+            text=f"{micro_original} Ti2Ni intermetallic",
+        ) or [{"Phase_Type": "Ti2Ni intermetallic", "Volume_Fraction_pct": None}]
+        gradient_micro["Porosity_pct"] = None
+        gradient_micro["Relative_Density_pct"] = None
+        gradient_micro["Phase_Fraction_pct"] = self._coerce_float(
+            gradient_micro.get("Phase_Fraction_pct")
+        )
+        gradient_micro = self._sanitize_microstructure_numeric_fields(
+            gradient_micro,
+            process_info=gradient_process,
+            properties=gradient_properties,
+        )
+        gradient_clone["Microstructure_Info"] = gradient_micro
+        gradient_clone["Properties_Info"] = gradient_properties
+        repaired.append(gradient_clone)
 
         return repaired
 
@@ -1003,6 +1373,13 @@ class SchemaConverter:
             return "HRC"
         if key == "hardness_hb":
             return "HB"
+        if key in {
+            "elongation_total",
+            "elongation_uniform",
+            "elongation_at_fracture",
+            "elongation_compressive",
+        }:
+            return "%"
         return ""
 
     def _resolve_paper_metadata(
@@ -1039,16 +1416,61 @@ class SchemaConverter:
         if not paper_text:
             return None
         text = str(paper_text).replace("\r\n", "\n")
+        candidate_lines: List[str] = []
         for line in text.split("\n"):
             stripped = line.strip()
             if not stripped:
                 continue
-            if stripped.startswith("## "):
+            normalized = re.sub(r"\s+", " ", stripped)
+            if normalized.startswith("## "):
                 continue
-            if stripped.startswith("# "):
-                title = stripped[2:].strip()
+            if normalized.startswith("# "):
+                title = normalized[2:].strip()
                 return title or None
-        return None
+            lowered = normalized.lower()
+            if any(
+                token in lowered
+                for token in (
+                    "doi.org",
+                    "http://doi.org",
+                    "https://doi.org",
+                    "abstract",
+                    "keywords",
+                    "article info",
+                    "received",
+                    "accepted",
+                    "available online",
+                    "corresponding author",
+                )
+            ):
+                continue
+            if re.match(r"^(fig\.|figure|table)\s*\d+", lowered):
+                continue
+            if re.search(r"\b\d{4}\b", normalized) and re.search(r"\b\d+\s*[-–]\s*\d+\b", normalized):
+                continue
+            if re.search(r"\bet al\.\b", lowered):
+                continue
+            if re.search(r"(?:,\s*){3,}", normalized):
+                continue
+            if len(normalized) < 25 or len(normalized) > 300:
+                continue
+            if len(re.findall(r"[A-Za-z]+", normalized)) < 4:
+                continue
+            candidate_lines.append(normalized)
+            if len(candidate_lines) >= 8:
+                break
+        if not candidate_lines:
+            return None
+        scored = sorted(
+            candidate_lines,
+            key=lambda line: (
+                len(line),
+                -int(line.endswith(".")),
+                -len(re.findall(r"\d", line)),
+            ),
+            reverse=True,
+        )
+        return scored[0] or None
 
     def _legacy_materials_to_lab_schema(
         self,
@@ -1073,6 +1495,9 @@ class SchemaConverter:
             or comp_info.get("Measurement_Method")
         )
         item = {
+            "Sample_ID": material.get("Sample_ID"),
+            "Gradient_Material": material.get("Gradient_Material"),
+            "Gradient_Group_ID": material.get("Gradient_Group_ID"),
             "Composition_Info": {
                 "Role": comp_info.get("Role") or "Target",
                 "Alloy_Name_Raw": comp_info.get("Alloy_Name_Raw") or material.get("Alloy_Name_Raw"),
@@ -1085,6 +1510,7 @@ class SchemaConverter:
                     "Elements_Normalized": measured.get("Elements_Normalized"),
                     "Measurement_Method": measured_method,
                 },
+                "Note": comp_info.get("Note"),
             },
             "Process_Info": material.get("Process_Info") or {},
             "Microstructure_Info": material.get("Microstructure_Info") or {},
@@ -1104,6 +1530,7 @@ class SchemaConverter:
                 or self._clean_optional_str(item.get("Alloy_Name_Raw"))
                 or f"Material_{idx}"
             )
+            sample_id = self._clean_optional_str(item.get("Sample_ID"))
             nominal_elements = self._normalize_reported_composition(
                 nominal.get("Elements_Normalized")
             )
@@ -1133,6 +1560,9 @@ class SchemaConverter:
                     or comp_info.get("Measurement_Method")
                 ),
             }
+            comp_info["Note"] = self._clean_optional_str(
+                comp_info.get("Note") or item.get("Composition_Note")
+            )
 
             process_info = dict(item.get("Process_Info") or {})
             process_text = process_info.get("Process_Text")
@@ -1153,6 +1583,7 @@ class SchemaConverter:
                 self._clean_optional_str(process_info.get("Process_Category"))
                 or "Unknown"
             )
+            process_info["Equipment"] = self._clean_optional_str(process_info.get("Equipment"))
             process_info["Key_Params"] = self._canonicalize_key_params(
                 process_info.get("Key_Params") or process_info.get("Key_Params_JSON") or {}
             )
@@ -1173,7 +1604,15 @@ class SchemaConverter:
                 micro_info["Microstructure_Text"] = self._to_text_payload(
                     str(micro_text or "not provided")
                 )
-            micro_info["Main_Phase"] = self._clean_optional_str(micro_info.get("Main_Phase"))
+            micro_text_for_rules = self._extract_text_payload(micro_info.get("Microstructure_Text"))
+            micro_info["Main_Phase"] = self._normalize_main_phase(
+                micro_info.get("Main_Phase"),
+                micro_text=micro_text_for_rules,
+            )
+            micro_info["Precipitates"] = self._normalize_precipitates(
+                micro_info.get("Precipitates"),
+                text=micro_text_for_rules,
+            )
             micro_info["Porosity_pct"] = self._coerce_float(micro_info.get("Porosity_pct"))
             micro_info["Relative_Density_pct"] = self._coerce_float(
                 micro_info.get("Relative_Density_pct")
@@ -1187,14 +1626,44 @@ class SchemaConverter:
             micro_info["Precipitate_Volume_Fraction_pct"] = self._coerce_float(
                 micro_info.get("Precipitate_Volume_Fraction_pct")
             )
+            micro_info["Phase_Fraction_pct"] = self._coerce_float(
+                micro_info.get("Phase_Fraction_pct")
+            )
             micro_info["Advanced_Quantitative_Features"] = (
                 self._normalize_advanced_quantitative_features(
                     micro_info.get("Advanced_Quantitative_Features")
                 )
             )
+            micro_info = self._sanitize_microstructure_numeric_fields(
+                micro_info,
+                process_info=process_info,
+                properties=item.get("Properties_Info") or [],
+            )
+            gradient_material = self._coerce_bool(item.get("Gradient_Material"))
+            if gradient_material is None:
+                gradient_context = (
+                    f"{alloy_name} {self._extract_text_payload(process_info.get('Process_Text'))}"
+                ).lower()
+                gradient_material = (
+                    self._detect_graded_family(
+                        alloy_name,
+                        self._extract_text_payload(process_info.get("Process_Text")),
+                    ) is not None
+                    or bool(re.search(r"\b(graded|gradient|multigraded|stepwise|base layer|wt%\s+\w*\s*step)\b", gradient_context))
+                )
+            gradient_group_id = self._clean_optional_str(item.get("Gradient_Group_ID"))
+            if (
+                gradient_material
+                and not gradient_group_id
+                and re.search(r"\b(step|base layer)\b", alloy_name, re.IGNORECASE)
+            ):
+                gradient_group_id = self._make_gradient_group_id(alloy_name.split(" - ")[0])
 
             repaired.append(
                 {
+                    "Sample_ID": sample_id or f"S{idx:03d}",
+                    "Gradient_Material": gradient_material,
+                    "Gradient_Group_ID": gradient_group_id,
                     "Composition_Info": comp_info,
                     "Process_Info": process_info,
                     "Microstructure_Info": micro_info,
@@ -1204,6 +1673,56 @@ class SchemaConverter:
                 }
             )
         return repaired
+
+    def _build_lab_property_entry(
+        self,
+        raw_property_name: Any,
+        condition: Optional[str],
+        value_numeric: Optional[float],
+        value_range: Optional[str],
+        value_stddev: Optional[float],
+        unit_raw: Any,
+        test_temp: Optional[float],
+        strain_rate: Any = None,
+        tensile_speed: Any = None,
+        hardness_load: Any = None,
+        hardness_dwell: Any = None,
+        data_source: Any = None,
+        test_specimen: Any = None,
+        note: Any = None,
+        context_text: Optional[str] = None,
+    ) -> Optional[Dict[str, Any]]:
+        property_name = self.normalize_property_name(raw_property_name) or "Unknown_Property"
+        if property_name in {"Relative_Density_pct", "Relative_Density", "Porosity_pct", "Porosity", "Crack_Presence"}:
+            return None
+        merged_context = " ; ".join(
+            part
+            for part in (condition, context_text, self._clean_optional_str(note))
+            if self._clean_optional_str(part)
+        )
+        tensile_speed_value = self._coerce_float(tensile_speed)
+        if tensile_speed_value is None:
+            tensile_speed_value = self._extract_tensile_speed_mm_min(condition, context_text)
+        hardness_dwell_value = self._coerce_float(hardness_dwell)
+        if hardness_dwell_value is None:
+            hardness_dwell_value = self._extract_hardness_dwell_time_s(condition, context_text)
+        entry = {
+            "Property_Name": property_name,
+            "Test_Condition": condition,
+            "Value_Numeric": value_numeric,
+            "Value_Range": value_range,
+            "Value_StdDev": value_stddev,
+            "Unit": self._infer_property_unit(property_name, unit_raw),
+            "Test_Temperature_K": test_temp if test_temp is not None else self.parse_temperature_to_k(condition),
+            "Strain_Rate_s1": self._clean_optional_str(strain_rate) or self._extract_strain_rate_text(condition, context_text),
+            "Tensile_Speed_mm_min": tensile_speed_value,
+            "Hardness_Load": self._clean_optional_str(hardness_load) or self._extract_hardness_load(condition, context_text),
+            "Hardness_Dwell_Time_s": hardness_dwell_value,
+            "Data_Source": self._normalize_data_source(data_source, merged_context),
+            "Test_Specimen": self._clean_optional_str(test_specimen) or self._extract_test_specimen(condition, context_text),
+            "Note": self._default_property_note(property_name, raw_property_name, note),
+        }
+        return entry
 
     def _repair_lab_properties(self, properties: List[dict]) -> List[dict]:
         repaired: List[Dict[str, Any]] = []
@@ -1218,28 +1737,27 @@ class SchemaConverter:
             test_temp = self._coerce_float(prop.get("Test_Temperature_K"))
             if test_temp is None:
                 test_temp = self.parse_temperature_to_k(condition)
-            property_name = (
-                self.normalize_property_name(
-                    prop.get("Property_Name") or prop.get("Property_Type")
-                )
-                or "Unknown_Property"
+            entry = self._build_lab_property_entry(
+                raw_property_name=prop.get("Property_Name") or prop.get("Property_Type"),
+                condition=condition,
+                value_numeric=value_numeric,
+                value_range=self._clean_optional_str(
+                    prop.get("Value_Range", prop.get("Property_Value_Range"))
+                ),
+                value_stddev=value_std,
+                unit_raw=prop.get("Unit", prop.get("Property_Unit")),
+                test_temp=test_temp,
+                strain_rate=prop.get("Strain_Rate_s1"),
+                tensile_speed=prop.get("Tensile_Speed_mm_min"),
+                hardness_load=prop.get("Hardness_Load"),
+                hardness_dwell=prop.get("Hardness_Dwell_Time_s"),
+                data_source=prop.get("Data_Source", prop.get("data_source")),
+                test_specimen=prop.get("Test_Specimen", prop.get("test_specimen")),
+                note=prop.get("Note", prop.get("note")),
+                context_text=prop.get("Additional_Information") or prop.get("additional_information"),
             )
-            if property_name in {"Relative_Density_pct", "Porosity_pct", "Crack_Presence"}:
-                continue
-            unit_raw = prop.get("Unit", prop.get("Property_Unit"))
-            repaired.append(
-                {
-                    "Property_Name": property_name,
-                    "Test_Condition": condition,
-                    "Value_Numeric": value_numeric,
-                    "Value_Range": self._clean_optional_str(
-                        prop.get("Value_Range", prop.get("Property_Value_Range"))
-                    ),
-                    "Value_StdDev": value_std,
-                    "Unit": self._infer_property_unit(property_name, unit_raw),
-                    "Test_Temperature_K": test_temp,
-                }
-            )
+            if entry is not None:
+                repaired.append(entry)
         return self._order_lab_properties(repaired)
 
     def _build_lab_properties_from_internal(
@@ -1284,28 +1802,25 @@ class SchemaConverter:
                         value_stddev = float(m_std.group(1))
                     except Exception:
                         value_stddev = None
-            properties.append(
-                {
-                    "Property_Name": (
-                        self.normalize_property_name(prop.get("property_name"))
-                        or "Unknown_Property"
-                    ),
-                    "Test_Condition": condition,
-                    "Value_Numeric": numeric_val,
-                    "Value_Range": value_range,
-                    "Value_StdDev": value_stddev,
-                    "Unit": self._infer_property_unit(
-                        self.normalize_property_name(prop.get("property_name")) or "Unknown_Property",
-                        prop.get("unit"),
-                    ),
-                    "Test_Temperature_K": (
-                        self._coerce_float(prop.get("test_temperature_k"))
-                        or self.parse_temperature_to_k(condition)
-                    ),
-                }
+            entry = self._build_lab_property_entry(
+                raw_property_name=prop.get("property_name"),
+                condition=condition,
+                value_numeric=numeric_val,
+                value_range=value_range,
+                value_stddev=value_stddev,
+                unit_raw=prop.get("unit"),
+                test_temp=self._coerce_float(prop.get("test_temperature_k")),
+                strain_rate=prop.get("strain_rate_s1"),
+                tensile_speed=prop.get("tensile_speed_mm_min"),
+                hardness_load=prop.get("hardness_load"),
+                hardness_dwell=prop.get("hardness_dwell_time_s"),
+                data_source=prop.get("data_source"),
+                test_specimen=prop.get("test_specimen"),
+                note=prop.get("note"),
+                context_text=prop.get("additional_information"),
             )
-            if properties[-1]["Property_Name"] in {"Relative_Density_pct", "Porosity_pct", "Crack_Presence"}:
-                properties.pop()
+            if entry is not None:
+                properties.append(entry)
         if properties:
             return self._order_lab_properties(properties)
         return self._repair_lab_properties(fallback_tests or [])
@@ -1318,8 +1833,11 @@ class SchemaConverter:
             "hardness_hv": "Hardness_HV",
             "hardness": "Hardness_HV",
             "ultimate_compressive_strength": "Ultimate_Strength_Compressive",
-            "elongation": "Fracture_Elongation",
-            "fracture_strain": "Fracture_Elongation",
+            "elongation": "Elongation_Total",
+            "total_elongation": "Elongation_Total",
+            "uniform_elongation": "Elongation_Uniform",
+            "fracture_strain": "Elongation_At_Fracture",
+            "fracture_elongation": "Elongation_At_Fracture",
             "youngs_modulus": "Elastic_Modulus",
         }
         tier1 = [
@@ -1327,7 +1845,9 @@ class SchemaConverter:
             "Yield_Strength_Compressive",
             "Ultimate_Tensile_Strength",
             "Ultimate_Strength_Compressive",
-            "Fracture_Elongation",
+            "Elongation_Total",
+            "Elongation_Uniform",
+            "Elongation_At_Fracture",
             "Elongation_Compressive",
             "Elastic_Modulus",
             "Hardness_HV",
@@ -2782,9 +3302,14 @@ class SchemaConverter:
         if not char_text:
             return ""
         ctext = char_text.lower()
+        if re.search(r"\bgamma\b(?!\s*prime)", ctext):
+            return "Gamma (gamma)"
         phases: List[str] = []
         seen: set = set()
         for pattern, label in self.rules.phase_patterns.items():
+            lowered_label = label.lower()
+            if any(token in lowered_label for token in ("laves", "carbide", "sigma", "mu", "chi", "l12", "l21")):
+                continue
             if pattern in ctext and label not in seen:
                 phases.append(label)
                 seen.add(label)
@@ -2798,6 +3323,47 @@ class SchemaConverter:
             return False
         ctext = char_text.lower()
         return any(kw in ctext for kw in self.rules.precipitate_keywords)
+
+    @staticmethod
+    def _format_range_value(start: float, end: float, add_kelvin: bool = False) -> str:
+        if add_kelvin:
+            start += 273.15
+            end += 273.15
+
+        def _fmt(value: float) -> str:
+            rounded = round(value) if add_kelvin else round(value, 2)
+            if abs(rounded - round(rounded)) < 1e-9:
+                return str(int(round(rounded)))
+            return f"{rounded:.2f}".rstrip("0").rstrip(".")
+
+        lo, hi = sorted((_fmt(start), _fmt(end)), key=lambda token: float(token))
+        return f"{lo}-{hi}"
+
+    def _extract_heat_treatment_range_params(self, process_text: str) -> Dict[str, Any]:
+        if not process_text:
+            return {}
+        text = str(process_text)
+        out: Dict[str, Any] = {}
+        patterns = [
+            ("Solution_Temperature_K", r"solution(?:\s+treatment)?[^.;\n]{0,80}?(\d+(?:\.\d+)?)\s*(?:-|to|~)\s*(\d+(?:\.\d+)?)\s*(k|°?\s*c)\b"),
+            ("Aging_Temperature_K", r"ag(?:ing|ed)?[^.;\n]{0,80}?(\d+(?:\.\d+)?)\s*(?:-|to|~)\s*(\d+(?:\.\d+)?)\s*(k|°?\s*c)\b"),
+            ("Annealing_Temperature_K", r"anneal(?:ed|ing)?[^.;\n]{0,80}?(\d+(?:\.\d+)?)\s*(?:-|to|~)\s*(\d+(?:\.\d+)?)\s*(k|°?\s*c)\b"),
+            ("Solution_Time_h", r"solution(?:\s+treatment)?[^.;\n]{0,80}?(\d+(?:\.\d+)?)\s*(?:-|to|~)\s*(\d+(?:\.\d+)?)\s*h\b"),
+            ("Aging_Time_h", r"ag(?:ing|ed)?[^.;\n]{0,80}?(\d+(?:\.\d+)?)\s*(?:-|to|~)\s*(\d+(?:\.\d+)?)\s*h\b"),
+            ("Annealing_Time_h", r"anneal(?:ed|ing)?[^.;\n]{0,80}?(\d+(?:\.\d+)?)\s*(?:-|to|~)\s*(\d+(?:\.\d+)?)\s*h\b"),
+        ]
+        for key, pattern in patterns:
+            match = re.search(pattern, text, re.IGNORECASE)
+            if not match:
+                continue
+            start = float(match.group(1))
+            end = float(match.group(2))
+            unit = match.group(3).lower() if len(match.groups()) >= 3 else "h"
+            if key.endswith("_K"):
+                out[key] = self._format_range_value(start, end, add_kelvin=("c" in unit))
+            else:
+                out[key] = self._format_range_value(start, end, add_kelvin=False)
+        return out
 
     def parse_key_params(
         self, process_text: str, processing_params: Optional[dict] = None
@@ -2846,6 +3412,9 @@ class SchemaConverter:
                     params[param_name] = parsed
                     break
 
+        for key, value in self._extract_heat_treatment_range_params(process_text).items():
+            params.setdefault(key, value)
+
         if re.search(r"\bargon\b", process_text, re.IGNORECASE) and "Protective_Atmosphere" not in params:
             params["Protective_Atmosphere"] = "Argon"
         elif re.search(r"\bnitrogen\b", process_text, re.IGNORECASE) and "Protective_Atmosphere" not in params:
@@ -2876,6 +3445,9 @@ class SchemaConverter:
             "Ultimate_Tensile_Strength",
             "Ultimate_Strength_Compressive",
             "Fracture_Elongation",
+            "Elongation_Total",
+            "Elongation_Uniform",
+            "Elongation_At_Fracture",
             "Elongation_Compressive",
             "Elastic_Modulus",
             "Hardness_HV",
@@ -3015,13 +3587,53 @@ class SchemaConverter:
             simp = explicit.group(2).strip() or orig
             return {"original": orig, "simplified": simp}
         chunks = [c.strip() for c in re.split(r"[;\n]+|(?<=\.)\s+", original) if c.strip()]
-        if len(chunks) <= 1:
+        if len(chunks) <= 2 or len(original) <= 500:
             simplified = original
         else:
-            simplified = " -> ".join(chunks[:4])
-        if len(simplified) > 500:
-            simplified = simplified[:497].rstrip() + "..."
+            simplified = " ".join(chunks[:5]).strip()
+        if len(simplified) > 700:
+            simplified = simplified[:697].rstrip() + "..."
         return {"original": original, "simplified": simplified}
+
+    def _sanitize_microstructure_numeric_fields(
+        self,
+        micro_info: Dict[str, Any],
+        process_info: Optional[Dict[str, Any]] = None,
+        properties: Optional[List[Dict[str, Any]]] = None,
+    ) -> Dict[str, Any]:
+        if not micro_info:
+            return micro_info
+
+        context_parts = [
+            self._extract_text_payload(micro_info.get("Microstructure_Text")),
+            self._extract_text_payload((process_info or {}).get("Process_Text")),
+        ]
+        for prop in properties or []:
+            if not isinstance(prop, dict):
+                continue
+            context_parts.append(str(prop.get("Test_Condition") or ""))
+            context_parts.append(str(prop.get("Note") or ""))
+        context = " ".join(part for part in context_parts if part).lower()
+
+        rel_density = self._coerce_float(micro_info.get("Relative_Density_pct"))
+        if rel_density is not None and abs(rel_density - 100.0) <= 1e-9:
+            if not re.search(r"\b100(?:\.0+)?\s*%", context) and re.search(
+                r"\b(fully dense|full density|full densification|pore-?free|no porosity|no pores|porosity was not observed|no porosity detected)\b",
+                context,
+                re.IGNORECASE,
+            ):
+                micro_info["Relative_Density_pct"] = None
+
+        porosity = self._coerce_float(micro_info.get("Porosity_pct"))
+        if porosity is not None and abs(porosity) <= 1e-9:
+            if not re.search(r"\b0(?:\.0+)?\s*%", context) and re.search(
+                r"\b(no porosity|no pores|pore-?free|porosity was not observed|no porosity detected)\b",
+                context,
+                re.IGNORECASE,
+            ):
+                micro_info["Porosity_pct"] = None
+
+        return micro_info
 
     def _order_properties(self, tests: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         """Order properties by required priority tiers."""
@@ -3033,8 +3645,11 @@ class SchemaConverter:
             "hardness_hv": "Hardness_HV",
             "hardness": "Hardness_HV",
             "ultimate_compressive_strength": "Ultimate_Strength_Compressive",
-            "elongation": "Fracture_Elongation",
-            "fracture_strain": "Fracture_Elongation",
+            "elongation": "Elongation_Total",
+            "total_elongation": "Elongation_Total",
+            "uniform_elongation": "Elongation_Uniform",
+            "fracture_strain": "Elongation_At_Fracture",
+            "fracture_elongation": "Elongation_At_Fracture",
             "youngs_modulus": "Elastic_Modulus",
         }
         tier1 = [
@@ -3042,7 +3657,9 @@ class SchemaConverter:
             "Yield_Strength_Compressive",
             "Ultimate_Tensile_Strength",
             "Ultimate_Strength_Compressive",
-            "Fracture_Elongation",
+            "Elongation_Total",
+            "Elongation_Uniform",
+            "Elongation_At_Fracture",
             "Elongation_Compressive",
             "Elastic_Modulus",
             "Hardness_HV",
@@ -3092,6 +3709,11 @@ class SchemaConverter:
         mapped = self.rules.property_name_mapping.get(key)
         if mapped:
             return mapped
+        legacy_map = {
+            "fracture_elongation": "Elongation_Total",
+        }
+        if key in legacy_map:
+            return legacy_map[key]
         return re.sub(r"[^A-Za-z0-9]+", "_", name).strip("_")
 
     def infer_process_category(self, process_text: str, comp_raw: str = "") -> str:
@@ -3203,6 +3825,31 @@ class SchemaConverter:
                 "Property_Value_Range": value_range,
                 "Property_StdDev": value_stddev,
                 "Property_Unit": self._infer_property_unit(prop_std_name, p.get("unit")),
+                "Strain_Rate_s1": self._clean_optional_str(p.get("strain_rate_s1"))
+                or self._extract_strain_rate_text(p.get("measurement_condition"), p.get("additional_information")),
+                "Tensile_Speed_mm_min": (
+                    self._coerce_float(p.get("tensile_speed_mm_min"))
+                    if self._coerce_float(p.get("tensile_speed_mm_min")) is not None
+                    else self._extract_tensile_speed_mm_min(p.get("measurement_condition"), p.get("additional_information"))
+                ),
+                "Hardness_Load": self._clean_optional_str(p.get("hardness_load"))
+                or self._extract_hardness_load(p.get("measurement_condition"), p.get("additional_information")),
+                "Hardness_Dwell_Time_s": (
+                    self._coerce_float(p.get("hardness_dwell_time_s"))
+                    if self._coerce_float(p.get("hardness_dwell_time_s")) is not None
+                    else self._extract_hardness_dwell_time_s(p.get("measurement_condition"), p.get("additional_information"))
+                ),
+                "Data_Source": self._normalize_data_source(
+                    p.get("data_source"),
+                    f"{p.get('measurement_condition') or ''}; {p.get('additional_information') or ''}",
+                ),
+                "Test_Specimen": self._clean_optional_str(p.get("test_specimen"))
+                or self._extract_test_specimen(p.get("measurement_condition"), p.get("additional_information")),
+                "Note": self._default_property_note(
+                    prop_std_name or "",
+                    p.get("property_name"),
+                    p.get("note") or p.get("additional_information"),
+                ),
             })
 
         process_text = comp.get("processing_conditions")
@@ -3214,6 +3861,8 @@ class SchemaConverter:
         main_phase = comp.get("main_phase")
         if not main_phase:
             main_phase = self.infer_main_phase(microstructure_text)
+        else:
+            main_phase = self._normalize_main_phase(main_phase, micro_text=microstructure_text)
 
         has_precipitates_val = comp.get("has_precipitates")
         if has_precipitates_val is None:

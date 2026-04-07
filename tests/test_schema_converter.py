@@ -176,3 +176,128 @@ def test_convert_expands_step_keyed_runtime_composition_maps():
         "Graded Ti6Al4V/IN718 - 20 wt% IN718 step",
     ]
     assert all(item["Properties_Info"] == [] for item in out["items"])
+    assert all(item["Gradient_Material"] is True for item in out["items"])
+    assert len({item["Gradient_Group_ID"] for item in out["items"]}) == 1
+
+
+def test_convert_keeps_gradient_specimen_whole_without_explicit_layer_data():
+    data = {
+        "compositions": [
+            {
+                "composition": "Multigraded Ti6Al4V-IN718 specimen",
+                "alloy_name_raw": "Multigraded Ti6Al4V-IN718 specimen",
+                "gradient_material": True,
+                "nominal_composition": {"Ti": 90.0, "Al": 6.0, "V": 4.0},
+                "nominal_composition_type": "wt%",
+                "processing_conditions": (
+                    "original: Multi-material SLM graded transition from Ti6Al4V to IN718 with "
+                    "42 layers of Ti6Al4V and 12 layers each at 5, 10, 15, and 20 wt% IN718. "
+                    "|| simplified: graded Ti6Al4V/IN718 specimen"
+                ),
+                "process_category": "AM_LPBF + Graded_Composition",
+                "properties_of_composition": [],
+                "characterisation": {},
+            }
+        ]
+    }
+
+    out = converter.convert(data, "graded_whole.md")
+
+    assert len(out["items"]) == 1
+    item = out["items"][0]
+    assert item["Gradient_Material"] is True
+    assert item["Gradient_Group_ID"] is None
+    assert item["Composition_Info"]["Alloy_Name_Raw"] == "Multigraded Ti6Al4V-IN718 specimen"
+
+
+def test_convert_preserves_v5_runtime_fields_and_enforces_main_phase_rules():
+    data = {
+        "compositions": [
+            {
+                "composition": "IN718",
+                "sample_id": "SAMPLE-01",
+                "alloy_name_raw": "IN718",
+                "role": "Target",
+                "nominal_composition": {"Ni": 53.0, "Cr": 19.0, "Fe": 18.0, "Nb": 5.0, "Mo": 3.0, "other": 2.0},
+                "nominal_composition_type": "wt%",
+                "composition_note": "C <= 0.08 wt%; S <= 0.015 wt%",
+                "main_phase": "Laves",
+                "precipitates": [
+                    {"phase_type": "Laves", "volume_fraction_pct": 3.2},
+                    {"phase_type": "MC Carbide", "volume_fraction_pct": None},
+                ],
+                "porosity_pct": 0.3,
+                "relative_density_pct": 99.2,
+                "grain_size_avg_um": 18.5,
+                "precipitate_size_avg_nm": 120.0,
+                "precipitate_volume_fraction_pct": 3.2,
+                "processing_conditions": (
+                    "original: LPBF build followed by aging. || simplified: LPBF + aging"
+                ),
+                "processing_params": {"Solution_Temperature_K": "1273-1373"},
+                "equipment": "EOS M290",
+                "process_category": "AM_LPBF",
+                "microstructure_description": (
+                    "original: FCC matrix with Laves and MC carbide precipitates. "
+                    "|| simplified: FCC matrix plus Laves and carbides"
+                ),
+                "characterisation": {"Microstructure": "FCC matrix with Laves and MC carbides"},
+                "properties_of_composition": [
+                    {
+                        "property_name": "elongation",
+                        "value": "18",
+                        "value_numeric": 18.0,
+                        "value_type": "exact",
+                        "unit": "%",
+                        "measurement_condition": "at 298.15 K; strain rate 1e-3 s^-1",
+                        "data_source": "text",
+                    },
+                    {
+                        "property_name": "hardness",
+                        "value": "410",
+                        "value_numeric": 410.0,
+                        "value_type": "exact",
+                        "unit": "HV",
+                        "measurement_condition": "at 298.15 K",
+                        "hardness_load": "200 gf",
+                        "hardness_dwell_time_s": 15.0,
+                        "test_specimen": "ASTM E8, gauge length 25 mm",
+                        "data_source": "text",
+                    },
+                ],
+            }
+        ]
+    }
+
+    out = converter.convert(data, "runtime_v5.md")
+    item = out["items"][0]
+
+    assert item["Sample_ID"] == "SAMPLE-01"
+    assert item["Composition_Info"]["Note"] == "C <= 0.08 wt%; S <= 0.015 wt%"
+    assert item["Process_Info"]["Equipment"] == "EOS M290"
+    assert item["Microstructure_Info"]["Main_Phase"] == "FCC"
+    assert item["Microstructure_Info"]["Precipitates"] == [
+        {"Phase_Type": "Laves", "Volume_Fraction_pct": 3.2},
+        {"Phase_Type": "MC Carbide", "Volume_Fraction_pct": None},
+    ]
+
+    elongation = next(prop for prop in item["Properties_Info"] if prop["Property_Name"] == "Elongation_Total")
+    hardness = next(prop for prop in item["Properties_Info"] if prop["Property_Name"] == "Hardness_HV")
+
+    assert elongation["Strain_Rate_s1"] == "1e-3 s^-1"
+    assert elongation["Data_Source"] == "text"
+    assert elongation["Note"] == "Original only provides total elongation."
+    assert hardness["Hardness_Load"] == "200 gf"
+    assert hardness["Hardness_Dwell_Time_s"] == 15.0
+    assert hardness["Test_Specimen"] == "ASTM E8, gauge length 25 mm"
+
+
+def test_parse_key_params_preserves_heat_treatment_ranges():
+    params = converter.parse_key_params(
+        "solution treatment at 1000-1100 C for 2-4 h, followed by aging at 700-750 C for 8-10 h"
+    )
+
+    assert params["Solution_Temperature_K"] == "1273-1373"
+    assert params["Solution_Time_h"] == "2-4"
+    assert params["Aging_Temperature_K"] == "973-1023"
+    assert params["Aging_Time_h"] == "8-10"

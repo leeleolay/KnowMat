@@ -151,13 +151,19 @@ property_name_mapping:
   compressive strength: Ultimate_Strength_Compressive
   tensile strength: Ultimate_Tensile_Strength
   uts: Ultimate_Tensile_Strength
-  total elongation: Fracture_Elongation
-  uniform elongation: Fracture_Elongation
-  elongation: Fracture_Elongation
-  elongation to failure: Fracture_Elongation
-  fracture elongation: Fracture_Elongation
-  fracture strain: Fracture_Elongation
-  ductility: Fracture_Elongation
+  total elongation: Elongation_Total
+  total tensile elongation: Elongation_Total
+  uniform elongation: Elongation_Uniform
+  elongation: Elongation_Total
+  elongation to failure: Elongation_At_Fracture
+  elongation at fracture: Elongation_At_Fracture
+  fracture elongation: Elongation_At_Fracture
+  fracture strain: Elongation_At_Fracture
+  ductility: Elongation_Total
+  ag: Elongation_Uniform
+  a_g: Elongation_Uniform
+  af: Elongation_At_Fracture
+  a_f: Elongation_At_Fracture
   elongation in compression: Elongation_Compressive
   compressive strain: Elongation_Compressive
   "young's modulus": Elastic_Modulus

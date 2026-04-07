@@ -97,6 +97,13 @@ class PerformanceTest(TypedDict, total=False):
     Value_StdDev: Optional[float]
     Unit: Optional[str]
     Test_Temperature_K: Optional[float]
+    Strain_Rate_s1: Optional[str]
+    Tensile_Speed_mm_min: Optional[float]
+    Hardness_Load: Optional[str]
+    Hardness_Dwell_Time_s: Optional[float]
+    Data_Source: Optional[str]
+    Test_Specimen: Optional[str]
+    Note: Optional[str]
 
 class TextDualTrack(TypedDict):
     """Original and simplified text anchors."""
@@ -110,7 +117,15 @@ class ProcessInfo(TypedDict, total=False):
 
     Process_Category: str
     Process_Text: TextDualTrack
+    Equipment: Optional[str]
     Key_Params: Dict[str, Any]
+
+
+class PrecipitateInfo(TypedDict, total=False):
+    """One precipitate entry in the strict microstructure schema."""
+
+    Phase_Type: str
+    Volume_Fraction_pct: Optional[float]
 
 
 class MicrostructureInfo(TypedDict, total=False):
@@ -118,17 +133,22 @@ class MicrostructureInfo(TypedDict, total=False):
 
     Microstructure_Text: TextDualTrack
     Main_Phase: Optional[str]
+    Precipitates: List[PrecipitateInfo]
     Porosity_pct: Optional[float]
     Relative_Density_pct: Optional[float]
     Grain_Size_avg_um: Optional[float]
     Precipitate_Size_avg_nm: Optional[float]
     Precipitate_Volume_Fraction_pct: Optional[float]
+    Phase_Fraction_pct: Optional[float]
     Advanced_Quantitative_Features: Dict[str, Any]
 
 
 class TargetMaterial(TypedDict, total=False):
     """One lab-style item in the target schema."""
 
+    Sample_ID: Optional[str]
+    Gradient_Material: Optional[bool]
+    Gradient_Group_ID: Optional[str]
     Composition_Info: Dict[str, Any]
     Process_Info: ProcessInfo
     Microstructure_Info: MicrostructureInfo

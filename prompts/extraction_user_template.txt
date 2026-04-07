@@ -19,8 +19,10 @@ Step 1: Global metadata and role distinction
 Step 2: Item decomposition
 
 - One item = one unique combination of composition + process.
-- Split whenever composition, process state, sample/state label, route, orientation/loading mode, parameter level, or graded step changes.
-- If a graded route is described as pure/base layer + listed wt% steps (e.g., 5/10/15/20 wt%), output one base-layer item (0 wt%) and one item per listed step; never keep one generic multigraded item.
+- Split whenever composition, process state, sample/state label, route, orientation/loading mode, or parameter level changes.
+- Give each item a stable `Sample_ID`; all tests that belong to the same specimen must share that id.
+- For gradient materials, prefer one item with `Gradient_Material = true` unless the paper explicitly reports layer-specific independent data.
+- Only split a gradient specimen into multiple items when independent per-layer or per-step data is explicit. In that case, keep `Gradient_Material = true` and link all split items with the same `Gradient_Group_ID`.
 - If the same item has multiple testing conditions, keep one item and place all tests in that item's `Properties_Info`.
 - If a variant is explicitly named but only sparse evidence exists, still keep a sparse item.
 
@@ -28,7 +30,8 @@ Step 3: Composition extraction (`Composition_Info`)
 
 - Fill `Role`, `Alloy_Name_Raw`, `Nominal_Composition`, and `Measured_Composition`.
 - Keep nominal and measured composition strictly separate.
-- `nominal_composition` and `measured_composition` must be flat element->number maps only; never use step keys like `{"0": {...}, "5": {...}}`. If the paper reports 0/5/10/15/20 wt% graded steps, create separate composition entries instead.
+- Record special composition annotations such as ranges, upper limits, or impurity notes in `Composition_Info.Note` / runtime `composition_note`.
+- `nominal_composition` and `measured_composition` must be flat element->number maps only; never use step keys like `{"0": {...}, "5": {...}}`. If the paper truly reports explicit layer-specific graded data, create separate composition entries instead.
 - Normalize reported composition to 100.0, using `other` only when justified by residual balance.
 - Preserve mature commercial alloy names with null normalized arrays if no explicit numeric composition is reported.
 - Never convert trade names or polymer abbreviations into fake element formulas.
@@ -36,22 +39,30 @@ Step 3: Composition extraction (`Composition_Info`)
 Step 4: Process extraction (`Process_Info`)
 
 - Build `Process_Text.original` and `Process_Text.simplified`.
+- Extract explicit equipment information into `Process_Info.Equipment` / runtime `equipment`.
 - Extract quantified variables into `Key_Params`.
 - Use canonical parameter names where possible, and dynamic keys with unit hints when needed.
+- Preserve heat-treatment ranges as strings such as `1273-1373` or `2-4`; never average them.
 - For multistage processing, use stage suffixes such as `_Stage1_K` and never average stages.
 
 Step 5: Microstructure extraction (`Microstructure_Info`)
 
 - Build `Microstructure_Text.original` and `Microstructure_Text.simplified`.
+- `Main_Phase` must describe the matrix phase. Do not label `Laves`, carbides, or gamma-prime as the main phase.
+- Put explicit precipitate types into `Precipitates[]` / runtime `precipitates`.
 - Extract `Main_Phase`, `Porosity_pct`, `Relative_Density_pct`, `Grain_Size_avg_um`, `Precipitate_Size_avg_nm`, and `Precipitate_Volume_Fraction_pct` whenever evidence exists.
+- `Relative_Density_pct` must stay null when not reported. Never infer 100%.
 - Put advanced quantified microstructure metrics under `Advanced_Quantitative_Features`.
 
 Step 6: Properties extraction (`Properties_Info`)
 
 - Extract all reported properties for the same item.
 - Keep strict ordering from Tier 1 to Tier 3.
+- Use `Elongation_Total`, `Elongation_Uniform`, and `Elongation_At_Fracture` instead of the older generic elongation field.
+- If the paper reports only a generic `Elongation`, map it to `Elongation_Total` and note that explicitly.
 - Use compressive property names only for compressive contexts.
 - `Test_Temperature_K` is only the actual testing environment temperature, not a process temperature.
+- Also extract `Strain_Rate_s1`, `Tensile_Speed_mm_min`, `Hardness_Load`, `Hardness_Dwell_Time_s`, `Data_Source`, `Test_Specimen`, and `Note` when supported.
 - For ranges, keep midpoint in `Value_Numeric` and source range in `Value_Range`.
 - For mean±std, keep mean in `Value_Numeric` and std in `Value_StdDev`.
 
@@ -146,10 +157,16 @@ DECISION:
 WRONG:
 - Collapse all variants into one generic alloy item because only one averaged numeric set is available.
 
-Example N (Graded layer schedule must be expanded)
+Example N (Gradient specimen should stay whole unless layer data is explicit)
 INPUT (abstracted):
 - Process says: 42 layers pure A, then 12 layers each at 5/10/15/20 wt% B.
 DECISION:
-- Output 5 items: base layer (0 wt% B) + 5 wt% + 10 wt% + 15 wt% + 20 wt% step items.
+- Keep one gradient item with `Gradient_Material = true` if the paper only describes the graded schedule overall.
 WRONG:
-- One item named "A-B multigraded specimen".
+- Splitting into 5 step items without explicit layer-specific independent data.
+
+Example O (Split gradient specimen only when independent layer data is explicit)
+INPUT (abstracted):
+- Paper gives separate layer-specific compositions or properties for 0/5/10/15/20 wt% B.
+DECISION:
+- Output one item per explicit layer/step, keep `Gradient_Material = true`, and link them with the same `Gradient_Group_ID`.

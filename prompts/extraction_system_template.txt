@@ -19,9 +19,10 @@ Laboratory-first semantic contract:
 Item Definition:
 
 - One item = one unique combination of Composition + Process.
-- Split into a new item whenever composition, process state, explicit sample/state label, route, build/loading orientation, parameter level, or graded step/layer changes.
-- Gradient materials: treat each gradient step/layer as an independent item.
-- If a graded route is described as base/pure layer plus listed wt% steps (for example 5/10/15/20 wt%), output one item for base layer (0 wt%) and one item per listed step. Never collapse into one generic multigraded item.
+- Split into a new item whenever composition, process state, explicit sample/state label, route, build/loading orientation, or parameter level changes.
+- Each lab item should carry a stable `Sample_ID`; all tests belonging to the same specimen share that id.
+- Gradient materials: prefer one item with `Gradient_Material = true` when the paper describes one graded specimen overall.
+- Only split a gradient specimen into multiple items when the paper explicitly reports layer-specific or step-specific independent data. In that case, keep `Gradient_Material = true` for each split item and link them with the same `Gradient_Group_ID`.
 - In-situ composites: treat matrix and reinforcement as separate items when composition is explicitly defined.
 - If the exact same item is tested under multiple test conditions, keep one item and place all those test records inside its `Properties_Info` list.
 - If a variant is explicitly named but only sparse evidence is available, keep a sparse item rather than collapsing it into another variant.
@@ -39,34 +40,48 @@ Composition Extraction (`Composition_Info`):
 - `Role` must be `Target` or `Reference`.
 - Strictly separate `Nominal_Composition` and `Measured_Composition`.
 - `Composition_Type` must be `wt%`, `at%`, or null.
-- `nominal_composition` and `measured_composition` must always be flat element->number maps. Never use graded-step keys such as `{"0": {...}, "5": {...}}`; graded steps must be emitted as separate composition entries.
-- Normalize elemental values to 100.0. If sum < 100 and no explicit balance element is given, add `other`. If computed `other` is negative, omit it.
+- `Composition_Info.Note` / runtime `composition_note` must capture special annotations such as ranges, upper limits, impurity notes, or balance caveats.
+- `nominal_composition` and `measured_composition` must always be flat element->number maps. Never use graded-step keys such as `{"0": {...}, "5": {...}}`; if layer-specific graded data is truly explicit, emit separate runtime compositions instead.
+- Faithfully reflect the literature values. Do not rescale or renormalize reported numbers just to force a 100.0 total.
+- If sum < 100 and no explicit balance element is given, you may add `other` for the residual balance. If computed `other` is negative, omit it.
 - For mature commercial alloys without explicit numeric composition, preserve `Alloy_Name_Raw` and set normalized arrays to null.
 - Do not parse trade names, polymers, or commercial aliases into fake element formulas.
 
 Process Extraction (`Process_Info`):
 
 - `Process_Text` must contain both `original` and `simplified`.
+- `Process_Text.original` must be as detailed as possible and preserve all explicit process details from the source. Do not simplify or delete process details in `original`.
+- `Process_Text.simplified` should keep the key process information, remove redundancy, and remain concise without over-simplifying away important details.
+- `Process_Info.Equipment` / runtime `equipment` must capture equipment model, furnace, or manufacturer information when explicitly reported.
 - Extract quantified variables into `Key_Params`.
 - Prefer canonical keys such as `Laser_Power_W`, `Scanning_Speed_mm_s`, `Layer_Thickness_um`, `Hatch_Spacing_um`, `Build_Plate_Temperature_K`, `Solution_Temperature_K`, `Solution_Time_h`, `Aging_Temperature_K`, `Aging_Time_h`, `Annealing_Temperature_K`, `Annealing_Time_h`, `Cooling_Medium`, `Protective_Atmosphere`, `Powder_Size_avg_um`, `Volumetric_Energy_Density_J_mm3`, `Oxygen_Content_ppm`, `Rolling_Reduction_pct`, `Forging_Temperature_K`, `Extrusion_Ratio`.
 - For non-whitelist quantified parameters, still extract dynamic underscore-style keys with unit hints.
+- For heat-treatment temperature or time ranges, preserve range strings such as `1273-1373` or `2-4`; never average ranges.
 - For multi-stage processing, append stage suffixes such as `_Stage1_K`. Never average distinct stages.
 
 Microstructure Extraction (`Microstructure_Info`):
 
 - `Microstructure_Text` must contain both `original` and `simplified`.
-- Extract quantitative fields whenever evidence exists, especially `Main_Phase`, `Porosity_pct`, `Relative_Density_pct`, `Grain_Size_avg_um`, `Precipitate_Size_avg_nm`, and `Precipitate_Volume_Fraction_pct`.
+- `Microstructure_Text.original` must be as detailed as possible and preserve all explicit microstructural details from the source. Do not simplify or delete microstructure details in `original`.
+- `Microstructure_Text.simplified` should keep the key microstructural information, remove redundancy, and remain concise without over-simplifying away important details.
+- `Main_Phase` must describe the matrix phase. Do not label `Laves`, carbides, or gamma-prime as the main phase.
+- `Precipitates[]` / runtime `precipitates` must list explicit precipitate types such as `Gamma Prime`, `Laves`, `MC Carbide`, `M2C Carbide`, `M6C Carbide`, or `Sigma Phase`, with volume fraction when reported.
+- Extract quantitative fields whenever evidence exists, especially `Main_Phase`, `Porosity_pct`, `Relative_Density_pct`, `Grain_Size_avg_um`, `Precipitate_Size_avg_nm`, `Precipitate_Volume_Fraction_pct`, and `Phase_Fraction_pct`.
+- Qualitative statements such as `fully dense`, `full densification`, `pore-free`, or `no porosity detected` do not justify filling `Relative_Density_pct = 100` or `Porosity_pct = 0`. Keep the numeric field null unless the paper gives an explicit number.
+- `Relative_Density_pct` must be null when not reported. Never infer 100%.
 - Store advanced quantified microstructural features under `Advanced_Quantitative_Features` using explicit dynamic keys.
 
 Properties Extraction (`Properties_Info`):
 
 - Extract all reported mechanical, physical, and chemical properties for the same item.
 - Keep strict ordering priority:
-  - Tier 1: `Yield_Strength`, `Ultimate_Tensile_Strength`, `Fracture_Elongation`, `Elastic_Modulus`, `Hardness_HV`, `Hardness_HRC`, `Hardness_HB`
+  - Tier 1: `Yield_Strength`, `Ultimate_Tensile_Strength`, `Elongation_Total`, `Elongation_Uniform`, `Elongation_At_Fracture`, `Elastic_Modulus`, `Hardness_HV`, `Hardness_HRC`, `Hardness_HB`
   - Tier 2: `Residual_Stress`, `Impact_Toughness`, `Fatigue_Strength`, `Fracture_Toughness`, `Thermal_Conductivity`, `Specific_Heat`, `Coefficient_of_Thermal_Expansion`, `Electrical_Conductivity`, `Electrical_Resistivity`, `Corrosion_Rate`, `Wear_Rate`, `Friction_Coefficient`
   - Tier 3: any additional reported property with a clear dynamic name
 - If context is compressive, use `_Compressive` property names and never mix them with tensile names.
+- If the paper reports only a generic `Elongation` with no subtype, map it to `Elongation_Total` and record that note explicitly.
 - `Test_Temperature_K` is only the actual testing environment temperature. Never place heat-treatment or fabrication temperatures here.
+- Also extract `Strain_Rate_s1`, `Tensile_Speed_mm_min`, `Hardness_Load`, `Hardness_Dwell_Time_s`, `Data_Source`, `Test_Specimen`, and `Note` when supported.
 - For ranges such as 200-230, keep midpoint in `Value_Numeric` and source string in `Value_Range`.
 - For mean±std such as 215±5, keep 215 in `Value_Numeric` and 5 in `Value_StdDev`.
 
@@ -86,16 +101,27 @@ Runtime contract and mapping rule:
 - `compositions` is only the runtime compatibility envelope. It must preserve the exact laboratory item semantics without collapsing, blending, or weakening item boundaries.
 - You must satisfy the same lab requirements by mapping:
   - `Paper_Metadata.Paper_Title` and `Paper_Metadata.DOI` -> source document metadata / `source_doi`
+  - `items[].Sample_ID` -> `sample_id`
+  - `items[].Gradient_Material` -> `gradient_material`
+  - `items[].Gradient_Group_ID` -> `gradient_group_id`
   - `Composition_Info.Role` -> `role`
   - `Composition_Info.Alloy_Name_Raw` -> `alloy_name_raw`
   - `Composition_Info.Nominal_Composition` -> `nominal_composition` + `nominal_composition_type`
   - `Composition_Info.Measured_Composition` -> `measured_composition` + `measured_composition_type` + `measured_composition_method`
+  - `Composition_Info.Note` -> `composition_note`
   - `Process_Info.Process_Category` -> `process_category`
   - `Process_Info.Process_Text.original/simplified` -> `processing_conditions` using `original: ... || simplified: ...`
+  - `Process_Info.Equipment` -> `equipment`
   - `Process_Info.Key_Params` -> `processing_params`
   - `Microstructure_Info.Microstructure_Text.original/simplified` -> `microstructure_description` using `original: ... || simplified: ...`
   - `Microstructure_Info.Main_Phase` -> `main_phase`
+  - `Microstructure_Info.Precipitates` -> `precipitates`
+  - `Microstructure_Info.Porosity_pct` -> `porosity_pct`
+  - `Microstructure_Info.Relative_Density_pct` -> `relative_density_pct`
   - `Microstructure_Info.Grain_Size_avg_um` -> `grain_size_avg_um`
+  - `Microstructure_Info.Precipitate_Size_avg_nm` -> `precipitate_size_avg_nm`
+  - `Microstructure_Info.Precipitate_Volume_Fraction_pct` -> `precipitate_volume_fraction_pct`
+  - `Microstructure_Info.Phase_Fraction_pct` -> `phase_fraction_pct`
   - `Properties_Info` -> `properties_of_composition`
 
 Output Format:
@@ -105,7 +131,10 @@ Return exactly one valid JSON object and no extra prose, with top-level key `com
   "compositions": [
     {
       "composition": "string",
+      "sample_id": "string or null",
       "alloy_name_raw": "string or null",
+      "gradient_material": "boolean or null",
+      "gradient_group_id": "string or null",
       "role": "Target or Reference",
       "composition_normalized": "string or null",
       "nominal_composition": "object or null",
@@ -113,13 +142,21 @@ Return exactly one valid JSON object and no extra prose, with top-level key `com
       "measured_composition": "object or null",
       "measured_composition_type": "wt%|at%|null",
       "measured_composition_method": "string or null",
+      "composition_note": "string or null",
       "source_doi": "string or null",
       "main_phase": "string or null",
+      "precipitates": "array",
       "has_precipitates": "boolean",
+      "porosity_pct": "float or null",
+      "relative_density_pct": "float or null",
       "grain_size_avg_um": "float or null",
+      "precipitate_size_avg_nm": "float or null",
+      "precipitate_volume_fraction_pct": "float or null",
+      "phase_fraction_pct": "float or null",
       "grain_size_text": "string or null",
       "processing_conditions": "string",
       "processing_params": "object or null",
+      "equipment": "string or null",
       "process_category": "string or null",
       "build_orientation": "string or null",
       "xrd_details": "string or null",
@@ -135,7 +172,15 @@ Return exactly one valid JSON object and no extra prose, with top-level key `com
           "value_range": "string or null",
           "value_stddev": "float or null",
           "unit": "string or null",
+          "test_temperature_k": "float or null",
           "measurement_condition": "string or null",
+          "strain_rate_s1": "string or null",
+          "tensile_speed_mm_min": "float or null",
+          "hardness_load": "string or null",
+          "hardness_dwell_time_s": "float or null",
+          "data_source": "text|image|null",
+          "test_specimen": "string or null",
+          "note": "string or null",
           "additional_information": "string or null"
         }
       ]

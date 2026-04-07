@@ -335,6 +335,14 @@ class Property(BaseModel):
         default=None,
         description="Measurement unit of the property (e.g., 'K', 'MPa', 'mm', '%')."
     )
+
+    test_temperature_k: Optional[float] = Field(
+        default=None,
+        description=(
+            "Actual test environment temperature in Kelvin. "
+            "Use only the testing temperature here, never fabrication or heat-treatment temperatures."
+        ),
+    )
     
     measurement_condition: Optional[str] = Field(
         default=None,
@@ -345,6 +353,56 @@ class Property(BaseModel):
             "Examples: 'at 298.15 K; strain rate 1e-3 /s', 'at 1073.15 K; heating rate 20 K/min; Ar atmosphere'. "
             "Use null if not provided."
         )
+    )
+
+    strain_rate_s1: Optional[str] = Field(
+        default=None,
+        description=(
+            "Strain rate for tensile or compressive testing, preserved as source text "
+            "(e.g., '1e-3 s^-1', '5 x 10^-4 s^-1'). Use null if not reported."
+        ),
+    )
+
+    tensile_speed_mm_min: Optional[float] = Field(
+        default=None,
+        description="Tensile or crosshead speed in mm/min when explicitly reported. Use null if not reported.",
+    )
+
+    hardness_load: Optional[str] = Field(
+        default=None,
+        description=(
+            "Hardness indentation load with unit preserved, e.g. '200 gf' or '0.98 N'. "
+            "Use null if not reported."
+        ),
+    )
+
+    hardness_dwell_time_s: Optional[float] = Field(
+        default=None,
+        description="Hardness dwell time in seconds. Use null if not reported.",
+    )
+
+    data_source: Optional[str] = Field(
+        default=None,
+        description=(
+            "Source modality for this property value: 'text' for body/table/caption text, "
+            "'image' for chart or figure-derived values, or null if unclear."
+        ),
+    )
+
+    test_specimen: Optional[str] = Field(
+        default=None,
+        description=(
+            "Specimen standard or geometry linked to this test, e.g. 'ASTM E8, gauge length 25 mm'. "
+            "Use null if not reported."
+        ),
+    )
+
+    note: Optional[str] = Field(
+        default=None,
+        description=(
+            "Short note for this property entry, such as elongation interpretation or provenance cautions. "
+            "Use null if not needed."
+        ),
     )
     
     additional_information: Optional[str] = Field(
@@ -364,11 +422,35 @@ class CompositionProperties(BaseModel):
         description="The chemical composition of the material as written in the paper (including any abbreviations)."
     )
 
+    sample_id: Optional[str] = Field(
+        default=None,
+        description=(
+            "Stable specimen identifier for this runtime composition. "
+            "All tests belonging to the same specimen should share the same sample_id."
+        ),
+    )
+
     alloy_name_raw: Optional[str] = Field(
         default=None,
         description=(
             "Raw alloy name from source text, preserving commercial names and original formatting "
             "(e.g., 'IN718', 'Ti-6Al-4V'). Use null if not explicitly provided."
+        ),
+    )
+
+    gradient_material: Optional[bool] = Field(
+        default=None,
+        description=(
+            "Whether this composition entry represents a gradient material specimen. "
+            "Prefer one gradient entry unless the paper explicitly reports layer-specific independent data."
+        ),
+    )
+
+    gradient_group_id: Optional[str] = Field(
+        default=None,
+        description=(
+            "Linking identifier used only when one gradient specimen is intentionally split into multiple "
+            "layer-specific runtime compositions."
         ),
     )
 
@@ -435,6 +517,14 @@ class CompositionProperties(BaseModel):
             "Use null if not reported."
         ),
     )
+
+    composition_note: Optional[str] = Field(
+        default=None,
+        description=(
+            "Top-level composition note for special annotations such as ranges, upper-limit impurities, "
+            "or other composition caveats. Use null if not needed."
+        ),
+    )
     
     source_doi: Optional[str] = Field(
         default=None,
@@ -448,7 +538,8 @@ class CompositionProperties(BaseModel):
         default=None,
         description=(
             "Primary crystal structure identified from XRD, EBSD, or similar characterization. "
-            "Use standard abbreviations: BCC, FCC, HCP, amorphous, or combinations like 'FCC + L12', 'BCC + sigma'. "
+            "Use matrix-phase labels such as Gamma matrix, BCC, FCC, HCP, or amorphous. "
+            "Do not use Laves, carbides, or gamma-prime as the main phase. "
             "Use null if not mentioned."
         )
     )
@@ -470,12 +561,51 @@ class CompositionProperties(BaseModel):
             "Use null if not reported."
         )
     )
+
+    porosity_pct: Optional[float] = Field(
+        default=None,
+        description=(
+            "Porosity percentage when explicitly reported as a numeric value. "
+            "Qualitative statements such as 'no porosity detected' or 'pore-free' are not numeric porosity values; "
+            "keep this field null unless the paper gives an explicit percentage."
+        ),
+    )
+
+    relative_density_pct: Optional[float] = Field(
+        default=None,
+        description=(
+            "Relative density percentage when explicitly reported. "
+            "Qualitative statements such as 'fully dense' or 'full densification' do not justify filling 100%. "
+            "Use null if not reported and never infer 100%."
+        ),
+    )
+
+    precipitate_size_avg_nm: Optional[float] = Field(
+        default=None,
+        description="Average precipitate size in nm when explicitly reported. Use null if not reported.",
+    )
+
+    precipitate_volume_fraction_pct: Optional[float] = Field(
+        default=None,
+        description=(
+            "Aggregate precipitate volume fraction percentage when explicitly reported. Use null if not reported."
+        ),
+    )
+
+    phase_fraction_pct: Optional[float] = Field(
+        default=None,
+        description=(
+            "Overall phase fraction percentage when explicitly reported as a root microstructure quantity. "
+            "Use null if not reported."
+        ),
+    )
     
     processing_conditions: str = Field(
         default="not provided",
         description=(
             "Processing conditions with dual-track text in one string: "
-            "'original: <verbatim source> || simplified: <concise process chain>'. "
+            "'original: <detailed source-faithful process description preserving all explicit process details> "
+            "|| simplified: <condensed process summary that keeps key details and removes redundancy without over-simplifying>'. "
             "Use 'not provided' if absent."
         )
     )
@@ -490,9 +620,18 @@ class CompositionProperties(BaseModel):
             "Build_Plate_Temperature_K (float), Protective_Atmosphere (str, e.g. 'Argon'), "
             "Volumetric_Energy_Density_J_mm3 (float/range), Oxygen_Content_ppm (float), "
             "Build_Orientation (str, e.g. 'Parallel-BD'). "
+            "For heat-treatment ranges, preserve strings such as '1273-1373' or '2-4' instead of averaging. "
             "Include ONLY parameters with explicit values in the paper. "
             "Use null if no structured parameters can be extracted."
         )
+    )
+
+    equipment: Optional[str] = Field(
+        default=None,
+        description=(
+            "Equipment model, instrument, or furnace information for the processing route. "
+            "Use null if not reported."
+        ),
     )
 
     build_orientation: Optional[str] = Field(
@@ -535,12 +674,21 @@ class CompositionProperties(BaseModel):
         default=None,
         description=(
             "Microstructure morphology from SEM/EBSD/TEM observations in dual-track format: "
-            "'original: <verbatim source> || simplified: <concise summary>'. "
+            "'original: <detailed source-faithful microstructure description preserving all explicit features> "
+            "|| simplified: <condensed summary that keeps key microstructural details without over-simplifying>'. "
             "Include grain shape, size distribution, phase morphology, texture, "
             "columnar vs equiaxed, precipitate distribution, etc. "
             "Example simplified part: 'Equiaxed grains + columnar regions; single BCC phase'. "
             "Do NOT include XRD instrument parameters here."
         )
+    )
+
+    precipitates: List[Dict[str, Any]] = Field(
+        default_factory=list,
+        description=(
+            "Explicit precipitate list. Each entry should include phase_type and optionally "
+            "volume_fraction_pct, e.g. {'phase_type': 'Laves', 'volume_fraction_pct': 3.2}."
+        ),
     )
 
     grain_size_text: Optional[str] = Field(
