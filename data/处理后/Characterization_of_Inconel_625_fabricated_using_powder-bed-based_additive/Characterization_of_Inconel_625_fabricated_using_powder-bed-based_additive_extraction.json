@@ -1,0 +1,1396 @@
+{
+  "Paper_Metadata": {
+    "Paper_Title": "Characterization of Inconel 625 fabricated using powder-bed-based additive manufacturing technologies",
+    "DOI": "10.1016/j.jmatprotec.2018.08.031"
+  },
+  "items": [
+    {
+      "Sample_ID": "IN625_BJ_X_HIP",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Inconel 625",
+        "Nominal_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": null
+        },
+        "Measured_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Ni": 60.12,
+            "Cr": 22.84,
+            "Mo": 9.16,
+            "Nb": 4.15,
+            "Fe": 2.9,
+            "Mn": 0.42,
+            "Si": 0.32,
+            "other": 0.09
+          },
+          "Measurement_Method": "SEM-EDS (Hitachi TM 1000 Tabletop SEM)"
+        },
+        "Note": "Measured composition is from precursor powder analysis, not the final part. ASTM F3056-14 chemical requirements (wt%): Cr 20-23%, Mo 8-10%, Nb 3.15-4.15%, C max 0.10%, Mn max 0.50%, Si max 0.50%, P max 0.015%, S max 0.015%, Co max 1.00%, Ti max 0.40%, Al max 0.40%, Fe max 5.00%, Ni balance. All powder compositions confirmed to meet ASTM requirements."
+      },
+      "Process_Info": {
+        "Process_Category": "Powder Metallurgy",
+        "Process_Text": {
+          "original": "Specimens fabricated by the ExOne Company using an M-Flex system (ExOne, North Huntingdon, PA, USA) with an ethylene glycol monobutyl ether (aqueous-based) binder. Curing performed at 195°C (~1 h per 10 mm of part height). Sintering profile reached maximum temperature of 1310°C with a dwell time of 2 h, taking roughly 16 h total until cooldown. Build orientation: horizontal (X direction). All as-fabricated cylindrical samples underwent post-fabrication hot isostatic pressing (HIPing) for 3 h at 1163°C ± 3.5°C and 102 MPa ± 1.72 MPa. HIPed samples were then machined to ASTM E8/E8M specifications.",
+          "simplified": "Binder jetting (ExOne M-Flex) with aqueous-based binder, cured at 195°C, sintered at max 1310°C (2 h dwell, ~16 h total); X orientation; HIP at 1163°C, 102 MPa, 3 h; machined per ASTM E8/E8M."
+        },
+        "Equipment": "ExOne M-Flex binder jetting system (ExOne, North Huntingdon, PA, USA)",
+        "Key_Params": {
+          "Sintering_Dwell_Time_h": 2,
+          "HIP_Temperature_Range_C": "1163 ± 3.5",
+          "HIP_Pressure_MPa": "102 ± 1.72",
+          "HIP_Temperature_K": 1436.15,
+          "HIP_Time_h": 3,
+          "Build_Orientation": "X (horizontal)",
+          "Curing_Temperature_C": 195,
+          "Sintering_Temperature_K": 1583.15,
+          "Sintering_Total_Cycle_Time_h": 16
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Binder jetting produced material showed a consistent microstructure regardless of build orientation, with porosity present in both microstructural directions. Larger grains are evident compared to fusion technologies, with an average grain diameter of 57 μm measured using the line intercept method. The micrographs revealed annealed twins within the austenitic grains, characteristic of material with low stacking-fault energy. Twin formation occurred during sintering process. Post-HIP samples show this microstructure after processing.",
+          "simplified": "Equiaxed grains (avg 57 μm) with annealing twins; porosity visible in both orientations; twins from high-temperature sintering consistent with low stacking-fault energy austenitic structure."
+        },
+        "Main_Phase": "FCC",
+        "Precipitates": [],
+        "Porosity_pct": null,
+        "Relative_Density_pct": 98.3,
+        "Grain_Size_avg_um": 57.0,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "Powder_Avg_Particle_Size_um": 11,
+          "Powder_Particle_Size_Distribution_um": "7-24",
+          "Powder_AD_g_cc": 3.9,
+          "Powder_Flow_Rate_s_50g": 18.56,
+          "Relative_Density_AsFabricated_pct": 96.5,
+          "Relative_Density_HIPed_pct": 98.3
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at 298.15 K; X build orientation; 0.2% offset method; strain rate 0.005 mm/mm/min",
+          "Value_Numeric": 320.0,
+          "Value_Range": null,
+          "Value_StdDev": 14.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "0.005 mm/mm/min",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM E8/E8M, cylindrical bar 8 mm radius × 90 mm height",
+          "Note": "Reported as 0.32 ± 0.014 GPa in paper; converted to MPa. Determined by 0.2% offset method."
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at 298.15 K; X build orientation; strain rate 0.005 mm/mm/min",
+          "Value_Numeric": 707.0,
+          "Value_Range": null,
+          "Value_StdDev": 12.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "0.005 mm/mm/min",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM E8/E8M, cylindrical bar 8 mm radius × 90 mm height, machined to spec",
+          "Note": "Reported as 0.707 ± 0.012 GPa in paper; converted to MPa."
+        },
+        {
+          "Property_Name": "Elongation_At_Fracture",
+          "Test_Condition": "at 298.15 K; X build orientation; strain rate 0.005 mm/mm/min",
+          "Value_Numeric": 58.74,
+          "Value_Range": null,
+          "Value_StdDev": 2.14,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "0.005 mm/mm/min",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM E8/E8M, cylindrical bar 8 mm radius × 90 mm height",
+          "Note": "Described as 'maximum linear deflection relative to original length before complete failure and rupture' (at break). No significant difference vs LPBF at 95% confidence."
+        },
+        {
+          "Property_Name": "Modulus_of_Elasticity",
+          "Test_Condition": "at 298.15 K; X build orientation; slope of elastic region of stress-strain curve",
+          "Value_Numeric": 0.524,
+          "Value_Range": null,
+          "Value_StdDev": 0.047,
+          "Unit": "GPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "0.005 mm/mm/min",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "image",
+          "Test_Specimen": "ASTM E8/E8M, cylindrical bar 8 mm radius × 90 mm height",
+          "Note": "Value as reported in paper (0.524 ± 0.047 GPa). This value is anomalously low compared to the expected ~200 GPa for Inconel 625; reported faithfully as stated."
+        }
+      ]
+    },
+    {
+      "Sample_ID": "IN625_BJ_Z_HIP",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Inconel 625",
+        "Nominal_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": null
+        },
+        "Measured_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Nb": 4.15,
+            "Fe": 2.9,
+            "Mn": 0.42,
+            "Si": 0.32,
+            "Ni": 60.12,
+            "Cr": 22.84,
+            "Mo": 9.16,
+            "other": 0.09
+          },
+          "Measurement_Method": "SEM-EDS (Hitachi TM 1000 Tabletop SEM)"
+        },
+        "Note": "Measured composition is from precursor powder analysis, not the final part. ASTM F3056-14 chemical requirements (wt%): Cr 20-23%, Mo 8-10%, Nb 3.15-4.15%, C max 0.10%, Mn max 0.50%, Si max 0.50%, P max 0.015%, S max 0.015%, Co max 1.00%, Ti max 0.40%, Al max 0.40%, Fe max 5.00%, Ni balance."
+      },
+      "Process_Info": {
+        "Process_Category": "Powder Metallurgy",
+        "Process_Text": {
+          "original": "Specimens fabricated by the ExOne Company using an M-Flex system (ExOne, North Huntingdon, PA, USA) with an ethylene glycol monobutyl ether (aqueous-based) binder. Curing performed at 195°C (~1 h per 10 mm of part height). Sintering profile reached maximum temperature of 1310°C with a dwell time of 2 h, taking roughly 16 h total until cooldown. Build orientation: vertical (Z direction). Fabricated directly in the powder bed (no support structures required). All as-fabricated cylindrical samples underwent post-fabrication HIPing for 3 h at 1163°C ± 3.5°C and 102 MPa ± 1.72 MPa. HIPed samples then machined to ASTM E8/E8M specifications.",
+          "simplified": "Binder jetting (ExOne M-Flex) with aqueous-based binder, cured at 195°C, sintered at max 1310°C (2 h dwell, ~16 h total); Z orientation; no supports; HIP at 1163°C, 102 MPa, 3 h; machined per ASTM E8/E8M."
+        },
+        "Equipment": "ExOne M-Flex binder jetting system (ExOne, North Huntingdon, PA, USA)",
+        "Key_Params": {
+          "HIP_Temperature_K": 1436.15,
+          "HIP_Temperature_Range_C": "1163 ± 3.5",
+          "HIP_Pressure_MPa": "102 ± 1.72",
+          "Build_Orientation": "Z (vertical)",
+          "Curing_Temperature_C": 195,
+          "Sintering_Temperature_K": 1583.15,
+          "Sintering_Dwell_Time_h": 2,
+          "Sintering_Total_Cycle_Time_h": 16,
+          "HIP_Time_h": 3
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Binder jetting produced material showed a consistent microstructure regardless of build orientation, with porosity present in both microstructural directions. Average grain diameter 57 μm measured by line intercept method. Annealed twins within the austenitic grains, characteristic of low stacking-fault energy material formed during elevated-temperature sintering.",
+          "simplified": "Equiaxed grains (avg 57 μm) with annealing twins; porosity in both orientations; consistent microstructure regardless of Z build direction."
+        },
+        "Main_Phase": "FCC",
+        "Precipitates": [],
+        "Porosity_pct": null,
+        "Relative_Density_pct": 98.3,
+        "Grain_Size_avg_um": 57.0,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "Powder_Avg_Particle_Size_um": 11,
+          "Powder_Particle_Size_Distribution_um": "7-24",
+          "Relative_Density_AsFabricated_pct": 96.5,
+          "Relative_Density_HIPed_pct": 98.3
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at 298.15 K; Z build orientation; 0.2% offset method; strain rate 0.005 mm/mm/min",
+          "Value_Numeric": 393.0,
+          "Value_Range": null,
+          "Value_StdDev": 2.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "0.005 mm/mm/min",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM E8/E8M, cylindrical bar 8 mm radius × 90 mm height",
+          "Note": "Reported as 0.393 ± 0.002 GPa; converted to MPa. 0.2% offset method. Highest YS in Z orientation."
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at 298.15 K; Z build orientation; strain rate 0.005 mm/mm/min",
+          "Value_Numeric": 708.0,
+          "Value_Range": null,
+          "Value_StdDev": 22.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "0.005 mm/mm/min",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM E8/E8M, cylindrical bar 8 mm radius × 90 mm height",
+          "Note": "Reported as 0.708 ± 0.022 GPa in paper; converted to MPa."
+        },
+        {
+          "Property_Name": "Elongation_At_Fracture",
+          "Test_Condition": "at 298.15 K; Z build orientation; strain rate 0.005 mm/mm/min",
+          "Value_Numeric": 27.02,
+          "Value_Range": null,
+          "Value_StdDev": 5.39,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "0.005 mm/mm/min",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM E8/E8M, cylindrical bar 8 mm radius × 90 mm height",
+          "Note": "% elongation at break. Does NOT meet ASTM F3056-14 minimum of 30% in Z orientation."
+        },
+        {
+          "Property_Name": "Modulus_of_Elasticity",
+          "Test_Condition": "at 298.15 K; Z build orientation; slope of elastic region of stress-strain curve",
+          "Value_Numeric": 0.506,
+          "Value_Range": null,
+          "Value_StdDev": 0.051,
+          "Unit": "GPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "0.005 mm/mm/min",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "image",
+          "Test_Specimen": "ASTM E8/E8M, cylindrical bar 8 mm radius × 90 mm height",
+          "Note": "Value as reported in paper (0.506 ± 0.051 GPa). Anomalously low vs expected ~200 GPa; reported faithfully."
+        }
+      ]
+    },
+    {
+      "Sample_ID": "IN625_EPBF_X_HIP",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Inconel 625",
+        "Nominal_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": null
+        },
+        "Measured_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Si": 0.4,
+            "Ni": 61.3,
+            "Cr": 21.01,
+            "Mo": 9.8,
+            "Nb": 4.1,
+            "Fe": 3.0,
+            "Mn": 0.33,
+            "other": 0.06
+          },
+          "Measurement_Method": "SEM-EDS (Hitachi TM 1000 Tabletop SEM)"
+        },
+        "Note": "Measured composition is from precursor powder (Carpenter Powder Products, Product #2221103-0007, Bridgeville, PA). ASTM F3056-14 range requirements: Cr 20-23%, Mo 8-10%, Nb 3.15-4.15%, Fe max 5.00%, Ni balance. All powder compositions confirmed to meet ASTM requirements."
+      },
+      "Process_Info": {
+        "Process_Category": "Electron beam melting (EBM)",
+        "Process_Text": {
+          "original": "EPBF specimens printed using an Arcam A2 system (Mölndal, Sweden) with optimized in-house parameters for which density was the success metric. Parameters: powder bed preheat temperature target ~850°C, beam speed 500 mm/s, average current 14 mA, focus offset 20 mA. Layer height 50–70 μm. Process conducted in vacuum environment (~10⁻⁴ Torr). Build orientation: X (horizontal). Specimens fabricated with 3 mm offset from substrate with pin supports on down-skin surfaces to prevent elemental diffusion from substrate to gauge section. All as-fabricated samples underwent HIPing for 3 h at 1163°C ± 3.5°C and 102 MPa ± 1.72 MPa. Samples cut from start plate with band saw before HIPing. HIPed samples machined to ASTM E8/E8M specifications.",
+          "simplified": "EBM/EPBF (Arcam A2); preheat ~850°C; beam speed 500 mm/s; current 14 mA; focus offset 20 mA; layer 50-70 μm; vacuum ~10⁻⁴ Torr; X orientation with 3 mm substrate offset + pin supports; HIP 1163°C, 102 MPa, 3 h; machined per ASTM E8/E8M."
+        },
+        "Equipment": "Arcam A2 EPBF system (Mölndal, Sweden)",
+        "Key_Params": {
+          "Build_Orientation": "X (horizontal)",
+          "Build_Plate_Temperature_K": 1123.15,
+          "Beam_Current_mA": 14,
+          "Focus_Offset_mA": 20,
+          "Layer_Thickness_um": "50-70",
+          "HIP_Pressure_MPa": "102 ± 1.72",
+          "Scanning_Speed_mm_s": 500,
+          "Vacuum_Torr": 0.0001,
+          "HIP_Temperature_K": 1436.15,
+          "HIP_Temperature_Range_C": "1163 ± 3.5",
+          "HIP_Time_h": 3
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "EPBF fabricated components display distinct characteristics dependent on build orientation. Parallel to the build direction, grains have a more uniform pattern. Perpendicular to the build direction, the microstructure shows a textured columnar grain morphology with grains measuring an average of 16 μm wide and 356 μm in length. Dark linear areas in micrograph (Fig. 3B) are columns of γ'' precipitates following the build direction. These γ'' (bct) Ni₃Nb disk platelets are coincident with Ni-Cr (fcc) {111} planes and arranged in columnar arrays spanning multiple layers in height. After HIPing, Amato et al. reported formation of equiaxed grains and annealing twins, though this paper's EPBF micrograph still shows the columnar structure with γ'' precipitate columns. Average density of 99.9%.",
+          "simplified": "Columnar grain morphology (16 μm wide × 356 μm long) with γ'' (Ni3Nb bct) precipitates in columnar arrays parallel to build direction; 99.9% density; build-direction-dependent anisotropic microstructure."
+        },
+        "Main_Phase": "FCC",
+        "Precipitates": [
+          {
+            "Phase_Type": "gamma double prime (γ'')",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": 99.9,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "Powder_Avg_Particle_Size_um": 23,
+          "Powder_Particle_Size_Distribution_um": "21-46",
+          "Powder_AD_g_cc": 4.35,
+          "Powder_Flow_Rate_s_50g": 130.69,
+          "Columnar_Grain_Width_avg_um": 16,
+          "Columnar_Grain_Length_avg_um": 356
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at 298.15 K; X build orientation; 0.2% offset method; strain rate 0.005 mm/mm/min",
+          "Value_Numeric": 367.0,
+          "Value_Range": null,
+          "Value_StdDev": 33.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "0.005 mm/mm/min",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM E8/E8M, cylindrical bar 8 mm radius × 90 mm height",
+          "Note": "Reported as 0.367 ± 0.033 GPa; converted to MPa. No significant difference vs LPBF X at 95% confidence."
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at 298.15 K; X build orientation; strain rate 0.005 mm/mm/min",
+          "Value_Numeric": 849.0,
+          "Value_Range": null,
+          "Value_StdDev": 37.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "0.005 mm/mm/min",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM E8/E8M, cylindrical bar 8 mm radius × 90 mm height",
+          "Note": "Reported as 0.849 ± 0.037 GPa; converted to MPa. No significant difference vs LPBF X at 95% confidence."
+        },
+        {
+          "Property_Name": "Elongation_At_Fracture",
+          "Test_Condition": "at 298.15 K; X build orientation; strain rate 0.005 mm/mm/min",
+          "Value_Numeric": 44.32,
+          "Value_Range": null,
+          "Value_StdDev": 4.95,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "0.005 mm/mm/min",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM E8/E8M, cylindrical bar 8 mm radius × 90 mm height",
+          "Note": "% elongation at break."
+        },
+        {
+          "Property_Name": "Modulus_of_Elasticity",
+          "Test_Condition": "at 298.15 K; X build orientation; slope of elastic region of stress-strain curve",
+          "Value_Numeric": 0.484,
+          "Value_Range": null,
+          "Value_StdDev": 0.052,
+          "Unit": "GPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "0.005 mm/mm/min",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "image",
+          "Test_Specimen": "ASTM E8/E8M, cylindrical bar 8 mm radius × 90 mm height",
+          "Note": "Reported as 0.484 ± 0.052 GPa. Lowest modulus in X orientation. Anomalously low vs expected ~200 GPa; reported faithfully."
+        }
+      ]
+    },
+    {
+      "Sample_ID": "IN625_EPBF_Z_HIP",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Inconel 625",
+        "Nominal_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": null
+        },
+        "Measured_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Si": 0.4,
+            "Ni": 61.3,
+            "Cr": 21.01,
+            "Mo": 9.8,
+            "Nb": 4.1,
+            "Fe": 3.0,
+            "Mn": 0.33,
+            "other": 0.06
+          },
+          "Measurement_Method": "SEM-EDS (Hitachi TM 1000 Tabletop SEM)"
+        },
+        "Note": "Measured composition is from precursor powder (Carpenter Powder Products, Product #2221103-0007). ASTM F3056-14 chemical requirements satisfied."
+      },
+      "Process_Info": {
+        "Process_Category": "Electron beam melting (EBM)",
+        "Process_Text": {
+          "original": "EPBF specimens printed using an Arcam A2 system (Mölndal, Sweden) with optimized in-house parameters: powder bed preheat temperature ~850°C, beam speed 500 mm/s, average current 14 mA, focus offset 20 mA, layer height 50–70 μm, vacuum ~10⁻⁴ Torr. Build orientation: Z (vertical). Z bars built directly on the substrate. All as-fabricated samples underwent HIPing for 3 h at 1163°C ± 3.5°C and 102 MPa ± 1.72 MPa. Samples cut from start plate with band saw before HIPing. HIPed samples machined to ASTM E8/E8M specifications.",
+          "simplified": "EBM/EPBF (Arcam A2); preheat ~850°C; beam speed 500 mm/s; current 14 mA; focus offset 20 mA; layer 50-70 μm; vacuum; Z orientation directly on substrate; HIP 1163°C, 102 MPa, 3 h; machined per ASTM E8/E8M."
+        },
+        "Equipment": "Arcam A2 EPBF system (Mölndal, Sweden)",
+        "Key_Params": {
+          "Beam_Current_mA": 14,
+          "Focus_Offset_mA": 20,
+          "Layer_Thickness_um": "50-70",
+          "Build_Orientation": "Z (vertical)",
+          "HIP_Time_h": 3,
+          "Build_Plate_Temperature_K": 1123.15,
+          "Scanning_Speed_mm_s": 500,
+          "Vacuum_Torr": 0.0001,
+          "HIP_Temperature_K": 1436.15,
+          "HIP_Temperature_Range_C": "1163 ± 3.5",
+          "HIP_Pressure_MPa": "102 ± 1.72"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "EPBF fabricated components display columnar grain morphology dependent on build orientation. Grains perpendicular to build direction measure 16 μm wide and 356 μm in length. γ'' (bct) Ni₃Nb disk platelet precipitates arranged in columnar arrays parallel to build direction. Density 99.9%. Fracture surface of Z-orientation specimens showed dimples.",
+          "simplified": "Columnar grains (16 μm wide × 356 μm long) with γ'' Ni3Nb precipitate columns parallel to build direction; 99.9% density; ductile fracture in Z orientation."
+        },
+        "Main_Phase": "FCC",
+        "Precipitates": [
+          {
+            "Phase_Type": "gamma double prime (γ'')",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": 99.9,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "Columnar_Grain_Length_avg_um": 356,
+          "Powder_Avg_Particle_Size_um": 23,
+          "Powder_Particle_Size_Distribution_um": "21-46",
+          "Columnar_Grain_Width_avg_um": 16
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at 298.15 K; Z build orientation; 0.2% offset method; strain rate 0.005 mm/mm/min",
+          "Value_Numeric": 369.0,
+          "Value_Range": null,
+          "Value_StdDev": 7.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "0.005 mm/mm/min",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM E8/E8M, cylindrical bar 8 mm radius × 90 mm height",
+          "Note": "Reported as 0.369 ± 0.007 GPa; converted to MPa."
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at 298.15 K; Z build orientation; strain rate 0.005 mm/mm/min",
+          "Value_Numeric": 723.0,
+          "Value_Range": null,
+          "Value_StdDev": 29.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "0.005 mm/mm/min",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM E8/E8M, cylindrical bar 8 mm radius × 90 mm height",
+          "Note": "Reported as 0.723 ± 0.029 GPa; converted to MPa. Non-significant difference vs BJ Z."
+        },
+        {
+          "Property_Name": "Elongation_At_Fracture",
+          "Test_Condition": "at 298.15 K; Z build orientation; strain rate 0.005 mm/mm/min",
+          "Value_Numeric": 26.92,
+          "Value_Range": null,
+          "Value_StdDev": 5.49,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "0.005 mm/mm/min",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM E8/E8M, cylindrical bar 8 mm radius × 90 mm height",
+          "Note": "% elongation at break. Does NOT meet ASTM F3056-14 minimum of 30% in Z orientation."
+        },
+        {
+          "Property_Name": "Modulus_of_Elasticity",
+          "Test_Condition": "at 298.15 K; Z build orientation; slope of elastic region of stress-strain curve",
+          "Value_Numeric": 0.459,
+          "Value_Range": null,
+          "Value_StdDev": 0.036,
+          "Unit": "GPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "0.005 mm/mm/min",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "image",
+          "Test_Specimen": "ASTM E8/E8M, cylindrical bar 8 mm radius × 90 mm height",
+          "Note": "Reported as 0.459 ± 0.036 GPa. Anomalously low vs expected ~200 GPa; reported faithfully."
+        }
+      ]
+    },
+    {
+      "Sample_ID": "IN625_LPBF_X_HIP",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Inconel 625",
+        "Nominal_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": null
+        },
+        "Measured_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Fe": 2.8,
+            "Mn": 0.5,
+            "Si": 0.2,
+            "Ni": 61.55,
+            "Cr": 21.25,
+            "Mo": 9.55,
+            "Nb": 4.05,
+            "other": 0.1
+          },
+          "Measurement_Method": "SEM-EDS (Hitachi TM 1000 Tabletop SEM)"
+        },
+        "Note": "Measured composition is from precursor powder (SLM Solutions GmbH, Product #2015000568, Lübeck, Germany). ASTM F3056-14 chemical requirements satisfied. All powder compositions confirmed to meet ASTM requirements."
+      },
+      "Process_Info": {
+        "Process_Category": "Laser Powder Bed Fusion (LPBF)",
+        "Process_Text": {
+          "original": "LPBF parts fabricated in an SLM Solutions 125 HL system (Lübeck, Germany) using commercially available parameters developed by SLM Solutions GmbH for Inconel 625 at 30 μm layers. Parameters: power 175 W, laser speed 600 mm/s, hatching space 0.14 mm (140 μm), layer thickness 30 μm. Process conducted in inert gas environment (argon). Build orientation: X (horizontal). Specimens built with 3 mm offset from substrate with pin supports on down-skin surfaces. All as-fabricated samples underwent HIPing for 3 h at 1163°C ± 3.5°C and 102 MPa ± 1.72 MPa. Samples cut from start plate with band saw before HIPing. HIPed samples machined to ASTM E8/E8M specifications.",
+          "simplified": "LPBF (SLM Solutions 125 HL); 175 W; 600 mm/s; hatch 0.14 mm; layer 30 μm; argon; X orientation with 3 mm substrate offset + pin supports; HIP 1163°C, 102 MPa, 3 h; machined per ASTM E8/E8M."
+        },
+        "Equipment": "SLM Solutions 125 HL system (Lübeck, Germany)",
+        "Key_Params": {
+          "Layer_Thickness_um": 30,
+          "Protective_Atmosphere": "Argon",
+          "HIP_Temperature_Range_C": "1163 ± 3.5",
+          "HIP_Pressure_MPa": "102 ± 1.72",
+          "HIP_Time_h": 3,
+          "Scanning_Speed_mm_s": 600,
+          "Hatch_Spacing_um": 140,
+          "Build_Orientation": "X (horizontal)",
+          "Laser_Power_W": 175,
+          "HIP_Temperature_K": 1436.15
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "LPBF fabricated parts appear homogenous and with equiaxed grains compared to those produced by EPBF and binder jetting in both studied orientations. Average grain size by line intercept method is 27 μm, a 53% decrease from binder jetting. Microstructure shares closest similarity to wrought Inconel 625 in its non-annealed state. Amato et al. characterized HIPed LPBF Inconel 625 as consisting of NiCr equiaxed grains with annealing twins and a large amount of intergranular precipitates. Relative density 99.9%.",
+          "simplified": "Equiaxed, homogeneous grains (avg 27 μm, line intercept); most similar to wrought Inconel 625; 99.9% density; consistent in both orientations."
+        },
+        "Main_Phase": "FCC",
+        "Precipitates": [],
+        "Porosity_pct": null,
+        "Relative_Density_pct": 99.9,
+        "Grain_Size_avg_um": 27.0,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "Powder_Avg_Particle_Size_um": 16,
+          "Powder_Particle_Size_Distribution_um": "8-33",
+          "Powder_AD_g_cc": 3.31,
+          "Powder_Flow_Rate_s_50g": 204.3
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at 298.15 K; X build orientation; 0.2% offset method; strain rate 0.005 mm/mm/min",
+          "Value_Numeric": 396.0,
+          "Value_Range": null,
+          "Value_StdDev": 33.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "0.005 mm/mm/min",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM E8/E8M, cylindrical bar 8 mm radius × 90 mm height",
+          "Note": "Reported as 0.396 ± 0.033 GPa; converted to MPa. Slightly above EPBF (by 0.03 GPa) and BJ (by 0.07 GPa) in X orientation."
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at 298.15 K; X build orientation; strain rate 0.005 mm/mm/min",
+          "Value_Numeric": 906.0,
+          "Value_Range": null,
+          "Value_StdDev": 28.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "0.005 mm/mm/min",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM E8/E8M, cylindrical bar 8 mm radius × 90 mm height",
+          "Note": "Reported as 0.906 ± 0.028 GPa; converted to MPa. Highest UTS in X orientation."
+        },
+        {
+          "Property_Name": "Elongation_At_Fracture",
+          "Test_Condition": "at 298.15 K; X build orientation; strain rate 0.005 mm/mm/min",
+          "Value_Numeric": 62.34,
+          "Value_Range": null,
+          "Value_StdDev": 1.98,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "0.005 mm/mm/min",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM E8/E8M, cylindrical bar 8 mm radius × 90 mm height",
+          "Note": "% elongation at break. Highest elongation in X orientation."
+        },
+        {
+          "Property_Name": "Modulus_of_Elasticity",
+          "Test_Condition": "at 298.15 K; X build orientation; slope of elastic region of stress-strain curve",
+          "Value_Numeric": 0.561,
+          "Value_Range": null,
+          "Value_StdDev": 0.014,
+          "Unit": "GPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "0.005 mm/mm/min",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "image",
+          "Test_Specimen": "ASTM E8/E8M, cylindrical bar 8 mm radius × 90 mm height",
+          "Note": "Reported as 0.561 ± 0.014 GPa. Highest modulus in X orientation. Anomalously low vs expected ~200 GPa; reported faithfully."
+        }
+      ]
+    },
+    {
+      "Sample_ID": "IN625_LPBF_Z_HIP",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Inconel 625",
+        "Nominal_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": null
+        },
+        "Measured_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Fe": 2.8,
+            "Mn": 0.5,
+            "Si": 0.2,
+            "Ni": 61.55,
+            "Cr": 21.25,
+            "Mo": 9.55,
+            "Nb": 4.05,
+            "other": 0.1
+          },
+          "Measurement_Method": "SEM-EDS (Hitachi TM 1000 Tabletop SEM)"
+        },
+        "Note": "Measured composition is from precursor powder (SLM Solutions GmbH, Product #2015000568). ASTM F3056-14 chemical requirements satisfied."
+      },
+      "Process_Info": {
+        "Process_Category": "Laser Powder Bed Fusion (LPBF)",
+        "Process_Text": {
+          "original": "LPBF parts fabricated in an SLM Solutions 125 HL system (Lübeck, Germany) using commercially available parameters for Inconel 625 at 30 μm layers: power 175 W, laser speed 600 mm/s, hatching space 0.14 mm, layer thickness 30 μm. Process in inert gas (argon). Build orientation: Z (vertical). Z bars built directly on the substrate. All as-fabricated samples underwent HIPing for 3 h at 1163°C ± 3.5°C and 102 MPa ± 1.72 MPa. Samples cut from start plate before HIPing. HIPed samples machined to ASTM E8/E8M specifications.",
+          "simplified": "LPBF (SLM Solutions 125 HL); 175 W; 600 mm/s; hatch 0.14 mm; layer 30 μm; argon; Z orientation directly on substrate; HIP 1163°C, 102 MPa, 3 h; machined per ASTM E8/E8M."
+        },
+        "Equipment": "SLM Solutions 125 HL system (Lübeck, Germany)",
+        "Key_Params": {
+          "Protective_Atmosphere": "Argon",
+          "HIP_Temperature_K": 1436.15,
+          "Build_Orientation": "Z (vertical)",
+          "Laser_Power_W": 175,
+          "Hatch_Spacing_um": 140,
+          "Layer_Thickness_um": 30,
+          "HIP_Time_h": 3,
+          "Scanning_Speed_mm_s": 600,
+          "HIP_Temperature_Range_C": "1163 ± 3.5",
+          "HIP_Pressure_MPa": "102 ± 1.72"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "LPBF fabricated parts appear homogenous and with equiaxed grains in both studied orientations. Average grain size 27 μm (line intercept method). The microstructure of LPBF components shares the most similarity to wrought Inconel 625 in its non-annealed state. Density 99.9%.",
+          "simplified": "Equiaxed homogeneous grains (avg 27 μm); 99.9% density; similar to wrought Inconel 625; consistent in both orientations."
+        },
+        "Main_Phase": "FCC",
+        "Precipitates": [],
+        "Porosity_pct": null,
+        "Relative_Density_pct": 99.9,
+        "Grain_Size_avg_um": 27.0,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "Powder_Avg_Particle_Size_um": 16,
+          "Powder_Particle_Size_Distribution_um": "8-33"
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at 298.15 K; Z build orientation; 0.2% offset method; strain rate 0.005 mm/mm/min",
+          "Value_Numeric": 349.0,
+          "Value_Range": null,
+          "Value_StdDev": 5.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "0.005 mm/mm/min",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM E8/E8M, cylindrical bar 8 mm radius × 90 mm height",
+          "Note": "Reported as 0.349 ± 0.005 GPa; converted to MPa. Lowest YS in Z orientation. Significant difference vs BJ Z and EPBF Z."
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at 298.15 K; Z build orientation; strain rate 0.005 mm/mm/min",
+          "Value_Numeric": 842.0,
+          "Value_Range": null,
+          "Value_StdDev": 29.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "0.005 mm/mm/min",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM E8/E8M, cylindrical bar 8 mm radius × 90 mm height",
+          "Note": "Reported as 0.842 ± 0.029 GPa; converted to MPa. Highest UTS in Z orientation. Significant difference vs BJ Z and EPBF Z."
+        },
+        {
+          "Property_Name": "Elongation_At_Fracture",
+          "Test_Condition": "at 298.15 K; Z build orientation; strain rate 0.005 mm/mm/min",
+          "Value_Numeric": 56.3,
+          "Value_Range": null,
+          "Value_StdDev": 6.24,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "0.005 mm/mm/min",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM E8/E8M, cylindrical bar 8 mm radius × 90 mm height",
+          "Note": "% elongation at break. Exceeds BJ Z and EPBF Z by ~29% each. Only technology meeting ASTM minimum (30%) in Z orientation."
+        },
+        {
+          "Property_Name": "Modulus_of_Elasticity",
+          "Test_Condition": "at 298.15 K; Z build orientation; slope of elastic region of stress-strain curve",
+          "Value_Numeric": 0.539,
+          "Value_Range": null,
+          "Value_StdDev": 0.058,
+          "Unit": "GPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "0.005 mm/mm/min",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "image",
+          "Test_Specimen": "ASTM E8/E8M, cylindrical bar 8 mm radius × 90 mm height",
+          "Note": "Reported as 0.539 ± 0.058 GPa. Anomalously low vs expected ~200 GPa; reported faithfully."
+        }
+      ]
+    },
+    {
+      "Sample_ID": "IN625_BJ_AsSintered_Mostafaei2016",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Reference",
+        "Alloy_Name_Raw": "Alloy 625 / Inconel 625",
+        "Nominal_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Cited from Mostafaei et al. (2016b). Binder jetting printed Inconel 625, as-sintered state."
+      },
+      "Process_Info": {
+        "Process_Category": "Powder Metallurgy",
+        "Process_Text": {
+          "original": "Binder jetting printed Inconel 625, sintered (no HIP). Reference values reported by Mostafaei et al. 2016b.",
+          "simplified": "Binder jetting + sintering only; no HIP."
+        },
+        "Equipment": null,
+        "Key_Params": {}
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "not provided",
+          "simplified": "not provided"
+        },
+        "Main_Phase": null,
+        "Precipitates": [],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {}
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": null,
+          "Value_Numeric": 327.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Cited from Mostafaei et al. 2016b; as-sintered."
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": null,
+          "Value_Numeric": 612.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Cited from Mostafaei et al. 2016b; as-sintered binder jetting Inconel 625."
+        },
+        {
+          "Property_Name": "Elongation_At_Fracture",
+          "Test_Condition": null,
+          "Value_Numeric": 41.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "%",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Reported as 'strain' by Mostafaei et al. 2016b; mapped to elongation. As-sintered state."
+        }
+      ]
+    },
+    {
+      "Sample_ID": "IN625_BJ_Aged745_Mostafaei2016",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Reference",
+        "Alloy_Name_Raw": "Alloy 625 / Inconel 625",
+        "Nominal_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Cited from Mostafaei et al. (2016b). Binder jetting Inconel 625, aged 60 h at 745°C."
+      },
+      "Process_Info": {
+        "Process_Category": "Heat Treatment",
+        "Process_Text": {
+          "original": "Binder jetting printed Inconel 625, aged at 745°C for 60 h. Reference values from Mostafaei et al. 2016b.",
+          "simplified": "Binder jetting + aging 745°C / 60 h."
+        },
+        "Equipment": null,
+        "Key_Params": {
+          "Aging_Temperature_K": 1018.15,
+          "Aging_Time_h": 60
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "not provided",
+          "simplified": "not provided"
+        },
+        "Main_Phase": null,
+        "Precipitates": [],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {}
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": null,
+          "Value_Numeric": 329.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Cited from Mostafaei et al. 2016b; aged 60 h at 745°C."
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": null,
+          "Value_Numeric": 697.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Cited from Mostafaei et al. 2016b; BJ Inconel 625 aged 60 h at 745°C."
+        },
+        {
+          "Property_Name": "Elongation_At_Fracture",
+          "Test_Condition": null,
+          "Value_Numeric": 30.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "%",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Cited from Mostafaei et al. 2016b; aged 60 h at 745°C. Decreased from solutionized state."
+        }
+      ]
+    },
+    {
+      "Sample_ID": "IN625_LPBF_HIPed_Amato2012",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Reference",
+        "Alloy_Name_Raw": "Inconel 625 / Alloy 625",
+        "Nominal_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Cited from Amato et al. (2012). LPBF printed Inconel 625, HIPed at 0.1 GPa and 1120°C for 4 h."
+      },
+      "Process_Info": {
+        "Process_Category": "Laser Powder Bed Fusion (LPBF) + Heat Treatment",
+        "Process_Text": {
+          "original": "LPBF printed Inconel 625, HIPed at 0.1 GPa and 1120°C for 4 h. Reference values cited from Amato et al. 2012. Microstructure after HIPing: NiCr equiaxed grains with annealing twins and intergranular precipitates.",
+          "simplified": "LPBF + HIP (0.1 GPa, 1120°C, 4 h)."
+        },
+        "Equipment": null,
+        "Key_Params": {
+          "HIP_Temperature_K": 1393.15,
+          "HIP_Pressure_GPa": 0.1,
+          "HIP_Time_h": 4
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Amato et al. described HIPed LPBF Inconel 625 as NiCr equiaxed grains with annealing twins and a large amount of grain boundary (intergranular) precipitates.",
+          "simplified": "Equiaxed NiCr grains with annealing twins and intergranular precipitates after HIPing."
+        },
+        "Main_Phase": "FCC",
+        "Precipitates": [],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {}
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": null,
+          "Value_Numeric": 370.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Reported as ~0.37 GPa; cited from Amato et al. 2012."
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": null,
+          "Value_Numeric": 900.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Reported as ~0.90 GPa; cited from Amato et al. 2012."
+        },
+        {
+          "Property_Name": "Elongation_At_Fracture",
+          "Test_Condition": null,
+          "Value_Numeric": 58.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "%",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Cited from Amato et al. 2012."
+        }
+      ]
+    },
+    {
+      "Sample_ID": "IN625_EPBF_HIPed_Amato2012",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Reference",
+        "Alloy_Name_Raw": "Inconel 625 / Alloy 625",
+        "Nominal_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Cited from Amato et al. (2012). EPBF printed Inconel 625, HIPed at 0.1 GPa and 1120°C for 4 h. Note: source text reports UTS=0.33 GPa and YS=0.77 GPa which appears to have the UTS and YS values inverted (YS>UTS); reported faithfully as cited."
+      },
+      "Process_Info": {
+        "Process_Category": "Electron beam melting (EBM) + Heat Treatment",
+        "Process_Text": {
+          "original": "EPBF printed Inconel 625, HIPed at 0.1 GPa and 1120°C for 4 h. Reference values cited from Amato et al. 2012. HIPing induced formation of equiaxed grains and annealing twins.",
+          "simplified": "EBM/EPBF + HIP (0.1 GPa, 1120°C, 4 h)."
+        },
+        "Equipment": null,
+        "Key_Params": {
+          "HIP_Temperature_K": 1393.15,
+          "HIP_Pressure_GPa": 0.1,
+          "HIP_Time_h": 4
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Amato et al. demonstrated change in microstructure after HIPing: formation of equiaxed grains and annealing twins from originally columnar as-fabricated microstructure.",
+          "simplified": "HIPing induced equiaxed grains and annealing twins from columnar as-built microstructure."
+        },
+        "Main_Phase": "FCC",
+        "Precipitates": [],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {}
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": null,
+          "Value_Numeric": 770.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Reported as YS=0.77 GPa in source paper. YS > UTS as reported; likely a typo in the cited Amato et al. 2012 values as transcribed in the current paper."
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": null,
+          "Value_Numeric": 330.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Reported as UTS=0.33 GPa in source paper. Cited from Amato et al. 2012. Note: UTS<YS as reported, which appears to be a typo in the cited work; values extracted faithfully."
+        },
+        {
+          "Property_Name": "Elongation_At_Fracture",
+          "Test_Condition": null,
+          "Value_Numeric": 69.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "%",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Cited from Amato et al. 2012."
+        }
+      ]
+    },
+    {
+      "Sample_ID": "IN625_LPBF_AsFab_Marchese2018",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Reference",
+        "Alloy_Name_Raw": "Inconel 625",
+        "Nominal_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Cited from Marchese et al. (2018). LPBF as-fabricated Inconel 625, no post-processing."
+      },
+      "Process_Info": {
+        "Process_Category": "Laser Powder Bed Fusion (LPBF)",
+        "Process_Text": {
+          "original": "LPBF as-fabricated Inconel 625. Reference from Marchese et al. 2018. Microstructure: columnar grains aligned in build direction with fine columnar cellular substructure.",
+          "simplified": "LPBF as-fabricated; columnar grains aligned in build direction."
+        },
+        "Equipment": null,
+        "Key_Params": {}
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Marchese et al. characterized LPBF as-fabricated Inconel 625 as having columnar grains aligned in the build direction with very fine columnar cellular substructures at higher magnification. Microstructure unaltered under aging at 700°C for 24 h; recrystallization to grains 10-90 μm occurred under solutioning at 1150°C for 2 h or combination of solutioning and aging.",
+          "simplified": "Columnar grains aligned to build direction with fine cellular substructure; recrystallization only under solutioning at 1150°C."
+        },
+        "Main_Phase": "FCC",
+        "Precipitates": [],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {}
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": null,
+          "Value_Numeric": 783.0,
+          "Value_Range": null,
+          "Value_StdDev": 23.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Cited from Marchese et al. 2018; as-fabricated."
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": null,
+          "Value_Numeric": 1041.0,
+          "Value_Range": null,
+          "Value_StdDev": 36.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Cited from Marchese et al. 2018; LPBF as-fabricated."
+        },
+        {
+          "Property_Name": "Elongation_At_Fracture",
+          "Test_Condition": null,
+          "Value_Numeric": 33.0,
+          "Value_Range": null,
+          "Value_StdDev": 1.0,
+          "Unit": "%",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Reported as 'ductility' by Marchese et al. 2018; as-fabricated."
+        }
+      ]
+    },
+    {
+      "Sample_ID": "IN625_LPBF_Aged700_24h_Marchese2018",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Reference",
+        "Alloy_Name_Raw": "Inconel 625",
+        "Nominal_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Cited from Marchese et al. (2018). LPBF Inconel 625 aged at 700°C for 24 h."
+      },
+      "Process_Info": {
+        "Process_Category": "Laser Powder Bed Fusion (LPBF) + Heat Treatment",
+        "Process_Text": {
+          "original": "LPBF printed Inconel 625, aged at 700°C for 24 h. Reference from Marchese et al. 2018. Microstructure unaltered by this aging schedule.",
+          "simplified": "LPBF + aging 700°C / 24 h; microstructure unchanged from as-built."
+        },
+        "Equipment": null,
+        "Key_Params": {
+          "Aging_Temperature_K": 973.15,
+          "Aging_Time_h": 24
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Marchese et al. found the LPBF microstructure was unaltered under aging at 700°C for 24 h (columnar grain structure retained).",
+          "simplified": "Columnar as-built microstructure retained after 700°C/24 h aging."
+        },
+        "Main_Phase": "FCC",
+        "Precipitates": [],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {}
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "Aging at 973.15 K (700°C) for 24 h",
+          "Value_Numeric": 1024.0,
+          "Value_Range": null,
+          "Value_StdDev": 54.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": 973.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Cited from Marchese et al. 2018; aged 700°C/24 h."
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "Aging at 973.15 K (700°C) for 24 h",
+          "Value_Numeric": 1222.0,
+          "Value_Range": null,
+          "Value_StdDev": 56.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": 973.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Cited from Marchese et al. 2018; LPBF aged 700°C/24 h."
+        },
+        {
+          "Property_Name": "Elongation_At_Fracture",
+          "Test_Condition": "Aging at 973.15 K (700°C) for 24 h",
+          "Value_Numeric": 23.0,
+          "Value_Range": null,
+          "Value_StdDev": 1.0,
+          "Unit": "%",
+          "Test_Temperature_K": 973.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Reported as 'ductility' by Marchese et al. 2018; aged 700°C/24 h."
+        }
+      ]
+    }
+  ]
+}

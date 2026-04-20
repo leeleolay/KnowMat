@@ -1,0 +1,1104 @@
+{
+  "Paper_Metadata": {
+    "Paper_Title": "Powder bed binder jet printed alloy 625: Densification, microstructure and mechanical properties",
+    "DOI": "10.1016/j.matdes.2016.06.067"
+  },
+  "items": [
+    {
+      "Sample_ID": "Alloy625_Powder",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Alloy 625",
+        "Nominal_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null
+        },
+        "Measured_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Mn": 0.2,
+            "Si": 0.13,
+            "P": 0.02,
+            "Cr": 21.01,
+            "Mo": 8.46,
+            "Al": 0.04,
+            "Ti": 0.2,
+            "Fe": 2.67,
+            "Nb": 3.99,
+            "C": 0.14,
+            "Co": 0.21,
+            "other": 62.93
+          },
+          "Measurement_Method": "EDS"
+        },
+        "Note": "EDS analysis of as-received argon atomized powder; balance is Ni"
+      },
+      "Process_Info": {
+        "Process_Category": "Unknown",
+        "Process_Text": {
+          "original": "Vacuum-melted argon atomized alloy 625 powder from Carpenter Technology Corporation; particle size distribution 16-53 um by volume; spherical particle morphology with dendritic structure and interdendritic precipitates.",
+          "simplified": "Argon atomized Alloy 625 powder feedstock"
+        },
+        "Equipment": "Carpenter Technology Corporation",
+        "Key_Params": {
+          "Particle_Size_Range_um": "16-53",
+          "Particle_Size_d10_um": 21,
+          "Particle_Size_d50_um": 31.8,
+          "Particle_Size_d90_um": 45.1,
+          "Lattice_Parameter_A": 3.5996
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Spherical powder particles with dendritic structure typical of rapid solidification; large amount of script-like precipitates exist in interdendritic areas; Laves phase assumed as final solidification product; lattice parameter increased 0.52% due to alloying elements dissolved in matrix.",
+          "simplified": "Spherical dendritic powder with interdendritic Laves phase precipitates; FCC gamma-Ni matrix"
+        },
+        "Main_Phase": "FCC (gamma-Ni)",
+        "Precipitates": [
+          {
+            "Phase_Type": "Laves",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "gamma Prime",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "gamma Double Prime",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "delta (Ni3Nb)",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "Particle_Size_Range_um": "16-53",
+          "Lattice_Parameter_A": 3.5996,
+          "Particle_Size_d10_um": 21,
+          "Particle_Size_d50_um": 31.8,
+          "Particle_Size_d90_um": 45.1
+        }
+      },
+      "Properties_Info": []
+    },
+    {
+      "Sample_ID": "Alloy625_BJP_1200C",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Alloy 625",
+        "Nominal_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null
+        },
+        "Measured_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Al": 0.04,
+            "C": 0.14,
+            "Co": 0.21,
+            "Mn": 0.2,
+            "Cr": 21.01,
+            "Nb": 3.99,
+            "Mo": 8.46,
+            "Si": 0.13,
+            "P": 0.02,
+            "Fe": 2.67,
+            "Ti": 0.2,
+            "other": 62.93
+          },
+          "Measurement_Method": "EDS"
+        },
+        "Note": "EDS powder analysis used as composition; balance is Ni; carbon and oxygen increased after printing/cure"
+      },
+      "Process_Info": {
+        "Process_Category": "Powder Metallurgy",
+        "Process_Text": {
+          "original": "M-Flex ExOne powder bed binder jet printer; layer height 100 um, recoat speed 130 mm/s, oscillator speed 2050 rpm, roller speed 250 rpm, roller traverse speed 15 mm/s, drying speed 17 mm/s; cured at 175 C; sintered at 1200 C for 4h under high vacuum in alumina powder bed; heating profile 5 C/min to 600 C, 3.2 C/min to 1000 C, 2.8 C/min to 1200 C; cooling 1 C/min to 1200 C, 3.1 C/min to 500 C.",
+          "simplified": "BJP printed and cured, then sintered at 1200 C for 4h in vacuum"
+        },
+        "Equipment": "M-Flex ExOne powder bed binder jet printer; JPW Design & Manufacturing furnace (cure); Lindberg tube furnace (sinter)",
+        "Key_Params": {
+          "Sintering_Temperature_C": 1200,
+          "Sintering_Time_h": 4,
+          "Layer_Thickness_um": 100,
+          "Recoat_Speed_mm_s": 130,
+          "Oscillator_Speed_rpm": 2050,
+          "Roller_Traverse_Speed_mm_s": 15,
+          "Drying_Speed_mm_s": 17,
+          "Cure_Temperature_C": 175,
+          "Roller_Speed_rpm": 250,
+          "Protective_Atmosphere": "High Vacuum",
+          "Heating_Rate_1_C_min": 5,
+          "Heating_Rate_2_C_min": 3.2,
+          "Heating_Rate_3_C_min": 2.8
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Highly porous samples with interconnected pores; sintering temperature not high enough to eliminate porosity between sintered powder particles; small light-colored precipitates inside grains and grain boundaries enriched in Nb and C suggesting NbC carbide formation; irregular interconnected pores observed.",
+          "simplified": "Highly porous with interconnected pores; NbC carbides in grains and grain boundaries"
+        },
+        "Main_Phase": "FCC (gamma-Ni)",
+        "Precipitates": [
+          {
+            "Phase_Type": "NbC (MC carbide)",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Cr2O3",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": 79.0,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "Peak_2theta_deg": 51.415,
+          "d_spacing_A": 2.0621,
+          "Lattice_Parameter_A": 3.57171
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Hardness_HV",
+          "Test_Condition": "Vickers microhardness at RT",
+          "Value_Numeric": 107.2,
+          "Value_Range": null,
+          "Value_StdDev": 24.7,
+          "Unit": "HV0.1",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": "100 gf",
+          "Hardness_Dwell_Time_s": 10.0,
+          "Data_Source": "text",
+          "Test_Specimen": "Cross section",
+          "Note": "Average of multiple measurements"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "Alloy625_BJP_1220C",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Alloy 625",
+        "Nominal_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null
+        },
+        "Measured_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Fe": 2.67,
+            "Nb": 3.99,
+            "Al": 0.04,
+            "Co": 0.21,
+            "Mn": 0.2,
+            "Cr": 21.01,
+            "Mo": 8.46,
+            "Ti": 0.2,
+            "C": 0.14,
+            "Si": 0.13,
+            "P": 0.02,
+            "other": 62.93
+          },
+          "Measurement_Method": "EDS"
+        },
+        "Note": "EDS powder analysis used as composition; balance is Ni"
+      },
+      "Process_Info": {
+        "Process_Category": "Powder Metallurgy",
+        "Process_Text": {
+          "original": "M-Flex ExOne powder bed binder jet printer; layer height 100 um, recoat speed 130 mm/s, oscillator speed 2050 rpm, roller speed 250 rpm, roller traverse speed 15 mm/s, drying speed 17 mm/s; cured at 175 C; sintered at 1220 C for 4h under high vacuum in alumina powder bed; heating profile 5 C/min to 600 C, 3.2 C/min to 1000 C, 2.8 C/min to 1220 C; cooling 1 C/min to 1200 C, 3.1 C/min to 500 C.",
+          "simplified": "BJP printed and cured, then sintered at 1220 C for 4h in vacuum"
+        },
+        "Equipment": "M-Flex ExOne powder bed binder jet printer; JPW Design & Manufacturing furnace (cure); Lindberg tube furnace (sinter)",
+        "Key_Params": {
+          "Sintering_Temperature_C": 1220,
+          "Sintering_Time_h": 4,
+          "Drying_Speed_mm_s": 17,
+          "Heating_Rate_1_C_min": 5,
+          "Protective_Atmosphere": "High Vacuum",
+          "Heating_Rate_2_C_min": 3.2,
+          "Layer_Thickness_um": 100,
+          "Recoat_Speed_mm_s": 130,
+          "Oscillator_Speed_rpm": 2050,
+          "Roller_Speed_rpm": 250,
+          "Roller_Traverse_Speed_mm_s": 15,
+          "Cure_Temperature_C": 175,
+          "Heating_Rate_3_C_min": 2.8
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Highly porous samples with interconnected pores; similar to 1200 C sample; sintering temperature not high enough to achieve full densification; irregular interconnected pores.",
+          "simplified": "Highly porous with interconnected pores;NbC carbides present"
+        },
+        "Main_Phase": "FCC (gamma-Ni)",
+        "Precipitates": [
+          {
+            "Phase_Type": "NbC (MC carbide)",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Cr2O3",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": 79.0,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "Lattice_Parameter_A": 3.57261,
+          "Peak_2theta_deg": 51.401,
+          "d_spacing_A": 2.063
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Hardness_HV",
+          "Test_Condition": "Vickers microhardness at RT",
+          "Value_Numeric": 120.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "HV0.1",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": "100 gf",
+          "Hardness_Dwell_Time_s": 10.0,
+          "Data_Source": "image",
+          "Test_Specimen": "Cross section",
+          "Note": "Estimated from hardness trend curve (Fig. 11)"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "Alloy625_BJP_1240C",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Alloy 625",
+        "Nominal_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null
+        },
+        "Measured_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Fe": 2.67,
+            "Nb": 3.99,
+            "Al": 0.04,
+            "C": 0.14,
+            "Co": 0.21,
+            "Mn": 0.2,
+            "Si": 0.13,
+            "P": 0.02,
+            "Cr": 21.01,
+            "Mo": 8.46,
+            "Ti": 0.2,
+            "other": 62.93
+          },
+          "Measurement_Method": "EDS"
+        },
+        "Note": "EDS powder analysis used as composition; balance is Ni"
+      },
+      "Process_Info": {
+        "Process_Category": "Powder Metallurgy",
+        "Process_Text": {
+          "original": "M-Flex ExOne powder bed binder jet printer; layer height 100 um, recoat speed 130 mm/s, oscillator speed 2050 rpm, roller speed 250 rpm, roller traverse speed 15 mm/s, drying speed 17 mm/s; cured at 175 C; sintered at 1240 C for 4h under high vacuum in alumina powder bed; heating profile 5 C/min to 600 C, 3.2 C/min to 1000 C, 2.8 C/min to 1240 C; cooling 1 C/min to 1200 C, 3.1 C/min to 500 C.",
+          "simplified": "BJP printed and cured, then sintered at 1240 C for 4h in vacuum"
+        },
+        "Equipment": "M-Flex ExOne powder bed binder jet printer; JPW Design & Manufacturing furnace (cure); Lindberg tube furnace (sinter)",
+        "Key_Params": {
+          "Sintering_Time_h": 4,
+          "Roller_Traverse_Speed_mm_s": 15,
+          "Drying_Speed_mm_s": 17,
+          "Cure_Temperature_C": 175,
+          "Protective_Atmosphere": "High Vacuum",
+          "Heating_Rate_2_C_min": 3.2,
+          "Heating_Rate_3_C_min": 2.8,
+          "Sintering_Temperature_C": 1240,
+          "Layer_Thickness_um": 100,
+          "Recoat_Speed_mm_s": 130,
+          "Oscillator_Speed_rpm": 2050,
+          "Roller_Speed_rpm": 250,
+          "Heating_Rate_1_C_min": 5
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Reduced porosity with closed and disconnected pores confirmed by OM and density measurements; number and size of light-colored precipitates (MC type NbC) in grain boundaries increased; equiaxed grains.",
+          "simplified": "Reduced porosity with closed pores; increased NbC carbides at grain boundaries; equiaxed grains"
+        },
+        "Main_Phase": "FCC (gamma-Ni)",
+        "Precipitates": [
+          {
+            "Phase_Type": "NbC (MC carbide)",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Cr2O3",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "Lattice_Parameter_A": 3.57325,
+          "Peak_2theta_deg": 51.391,
+          "d_spacing_A": 2.0631
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Hardness_HV",
+          "Test_Condition": "Vickers microhardness at RT",
+          "Value_Numeric": 170.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "HV0.1",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": "100 gf",
+          "Hardness_Dwell_Time_s": 10.0,
+          "Data_Source": "image",
+          "Test_Specimen": "Cross section",
+          "Note": "Estimated from hardness trend curve (Fig. 11)"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "Alloy625_BJP_1260C",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Alloy 625",
+        "Nominal_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null
+        },
+        "Measured_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "C": 0.14,
+            "Co": 0.21,
+            "Fe": 2.67,
+            "Nb": 3.99,
+            "Mo": 8.46,
+            "Si": 0.13,
+            "P": 0.02,
+            "Cr": 21.01,
+            "Al": 0.04,
+            "Ti": 0.2,
+            "Mn": 0.2,
+            "other": 62.93
+          },
+          "Measurement_Method": "EDS"
+        },
+        "Note": "EDS powder analysis used as composition; balance is Ni"
+      },
+      "Process_Info": {
+        "Process_Category": "Powder Metallurgy",
+        "Process_Text": {
+          "original": "M-Flex ExOne powder bed binder jet printer; layer height 100 um, recoat speed 130 mm/s, oscillator speed 2050 rpm, roller speed 250 rpm, roller traverse speed 15 mm/s, drying speed 17 mm/s; cured at 175 C; sintered at 1260 C for 4h under high vacuum in alumina powder bed; heating profile 5 C/min to 600 C, 3.2 C/min to 1000 C, 2.8 C/min to 1260 C; cooling 1 C/min to 1200 C, 3.1 C/min to 500 C.",
+          "simplified": "BJP printed and cured, then sintered at 1260 C for 4h in vacuum"
+        },
+        "Equipment": "M-Flex ExOne powder bed binder jet printer; JPW Design & Manufacturing furnace (cure); Lindberg tube furnace (sinter)",
+        "Key_Params": {
+          "Oscillator_Speed_rpm": 2050,
+          "Roller_Traverse_Speed_mm_s": 15,
+          "Drying_Speed_mm_s": 17,
+          "Protective_Atmosphere": "High Vacuum",
+          "Heating_Rate_2_C_min": 3.2,
+          "Sintering_Temperature_C": 1260,
+          "Layer_Thickness_um": 100,
+          "Roller_Speed_rpm": 250,
+          "Cure_Temperature_C": 175,
+          "Heating_Rate_1_C_min": 5,
+          "Heating_Rate_3_C_min": 2.8,
+          "Sintering_Time_h": 4,
+          "Recoat_Speed_mm_s": 130
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Fewer and smaller pores; spherical pores within grains or at grain boundaries (desirable change); progression from irregular interconnected pores to spherical pores with increasing temperature; pores mostly inside grains; equiaxed grains.",
+          "simplified": "Fewer spherical pores; pore morphology improved to spherical non-interconnected; equiaxed grains"
+        },
+        "Main_Phase": "FCC (gamma-Ni)",
+        "Precipitates": [
+          {
+            "Phase_Type": "NbC (MC carbide)",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Cr2O3",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "delta (Ni3Nb)",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "d_spacing_A": 2.0634,
+          "Lattice_Parameter_A": 3.57383,
+          "Peak_2theta_deg": 51.382
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Hardness_HV",
+          "Test_Condition": "Vickers microhardness at RT",
+          "Value_Numeric": 200.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "HV0.1",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": "100 gf",
+          "Hardness_Dwell_Time_s": 10.0,
+          "Data_Source": "image",
+          "Test_Specimen": "Cross section",
+          "Note": "Estimated from hardness trend curve (Fig. 11)"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "Alloy625_BJP_1280C",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Alloy 625",
+        "Nominal_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null
+        },
+        "Measured_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Al": 0.04,
+            "Co": 0.21,
+            "Mn": 0.2,
+            "P": 0.02,
+            "Cr": 21.01,
+            "Fe": 2.67,
+            "Nb": 3.99,
+            "Mo": 8.46,
+            "Ti": 0.2,
+            "C": 0.14,
+            "Si": 0.13,
+            "other": 62.93
+          },
+          "Measurement_Method": "EDS"
+        },
+        "Note": "EDS powder analysis used as composition; balance is Ni; optimal sintering condition"
+      },
+      "Process_Info": {
+        "Process_Category": "Powder Metallurgy",
+        "Process_Text": {
+          "original": "M-Flex ExOne powder bed binder jet printer; layer height 100 um, recoat speed 130 mm/s, oscillator speed 2050 rpm, roller speed 250 rpm, roller traverse speed 15 mm/s, drying speed 17 mm/s; cured at 175 C; sintered at 1280 C for 4h under high vacuum in alumina powder bed (optimal condition); heating profile 5 C/min to 600 C, 3.2 C/min to 1000 C, 2.8 C/min to 1280 C; cooling 1 C/min to 1200 C, 3.1 C/min to 500 C.",
+          "simplified": "BJP printed and cured, then optimally sintered at 1280 C for 4h in vacuum"
+        },
+        "Equipment": "M-Flex ExOne powder bed binder jet printer; JPW Design & Manufacturing furnace (cure); Lindberg tube furnace (sinter)",
+        "Key_Params": {
+          "Layer_Thickness_um": 100,
+          "Oscillator_Speed_rpm": 2050,
+          "Drying_Speed_mm_s": 17,
+          "Cure_Temperature_C": 175,
+          "Sintering_Temperature_C": 1280,
+          "Roller_Traverse_Speed_mm_s": 15,
+          "Protective_Atmosphere": "High Vacuum",
+          "Heating_Rate_1_C_min": 5,
+          "Recoat_Speed_mm_s": 130,
+          "Roller_Speed_rpm": 250,
+          "Heating_Rate_2_C_min": 3.2,
+          "Liquidus_Temperature_C": 1334,
+          "Sintering_Time_h": 4,
+          "Heating_Rate_3_C_min": 2.8,
+          "Solidus_Temperature_C": 1304
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Fully densified with 99.6% relative density; equiaxed grains with average grain size 55 +/- 15 um (ASTM E-112-13 grain size number 5-6); small amounts of porosity in intergranular regions; pores mostly inside grains; bright light structures at grain boundaries with increased Nb, Cr, Mo content (liquid phase); MC type NbC, M6C carbide, delta phase (Ni3Nb), and Cr2O3 precipitates identified; average pore diameter <4 um.",
+          "simplified": "Fully densified (99.6%); fine equiaxed grains 55 um; NbC and M6C carbides at grain boundaries; delta phase and Cr2O3 present"
+        },
+        "Main_Phase": "FCC (gamma-Ni)",
+        "Precipitates": [
+          {
+            "Phase_Type": "NbC (MC carbide)",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "M6C carbide",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "delta (Ni3Nb)",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Cr2O3",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": 99.6,
+        "Grain_Size_avg_um": 55.0,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "Lattice_Parameter_A": 3.57455,
+          "Grain_Size_StdDev_um": 15,
+          "Grain_Size_Number_ASTM": "5-6",
+          "Shrinkage_pct": 18.7,
+          "Volume_Change_pct": 46.3,
+          "Carbon_Content_wt_pct": 0.47,
+          "Peak_2theta_deg": 51.371,
+          "d_spacing_A": 2.0638,
+          "Average_Pore_Diameter_um": 4,
+          "Oxygen_Content_wt_pct": 0.23
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at RT; rate controlled tensile test at 5 mm/min; ASTM E8-04",
+          "Value_Numeric": 327.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": 5.0,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM E8-04 tensile specimen",
+          "Note": "Highest YS at optimal sintering"
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at RT; rate controlled tensile test at 5 mm/min; ASTM E8-04",
+          "Value_Numeric": 612.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": 5.0,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM E8-04 tensile specimen",
+          "Note": "Highest UTS achieved at optimal sintering"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at RT; rate controlled tensile test at 5 mm/min; ASTM E8-04",
+          "Value_Numeric": 40.9,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": 5.0,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM E8-04 tensile specimen",
+          "Note": "Fracture strain 40.9-41%; ductile failure with dimple fracture"
+        },
+        {
+          "Property_Name": "Hardness_HV",
+          "Test_Condition": "Vickers microhardness at RT",
+          "Value_Numeric": 237.4,
+          "Value_Range": null,
+          "Value_StdDev": 4.9,
+          "Unit": "HV0.1",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": "100 gf",
+          "Hardness_Dwell_Time_s": 10.0,
+          "Data_Source": "text",
+          "Test_Specimen": "Cross section",
+          "Note": "Maximum hardness achieved at optimal sintering"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "Alloy625_BJP_1290C",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Alloy 625",
+        "Nominal_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null
+        },
+        "Measured_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Fe": 2.67,
+            "Mo": 8.46,
+            "P": 0.02,
+            "Cr": 21.01,
+            "Nb": 3.99,
+            "Al": 0.04,
+            "Ti": 0.2,
+            "C": 0.14,
+            "Co": 0.21,
+            "Mn": 0.2,
+            "Si": 0.13,
+            "other": 62.93
+          },
+          "Measurement_Method": "EDS"
+        },
+        "Note": "EDS powder analysis used as composition; balance is Ni"
+      },
+      "Process_Info": {
+        "Process_Category": "Powder Metallurgy",
+        "Process_Text": {
+          "original": "M-Flex ExOne powder bed binder jet printer; layer height 100 um, recoat speed 130 mm/s, oscillator speed 2050 rpm, roller speed 250 rpm, roller traverse speed 15 mm/s, drying speed 17 mm/s; cured at 175 C; sintered at 1290 C for 4h under high vacuum in alumina powder bed; heating profile 5 C/min to 600 C, 3.2 C/min to 1000 C, 2.8 C/min to 1290 C; cooling 1 C/min to 1200 C, 3.1 C/min to 500 C; part distortion observed above this temperature.",
+          "simplified": "BJP printed and cured, then sintered at 1290 C for 4h in vacuum"
+        },
+        "Equipment": "M-Flex ExOne powder bed binder jet printer; JPW Design & Manufacturing furnace (cure); Lindberg tube furnace (sinter)",
+        "Key_Params": {
+          "Sintering_Time_h": 4,
+          "Recoat_Speed_mm_s": 130,
+          "Oscillator_Speed_rpm": 2050,
+          "Drying_Speed_mm_s": 17,
+          "Protective_Atmosphere": "High Vacuum",
+          "Heating_Rate_2_C_min": 3.2,
+          "Sintering_Temperature_C": 1290,
+          "Roller_Speed_rpm": 250,
+          "Roller_Traverse_Speed_mm_s": 15,
+          "Cure_Temperature_C": 175,
+          "Heating_Rate_1_C_min": 5,
+          "Heating_Rate_3_C_min": 2.8,
+          "Layer_Thickness_um": 100
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Grain growth with increasing sintering temperature; equiaxed grains with average grain size 103 +/- 32 um (ASTM E-112-13 grain size number 3-4); pores mostly inside grains; increased NbC formation at grain boundaries; bright spots (Nb-C rich) at grain boundaries; grain boundary liquid phase present; part distortion beginning.",
+          "simplified": "Grain growth to 103 um; increased NbC at grain boundaries; some part distortion"
+        },
+        "Main_Phase": "FCC (gamma-Ni)",
+        "Precipitates": [
+          {
+            "Phase_Type": "NbC (MC carbide)",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "delta (Ni3Nb)",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Cr2O3",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": 98.0,
+        "Grain_Size_avg_um": 103.0,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "Grain_Size_Number_ASTM": "3-4",
+          "Lattice_Parameter_A": 3.57545,
+          "Peak_2theta_deg": 51.357,
+          "d_spacing_A": 2.0645,
+          "Grain_Size_StdDev_um": 32
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at RT; rate controlled tensile test at 5 mm/min; ASTM E8-04",
+          "Value_Numeric": 588.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": 5.0,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM E8-04 tensile specimen",
+          "Note": "Decreased UTS due to grain coarsening and element segregation"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at RT; rate controlled tensile test at 5 mm/min; ASTM E8-04",
+          "Value_Numeric": 45.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": 5.0,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM E8-04 tensile specimen",
+          "Note": "Increased elongation due to carbide dissolution in grain boundaries reducing crack initiation"
+        },
+        {
+          "Property_Name": "Hardness_HV",
+          "Test_Condition": "Vickers microhardness at RT",
+          "Value_Numeric": 210.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "HV0.1",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": "100 gf",
+          "Hardness_Dwell_Time_s": 10.0,
+          "Data_Source": "image",
+          "Test_Specimen": "Cross section",
+          "Note": "Decreased from 1280 C due to grain coarsening and solute migration"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "Alloy625_BJP_1300C",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Alloy 625",
+        "Nominal_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null
+        },
+        "Measured_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Cr": 21.01,
+            "Nb": 3.99,
+            "Al": 0.04,
+            "Ti": 0.2,
+            "C": 0.14,
+            "P": 0.02,
+            "Fe": 2.67,
+            "Mo": 8.46,
+            "Co": 0.21,
+            "Mn": 0.2,
+            "Si": 0.13,
+            "other": 62.93
+          },
+          "Measurement_Method": "EDS"
+        },
+        "Note": "EDS powder analysis used as composition; balance is Ni"
+      },
+      "Process_Info": {
+        "Process_Category": "Powder Metallurgy",
+        "Process_Text": {
+          "original": "M-Flex ExOne powder bed binder jet printer; layer height 100 um, recoat speed 130 mm/s, oscillator speed 2050 rpm, roller speed 250 rpm, roller traverse speed 15 mm/s, drying speed 17 mm/s; cured at 175 C; sintered at 1300 C for 4h under high vacuum in alumina powder bed; heating profile 5 C/min to 600 C, 3.2 C/min to 1000 C, 2.8 C/min to 1300 C; cooling 1 C/min to 1200 C, 3.1 C/min to 500 C; part distortion and shape changes observed indicating excess liquid phase.",
+          "simplified": "BJP printed and cured, then sintered at 1300 C for 4h in vacuum with part distortion"
+        },
+        "Equipment": "M-Flex ExOne powder bed binder jet printer; JPW Design & Manufacturing furnace (cure); Lindberg tube furnace (sinter)",
+        "Key_Params": {
+          "Heating_Rate_3_C_min": 2.8,
+          "Sintering_Temperature_C": 1300,
+          "Sintering_Time_h": 4,
+          "Layer_Thickness_um": 100,
+          "Roller_Traverse_Speed_mm_s": 15,
+          "Drying_Speed_mm_s": 17,
+          "Cure_Temperature_C": 175,
+          "Recoat_Speed_mm_s": 130,
+          "Oscillator_Speed_rpm": 2050,
+          "Roller_Speed_rpm": 250,
+          "Protective_Atmosphere": "High Vacuum",
+          "Heating_Rate_1_C_min": 5,
+          "Heating_Rate_2_C_min": 3.2
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Significant grain growth with average grain size 182 +/- 31 um (ASTM E-112-13 grain size number 1.5-2.5); pore coarsening to 10 um average diameter; pores located between grains (less favorable); part distortion and shape changes indicating excess liquid phase; less uniformity of Nb, Cr, Mo distribution; increased NbC at grain boundaries; liquid phase in grain boundaries enriched in Nb, Cr, Mo.",
+          "simplified": "Coarse grains 182 um; pore coarsening to 10 um; pores between grains; part distortion; increased NbC at grain boundaries"
+        },
+        "Main_Phase": "FCC (gamma-Ni)",
+        "Precipitates": [
+          {
+            "Phase_Type": "NbC (MC carbide)",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "delta (Ni3Nb)",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Cr2O3",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": 97.0,
+        "Grain_Size_avg_um": 182.0,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "Grain_Size_StdDev_um": 31,
+          "Grain_Size_Number_ASTM": "1.5-2.5",
+          "Average_Pore_Diameter_um": 10,
+          "Lattice_Parameter_A": 3.57714,
+          "Peak_2theta_deg": 51.331,
+          "d_spacing_A": 2.0653
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at RT; rate controlled tensile test at 5 mm/min; ASTM E8-04",
+          "Value_Numeric": 522.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": 5.0,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM E8-04 tensile specimen",
+          "Note": "Significantly decreased UTS due to grain coarsening, element segregation, and Laves phase formation"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at RT; rate controlled tensile test at 5 mm/min; ASTM E8-04",
+          "Value_Numeric": 35.6,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": 5.0,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM E8-04 tensile specimen",
+          "Note": "Decreased elongation due to grain coarsening and carbide formation"
+        },
+        {
+          "Property_Name": "Hardness_HV",
+          "Test_Condition": "Vickers microhardness at RT",
+          "Value_Numeric": 185.4,
+          "Value_Range": null,
+          "Value_StdDev": 4.2,
+          "Unit": "HV0.1",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": "100 gf",
+          "Hardness_Dwell_Time_s": 10.0,
+          "Data_Source": "text",
+          "Test_Specimen": "Cross section",
+          "Note": "Significantly decreased from 1280 C due to grain coarsening and solute migration to grain boundaries"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "Alloy625_Cast_Reference",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Reference",
+        "Alloy_Name_Raw": "Alloy 625",
+        "Nominal_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Literature reference values from Reed (2006) 'The Superalloys: Fundamentals and Applications'"
+      },
+      "Process_Info": {
+        "Process_Category": "Casting",
+        "Process_Text": {
+          "original": "Cast Alloy 625 as reported in literature (Reed 2006).",
+          "simplified": "Conventionally cast Alloy 625"
+        },
+        "Equipment": null,
+        "Key_Params": {}
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "not provided",
+          "simplified": "not provided"
+        },
+        "Main_Phase": null,
+        "Precipitates": [],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {}
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at RT (literature reference)",
+          "Value_Numeric": 710.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Literature benchmark from Reed (2006) for comparison"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at RT (literature reference)",
+          "Value_Numeric": 48.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Literature benchmark from Reed (2006) for comparison"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "Alloy625_PIM_Reference",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Reference",
+        "Alloy_Name_Raw": "Alloy 625",
+        "Nominal_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Literature reference values from Ozgun et al. (2013) for powder injection molded (PIM) Alloy 625"
+      },
+      "Process_Info": {
+        "Process_Category": "Powder Metallurgy",
+        "Process_Text": {
+          "original": "Powder injection molding (PIM) of Alloy 625 sintered at 1300 C for 3h (Ozgun et al. 2013).",
+          "simplified": "Powder injection molded Alloy 625"
+        },
+        "Equipment": null,
+        "Key_Params": {
+          "Sintering_Temperature_C": 1300,
+          "Sintering_Time_h": 3
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "not provided",
+          "simplified": "not provided"
+        },
+        "Main_Phase": null,
+        "Precipitates": [],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {}
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at RT (literature reference)",
+          "Value_Numeric": 650.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Literature benchmark from Ozgun et al. (2013) for comparison"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at RT (literature reference)",
+          "Value_Numeric": 45.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Literature benchmark from Ozgun et al. (2013) for comparison"
+        }
+      ]
+    }
+  ]
+}

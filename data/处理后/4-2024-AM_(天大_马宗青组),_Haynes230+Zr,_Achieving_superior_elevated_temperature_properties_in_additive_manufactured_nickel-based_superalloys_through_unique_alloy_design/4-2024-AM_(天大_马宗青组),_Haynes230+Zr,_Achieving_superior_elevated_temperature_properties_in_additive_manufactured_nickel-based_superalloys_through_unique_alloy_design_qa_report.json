@@ -1,0 +1,13 @@
+{
+  "paper_name": "4-2024-AM_(天大_马宗青组),_Haynes230+Zr,_Achieving_superior_elevated_temperature_properties_in_additive_manufactured_nickel-based_superalloys_through_unique_alloy_design",
+  "pipeline_version": "knowmat-2.0.1",
+  "materials_target_count": 2,
+  "samples_count": 6,
+  "properties_count": 26,
+  "unknown_process_count": 2,
+  "phase_filled_rate": 0.333,
+  "missing_doi": 0,
+  "needs_review": false,
+  "red_line_triggers": [],
+  "final_confidence_score": null
+}

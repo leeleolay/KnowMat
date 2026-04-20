@@ -1,0 +1,391 @@
+{
+  "Paper_Metadata": {
+    "Paper_Title": "On the effect of boron on grain boundary character in a new polycrystalline superalloy",
+    "DOI": "10.1016/j.actamat.2015.10.006"
+  },
+  "items": [
+    {
+      "Sample_ID": "STAL-15CC_BF",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "STAL-15CC (Boron-free)",
+        "Nominal_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Mo": 0.61,
+            "W": 1.26,
+            "B": 0.005,
+            "C": 0.44,
+            "Co": 5.5,
+            "Cr": 16.45,
+            "Hf": 0.02,
+            "Al": 10.0,
+            "Ta": 2.41,
+            "S": 63.305
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Cr": 16.45,
+            "Hf": 0.02,
+            "Mo": 0.61,
+            "B": 0.005,
+            "C": 0.44,
+            "Co": 5.5,
+            "Ta": 2.41,
+            "W": 1.26,
+            "Al": 10.0,
+            "S": 63.305
+          },
+          "Measurement_Method": "ICP-OES; LECO CS444 for carbon"
+        },
+        "Note": "B < 0.005 at.%; balance is Ni"
+      },
+      "Process_Info": {
+        "Process_Category": "Casting",
+        "Process_Text": {
+          "original": "Conventional casting (CC) using ceramic moulds with cobalt aluminate nucleation catalyst; moulds de-waxed in steam furnace for 5 min, sintered at 1000C for 1 h prior to casting; casting performed under vacuum with mould temperature approximately 1000C; followed by Hot Isostatic Pressing (HIP) at 1195C for 5 h under 175 MPa pressure; primary ageing at 1120C for 4 h (air cooling); secondary ageing at 845C for 24 h (air cooling)",
+          "simplified": "CC -> HIP (1195C, 5h, 175 MPa) -> Ageing (1120C/4h + 845C/24h)"
+        },
+        "Equipment": "Doncasters Precision Castings Ltd. (ceramic moulds); JEOL 6500F FEGSEM; JEOL 2000FX TEM; Cameca LEAP 3000X HR APT (laser mode, 200 kHz, 0.4 nJ); CAMECA NanoSIMS 50",
+        "Key_Params": {
+          "HIP_Temperature_C": 1195,
+          "HIP_Time_h": 5,
+          "Primary_Aging_Temperature_C": 1120,
+          "Primary_Aging_Time_h": 4,
+          "Secondary_Aging_Temperature_C": 845,
+          "Secondary_Aging_Time_h": 24,
+          "HIP_Pressure_MPa": 175
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Gamma matrix with gamma-prime precipitates; grain boundary M23C6 Cr-rich carbides (lowest Z contrast in BSE); Ta-rich MC carbides at grain boundaries with elongated/blocky morphology; intragranular MC carbides with script-like shapes; gamma-prime particles decorating grain boundaries; no intergranular M5B3 borides; gamma denuded zones observed",
+          "simplified": "FCC γ matrix with γ-prime; grain boundary M23C6 carbides and Ta-rich MC carbides; no borides present"
+        },
+        "Main_Phase": "FCC (γ Ni matrix)",
+        "Precipitates": [
+          {
+            "Phase_Type": "M23C6 Carbide",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "MC Carbide (Ta-rich)",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Gamma Prime",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": 750.0,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "APT_grain_boundary_enrichment_width_nm": 3
+        }
+      },
+      "Properties_Info": []
+    },
+    {
+      "Sample_ID": "STAL-15CC_LB",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "STAL-15CC (Low Boron)",
+        "Nominal_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "B": 0.03,
+            "Cr": 16.43,
+            "Hf": 0.02,
+            "Mo": 0.58,
+            "W": 1.27,
+            "Al": 10.11,
+            "Co": 5.6,
+            "Ta": 2.41,
+            "C": 0.47,
+            "S": 63.08
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Al": 10.11,
+            "C": 0.47,
+            "Co": 5.6,
+            "Cr": 16.43,
+            "Ta": 2.41,
+            "B": 0.03,
+            "Hf": 0.02,
+            "Mo": 0.58,
+            "W": 1.27,
+            "S": 63.08
+          },
+          "Measurement_Method": "ICP-OES; LECO CS444 for carbon"
+        },
+        "Note": "B = 0.03 at.% (threshold level); balance is Ni"
+      },
+      "Process_Info": {
+        "Process_Category": "Casting",
+        "Process_Text": {
+          "original": "Conventional casting (CC) using ceramic moulds with cobalt aluminate nucleation catalyst; moulds de-waxed in steam furnace for 5 min, sintered at 1000C for 1 h prior to casting; casting performed under vacuum with mould temperature approximately 1000C; followed by Hot Isostatic Pressing (HIP) at 1195C for 5 h under 175 MPa pressure; primary ageing at 1120C for 4 h (air cooling); secondary ageing at 845C for 24 h (air cooling)",
+          "simplified": "CC -> HIP (1195C, 5h, 175 MPa) -> Ageing (1120C/4h + 845C/24h)"
+        },
+        "Equipment": "Doncasters Precision Castings Ltd. (ceramic moulds); JEOL 6500F FEGSEM; JEOL 2000FX TEM; Cameca LEAP 3000X HR APT (laser mode, 200 kHz, 0.4 nJ); CAMECA NanoSIMS 50",
+        "Key_Params": {
+          "Secondary_Aging_Time_h": 24,
+          "HIP_Pressure_MPa": 175,
+          "HIP_Temperature_C": 1195,
+          "HIP_Time_h": 5,
+          "Primary_Aging_Temperature_C": 1120,
+          "Primary_Aging_Time_h": 4,
+          "Secondary_Aging_Temperature_C": 845
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Gamma matrix with gamma-prime precipitates; grain boundary M5B3 Cr-rich borides (lowest Z contrast in BSE); boride particles up to 500 nm length along grain boundaries; Ta-rich MC carbides at grain boundaries; gamma particles from MC carbide breakdown; no M23C6 at grain boundaries; nano-sized coherent M23C6 carbides near grain boundaries in matrix; serrated grain boundary character observed",
+          "simplified": "FCC γ matrix with γ-prime; grain boundary M5B3 borides (no M23C6); serrated GB character"
+        },
+        "Main_Phase": "FCC (γ Ni matrix)",
+        "Precipitates": [
+          {
+            "Phase_Type": "M5B3 Boride (Cr-rich)",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "MC Carbide (Ta-rich)",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "M23C6 Carbide (nano, coherent, in matrix near GB)",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Gamma Prime",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Gamma Prime (grain boundary, from MC breakdown)",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": 750.0,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "APT_grain_boundary_enrichment_width_nm": 3,
+          "Boride_length_along_GB_nm": 500
+        }
+      },
+      "Properties_Info": []
+    },
+    {
+      "Sample_ID": "STAL-15CC_MB",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "STAL-15CC (Medium Boron)",
+        "Nominal_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "B": 0.05,
+            "Cr": 16.55,
+            "Hf": 0.02,
+            "Mo": 0.59,
+            "Al": 10.09,
+            "C": 0.47,
+            "Co": 5.5,
+            "Ta": 2.4,
+            "W": 1.26,
+            "S": 63.07
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Al": 10.09,
+            "B": 0.05,
+            "Ta": 2.4,
+            "Hf": 0.02,
+            "Mo": 0.59,
+            "W": 1.26,
+            "C": 0.47,
+            "Co": 5.5,
+            "Cr": 16.55,
+            "S": 63.07
+          },
+          "Measurement_Method": "ICP-OES; LECO CS444 for carbon"
+        },
+        "Note": "B = 0.05 at.% (OPTIMUM boron content per paper findings); balance is Ni"
+      },
+      "Process_Info": {
+        "Process_Category": "Casting",
+        "Process_Text": {
+          "original": "Conventional casting (CC) using ceramic moulds with cobalt aluminate nucleation catalyst; moulds de-waxed in steam furnace for 5 min, sintered at 1000C for 1 h prior to casting; casting performed under vacuum with mould temperature approximately 1000C; followed by Hot Isostatic Pressing (HIP) at 1195C for 5 h under 175 MPa pressure; primary ageing at 1120C for 4 h (air cooling); secondary ageing at 845C for 24 h (air cooling)",
+          "simplified": "CC -> HIP (1195C, 5h, 175 MPa) -> Ageing (1120C/4h + 845C/24h)"
+        },
+        "Equipment": "Doncasters Precision Castings Ltd. (ceramic moulds); JEOL 6500F FEGSEM; JEOL 2000FX TEM; Cameca LEAP 3000X HR APT (laser mode, 200 kHz, 0.4 nJ); CAMECA NanoSIMS 50",
+        "Key_Params": {
+          "HIP_Time_h": 5,
+          "Primary_Aging_Temperature_C": 1120,
+          "Primary_Aging_Time_h": 4,
+          "Secondary_Aging_Temperature_C": 845,
+          "Secondary_Aging_Time_h": 24,
+          "HIP_Pressure_MPa": 175,
+          "HIP_Temperature_C": 1195
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Gamma matrix with gamma-prime precipitates; highest volume fraction of M5B3 Cr-rich borides along grain boundaries (lowest Z contrast); boride particles distributed fairly uniformly up to 500 nm length along GB; serrated grain boundary character; MC carbides present; gamma particles from MC breakdown; no M23C6 carbides at grain boundaries; continuous voids along grain boundaries eliminated due to serrated GB; mixed inter- and transgranular creep failure",
+          "simplified": "FCC γ matrix with γ-prime; highest M5B3 boride volume fraction; serrated GB character; best creep performance"
+        },
+        "Main_Phase": "FCC (γ Ni matrix)",
+        "Precipitates": [
+          {
+            "Phase_Type": "M5B3 Boride (Cr-rich)",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "MC Carbide (Ta-rich)",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "M23C6 Carbide (nano, coherent, in matrix near GB)",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Gamma Prime",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Gamma Prime (grain boundary, from MC breakdown)",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": 750.0,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "APT_grain_boundary_enrichment_width_nm": 3,
+          "Boride_length_along_GB_nm": 500
+        }
+      },
+      "Properties_Info": []
+    },
+    {
+      "Sample_ID": "STAL-15CC_HB",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "STAL-15CC (High Boron)",
+        "Nominal_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Mo": 0.6,
+            "W": 1.21,
+            "Al": 10.01,
+            "B": 0.08,
+            "Co": 5.53,
+            "Cr": 16.64,
+            "C": 0.53,
+            "Hf": 0.02,
+            "Ta": 2.43,
+            "S": 62.95
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Ta": 2.43,
+            "W": 1.21,
+            "Al": 10.01,
+            "Co": 5.53,
+            "Cr": 16.64,
+            "Hf": 0.02,
+            "Mo": 0.6,
+            "B": 0.08,
+            "C": 0.53,
+            "S": 62.95
+          },
+          "Measurement_Method": "ICP-OES; LECO CS444 for carbon"
+        },
+        "Note": "B = 0.08 at.% (excessive boron - adverse effect on creep); balance is Ni"
+      },
+      "Process_Info": {
+        "Process_Category": "Casting",
+        "Process_Text": {
+          "original": "Conventional casting (CC) using ceramic moulds with cobalt aluminate nucleation catalyst; moulds de-waxed in steam furnace for 5 min, sintered at 1000C for 1 h prior to casting; casting performed under vacuum with mould temperature approximately 1000C; followed by Hot Isostatic Pressing (HIP) at 1195C for 5 h under 175 MPa pressure; primary ageing at 1120C for 4 h (air cooling); secondary ageing at 845C for 24 h (air cooling)",
+          "simplified": "CC -> HIP (1195C, 5h, 175 MPa) -> Ageing (1120C/4h + 845C/24h)"
+        },
+        "Equipment": "Doncasters Precision Castings Ltd. (ceramic moulds); JEOL 6500F FEGSEM; JEOL 2000FX TEM; Cameca LEAP 3000X HR APT (laser mode, 200 kHz, 0.4 nJ); CAMECA NanoSIMS 50",
+        "Key_Params": {
+          "HIP_Time_h": 5,
+          "Primary_Aging_Temperature_C": 1120,
+          "Primary_Aging_Time_h": 4,
+          "Secondary_Aging_Temperature_C": 845,
+          "Secondary_Aging_Time_h": 24,
+          "HIP_Pressure_MPa": 175,
+          "HIP_Temperature_C": 1195
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Gamma matrix with gamma-prime precipitates; high volume fraction of M5B3 Cr-rich borides along grain boundaries; near-continuous gamma-prime layers along grain boundaries due to MC carbide breakdown; excessive boride precipitation beyond critical volume fraction; serrated grain boundary character; plate-shaped coherent M23C6 carbides near GBs (up to 200 nm length, 30 nm thickness)",
+          "simplified": "FCC γ matrix with γ-prime; excessive M5B3 borides; near-continuous gamma layers; excessive borides adversely affect creep"
+        },
+        "Main_Phase": "FCC (γ Ni matrix)",
+        "Precipitates": [
+          {
+            "Phase_Type": "M5B3 Boride (Cr-rich)",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "MC Carbide (Ta-rich)",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "M23C6 Carbide (nano, coherent, near GB in matrix)",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Gamma Prime",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Gamma Prime (grain boundary, near-continuous layers)",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": 750.0,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "APT_grain_boundary_enrichment_width_nm": 3,
+          "Boride_length_along_GB_nm": 500
+        }
+      },
+      "Properties_Info": []
+    }
+  ]
+}

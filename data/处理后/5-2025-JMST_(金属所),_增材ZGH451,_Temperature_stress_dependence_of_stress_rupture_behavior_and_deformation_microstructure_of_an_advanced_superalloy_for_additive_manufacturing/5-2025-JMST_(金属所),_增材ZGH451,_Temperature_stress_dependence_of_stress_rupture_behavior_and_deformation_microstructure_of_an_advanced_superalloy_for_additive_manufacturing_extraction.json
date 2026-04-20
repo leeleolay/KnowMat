@@ -1,0 +1,858 @@
+{
+  "Paper_Metadata": {
+    "Paper_Title": "Temperature/stress dependence of stress rupture behavior and deformation microstructure of an advanced superalloy for additive manufacturing",
+    "DOI": "10.1016/j.jmst.2024.03.072"
+  },
+  "items": [
+    {
+      "Sample_ID": "ZGH451_DED_AB",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "ZGH451",
+        "Nominal_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Co": 28.0,
+            "Al": 4.3,
+            "Ti": 1.22,
+            "Ta": 5.6,
+            "C": 0.01,
+            "B": 0.03,
+            "Ni": 60.84
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Co": 28.0,
+            "Al": 4.3,
+            "Ti": 1.22,
+            "Ta": 5.6,
+            "C": 0.01,
+            "B": 0.03,
+            "Ni": 60.84
+          },
+          "Measurement_Method": "ICP-OES, ICP-combustion (C), Spark OES (B)"
+        },
+        "Note": "Table 1 reports measured composition; Co+Cr+W+Mo = 28 wt% combined; Ni is balance computed as 100 - (28 + 4.30 + 1.22 + 5.60 + 0.01 + 0.03) = 60.84 wt%; Ta/Al ratio = 1.30"
+      },
+      "Process_Info": {
+        "Process_Category": "Directed Energy Deposition (DED)",
+        "Process_Text": {
+          "original": "DED (Direct Energy Deposition) using CO2 laser machine (assembled by Institute of Metal Research, Chinese Academy of Sciences) with coaxial powder delivery system and argon protection; pulsed laser beam diameter 2.0 mm; optimized parameters: laser power 1800 W, powder feeding rate 10.5 g/min, scanning speed 1100 mm/min, beam-on time 0.16 s, beam-off time 0.4-0.6 s; 90-degree rotation between layers; substrate preheating via 3 laser scans without powder feeding; spherical powder prepared by argon gas atomization with D50 = 92.94 um, sphericity 90%, flowability 16.81 s/50g",
+          "simplified": "DED with CO2 laser, 1800 W, 1100 mm/min, 10.5 g/min powder feed rate, argon atmosphere, 90-degree inter-layer rotation"
+        },
+        "Equipment": "CO2 laser deposition machine (Institute of Metal Research, Chinese Academy of Sciences)",
+        "Key_Params": {
+          "Laser_Power_W": 1800,
+          "Scanning_Speed_mm_s": 18.333333,
+          "Powder_Feed_Rate_g_min": 10.5,
+          "Beam_Diameter_mm": 2,
+          "Beam_On_Time_s": 0.16,
+          "Beam_Off_Time_s": "0.4-0.6",
+          "Layer_Rotation_deg": 90,
+          "Cooling_Rate_K_s": "1e3-1e5",
+          "Powder_Size_avg_um": 92.94,
+          "Powder_Sphericity_pct": 90,
+          "Powder_Flowability_s_50g": 16.81,
+          "Substrate_Preheating_Scans": 3
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Highly textured columnar grains with epitaxial dendrite growth along build direction; {100} fiber texture strongest; smooth fusion lines with high width-depth ratio; epitaxial growth perpendicular to fusion lines; dendrite core (DC) with fine gamma-prime (124.10 nm), interdendritic region (IR) with larger gamma-prime (150.50 nm); primary dendrite arm spacing 17.43 um; initial dislocation tangles at gamma/gamma-prime interface and grain boundaries; MC-type carbides enriched Ti and Ta on grain boundaries; few void defects (9.59 um average, 0.10% volume fraction); GND density 0.25e14 m-2",
+          "simplified": "Columnar grains with {100} texture; dendritic structure with gamma-prime in DC (124 nm) and IR (151 nm); 50.52% gamma-prime volume fraction; initial dislocation tangles; MC carbides on GBs"
+        },
+        "Main_Phase": "FCC",
+        "Precipitates": [
+          {
+            "Phase_Type": "Gamma Prime",
+            "Volume_Fraction_pct": 50.52
+          },
+          {
+            "Phase_Type": "MC Carbide",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": 395.4,
+        "Precipitate_Size_avg_nm": 137.3,
+        "Precipitate_Volume_Fraction_pct": 50.52,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "PDAS_um": 17.43,
+          "Gamma_Prime_Size_DC_nm": 124.1,
+          "Gamma_Prime_Size_IR_nm": 150.5,
+          "Gamma_Size_DC_nm": 40.31,
+          "Gamma_Size_IR_nm": 75.42,
+          "Void_Size_um": 9.59,
+          "Void_Volume_Fraction_pct": 0.1,
+          "GND_Density_m2": 25000000000000.0,
+          "Number_of_Grains": 9
+        }
+      },
+      "Properties_Info": []
+    },
+    {
+      "Sample_ID": "ZGH451_DED_760C_780MPa",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "ZGH451",
+        "Nominal_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Co": 28.0,
+            "Al": 4.3,
+            "Ti": 1.22,
+            "Ta": 5.6,
+            "C": 0.01,
+            "B": 0.03,
+            "Ni": 60.84
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Post-stress rupture state at 760C/780 MPa; composition unchanged from as-built"
+      },
+      "Process_Info": {
+        "Process_Category": "Directed Energy Deposition (DED)",
+        "Process_Text": {
+          "original": "DED as-built + stress rupture test at 760C/780 MPa for 134.20 h until fracture; uniaxial loading along build direction; F-25 creep machine; atmospheric environment",
+          "simplified": "DED as-built followed by stress rupture at 760C/780 MPa, 134.20 h lifetime"
+        },
+        "Equipment": "F-25 creep machine",
+        "Key_Params": {
+          "Test_Temperature_C": 760,
+          "Applied_Stress_MPa": 780,
+          "Stress_Rupture_Life_h": 134.2,
+          "Test_Atmosphere": "Atmospheric",
+          "Loading_Direction": "Build direction"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Cubic gamma-prime phases in dendrite core (220.45 nm) and interdendritic region (279.65 nm); gamma-prime volume fraction 56.85%; voids deformed along loading direction (10.91 um, 1.09%); chain-like M23C6 carbides enriched Cr and Mo on grain boundaries (average size 620 nm); cracks along grain boundaries; mixed fracture mode with brittleness (smooth cleavage planes) and ductility (dimples); cubic gamma-prime slightly elongated along loading direction due to applied stress",
+          "simplified": "Cubic gamma-prime (DC: 220 nm, IR: 280 nm); voids and chain-like M23C6 carbides on GBs; mixed fracture mode"
+        },
+        "Main_Phase": "FCC",
+        "Precipitates": [
+          {
+            "Phase_Type": "Gamma Prime",
+            "Volume_Fraction_pct": 56.85
+          },
+          {
+            "Phase_Type": "M23C6 Carbide",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "MC Carbide",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": 1.09,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": 250.05,
+        "Precipitate_Volume_Fraction_pct": 56.85,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "Gamma_Prime_Size_DC_nm": 220.45,
+          "Gamma_Prime_Size_IR_nm": 279.65,
+          "Gamma_Size_DC_nm": 100.85,
+          "Gamma_Size_IR_nm": 135.49,
+          "Void_Size_um": 10.91,
+          "Void_Volume_Fraction_pct": 1.09,
+          "Carbide_Size_nm": 620,
+          "Segregation_Region_Width_um": 6.1,
+          "Strain_at_Secondary_Stage_Start_pct": 9.31,
+          "Strain_at_Tertiary_Stage_Start_pct": 17.94
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Incubation_Period",
+          "Test_Condition": "at 760C; 780 MPa",
+          "Value_Numeric": 3.11,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "h",
+          "Test_Temperature_K": 1033.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Time before primary stage; strain rate decreases then increases within small strain range"
+        },
+        {
+          "Property_Name": "Larson_Miller_Parameter",
+          "Test_Condition": "LMP = T x (20 + log10(tr))/1000 with T in K and tr in h",
+          "Value_Numeric": 21320.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "",
+          "Test_Temperature_K": 1033.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Calculated from 760C (1033.15 K) and 134.20 h stress rupture life"
+        },
+        {
+          "Property_Name": "Minimum_Strain_Rate",
+          "Test_Condition": "at 760C; 780 MPa",
+          "Value_Numeric": 1.78e-05,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "s^-1",
+          "Test_Temperature_K": 1033.15,
+          "Strain_Rate_s1": "1.78e-5",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Strain rate range due to extensometer instability: 1.15e-4 to 3.33e-5 /s"
+        },
+        {
+          "Property_Name": "Primary_Stage_Duration",
+          "Test_Condition": "at 760C; 780 MPa",
+          "Value_Numeric": 6.52,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "h",
+          "Test_Temperature_K": 1033.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Strain rate decreases gradually after initial increase"
+        },
+        {
+          "Property_Name": "Secondary_Stage_Duration",
+          "Test_Condition": "at 760C; 780 MPa",
+          "Value_Numeric": 112.22,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "h",
+          "Test_Temperature_K": 1033.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Most important stage; 83.6% of total life; minimum strain rate maintained"
+        },
+        {
+          "Property_Name": "Strain_at_Secondary_Stage_Start",
+          "Test_Condition": "at 760C; 780 MPa",
+          "Value_Numeric": 9.31,
+          "Value_Range": null,
+          "Value_StdDev": 0.05,
+          "Unit": "%",
+          "Test_Temperature_K": 1033.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Secondary stage represents 83.6% of total stress rupture life"
+        },
+        {
+          "Property_Name": "Strain_at_Tertiary_Stage_Start",
+          "Test_Condition": "at 760C; 780 MPa",
+          "Value_Numeric": 17.94,
+          "Value_Range": null,
+          "Value_StdDev": 0.05,
+          "Unit": "%",
+          "Test_Temperature_K": 1033.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Fracture occurs within 12.35 h after tertiary stage begins"
+        },
+        {
+          "Property_Name": "Stress_Rupture_Life",
+          "Test_Condition": "at 760C; 780 MPa; atmospheric environment; uniaxial loading along build direction",
+          "Value_Numeric": 134.2,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "h",
+          "Test_Temperature_K": 1033.15,
+          "Strain_Rate_s1": "1.78e-5 /s",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "M6 phi3 cylindrical, gauge length 20 mm, diameter 3 mm",
+          "Note": "Four stress rupture stages observed: incubation (3.11 h), primary, secondary (83.6% of life), tertiary"
+        },
+        {
+          "Property_Name": "Tertiary_Stage_Duration",
+          "Test_Condition": "at 760C; 780 MPa",
+          "Value_Numeric": 12.35,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "h",
+          "Test_Temperature_K": 1033.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Rapid strain rate increase and fracture"
+        },
+        {
+          "Property_Name": "Void_Size",
+          "Test_Condition": "After stress rupture at 760C/780 MPa; measured near fracture surface",
+          "Value_Numeric": 10.91,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "um",
+          "Test_Temperature_K": 1033.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Increased from 9.59 um in as-built state"
+        },
+        {
+          "Property_Name": "Void_Volume_Fraction",
+          "Test_Condition": "After stress rupture at 760C/780 MPa",
+          "Value_Numeric": 1.09,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "%",
+          "Test_Temperature_K": 1033.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Increased from 0.10% in as-built state due to long-term thermal exposure"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "ZGH451_DED_980C_260MPa",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "ZGH451",
+        "Nominal_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Co": 28.0,
+            "Al": 4.3,
+            "Ti": 1.22,
+            "Ta": 5.6,
+            "C": 0.01,
+            "B": 0.03,
+            "Ni": 60.84
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Post-stress rupture state at 980C/260 MPa; composition unchanged from as-built"
+      },
+      "Process_Info": {
+        "Process_Category": "Directed Energy Deposition (DED)",
+        "Process_Text": {
+          "original": "DED as-built + stress rupture test at 980C/260 MPa for 26.90 h until fracture; uniaxial loading along build direction; F-25 creep machine; atmospheric environment",
+          "simplified": "DED as-built followed by stress rupture at 980C/260 MPa, 26.90 h lifetime"
+        },
+        "Equipment": "F-25 creep machine",
+        "Key_Params": {
+          "Test_Temperature_C": 980,
+          "Applied_Stress_MPa": 260,
+          "Stress_Rupture_Life_h": 26.9,
+          "Test_Atmosphere": "Atmospheric",
+          "Loading_Direction": "Build direction"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Rafted gamma-prime phases in dendrite core and interdendritic region; gamma-prime volume fraction 62.55%; voids significantly larger (16.43 um, 2.91%) with polyhedral shapes (octahedron {111}, dodecahedron {111}+{001}) and evolved initial voids; granular-shaped M6C carbides enriched Mo and W on grain boundaries (average size 450 nm, discontinuous distribution); topological inversion phenomenon in interdendritic region; typical ductile fracture with micro-void aggregation; cracks initiated near voids and terminated on dendrite core",
+          "simplified": "Rafted gamma-prime (62.55%); large voids (16.43 um, 2.91%); granular M6C carbides; topological inversion; ductile fracture mode"
+        },
+        "Main_Phase": "FCC",
+        "Precipitates": [
+          {
+            "Phase_Type": "Gamma Prime (rafted)",
+            "Volume_Fraction_pct": 62.55
+          },
+          {
+            "Phase_Type": "M6C Carbide",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "MC Carbide",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": 2.91,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": 392.73,
+        "Precipitate_Volume_Fraction_pct": 62.55,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "Gamma_Prime_Size_DC_nm": 362.38,
+          "Gamma_Prime_Size_IR_nm": 423.08,
+          "Gamma_Size_DC_nm": 320.86,
+          "Gamma_Size_IR_nm": 420.06,
+          "Void_Size_um": 16.43,
+          "Void_Volume_Fraction_pct": 2.91,
+          "Carbide_Size_nm": 450,
+          "Segregation_Region_Width_um": 10.3,
+          "Strain_at_Secondary_Stage_Start_pct": 3.17,
+          "Strain_at_Tertiary_Stage_Start_pct": 9.45,
+          "Dislocation_Network_Spacing_nm": 12
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Larson_Miller_Parameter",
+          "Test_Condition": "LMP = T x (20 + log10(tr))/1000 with T in K and tr in h",
+          "Value_Numeric": 21590.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "",
+          "Test_Temperature_K": 1253.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Calculated from 980C (1253.15 K) and 26.90 h stress rupture life"
+        },
+        {
+          "Property_Name": "Minimum_Strain_Rate",
+          "Test_Condition": "at 980C; 260 MPa",
+          "Value_Numeric": 0.000208,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "s^-1",
+          "Test_Temperature_K": 1253.15,
+          "Strain_Rate_s1": "2.08e-4",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Significantly higher than 760C/780 MPa condition (1.78e-5 /s); strain rate range: 2.77e-4 to 1.38e-4 /s"
+        },
+        {
+          "Property_Name": "Primary_Stage_Duration",
+          "Test_Condition": "at 980C; 260 MPa",
+          "Value_Numeric": 2.96,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "h",
+          "Test_Temperature_K": 1253.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "No incubation period; strain rate decreases continuously"
+        },
+        {
+          "Property_Name": "Secondary_Stage_Duration",
+          "Test_Condition": "at 980C; 260 MPa",
+          "Value_Numeric": 16.14,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "h",
+          "Test_Temperature_K": 1253.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Most important stage; 60% of total life; minimum strain rate maintained"
+        },
+        {
+          "Property_Name": "Strain_at_Secondary_Stage_Start",
+          "Test_Condition": "at 980C; 260 MPa",
+          "Value_Numeric": 3.17,
+          "Value_Range": null,
+          "Value_StdDev": 0.03,
+          "Unit": "%",
+          "Test_Temperature_K": 1253.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Secondary stage represents 60% of total stress rupture life"
+        },
+        {
+          "Property_Name": "Strain_at_Tertiary_Stage_Start",
+          "Test_Condition": "at 980C; 260 MPa",
+          "Value_Numeric": 9.45,
+          "Value_Range": null,
+          "Value_StdDev": 0.03,
+          "Unit": "%",
+          "Test_Temperature_K": 1253.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Fracture occurs within 7.80 h after tertiary stage begins"
+        },
+        {
+          "Property_Name": "Stress_Rupture_Life",
+          "Test_Condition": "at 980C; 260 MPa; atmospheric environment; uniaxial loading along build direction",
+          "Value_Numeric": 26.9,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "h",
+          "Test_Temperature_K": 1253.15,
+          "Strain_Rate_s1": "2.08e-4 /s",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "M6 phi3 cylindrical, gauge length 20 mm, diameter 3 mm",
+          "Note": "Three stress rupture stages: primary, secondary (60% of life), tertiary; no incubation period observed"
+        },
+        {
+          "Property_Name": "Tertiary_Stage_Duration",
+          "Test_Condition": "at 980C; 260 MPa",
+          "Value_Numeric": 7.8,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "h",
+          "Test_Temperature_K": 1253.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Rapid strain rate increase due to topological inversion, void aggregation, and crack formation"
+        },
+        {
+          "Property_Name": "Void_Size",
+          "Test_Condition": "After stress rupture at 980C/260 MPa; measured near fracture surface",
+          "Value_Numeric": 16.43,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "um",
+          "Test_Temperature_K": 1253.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Significantly increased from 9.59 um in as-built and 10.91 um at 760C/780 MPa"
+        },
+        {
+          "Property_Name": "Void_Volume_Fraction",
+          "Test_Condition": "After stress rupture at 980C/260 MPa",
+          "Value_Numeric": 2.91,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "%",
+          "Test_Temperature_K": 1253.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Significantly increased from 0.10% in as-built and 1.09% at 760C/780 MPa due to high temperature"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "Reference_IN718",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Reference",
+        "Alloy_Name_Raw": "IN718",
+        "Nominal_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Commercial Inconel 718 superalloy; composition not explicitly reported in this paper; used as literature benchmark comparison"
+      },
+      "Process_Info": {
+        "Process_Category": "Wrought",
+        "Process_Text": {
+          "original": "Literature benchmark comparison; conventionally cast and wrought IN718 alloy",
+          "simplified": "Conventional cast and wrought IN718"
+        },
+        "Equipment": null,
+        "Key_Params": {}
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "not provided",
+          "simplified": "not provided"
+        },
+        "Main_Phase": null,
+        "Precipitates": [],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {}
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Larson_Miller_Parameter",
+          "Test_Condition": "Literature comparison; heat-treated IN718",
+          "Value_Numeric": 20700.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "",
+          "Test_Temperature_K": 1033.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "image",
+          "Test_Specimen": null,
+          "Note": "Lower LMP than DED ZGH451 at 760C/780 MPa"
+        },
+        {
+          "Property_Name": "Stress_Rupture_Life",
+          "Test_Condition": "Literature comparison; heat-treated IN718; test conditions similar to 760C/780 MPa for comparison",
+          "Value_Numeric": 50.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "h",
+          "Test_Temperature_K": 1033.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "image",
+          "Test_Specimen": null,
+          "Note": "Stress rupture life significantly lower than ZGH451 at similar conditions"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "Reference_ABD900AM",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Reference",
+        "Alloy_Name_Raw": "ABD-900AM",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ni": 10.0,
+            "Co": 10.0,
+            "Cr": 10.0,
+            "W": 10.0,
+            "Mo": 10.0,
+            "Al": 10.0,
+            "Ti": 10.0,
+            "Ta": 10.0,
+            "C": 10.0,
+            "B": 10.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "ABD-900AM alloy; additively manufactured heat-treated state; composition not explicitly reported in this paper; used as literature benchmark comparison"
+      },
+      "Process_Info": {
+        "Process_Category": "Heat Treatment",
+        "Process_Text": {
+          "original": "Literature benchmark comparison; additively manufactured ABD-900AM alloy with heat treatment",
+          "simplified": "AM ABD-900AM with heat treatment"
+        },
+        "Equipment": null,
+        "Key_Params": {}
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "not provided",
+          "simplified": "not provided"
+        },
+        "Main_Phase": null,
+        "Precipitates": [],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {}
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Larson_Miller_Parameter",
+          "Test_Condition": "Literature comparison; heat-treated ABD-900AM",
+          "Value_Numeric": 20900.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "",
+          "Test_Temperature_K": 1033.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "image",
+          "Test_Specimen": null,
+          "Note": "Lower LMP than DED ZGH451 at 760C/780 MPa"
+        },
+        {
+          "Property_Name": "Stress_Rupture_Life",
+          "Test_Condition": "Literature comparison; heat-treated ABD-900AM; test conditions similar to 760C/780 MPa for comparison",
+          "Value_Numeric": 100.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "h",
+          "Test_Temperature_K": 1033.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "image",
+          "Test_Specimen": null,
+          "Note": "Stress rupture life lower than ZGH451 at similar conditions"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "Reference_CM247LC",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Reference",
+        "Alloy_Name_Raw": "CM247LC",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ni": 9.090909,
+            "Co": 9.090909,
+            "Cr": 9.090909,
+            "W": 9.090909,
+            "Mo": 9.090909,
+            "Al": 9.090909,
+            "Ti": 9.090909,
+            "Ta": 9.090909,
+            "C": 9.090909,
+            "B": 9.090909,
+            "Hf": 9.090909,
+            "other": 1e-06
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "CM247LC alloy; composition includes Hf; SLM fabricated with heat treatment; used as literature benchmark comparison from Tang et al. 2021"
+      },
+      "Process_Info": {
+        "Process_Category": "Selective Laser Melting (SLM) + Heat Treatment",
+        "Process_Text": {
+          "original": "Literature benchmark comparison; SLM fabricated CM247LC alloy with heat treatment; from Tang et al. 2021 [88]",
+          "simplified": "SLM CM247LC with heat treatment (Tang et al. 2021)"
+        },
+        "Equipment": null,
+        "Key_Params": {}
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "not provided",
+          "simplified": "not provided"
+        },
+        "Main_Phase": null,
+        "Precipitates": [],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {}
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Larson_Miller_Parameter",
+          "Test_Condition": "Literature comparison; SLM CM247LC with heat treatment",
+          "Value_Numeric": 21000.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "",
+          "Test_Temperature_K": 1033.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Lower LMP than DED ZGH451 at 760C/780 MPa"
+        },
+        {
+          "Property_Name": "Stress_Rupture_Life",
+          "Test_Condition": "Literature comparison; SLM CM247LC; tested at ~760C/750 MPa",
+          "Value_Numeric": 50.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "h",
+          "Test_Temperature_K": 1033.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "image",
+          "Test_Specimen": null,
+          "Note": "Stress rupture life significantly lower than ZGH451 at similar conditions"
+        }
+      ]
+    }
+  ]
+}

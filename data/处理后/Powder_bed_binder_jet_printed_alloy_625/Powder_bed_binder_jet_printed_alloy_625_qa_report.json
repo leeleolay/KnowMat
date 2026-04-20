@@ -1,0 +1,13 @@
+{
+  "paper_name": "Powder_bed_binder_jet_printed_alloy_625",
+  "pipeline_version": "knowmat-2.0.1",
+  "materials_target_count": 8,
+  "samples_count": 10,
+  "properties_count": 18,
+  "unknown_process_count": 1,
+  "phase_filled_rate": 0.8,
+  "missing_doi": 0,
+  "needs_review": false,
+  "red_line_triggers": [],
+  "final_confidence_score": null
+}

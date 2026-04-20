@@ -1,0 +1,13 @@
+{
+  "paper_name": "Characterization_of_Inconel_625_fabricated_using_powder-bed-based_additive",
+  "pipeline_version": "knowmat-2.0.1",
+  "materials_target_count": 6,
+  "samples_count": 12,
+  "properties_count": 42,
+  "unknown_process_count": 0,
+  "phase_filled_rate": 0.833,
+  "missing_doi": 0,
+  "needs_review": false,
+  "red_line_triggers": [],
+  "final_confidence_score": null
+}

@@ -1,0 +1,13 @@
+{
+  "paper_name": "5-2025-JMST_(金属所),_增材ZGH451,_Temperature_stress_dependence_of_stress_rupture_behavior_and_deformation_microstructure_of_an_advanced_superalloy_for_additive_manufacturing",
+  "pipeline_version": "knowmat-2.0.1",
+  "materials_target_count": 3,
+  "samples_count": 6,
+  "properties_count": 27,
+  "unknown_process_count": 0,
+  "phase_filled_rate": 0.5,
+  "missing_doi": 0,
+  "needs_review": false,
+  "red_line_triggers": [],
+  "final_confidence_score": null
+}

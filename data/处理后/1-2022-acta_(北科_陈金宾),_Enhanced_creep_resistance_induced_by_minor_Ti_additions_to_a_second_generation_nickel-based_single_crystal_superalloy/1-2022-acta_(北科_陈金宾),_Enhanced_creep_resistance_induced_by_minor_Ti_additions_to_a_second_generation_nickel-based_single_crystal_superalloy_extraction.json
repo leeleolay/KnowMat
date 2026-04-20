@@ -1,0 +1,605 @@
+{
+  "Paper_Metadata": {
+    "Paper_Title": "Enhanced creep resistance induced by minor Ti additions to a second generation nickel-based single crystal superalloy",
+    "DOI": "10.1016/j.actamat.2022.117938"
+  },
+  "items": [
+    {
+      "Sample_ID": "T0_Initial",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "T0",
+        "Nominal_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Co": 8.0,
+            "Cr": 6.0,
+            "Ta": 6.0,
+            "W": 6.5,
+            "Al": 5.6,
+            "Re": 3.0,
+            "Mo": 2.5,
+            "Hf": 0.18,
+            "C": 0.02,
+            "B": 0.01,
+            "other": 62.19
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Co": 8.1,
+            "Cr": 5.8,
+            "Ta": 6.06,
+            "W": 6.46,
+            "Al": 5.65,
+            "Re": 3.01,
+            "Mo": 2.56,
+            "Hf": 0.19,
+            "C": 0.02,
+            "B": 0.01,
+            "other": 62.14
+          },
+          "Measurement_Method": "ICP-OES"
+        },
+        "Note": "N denotes nominal composition, M denotes measured composition. Ti-free base alloy used as reference for comparison with T5 alloy containing 0.5 wt.% Ti addition."
+      },
+      "Process_Info": {
+        "Process_Category": "Heat Treatment",
+        "Process_Text": {
+          "original": "High-rate solidification (HRS) directional solidification using spiral grain selectors with withdrawal rate of 3 mm/min. Cylindrical SX bars 160 mm length and 14 mm diameter. Solution treatment at 1290 degC for 4 h followed by air cooling. Two-stage aging: first at 1120 degC for 4 h (air cooled) and second at 900 degC for 16 h (air cooled).",
+          "simplified": "HRS directional solidification (3 mm/min withdrawal rate), solutionized at 1290 degC/4h/air cool, two-stage aged at 1120 degC/4h + 900 degC/16h."
+        },
+        "Equipment": "Spiral grain selector system at Beijing Institute of Aeronautical Materials",
+        "Key_Params": {
+          "Withdrawal_Rate_mm_min": 3.0,
+          "Solution_Temperature_Celsius": 1290.0,
+          "Solution_Time_h": 4.0,
+          "Cooling_Medium": "Air",
+          "Aging_Temperature_Stage1_Celsius": 1120.0,
+          "Aging_Time_Stage1_h": 4.0,
+          "Aging_Temperature_Stage2_Celsius": 900.0,
+          "Aging_Time_Stage2_h": 16.0,
+          "Specimen_Length_mm": 160.0,
+          "Specimen_Diameter_mm": 14.0
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Typical microstructure comprising narrow gamma matrix channels and fine cubical gamma-prime precipitates with cube-cube orientation relationship. Interfaces parallel to {100} planes of both phases. Dendrite cores and interdendritic regions show different gamma-prime volume fractions and sizes.",
+          "simplified": "Fine cubical gamma-prime precipitates (332 nm dendrite core, 344 nm interdendritic) in narrow gamma channels (50.2 nm dendrite, 51.4 nm interdendritic). Gamma-prime volume fraction 68.4% (dendrite) and 72.6% (interdendritic)."
+        },
+        "Main_Phase": "FCC",
+        "Precipitates": [
+          {
+            "Phase_Type": "L12 Gamma Prime",
+            "Volume_Fraction_pct": 68.4
+          },
+          {
+            "Phase_Type": "L12 Gamma Prime (Interdendritic)",
+            "Volume_Fraction_pct": 72.6
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": 332.0,
+        "Precipitate_Volume_Fraction_pct": 68.4,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "Gamma_Prime_Size_Dendrite_nm": 332.0,
+          "Gamma_Prime_Size_Interdendritic_nm": 344.0,
+          "Gamma_Channel_Width_Dendrite_nm": 50.2,
+          "Gamma_Channel_Width_Interdendritic_nm": 51.4,
+          "Primary_Dendrite_Arm_Spacing_um": 345.0,
+          "Gamma_Lattice_Constant_nm": 0.3586,
+          "Gamma_Prime_Lattice_Constant_nm": 0.3579,
+          "Lattice_Misfit_Initial_pct": -0.195,
+          "Lattice_Misfit_1pct_Creep_pct": -0.327,
+          "Lattice_Misfit_Unconstrained_Creep_pct": -0.29,
+          "Dislocation_Network_Spacing_1pct_Creep_nm": 60.5,
+          "Raft_Orientation_Parameter_Omega": 0.67,
+          "Rafted_Gamma_Lamella_Thickness_um": 0.215,
+          "Rafted_Gamma_Prime_Lamella_Thickness_um": 0.223,
+          "Gamma_Prime_Volume_1pct_Creep_Dendrite_pct": 44.4,
+          "Gamma_Prime_Volume_1pct_Creep_Interdendritic_pct": 46.8
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Creep_Rupture_Life",
+          "Test_Condition": "at 1030 degC; applied stress 230 MPa",
+          "Value_Numeric": 50.1,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "h",
+          "Test_Temperature_K": 1303.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM-type tensile creep specimen, gauge length 25 mm, diameter 5 mm",
+          "Note": null
+        },
+        {
+          "Property_Name": "Minimum_Creep_Strain_Rate",
+          "Test_Condition": "at 1030 degC; applied stress 230 MPa",
+          "Value_Numeric": 1.36e-07,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "s^-1",
+          "Test_Temperature_K": 1303.15,
+          "Strain_Rate_s1": "1.36e-7",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Minimum creep strain rate during steady-state creep"
+        },
+        {
+          "Property_Name": "Time_to_1pct_Creep_Strain",
+          "Test_Condition": "at 1030 degC; applied stress 230 MPa",
+          "Value_Numeric": 14.2,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "h",
+          "Test_Temperature_K": 1303.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": null
+        }
+      ]
+    },
+    {
+      "Sample_ID": "T5_Initial",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "T5",
+        "Nominal_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Co": 8.0,
+            "Cr": 6.0,
+            "Ta": 6.0,
+            "W": 6.5,
+            "Al": 5.6,
+            "Re": 3.0,
+            "Mo": 2.5,
+            "Ti": 0.5,
+            "Hf": 0.18,
+            "C": 0.02,
+            "B": 0.01,
+            "other": 61.69
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Co": 8.0,
+            "Cr": 5.88,
+            "Ta": 6.03,
+            "W": 6.46,
+            "Al": 5.57,
+            "Re": 3.0,
+            "Mo": 2.52,
+            "Ti": 0.51,
+            "Hf": 0.2,
+            "C": 0.02,
+            "B": 0.01,
+            "other": 61.8
+          },
+          "Measurement_Method": "ICP-OES"
+        },
+        "Note": "N denotes nominal composition, M denotes measured composition. 0.5 wt.% Ti added at the expense of Ni compared to T0 alloy. Measured compositions correspond well with nominal levels with maximum deviation of plus/minus 0.2 wt.%."
+      },
+      "Process_Info": {
+        "Process_Category": "Heat Treatment",
+        "Process_Text": {
+          "original": "High-rate solidification (HRS) directional solidification using spiral grain selectors with withdrawal rate of 3 mm/min. Cylindrical SX bars 160 mm length and 14 mm diameter. Solution treatment at 1300 degC for 4 h followed by air cooling (higher solution temperature than T0 due to Ti addition). Two-stage aging: first at 1120 degC for 4 h (air cooled) and second at 900 degC for 16 h (air cooled).",
+          "simplified": "HRS directional solidification (3 mm/min withdrawal rate), solutionized at 1300 degC/4h/air cool, two-stage aged at 1120 degC/4h + 900 degC/16h."
+        },
+        "Equipment": "Spiral grain selector system at Beijing Institute of Aeronautical Materials",
+        "Key_Params": {
+          "Withdrawal_Rate_mm_min": 3.0,
+          "Solution_Temperature_Celsius": 1300.0,
+          "Solution_Time_h": 4.0,
+          "Cooling_Medium": "Air",
+          "Aging_Temperature_Stage1_Celsius": 1120.0,
+          "Aging_Time_Stage1_h": 4.0,
+          "Aging_Temperature_Stage2_Celsius": 900.0,
+          "Aging_Time_Stage2_h": 16.0,
+          "Specimen_Length_mm": 160.0,
+          "Specimen_Diameter_mm": 14.0
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Typical microstructure comprising narrow gamma matrix channels and fine cubical gamma-prime precipitates with cube-cube orientation relationship. Interfaces parallel to {100} planes of both phases. Compared to T0: higher gamma-prime volume fraction, smaller gamma-prime size, narrower gamma channels, sharper precipitate corners corresponding to higher lattice misfit.",
+          "simplified": "Fine cubical gamma-prime precipitates (302 nm dendrite core, 322 nm interdendritic) in narrow gamma channels (42.9 nm dendrite, 47.5 nm interdendritic). Gamma-prime volume fraction 72.5% (dendrite) and 78.1% (interdendritic). Ti addition increases gamma-prime fraction and reduces precipitate size."
+        },
+        "Main_Phase": "FCC",
+        "Precipitates": [
+          {
+            "Phase_Type": "L12 Gamma Prime",
+            "Volume_Fraction_pct": 72.5
+          },
+          {
+            "Phase_Type": "L12 Gamma Prime (Interdendritic)",
+            "Volume_Fraction_pct": 78.1
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": 302.0,
+        "Precipitate_Volume_Fraction_pct": 72.5,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "Gamma_Prime_Size_Dendrite_nm": 302.0,
+          "Gamma_Prime_Size_Interdendritic_nm": 322.0,
+          "Gamma_Channel_Width_Dendrite_nm": 42.9,
+          "Gamma_Channel_Width_Interdendritic_nm": 47.5,
+          "Primary_Dendrite_Arm_Spacing_um": 364.0,
+          "Gamma_Lattice_Constant_nm": 0.3594,
+          "Gamma_Prime_Lattice_Constant_nm": 0.3585,
+          "Lattice_Misfit_Initial_pct": -0.267,
+          "Lattice_Misfit_1pct_Creep_pct": -0.42,
+          "Lattice_Misfit_Unconstrained_Creep_pct": -0.4,
+          "Dislocation_Network_Spacing_1pct_Creep_nm": 45.1,
+          "Raft_Orientation_Parameter_Omega": 0.73,
+          "Rafted_Gamma_Lamella_Thickness_um": 0.192,
+          "Rafted_Gamma_Prime_Lamella_Thickness_um": 0.231,
+          "Gamma_Prime_Volume_1pct_Creep_Dendrite_pct": 46.8,
+          "Gamma_to_Gamma_Prime_Partitioning_Coefficient_k_Re": 0.05,
+          "Gamma_to_Gamma_Prime_Partitioning_Coefficient_k_Mo": 0.302,
+          "Gamma_to_Gamma_Prime_Partitioning_Coefficient_k_W": 0.824,
+          "Gamma_to_Gamma_Prime_Partitioning_Coefficient_k_Cr": 0.099,
+          "Gamma_to_Gamma_Prime_Partitioning_Coefficient_k_Ti": 3.558,
+          "Gamma_to_Gamma_Prime_Partitioning_Coefficient_k_Co": 0.368,
+          "Gamma_to_Gamma_Prime_Partitioning_Coefficient_k_Al": 5.234,
+          "Gamma_to_Gamma_Prime_Partitioning_Coefficient_k_Ta": 6.637,
+          "Gamma_Phase_Composition_atpct_Co": 16.68,
+          "Gamma_Phase_Composition_atpct_Cr": 19.04,
+          "Gamma_Phase_Composition_atpct_Al": 3.14,
+          "Gamma_Phase_Composition_atpct_Ta": 0.34,
+          "Gamma_Phase_Composition_atpct_W": 3.09,
+          "Gamma_Phase_Composition_atpct_Mo": 2.93,
+          "Gamma_Phase_Composition_atpct_Re": 3.98,
+          "Gamma_Phase_Composition_atpct_Ti": 0.25,
+          "Gamma_Prime_Phase_Composition_atpct_Co": 6.13,
+          "Gamma_Prime_Phase_Composition_atpct_Cr": 1.89,
+          "Gamma_Prime_Phase_Composition_atpct_Al": 16.44,
+          "Gamma_Prime_Phase_Composition_atpct_Ta": 2.23,
+          "Gamma_Prime_Phase_Composition_atpct_W": 2.55,
+          "Gamma_Prime_Phase_Composition_atpct_Mo": 0.89,
+          "Gamma_Prime_Phase_Composition_atpct_Re": 0.2,
+          "Gamma_Prime_Phase_Composition_atpct_Ti": 0.9
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Creep_Rupture_Life",
+          "Test_Condition": "at 1030 degC; applied stress 230 MPa",
+          "Value_Numeric": 102.8,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "h",
+          "Test_Temperature_K": 1303.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM-type tensile creep specimen, gauge length 25 mm, diameter 5 mm",
+          "Note": "Creep life extended to approximately double that of T0 base alloy"
+        },
+        {
+          "Property_Name": "Minimum_Creep_Strain_Rate",
+          "Test_Condition": "at 1030 degC; applied stress 230 MPa",
+          "Value_Numeric": 4.09e-08,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "s^-1",
+          "Test_Temperature_K": 1303.15,
+          "Strain_Rate_s1": "4.09e-8",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Minimum creep strain rate only one-third that of Ti-free T0 alloy"
+        },
+        {
+          "Property_Name": "Time_to_1pct_Creep_Strain",
+          "Test_Condition": "at 1030 degC; applied stress 230 MPa",
+          "Value_Numeric": 42.8,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "h",
+          "Test_Temperature_K": 1303.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Extended to more than three times that of T0 (14.2 h)"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "René N5_Reference",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Reference",
+        "Alloy_Name_Raw": "René N5",
+        "Nominal_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Second generation single crystal superalloy used as comparison benchmark. Approximately 3 wt.% Re content. Paper states T0 and T5 alloys creep performance exceeded that of René N5."
+      },
+      "Process_Info": {
+        "Process_Category": "Unknown",
+        "Process_Text": {
+          "original": "Commercial second generation Ni-based single crystal superalloy.",
+          "simplified": "Commercial SX superalloy, second generation."
+        },
+        "Equipment": null,
+        "Key_Params": {}
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "not provided",
+          "simplified": "not provided"
+        },
+        "Main_Phase": "FCC",
+        "Precipitates": [],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {}
+      },
+      "Properties_Info": []
+    },
+    {
+      "Sample_ID": "René N6_Reference",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Reference",
+        "Alloy_Name_Raw": "René N6",
+        "Nominal_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Third generation single crystal superalloy used as comparison benchmark. Approximately 5.4 wt.% Re content. Paper states T5 alloy shows comparable strengthening effects to René N6."
+      },
+      "Process_Info": {
+        "Process_Category": "Unknown",
+        "Process_Text": {
+          "original": "Commercial third generation Ni-based single crystal superalloy.",
+          "simplified": "Commercial SX superalloy, third generation."
+        },
+        "Equipment": null,
+        "Key_Params": {}
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "not provided",
+          "simplified": "not provided"
+        },
+        "Main_Phase": "FCC",
+        "Precipitates": [],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {}
+      },
+      "Properties_Info": []
+    },
+    {
+      "Sample_ID": "PWA1484_Reference",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Reference",
+        "Alloy_Name_Raw": "PWA1484",
+        "Nominal_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Second generation single crystal superalloy used as comparison benchmark."
+      },
+      "Process_Info": {
+        "Process_Category": "Unknown",
+        "Process_Text": {
+          "original": "Commercial second generation Ni-based single crystal superalloy.",
+          "simplified": "Commercial SX superalloy, second generation."
+        },
+        "Equipment": null,
+        "Key_Params": {}
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "not provided",
+          "simplified": "not provided"
+        },
+        "Main_Phase": "FCC",
+        "Precipitates": [],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {}
+      },
+      "Properties_Info": []
+    },
+    {
+      "Sample_ID": "CMSX-4_Reference",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Reference",
+        "Alloy_Name_Raw": "CMSX-4",
+        "Nominal_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Second generation single crystal superalloy used as comparison benchmark."
+      },
+      "Process_Info": {
+        "Process_Category": "Unknown",
+        "Process_Text": {
+          "original": "Commercial second generation Ni-based single crystal superalloy.",
+          "simplified": "Commercial SX superalloy, second generation."
+        },
+        "Equipment": null,
+        "Key_Params": {}
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "not provided",
+          "simplified": "not provided"
+        },
+        "Main_Phase": "FCC",
+        "Precipitates": [],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {}
+      },
+      "Properties_Info": []
+    },
+    {
+      "Sample_ID": "CMSX-10_Reference",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Reference",
+        "Alloy_Name_Raw": "CMSX-10",
+        "Nominal_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Third generation single crystal superalloy used as comparison benchmark. Paper states T5 Larson-Miller parameter approaches CMSX-10 at 1100 degC."
+      },
+      "Process_Info": {
+        "Process_Category": "Unknown",
+        "Process_Text": {
+          "original": "Commercial third generation Ni-based single crystal superalloy.",
+          "simplified": "Commercial SX superalloy, third generation."
+        },
+        "Equipment": null,
+        "Key_Params": {}
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "not provided",
+          "simplified": "not provided"
+        },
+        "Main_Phase": "FCC",
+        "Precipitates": [],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {}
+      },
+      "Properties_Info": []
+    },
+    {
+      "Sample_ID": "TMS-75_Reference",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Reference",
+        "Alloy_Name_Raw": "TMS-75",
+        "Nominal_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Third generation single crystal superalloy used as comparison benchmark. Paper shows T5 data points close to and slightly above TMS-75 curves."
+      },
+      "Process_Info": {
+        "Process_Category": "Unknown",
+        "Process_Text": {
+          "original": "Commercial Ni-based single crystal superalloy.",
+          "simplified": "Commercial SX superalloy."
+        },
+        "Equipment": null,
+        "Key_Params": {}
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "not provided",
+          "simplified": "not provided"
+        },
+        "Main_Phase": "FCC",
+        "Precipitates": [],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {}
+      },
+      "Properties_Info": []
+    }
+  ]
+}

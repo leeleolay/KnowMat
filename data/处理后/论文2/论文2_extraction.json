@@ -1,0 +1,539 @@
+{
+  "Paper_Metadata": {
+    "Paper_Title": "Microstructural evolution and formation of fine grains during fatigue crack initiation process of laser powder bed fusion Ni-based superalloy",
+    "DOI": "10.1016/j.addma.2024.104151"
+  },
+  "items": [
+    {
+      "Sample_ID": "LPBF_GH4169_Initial",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "GH4169",
+        "Nominal_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Fe": 52.08,
+            "Ni": 52.08,
+            "Cr": 20.12,
+            "Nb": 5.33,
+            "Mo": 3.24,
+            "Ti": 0.99,
+            "Al": 0.54,
+            "Co": 0.056,
+            "C": 0.036,
+            "Si": 0.038,
+            "Cu": 0.013
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Fe calculated as balance; nominal composition from Table 1"
+      },
+      "Process_Info": {
+        "Process_Category": "Laser Powder Bed Fusion (LPBF) + Heat Treatment",
+        "Process_Text": {
+          "original": "EP-M250 LPBF system; Laser power 240 W, scanning speed 980 mm/s, scanning spacing 0.1 mm, layer thickness 40 um, printing direction 90 deg; volumetric energy density 61.22 J/mm3; scanning direction rotated 45 deg between layers. Post-heat treatment: Solution annealing at 980 degC for 1 hour with argon gas cooling; First aging at 720 degC for 8 hours, furnace cooling at 50 degC/h to 620 degC; Second aging at 620 degC for 8 hours, argon cooling to room temperature.",
+          "simplified": "LPBF EP-M250 (240 W, 980 mm/s, 40 um layer, 61.22 J/mm3) + Solution 980 degC/1h/Ar + Double aging 720 degC/8h + 620 degC/8h/Ar"
+        },
+        "Equipment": "EP-M250",
+        "Key_Params": {
+          "Laser_Power_W": 240,
+          "Scanning_Speed_mm_s": 980,
+          "Hatch_Spacing_um": 100,
+          "Layer_Thickness_um": 40,
+          "Printing_Direction_deg": 90,
+          "Volumetric_Energy_Density_J_mm3": 61.22,
+          "Solution_Temperature_K": 1253.15,
+          "Solution_Time_h": 1,
+          "Aging_Stage1_Temperature_C": 720,
+          "Aging_Stage1_Time_h": 8,
+          "Aging_Stage2_Temperature_C": 620,
+          "Aging_Stage2_Time_h": 8,
+          "Cooling_Medium": "Argon",
+          "Protective_Atmosphere": "Argon"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Cellular and lamellar substructures within grains observed by TEM; strengthening gamma' (FCC, spherical/blocky/cuboidal) and gamma'' (BCT, disc/plate) precipitates inside substructures; delta phase (orthorhombic, needle/plate) and carbides at grain boundaries; sigma phase (tetragonal, irregular) identified; weak texture; LAGBs 64.4% and HAGBs 35.6% in x-y plane; LAGBs 67.6% and HAGBs 32.4% in y-z plane; GND density 0.55x10^14/m2; Orientation relationship gamma''(110)[110] // gamma(111)[110]; gamma''(010)[102] // gamma(111)[110]",
+          "simplified": "Cellular/lamellar substructures; FCC gamma matrix with gamma' and gamma'' precipitates; delta and carbide at grain boundaries; weak texture; predominantly LAGBs"
+        },
+        "Main_Phase": "FCC (Gamma matrix)",
+        "Precipitates": [
+          {
+            "Phase_Type": "Gamma Prime (Ni3(Al,Ti))",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Gamma Double Prime (Ni3Nb, BCT)",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Delta Phase (Ni3Nb, Orthorhombic)",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "MC Carbide ((Nb,Ti)(C,N))",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Sigma Phase (FeCr)",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": 0.0017,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": 17.64,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "Grain_Size_Longitudinal_um": 17.64,
+          "Grain_Size_Transverse_um": 19.36,
+          "LAGB_Fraction_pct": 64.4,
+          "HAGB_Fraction_pct": 35.6,
+          "GND_Density_m2": 55000000000000.0,
+          "GND_Density_Unit": "0.55x10^14/m^2"
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at room temperature; 0.2% plastic strain offset",
+          "Value_Numeric": 1266.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "2.5e-4",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "Standard tensile specimen, gauge diameter 5 mm, length 27 mm",
+          "Note": "Quasi-static tension test; 0.2% offset"
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at room temperature",
+          "Value_Numeric": 1414.5,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "2.5e-4",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "Standard tensile specimen, gauge diameter 5 mm, length 27 mm",
+          "Note": "Quasi-static tension test"
+        },
+        {
+          "Property_Name": "Elongation_Uniform",
+          "Test_Condition": "at room temperature",
+          "Value_Numeric": 16.4,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "2.5e-4",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "Standard tensile specimen, gauge diameter 5 mm, length 27 mm",
+          "Note": "Uniform elongation from tensile test"
+        },
+        {
+          "Property_Name": "Elastic_Modulus",
+          "Test_Condition": "at room temperature",
+          "Value_Numeric": 197.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "GPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "Standard tensile specimen, gauge diameter 5 mm, length 27 mm",
+          "Note": "Quasi-static tension test"
+        },
+        {
+          "Property_Name": "Fatigue_Life",
+          "Test_Condition": "at room temperature; ultrasonic fatigue 20 kHz; stress ratio R=-1",
+          "Value_Numeric": 515000000.0,
+          "Value_Range": "1.68e6 - 1.03e9",
+          "Value_StdDev": null,
+          "Unit": "cycles",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "Hourglass shaped specimen",
+          "Note": "HCF and VHCF regimes; runout defined as 1e9 cycles without failure"
+        },
+        {
+          "Property_Name": "Fatigue_Strength_at_1e6_cycles",
+          "Test_Condition": "at room temperature; stress ratio R=-1; ultrasonic 20 kHz",
+          "Value_Numeric": 553.5,
+          "Value_Range": "536-571",
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "image",
+          "Test_Specimen": "Hourglass specimen",
+          "Note": "Surface flaw initiation regime"
+        },
+        {
+          "Property_Name": "Fatigue_Strength_at_1e8_cycles",
+          "Test_Condition": "at room temperature; stress ratio R=-1; ultrasonic 20 kHz",
+          "Value_Numeric": 513.5,
+          "Value_Range": "508-519",
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "image",
+          "Test_Specimen": "Hourglass specimen",
+          "Note": "Internal pore initiation regime"
+        },
+        {
+          "Property_Name": "Hardness_Vickers",
+          "Test_Condition": null,
+          "Value_Numeric": 452.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "HV",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Used for Murakami fatigue limit calculation"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "LPBF_GH4169_Specimen_II",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "GH4169",
+        "Nominal_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Fe": 52.08,
+            "Ni": 52.08,
+            "Cr": 20.12,
+            "Nb": 5.33,
+            "Mo": 3.24,
+            "Ti": 0.99,
+            "Al": 0.54,
+            "Co": 0.056,
+            "C": 0.036,
+            "Si": 0.038,
+            "Cu": 0.013
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Same alloy as initial material; tested after fatigue failure from single pore initiation"
+      },
+      "Process_Info": {
+        "Process_Category": "Laser Powder Bed Fusion (LPBF) + Heat Treatment",
+        "Process_Text": {
+          "original": "EP-M250 LPBF system with same parameters as initial material; post-heat treated (solution + double aging); failed under VHCF condition with stress amplitude 537 MPa and fatigue life 4.5e7 cycles from single internal pore initiation; FIB-sample-A taken from FIA near pore for detailed characterization",
+          "simplified": "Same LPBF + heat treatment as initial; failed by single pore initiation at VHCF"
+        },
+        "Equipment": "EP-M250",
+        "Key_Params": {
+          "Laser_Power_W": 240,
+          "Scanning_Speed_mm_s": 980,
+          "Hatch_Spacing_um": 100,
+          "Layer_Thickness_um": 40,
+          "Solution_Temperature_K": 1253.15,
+          "Solution_Time_h": 1,
+          "Aging_Stage1_Temperature_C": 720,
+          "Aging_Stage1_Time_h": 8,
+          "Aging_Stage2_Temperature_C": 620,
+          "Aging_Stage2_Time_h": 8
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Fine-grained layer (average 120 nm) observed at fracture surface near single pore; cellular fine grains more prevalent away from pore end; lamellar grains near pore from slip; HAGBs 63.2%, LAGBs 36.8%; twin boundaries present (both from matrix slip and coarser fine grains); PF maximum intensity 4.91 with random orientation; GND concentrated at LAGB sites (15.2x10^14/m2); (111), (111) and (111) slip planes dominated easy-activated slip systems; SAED shows single crystal fine grains with no precipitates; parallel TBs inclined 50 deg to loading direction near pore; elemental homogenization occurred in fine grains with dissolved precipitates; carbide remained undissolved due to stability",
+          "simplified": "Fine-grained layer (120 nm) at FIA from CDRX; precipitates dissolved, elements homogenized; twin boundaries present; GND 15.2x10^14/m2"
+        },
+        "Main_Phase": "FCC (Gamma matrix)",
+        "Precipitates": [
+          {
+            "Phase_Type": "Gamma Prime (dissolved in FIA)",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Gamma Double Prime (dissolved in FIA)",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Carbide (stable, not dissolved)",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": 0.12,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "Fine_Grain_Size_in_FIA_nm": 120,
+          "Fine_Grain_HAGB_Fraction_pct": 63.2,
+          "Fine_Grain_LAGB_Fraction_pct": 36.8,
+          "GND_Density_in_FIA_m2": 1520000000000000.0,
+          "GND_Density_Unit": "15.2x10^14/m^2",
+          "PF_Maximum_Intensity": 4.91
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Calculated_Fatigue_Limit",
+          "Test_Condition": "Based on Murakami sqrt(area) parameter model for interior defects",
+          "Value_Numeric": 499.59,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Murakami model: sigma_int-w = 1.56(HV+120)/sqrt(area)^1/6"
+        },
+        {
+          "Property_Name": "Defect_Size",
+          "Test_Condition": "Rough area (RA) size used for Murakami calculation",
+          "Value_Numeric": 1053.98,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "um2",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Effective area of pore used for fatigue limit calculation"
+        },
+        {
+          "Property_Name": "Fatigue_Life",
+          "Test_Condition": "at room temperature; stress ratio R=-1; ultrasonic fatigue 20 kHz; cooling with compressed cold air",
+          "Value_Numeric": 45000000.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "cycles",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "Hourglass specimen",
+          "Note": "Internal pore initiation; VHCF regime; single large-sized pore"
+        },
+        {
+          "Property_Name": "Fatigue_Stress_Amplitude",
+          "Test_Condition": "at room temperature; stress ratio R=-1; ultrasonic 20 kHz",
+          "Value_Numeric": 537.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "Hourglass specimen",
+          "Note": "Internal pore initiation; VHCF regime"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "LPBF_GH4169_Specimen_III",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "GH4169",
+        "Nominal_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Fe": 52.08,
+            "Ni": 52.08,
+            "Cr": 20.12,
+            "Nb": 5.33,
+            "Mo": 3.24,
+            "Ti": 0.99,
+            "Al": 0.54,
+            "Co": 0.056,
+            "C": 0.036,
+            "Si": 0.038,
+            "Cu": 0.013
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Same alloy as initial material; tested after fatigue failure from pore cluster initiation"
+      },
+      "Process_Info": {
+        "Process_Category": "Laser Powder Bed Fusion (LPBF) + Heat Treatment",
+        "Process_Text": {
+          "original": "EP-M250 LPBF system with same parameters as initial material; post-heat treated (solution + double aging); failed under VHCF condition with stress amplitude 508.5 MPa and fatigue life 1.73e8 cycles from pore cluster initiation; FIB-sample-B taken from interface between porosity zone and facets",
+          "simplified": "Same LPBF + heat treatment as initial; failed by pore cluster initiation at VHCF"
+        },
+        "Equipment": "EP-M250",
+        "Key_Params": {
+          "Laser_Power_W": 240,
+          "Scanning_Speed_mm_s": 980,
+          "Hatch_Spacing_um": 100,
+          "Layer_Thickness_um": 40,
+          "Solution_Temperature_K": 1253.15,
+          "Solution_Time_h": 1,
+          "Aging_Stage1_Temperature_C": 720,
+          "Aging_Stage1_Time_h": 8,
+          "Aging_Stage2_Temperature_C": 620,
+          "Aging_Stage2_Time_h": 8
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Lamellar substructure formation near pores; faceted area near crack propagation; grain refinement (average 110 nm) in middle region; LAGBs concentrated in lamellar substructure and matrix near fracture surface; HAGBs concentrated in fine-grained region and boundary between lamellar substructure and matrix; GND concentrated at LAGB sites (23.7x10^14/m2); PF maximum intensity 10.73; SAED shows high degree of grain refinement; single fine crystals show only matrix gamma phase without precipitates; elemental homogenization in lamellar substructure and fine grains; delta phase present on grain boundaries between grains; precipitate dissolution and elemental homogenization occurred prior to grain refinement",
+          "simplified": "Fine-grained layer (110 nm) at FIA from CDRX; precipitates dissolved in fine grain areas; delta phase present at grain boundaries; GND 23.7x10^14/m2"
+        },
+        "Main_Phase": "FCC (Gamma matrix)",
+        "Precipitates": [
+          {
+            "Phase_Type": "Gamma Prime (dissolved in FIA)",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Gamma Double Prime (dissolved in FIA)",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Delta Phase (present at grain boundaries)",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": 0.11,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "Fine_Grain_Size_in_FIA_nm": 110,
+          "GND_Density_in_FIA_m2": 2370000000000000.0,
+          "GND_Density_Unit": "23.7x10^14/m^2",
+          "PF_Maximum_Intensity": 10.73,
+          "Fine_Grain_Equivalent_Diameter_TEM_nm": 200
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Calculated_Fatigue_Limit",
+          "Test_Condition": "Based on Murakami sqrt(area) parameter model for interior defects (pore cluster)",
+          "Value_Numeric": 485.38,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Murakami model using pore cluster size"
+        },
+        {
+          "Property_Name": "Defect_Size",
+          "Test_Condition": "Pore cluster effective area used for Murakami calculation",
+          "Value_Numeric": 1490.17,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "um2",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Effective area of pore cluster for fatigue limit calculation"
+        },
+        {
+          "Property_Name": "Fatigue_Life",
+          "Test_Condition": "at room temperature; stress ratio R=-1; ultrasonic fatigue 20 kHz; cooling with compressed cold air",
+          "Value_Numeric": 173000000.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "cycles",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "Hourglass specimen",
+          "Note": "Pore cluster (subsurface) initiation; VHCF regime"
+        },
+        {
+          "Property_Name": "Fatigue_Stress_Amplitude",
+          "Test_Condition": "at room temperature; stress ratio R=-1; ultrasonic 20 kHz",
+          "Value_Numeric": 508.5,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "Hourglass specimen",
+          "Note": "Pore cluster initiation; VHCF regime"
+        }
+      ]
+    }
+  ]
+}
