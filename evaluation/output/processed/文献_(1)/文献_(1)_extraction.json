@@ -1,0 +1,741 @@
+{
+  "Paper_Metadata": {
+    "Paper_Title": "Additively Manufacturable High-Strength Aluminum Alloys with Coarsening-Resistant Microstructures Achieved via Rapid Solidification",
+    "DOI": "10.1002/adma.202509507"
+  },
+  "items": [
+    {
+      "Sample_ID": "ML-optimized-alloy-LPBF",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Al-0.4Er-1Zr-1.33Ni",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Er": 0.4,
+            "Zr": 1.0,
+            "Ni": 1.33,
+            "other": 97.27
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Equivalent to Al-2.33Er-3.19Zr-2.73Ni wt.%; Composition designed using CALPHAD-based ICME combined with Bayesian optimization"
+      },
+      "Process_Info": {
+        "Process_Category": "AM_LPBF",
+        "Process_Text": {
+          "original": "Powder manufactured by ultrasonic atomization; specimens fabricated by LPBF AM (laser powder bed fusion) with optimized power and scan speed parameters to achieve highest density; samples verified to be crack-free",
+          "simplified": "LPBF AM of ultrasonic atomized powder with optimized processing parameters, crack-free specimens"
+        },
+        "Equipment": "LPBF system (DMG MORI LT30 mentioned in acknowledgements)",
+        "Key_Params": {
+          "Powder_Manufacturing": "ultrasonic atomization",
+          "Process_Category": "AM_LPBF"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Non-textured equiaxed grains from EBSD; melt pool boundaries and grains visible at low magnification; primary Al3Ni phase uniformly distributed; L12 nanoprecipitates (1-5 nm) identified via TEM with {001}-type superlattice reflections; ordered nanoclusters within matrix with L12-type ordering; Zr-rich precipitates at grain boundaries; core-shell structure for Er and Zr distribution in L12 phases",
+          "simplified": "Equiaxed grains; L12 nanoprecipitates (1-5 nm) with coherent interfaces; Al3Ni primary phases; metastable ternary Al23Ni6M4 phases at grain boundaries"
+        },
+        "Main_Phase": "FCC Al",
+        "Precipitates": [
+          {
+            "Phase_Type": "L12 Al3(Er,Zr)",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Al3Ni",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Al23Ni6M4 ternary",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Al3Zr",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": 3.0,
+        "Precipitate_Volume_Fraction_pct": 17.0,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "SEM-EDS": "JEOL JSM7900F FE-SEM with Oxford Ultim Max 100 mm2 detector; Al3Ni and Zr-rich phases identified; ternary phases (Er+Ni) at grain boundaries",
+          "STEM-HAADF": "Thermo Fisher Themis Z 60-300 kV at 300 kV; L12 nanoprecipitates with superlattice reflections; atomic resolution EDS maps showing Al/Er/Zr segregation",
+          "APT": "Cameca LEAP 4000 HR; voltage-pulsing mode at 40 K; Zr-rich L12 precipitates confirmed; ternary Al-Ni-Er/Zr phase composition verified",
+          "EBSD": "ThermoFisher Apreo HiVac SEM with EDAX Hikari EBSD detector at 15 kV, step size 0.045 um; equiaxed grains, non-textured",
+          "CT-Scan": "Zeiss Xradia Crystal CT; no cracks or pores detected in scanned volumes",
+          "L12_Nanocluster_Area_avg_nm2": 1.9,
+          "L12_Nanocluster_Radius_avg_nm": 0.7,
+          "L12_Nanocluster_Area_Fraction_pct": 17.0,
+          "Grain_Boundary_Precipitate_Area_avg_um2": 3.87,
+          "Grain_Boundary_Precipitate_Major_Axis_avg_nm": 104.0,
+          "Grain_Boundary_Precipitate_Area_Fraction_pct": 9.1
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at room temperature; as-built condition",
+          "Value_Numeric": 372.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "image",
+          "Test_Specimen": "ASTM E8 type specimens from 6x6x6 mm3 cubes",
+          "Note": "As-built tensile strength"
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at room temperature; as-built condition",
+          "Value_Numeric": 395.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "image",
+          "Test_Specimen": null,
+          "Note": "Peak strength reached after aging; as-built strength lower"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at room temperature; as-built condition",
+          "Value_Numeric": 19.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Ductility with 25% sacrifice in strength from peak aged condition"
+        },
+        {
+          "Property_Name": "Hardness_HV",
+          "Test_Condition": "at room temperature; parallel to build direction and on top of samples",
+          "Value_Numeric": 180.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "HV",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "image",
+          "Test_Specimen": null,
+          "Note": "As-built condition; comparable to wrought Al 7075"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "ML-optimized-alloy-aged-8h",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Al-0.4Er-1Zr-1.33Ni",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Er": 0.4,
+            "Zr": 1.0,
+            "Ni": 1.33,
+            "other": 97.27
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Equivalent to Al-2.33Er-3.19Zr-2.73Ni wt.%; Peak aged condition at 400 C for 8 hours"
+      },
+      "Process_Info": {
+        "Process_Category": "AM_LPBF",
+        "Process_Text": {
+          "original": "LPBF AM specimens (28x6x6 and 6x6x6 mm3) subsequently aged at 400 C for 8 hours (isothermal aging); power and scan speed optimized for highest density",
+          "simplified": "LPBF AM followed by aging at 400 C for 8 hours"
+        },
+        "Equipment": "LPBF system (DMG MORI LT30 mentioned)",
+        "Key_Params": {
+          "Aging_Temperature_K": 673.15,
+          "Aging_Time_h": 8,
+          "Powder_Manufacturing": "ultrasonic atomization",
+          "Process_Category": "AM_LPBF"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "L12 nanoprecipitates (1-5 nm) with {001}-type superlattice reflections in FFT; metastable ternary Al23Ni6M4 phases transformed to L12 during aging; ordered nanoclusters within matrix with average area 1.90 nm2 and radius 0.70 nm; Al3Ni primary phases at grain boundaries; Zr-rich precipitates at grain boundaries with core-shell Er/Zr distribution; 79% of strength at service temperature governed by nano-meter scale L12 precipitates",
+          "simplified": "L12 nanoprecipitates (1-5 nm) formed from transformation of metastable ternary phases during aging; coarsening-resistant microstructure"
+        },
+        "Main_Phase": "FCC Al",
+        "Precipitates": [
+          {
+            "Phase_Type": "L12 Al3(Er,Zr)",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Al3Ni",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Al23Ni6M4 ternary",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": 3.0,
+        "Precipitate_Volume_Fraction_pct": 17.0,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "STEM-HAADF": "L12 nanoprecipitates with {001}-type superlattice reflections; atomic resolution showing ordered bright/dim {110} planes; core-shell structure for Er and Zr distribution",
+          "APT": "Zr-rich precipitates segmented at 3.0% Zr isosurface; L12 Al3(Er,Zr) precipitation confirmed; ternary phase composition near Al23Ni6M4 predicted",
+          "L12_Nanocluster_Area_avg_nm2": 1.9,
+          "L12_Nanocluster_Radius_avg_nm": 0.7,
+          "L12_Nanocluster_Area_Fraction_pct": 17.0,
+          "Ternary_Phase_Transformed_To_L12": true
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at room temperature; aged 8h at 400 C",
+          "Value_Numeric": 395.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM E8 type specimens",
+          "Note": "Peak tensile strength; 50% higher than Gong et al.'s benchmark printable Al alloy (275 MPa)"
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at room temperature; aged 8h at 400 C",
+          "Value_Numeric": 395.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "image",
+          "Test_Specimen": null,
+          "Note": "Peak tensile strength"
+        },
+        {
+          "Property_Name": "Hardness_HV",
+          "Test_Condition": "at room temperature; peak hardness after 8-10h aging at 400 C",
+          "Value_Numeric": 200.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "HV",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "image",
+          "Test_Specimen": null,
+          "Note": "Peak hardness; 50% higher than AM benchmark alloy (133 HV); higher than wrought Al 7075 under identical conditions"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "ML-optimized-alloy-aged-48h",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Al-0.4Er-1Zr-1.33Ni",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Er": 0.4,
+            "Zr": 1.0,
+            "Ni": 1.33,
+            "other": 97.27
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Equivalent to Al-2.33Er-3.19Zr-2.73Ni wt.%; Aged 48 hours at 400 C showing strength stability"
+      },
+      "Process_Info": {
+        "Process_Category": "AM_LPBF",
+        "Process_Text": {
+          "original": "LPBF AM specimens subsequently aged at 400 C for 48 hours (isothermal aging); same optimized LPBF parameters as 8h aged samples",
+          "simplified": "LPBF AM followed by aging at 400 C for 48 hours"
+        },
+        "Equipment": "LPBF system",
+        "Key_Params": {
+          "Aging_Temperature_K": 673.15,
+          "Aging_Time_h": 48,
+          "Powder_Manufacturing": "ultrasonic atomization",
+          "Process_Category": "AM_LPBF"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Coarsening-resistant L12 phases maintained at nanometer scale after extended aging; strength maintained without significant decrease after 48h aging at 400 C",
+          "simplified": "L12 phases maintain nanometer scale during extended aging showing coarsening resistance"
+        },
+        "Main_Phase": "FCC Al",
+        "Precipitates": [
+          {
+            "Phase_Type": "L12 Al3(Er,Zr)",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Al3Ni",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "Coarsening_Resistance_Maintained": true
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at room temperature; aged 48h at 400 C",
+          "Value_Numeric": 395.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "image",
+          "Test_Specimen": null,
+          "Note": "Strength maintained without significant decrease"
+        },
+        {
+          "Property_Name": "Hardness_HV",
+          "Test_Condition": "at room temperature; after 48h aging at 400 C",
+          "Value_Numeric": 200.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "HV",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "image",
+          "Test_Specimen": null,
+          "Note": "Hardness maintained without significant decrease from 8h peak condition"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "Control-WO-ternary",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Al-0.4Er-1Zr",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Er": 0.4,
+            "Zr": 1.0,
+            "other": 98.6
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Identical molar percentage of Er and Zr as ML-optimized alloy but without Ni; L12 phases form directly during rapid solidification"
+      },
+      "Process_Info": {
+        "Process_Category": "Casting",
+        "Process_Text": {
+          "original": "Control sample fabricated by induction melting and laser scanning to mimic AM conditions; processed identically to ML-optimized alloy except without Ni",
+          "simplified": "Induction melted and laser scanned control sample without Ni addition"
+        },
+        "Equipment": "Induction melting furnace with laser scanning",
+        "Key_Params": {
+          "Process_Category": "Laser_Scanning",
+          "Solidification_Mode": "Rapid solidification mimicking AM"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "L12 phases form directly during rapid solidification (no metastable ternary phase); SEM-EDS shows several large clusters of micrometer-scale Zr-rich phases within grain interiors; these clusters are not present in the Ni-containing designed composition",
+          "simplified": "Direct L12 formation during rapid solidification; micrometer-scale Zr-rich clusters inside grains"
+        },
+        "Main_Phase": "FCC Al",
+        "Precipitates": [
+          {
+            "Phase_Type": "L12 Al3Zr",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Zr-rich clusters",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "SEM-EDS": "Large clusters of micrometer-scale Zr-rich areas inside grains identified",
+          "Zr_rich_clusters_micrometer_scale": true,
+          "Clusters_inside_grains": true
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Hardness_HV",
+          "Test_Condition": "at room temperature; laser-scanned condition",
+          "Value_Numeric": 110.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "HV",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "image",
+          "Test_Specimen": null,
+          "Note": "34% lower than ML-optimized composition with ternary phases; W/O ternary control in Figure 1"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "ML-optimized-alloy-cast",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Al-0.4Er-1Zr-1.33Ni",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Er": 0.4,
+            "Zr": 1.0,
+            "Ni": 1.33,
+            "other": 97.27
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Same composition as ML-optimized but processed by conventional induction melting (slow solidification) for comparison"
+      },
+      "Process_Info": {
+        "Process_Category": "Casting",
+        "Process_Text": {
+          "original": "Induction melting (casting) of the same alloy composition; slower solidification compared to AM and laser scanning; SEM-EDS shows large micrometer-size ternary phases (Figure S15, Supporting Information)",
+          "simplified": "Conventional induction melting (casting) - slow solidification for comparison with rapid solidification AM route"
+        },
+        "Equipment": "Induction melting furnace",
+        "Key_Params": {
+          "Process_Category": "Casting",
+          "Solidification_Mode": "Slow solidification (induction melting)"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Large micrometer-size ternary phases (Al23Ni6M4) and Al3M phases formed during slow solidification (Figure S15, Supporting Information); slower solidification via induction melting leads to microscale ternary and Al3M phases",
+          "simplified": "Microscale ternary and Al3M phases due to slow solidification"
+        },
+        "Main_Phase": "FCC Al",
+        "Precipitates": [
+          {
+            "Phase_Type": "Al23Ni6M4 ternary",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Al3M phases",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "SEM-EDS": "Large micrometer-size ternary phases identified; Figure S15",
+          "Microscale_ternary_phases": true
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Hardness_HV",
+          "Test_Condition": "at room temperature; after aging 8h at 400 C",
+          "Value_Numeric": 40.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "HV",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "image",
+          "Test_Specimen": null,
+          "Note": "80% lower than aged AM sample (200 HV); demonstrates concept that rapid solidification enables submicron-scale ternary phases for strength enhancement"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "Benchmark-alloy-1",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Reference",
+        "Alloy_Name_Raw": "Alloy 1 (benchmark printable Al alloy)",
+        "Nominal_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Er": 1.35,
+            "Zr": 1.15,
+            "Y": 0.25,
+            "Yb": 0.73,
+            "Ni": 2.14,
+            "other": 94.38
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Benchmark printable Al alloy from Gong et al. (PCT/US2018/062761); designed without ML techniques; represents prior art in same compositional space"
+      },
+      "Process_Info": {
+        "Process_Category": "Casting",
+        "Process_Text": {
+          "original": "Same processing methodology as ML-optimized alloy for valid comparison; induction melted and laser scanned or AM fabricated",
+          "simplified": "Same processing route as ML-optimized alloy (induction melting/laser scanning or AM)"
+        },
+        "Equipment": null,
+        "Key_Params": {
+          "Process_Category": "AM_LPBF",
+          "Solidification_Mode": "Rapid solidification"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Benchmark alloy with L12 and ternary phases; designed within same compositional space and target properties as ML-optimized alloy but without ML techniques; has lower L12 content and higher coarsening metric than ML-optimized design",
+          "simplified": "L12 strengthened microstructure with ternary phases; lower L12 content and higher coarsening rate than ML-optimized"
+        },
+        "Main_Phase": "FCC Al",
+        "Precipitates": [
+          {
+            "Phase_Type": "L12 Al3M",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Ternary phases",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {}
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at room temperature; aged condition",
+          "Value_Numeric": 275.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Gong et al.'s benchmark printable Al alloy; ML-optimized alloy has 50% higher yield strength (395 MPa vs 275 MPa)"
+        },
+        {
+          "Property_Name": "Hardness_HV",
+          "Test_Condition": "at room temperature; after aging 8h at 400 C; laser-scanned condition",
+          "Value_Numeric": 100.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "HV",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "image",
+          "Test_Specimen": null,
+          "Note": "ML-optimized alloy has 50% higher hardness (147 HV vs 100 HV after laser scanning; 200 HV vs 133 HV after AM)"
+        },
+        {
+          "Property_Name": "Hardness_HV",
+          "Test_Condition": "at room temperature; after aging 8h at 400 C; AM condition",
+          "Value_Numeric": 133.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "HV",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "image",
+          "Test_Specimen": null,
+          "Note": "AM benchmark; ML-optimized has 50% higher hardness (200 HV vs 133 HV)"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "Composition-matrix-9-samples",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Al-0.4Er-1Zr-1.33Ni (laser-scanned composition matrix)",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Al": 25.0,
+            "Er": 25.0,
+            "Zr": 25.0,
+            "Ni": 25.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Matrix of 9 compositions surrounding predicted optimum with varying Er, Zr, Y, Yb, Ni concentrations (at.% ranges: Er=[0-0.4], Zr=[0-2], Y=[0-1], Yb=[0-1], Ni=[0-4]); samples fabricated by induction melting and laser scanning for rapid validation; Ni=1.33 and Zr=1 showed highest hardness increase with aging"
+      },
+      "Process_Info": {
+        "Process_Category": "Casting",
+        "Process_Text": {
+          "original": "Rapid experimental validation workflow; small-scale samples fabricated by induction melting, then laser scanning to mimic heating and solidification conditions of AM; multiple path laser scanning mimicking printing one layer",
+          "simplified": "Induction melting followed by laser scanning to rapidly validate composition predictions; 9 compositions tested"
+        },
+        "Equipment": "Induction melting furnace with laser scanning",
+        "Key_Params": {
+          "Process_Category": "Laser_Scanning",
+          "Solidification_Mode": "Rapid solidification mimicking AM",
+          "Validation_Approach": "Rapid experimental workflow"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Prediction validated with no cracks observed after solidification for all 9 samples; CT-scan showed no cracks or pores in highest HCS samples; Al 7075 comparison showed clear hot cracking",
+          "simplified": "Crack-free solidification for all 9 compositions; validates printability predictions"
+        },
+        "Main_Phase": "FCC Al",
+        "Precipitates": [
+          {
+            "Phase_Type": "L12 Al3M",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Ternary phases",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Al3Ni",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Al3Zr",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "CT-Scan": "No cracks or pores detected in highest HCS composition samples (Al-0.4Er-1Zr-1.33Ni and Al-0.4Er-2Zr-0Ni); Al 7075 showed 1.43% defect density",
+          "Composition_Matrix_Size": 9,
+          "Highest_Performer": "Ni=1.33, Zr=1 at.%",
+          "HCS_All_Compositions": "<0.05 (vs 1.13 for Al 7075)"
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Hardness_HV",
+          "Test_Condition": "at room temperature; aged 8h at 400 C; best performing composition (Ni=1.33, Zr=1 at.%)",
+          "Value_Numeric": 147.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "HV",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "image",
+          "Test_Specimen": null,
+          "Note": "50% higher than benchmark alloy (100 HV) after laser scanning validation; highest increase in hardness with aging among all 9 compositions"
+        }
+      ]
+    }
+  ]
+}

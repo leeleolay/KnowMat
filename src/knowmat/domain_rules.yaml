@@ -173,6 +173,8 @@ property_name_mapping:
   hardness hv: Hardness_HV
   hardness (hv): Hardness_HV
   microhardness: Hardness_HV
+  nanoindentation hardness: Nanoindentation_Hardness
+  instrumented indentation hardness: Nanoindentation_Hardness
   hardness: Hardness_HV
   kic: Fracture_Toughness_KIC
   fracture toughness kic: Fracture_Toughness_KIC
@@ -201,9 +203,14 @@ process_category_keywords:
     - directed energy deposition
     - laser-engineered net shaping
     - laser cladding
+    - laam
+    - laser-aided additive manufacturing
+    - laser aided additive manufacturing
+    - laser metal deposition
   AM_LPBF:
     - lpbf
     - l-pbf
+    - pbf-lb
     - laser powder bed fusion
     - powder bed fusion
   AM_SLM:
@@ -216,6 +223,26 @@ process_category_keywords:
   EBM:
     - ebm
     - electron beam melting
+    - electron beam powder bed fusion
+    - powder bed fusion electron beam
+    - pbf-eb
+    - arcam
+  Powder_Metallurgy:
+    - powder metallurgy
+    - powder-metallurgy
+    - pm route
+    - hot isostatic pressing
+    - hot isostatic pressed
+    - hipped
+    - extruded
+    - extrusion
+    - isothermal forging
+    - isothermally forged
+    - sintered
+  Wrought:
+    - wrought
+    - wrought alloy
+    - wrought aluminum
   SPS:
     - sps
     - spark plasma sintering
@@ -262,9 +289,11 @@ parameter_patterns:
   Laser_Power_W:
     - "(?:laser\\s+power|power)\\s*[=:]\\s*(\\d+(?:\\.\\d+)?)\\s*W"
     - "P\\s*=\\s*(\\d+(?:\\.\\d+)?)\\s*W"
+    - "(?:laser\\s+)?power\\s*(?:of|was|is|set\\s+to)?\\s*[:=]?\\s*(\\d+(?:\\.\\d+)?)\\s*W"
   Scan_Speed_mm_s:
     - "(?:scan(?:ning)?\\s+speed|scanning\\s+velocity)\\s*[=:]\\s*(\\d+(?:\\.\\d+)?)\\s*mm/s"
     - "v\\s*=\\s*(\\d+(?:\\.\\d+)?)\\s*mm/s"
+    - "(?:scan(?:ning)?\\s+speed|scan(?:ning)?\\s+velocity)\\s*(?:of|was|is|set\\s+to)?\\s*[:=]?\\s*(\\d+(?:\\.\\d+)?)\\s*mm/s"
   Layer_Thickness_um:
     - "layer\\s+thickness\\s*[=:]\\s*(\\d+(?:\\.\\d+)?)\\s*(?:μm|um|µm)"
     - "t\\s*=\\s*(\\d+(?:\\.\\d+)?)\\s*(?:μm|um|µm)"
@@ -272,10 +301,17 @@ parameter_patterns:
     - "hatch(?:ing)?\\s+spac(?:e|ing)\\s*[=:]\\s*(\\d+(?:\\.\\d+)?)\\s*(?:μm|um|µm)"
     - "line\\s+spacing\\s*[=:]\\s*(\\d+(?:\\.\\d+)?)\\s*(?:μm|um|µm)"
     - "h\\s*=\\s*(\\d+(?:\\.\\d+)?)\\s*(?:μm|um|µm)"
+    - "(?:hatch(?:ing)?\\s+spac(?:e|ing)|line\\s+spacing)\\s*(?:of|was|is|set\\s+to)?\\s*[:=]?\\s*(\\d+(?:\\.\\d+)?)\\s*(?:μm|um|µm)"
   Preheat_Temperature_C:
     - "(?:preheat|preheating|substrate)\\s+(?:temperature|temp)\\s*[=:]\\s*(\\d+(?:\\.\\d+)?)\\s*°?\\s*C"
   Oxygen_Content_ppm:
     - "oxygen\\s+(?:content\\s+)?(?:below|<|under)?\\s*(\\d+)\\s*ppm"
+  Beam_Current_mA:
+    - "(?:beam\\s+current|current)\\s*[=:]\\s*(\\d+(?:\\.\\d+)?)\\s*mA"
+    - "(?:beam\\s+current|current)\\s*(?:of|was|is|set\\s+to)?\\s*[:=]?\\s*(\\d+(?:\\.\\d+)?)\\s*mA"
+  Acceleration_Voltage_kV:
+    - "(?:acceleration|accelerating)\\s+voltage\\s*[=:]\\s*(\\d+(?:\\.\\d+)?)\\s*kV"
+    - "(?:acceleration|accelerating)\\s+voltage\\s*(?:of|was|is|set\\s+to)?\\s*[:=]?\\s*(\\d+(?:\\.\\d+)?)\\s*kV"
 
 # Configurable commercial alloy aliases and nominal composition maps.
 # These are used as a conservative fallback only when explicit nominal/measured

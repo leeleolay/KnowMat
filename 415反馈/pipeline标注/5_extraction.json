@@ -1,0 +1,344 @@
+{
+  "Paper_Metadata": {
+    "Paper_Title": "Qiu, Maik Punke², Yuan Tian³, Ying Han³, Siqi Wang1, Yishi Su4, Marco Salvalaglio2,5,",
+    "DOI": "10.5061/dryad.0k6djhb8v"
+  },
+  "items": [
+    {
+      "Sample_ID": "Al-ATGB-MD",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Al",
+        "Nominal_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Pure Al; FCC crystal structure. Grain boundary systems studied: Σ27 [110] ATGB, Σ11 [110] ATGB, Σ19 [110] ATGB, Σ25 [100] ATGB, Σ39 [111] STGB, ATGB (φθ = 9.8°), SMGB (φρ = 36.3°), AMGB, and low-angle Σ25 ATGB."
+      },
+      "Process_Info": {
+        "Process_Category": "HeatTreat",
+        "Process_Text": {
+          "original": "Molecular dynamics (MD) simulations at 0.5 Tm (Al melting point); MD bicrystal configurations include Σ27 [110] ATGB (driven by γ), Σ11 [110] ATGB (φθ = 46.7°), Σ19 [110] ATGB, Σ25 [100] ATGB (driven by τ), Σ39 [111] STGB, ATGB (φθ = 9.8°), SMGB (φρ = 36.3°), and AMGB (equivalent to combining φθ = 9.8° and φρ = 36.3°); driving forces of at least three different values, each simulation repeated at least three times with different initial conditions; oscillatory driving force ψ = 15 × (−1)^{|t|} m eV/atom at frequency f = 1 ns⁻¹; oscillatory shear stress τ = 150 × (−1)^{|t|} MPa at f = 1 ns⁻¹; cyclic annealing simulations.",
+          "simplified": "MD simulations of Al bicrystals at 0.5 Tm; multiple GB types (ATGB, STGB, SMGB, AMGB) driven by synthetic driving forces; oscillatory forcing experiments."
+        },
+        "Equipment": "MD simulation package",
+        "Key_Params": {
+          "Simulation_Type": "MD",
+          "Material": "Al",
+          "Temperature_fraction_Tm": 0.5,
+          "Driving_Force_Type": "γ_or_τ",
+          "Oscillatory_Force_Amplitude_psi_m_eV_atom": "15*(-1)^{|t|}",
+          "Oscillatory_Stress_Amplitude_tau_MPa": "150*(-1)^{|t|}",
+          "Oscillatory_Frequency_ns1": 1.0,
+          "Grain_Boundary_Types": [
+            "Σ27 [110] ATGB",
+            "Σ11 [110] ATGB",
+            "Σ19 [110] ATGB",
+            "Σ25 [100] ATGB",
+            "Σ39 [111] STGB",
+            "ATGB (φθ=9.8°)",
+            "SMGB (φρ=36.3°)",
+            "AMGB"
+          ]
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "ATGB structures dissociate into different constituent defects (e.g., twin boundary + another GB for Σ27; two sets of facets for Σ11; different facet sets for Σ19) when migrating in opposite directions; Σ25 low-angle ATGB migrates through glide of different sets of GB dislocations in opposite directions; directional migration involves dissociation of GB into two types of constituent defects with distinct energy barriers; disconnection nucleation, propagation, and annihilation analyzed via minimum energy paths (MEPs); ATGB MEPs are nonsymmetric.",
+          "simplified": "ATGBs dissociate into distinct constituent defects during migration; migration mechanism depends on driving force direction; disconnection glide controls migration; ATGB MEPs are nonsymmetric, giving direction-dependent mobility."
+        },
+        "Main_Phase": "FCC",
+        "Precipitates": [],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {}
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "GB_Migration_Rate_force_direction_difference",
+          "Test_Condition": "MD at 0.5 Tm; Σ39 ATGB; oscillatory ψ",
+          "Value_Numeric": 0.523,
+          "Value_Range": null,
+          "Value_StdDev": 0.204,
+          "Unit": "m/s",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "image",
+          "Test_Specimen": "Σ39 [111] ATGB Al bicrystal",
+          "Note": "Reconstructed from |v+| − |v−| × 10 = 0.523 from MD data in Fig. 2G"
+        },
+        {
+          "Property_Name": "GB_Velocity_under_Cyclic_Annealing",
+          "Test_Condition": "PFC simulation; Σ39 [111] ATGB; cyclic annealing f = 3.7 × 10⁻³ s⁻¹",
+          "Value_Numeric": 1.5e-08,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "m/s",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "Σ39 [111] ATGB Al bicrystal (PFC)",
+          "Note": "Unidirectional GB migration under cyclic annealing; consistent with oscillatory ψ MD result of 0.523 ± 0.204 m/s"
+        },
+        {
+          "Property_Name": "Grain_Growth_Rate_Enhancement",
+          "Test_Condition": "MD at 0.6 Tm; oscillatory shear stress τ with zero mean and amplitude below yield strength; f = 1.0 ns⁻¹; 3D polycrystalline Al",
+          "Value_Numeric": 2.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "dimensionless ratio",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "3D polycrystalline Al",
+          "Note": "Grain growth rate with oscillatory shear is ~2× that without oscillatory shear; no substantial dislocation plasticity or twinning observed"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "Al-STGB-PFC",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Al",
+        "Nominal_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Pure Al; FCC crystal structure. Σ39 [111] STGB studied under PFC cyclic annealing and oscillatory forcing."
+      },
+      "Process_Info": {
+        "Process_Category": "HeatTreat",
+        "Process_Text": {
+          "original": "PFC simulations for Σ39 [111] STGB under cyclic annealing at frequency 3.7 × 10⁻³ s⁻¹; temperature cycling between T_high and T_low; oscillatory driving force ψ = 15 × (−1)^{|t|} m eV/atom at f = 1 ns⁻¹; oscillatory shear stress τ = 150 × (−1)^{|t|} MPa at f = 1 ns⁻¹.",
+          "simplified": "PFC and MD simulations of Al Σ39 [111] STGB under oscillatory forcing and cyclic annealing; zero net drift expected."
+        },
+        "Equipment": "PFC simulation; MD simulation",
+        "Key_Params": {
+          "Simulation_Type": "PFC_MD",
+          "Material": "Al",
+          "Temperature_fraction_Tm": 0.6,
+          "Driving_Force_Type": "oscillatory_ψ_or_τ",
+          "Cyclic_Annealing_Frequency_s1": 0.0037,
+          "Grain_Boundary_Type": "Σ39 [111] STGB"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "STGB is symmetric by both mirror (m') and 2'-fold rotation symmetries; disconnection structures and glide events for upward and downward terrace migration are related by mirror and 2'-fold symmetries; STGB MEP is symmetric about the midpoint of the path.",
+          "simplified": "STGB has symmetric disconnection structure; symmetric MEP leads to direction-independent GB mobility."
+        },
+        "Main_Phase": "FCC",
+        "Precipitates": [],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {}
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "GB_Migration_Rate_Ratio",
+          "Test_Condition": "MD for STGB and SMGB at 0.5–0.6 Tm; |v+/v−| ≈ 1 within standard deviation",
+          "Value_Numeric": 1.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "Σ39 [111] STGB and SMGB",
+          "Note": "STGB and SMGB show direction-independent mobility within statistical uncertainty"
+        },
+        {
+          "Property_Name": "GB_Migration_Rate_under_Oscillatory_Forcing",
+          "Test_Condition": "MD at 0.6 Tm; oscillatory ψ or τ with zero mean; Σ39 [111] STGB",
+          "Value_Numeric": 0.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "m/s",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "Σ39 [111] STGB Al bicrystal",
+          "Note": "STGB position fluctuates on oscillatory loading but mean velocity is zero (symmetric MEP)"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "Cu-GB-MD",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Cu",
+        "Nominal_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Pure Cu; FCC crystal structure. Grain boundary systems: Σ27 [110] ATGB, Σ99 [110] STGB."
+      },
+      "Process_Info": {
+        "Process_Category": "Unknown",
+        "Process_Text": {
+          "original": "MD simulations of Cu bicrystals; Σ27 [110] ATGB driven by γ (free energy density jump); Σ99 [110] STGB driven by τ (shear stress); driving forces of at least three different values, each simulation repeated at least three times with different initial conditions.",
+          "simplified": "MD simulations of Cu bicrystals at various driving forces; Σ27 ATGB driven by γ; Σ99 STGB driven by τ."
+        },
+        "Equipment": "MD simulation package",
+        "Key_Params": {
+          "Simulation_Type": "MD",
+          "Material": "Cu",
+          "Grain_Boundary_Types": [
+            "Σ27 [110] ATGB",
+            "Σ99 [110] STGB"
+          ],
+          "Driving_Force_Type_Σ27": "γ (free energy density jump)",
+          "Driving_Force_Type_Σ99": "τ (shear stress)"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Σ27 ATGB dissociates into a twin boundary and another GB when migrating in one direction while remaining undissociated when migration is in the opposite direction; Σ99 STGB is macroscopically symmetric but exhibits a 9R phase, microscopically nonsymmetric—the width of the 9R phase differs when migrating in different directions.",
+          "simplified": "Σ27 ATGB shows structural dissociation during migration in one direction; Σ99 STGB has asymmetric 9R phase structure affecting migration."
+        },
+        "Main_Phase": "FCC",
+        "Precipitates": [],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {}
+      },
+      "Properties_Info": []
+    },
+    {
+      "Sample_ID": "Ni-ATGB-STEM",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Ni bicrystal",
+        "Nominal_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Ni bicrystal; upper grain zone axis close to [112], lower grain zone axis close to [110]; grain boundary is nonsymmetric asymmetric tilt grain boundary (ATGB). FCC crystal structure."
+      },
+      "Process_Info": {
+        "Process_Category": "HeatTreat",
+        "Process_Text": {
+          "original": "In situ STEM observation of Ni bicrystal ATGB migration under constant and oscillatory annealing temperatures; sample initially annealed at constant 450°C (high temperature); then at constant 400±50°C; then cyclic annealing between 350°C and 450°C with frequency 0.33 Hz (from 20 to 129 min); GB position tracked over time.",
+          "simplified": "In situ STEM of Ni bicrystal ATGB under constant and cyclic annealing (350–450°C, 0.33 Hz)."
+        },
+        "Equipment": "STEM (scanning transmission electron microscope)",
+        "Key_Params": {
+          "Experiment_Type": "in_situ_STEM",
+          "Material": "Ni bicrystal",
+          "Upper_Grain_Axis": "[112]",
+          "Lower_Grain_Axis": "[110]",
+          "Grain_Boundary_Type": "nonsymmetric ATGB",
+          "Constant_Annealing_Temperature_C": "400 ± 50",
+          "High_Temperature_Annealing_C": 450,
+          "Cyclic_Annealing_Tlow_C": 350,
+          "Cyclic_Annealing_Thigh_C": 450,
+          "Cyclic_Annealing_Frequency_Hz": 0.33
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Upper grain zone axis close to [112], lower grain zone axis close to [110]; grain boundary is nonsymmetric; migration observed in real time under in situ annealing conditions.",
+          "simplified": "Nonsymmetric ATGB between [112] and [110] oriented grains; unidirectional migration observed under cyclic annealing."
+        },
+        "Main_Phase": "FCC",
+        "Precipitates": [],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {}
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "GB_Migration_Rate_constant_T",
+          "Test_Condition": "at 400±50°C; constant temperature annealing; Ni bicrystal ATGB",
+          "Value_Numeric": 0.08,
+          "Value_Range": null,
+          "Value_StdDev": 0.05,
+          "Unit": "nm/min",
+          "Test_Temperature_K": 673.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "Ni bicrystal ATGB (upper: [112], lower: [110])",
+          "Note": "Small migration likely driven by surface energy difference of two grains"
+        },
+        {
+          "Property_Name": "GB_Migration_Rate_oscillatory_T",
+          "Test_Condition": "Cyclic annealing 350–450°C, f = 0.33 Hz; Ni bicrystal ATGB",
+          "Value_Numeric": 1.5e-08,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "m/s",
+          "Test_Temperature_K": 723.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "Ni bicrystal ATGB (upper: [112], lower: [110])",
+          "Note": "Unidirectional migration under cyclic annealing; ~5.61 ± 0.4 × 10⁻⁹ m/s; 200× faster than constant T migration; confirms GB Brownian ratchet behavior"
+        }
+      ]
+    }
+  ]
+}

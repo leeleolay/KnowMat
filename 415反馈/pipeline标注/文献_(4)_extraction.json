@@ -1,0 +1,710 @@
+{
+  "Paper_Metadata": {
+    "Paper_Title": "Mechanical field assisted additive manufacturing of ultrahigh strength aluminum alloy",
+    "DOI": "10.1088/2631-7990/adbb95"
+  },
+  "items": [
+    {
+      "Sample_ID": "LPBF",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "AlMgSc",
+        "Nominal_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Al": 92.1,
+            "Mg": 4.7,
+            "Sc": 1.3,
+            "Zr": 0.6,
+            "Mn": 0.8,
+            "Si": 0.01,
+            "other": 0.49
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Gas-atomized spherical AlMgSc powder with particle size 21.8-61.9 μm (37 μm average)"
+      },
+      "Process_Info": {
+        "Process_Category": "AM_LPBF",
+        "Process_Text": {
+          "original": "LPBF process using SLM 125 system; substrate preheated to 100°C; oxygen level below 0.1 vol% via argon gas flow; volumetric energy density range 55.6-648.2 J/mm³; optimal Eν of 185.2 J/mm³ achieved 99.69% relative density",
+          "simplified": "LPBF with SLM 125, substrate 100°C, Ar atmosphere, Eν ~185 J/mm³"
+        },
+        "Equipment": "SLM 125 system",
+        "Key_Params": {
+          "Laser_Power_W": null,
+          "Scanning_Speed_mm_s": null,
+          "Layer_Thickness_um": null,
+          "Hatch_Spacing_um": null,
+          "Build_Plate_Temperature_K": 373.15,
+          "Protective_Atmosphere": "Argon",
+          "Volumetric_Energy_Density_J_mm3": "55.6-648.2",
+          "Oxygen_Content_ppm": null,
+          "Powder_Size_avg_um": 37
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Multimodal grains with coarse columnar grains (CCGs), coarse equiaxed grains (CEGs), and fine equiaxed grains (FEGs). FEGs fill melt pool boundaries (65% area) with average diameter 1.249±0.129 μm. CGs in melt pool center with sizes 1.5-7.8 μm (avg 1.86±0.48 μm). LAGBs content 3.5%. Mg enrichment network at grain boundaries. Dislocation density 3.14×10¹⁴ m⁻².",
+          "simplified": "Multimodal grains: FEGs (~1.25 μm, 65%) + CGs (~1.86 μm); LAGBs 3.5%; dislocation density 3.14×10¹⁴ m⁻²"
+        },
+        "Main_Phase": "FCC Al",
+        "Precipitates": [
+          {
+            "Phase_Type": "Al3(Sc,Zr)",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "MgO",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": 0.309,
+        "Relative_Density_pct": 99.69,
+        "Grain_Size_avg_um": 1.249,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {}
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at room temperature; loading speed 1 mm/min; INSTRON 68MT-50",
+          "Value_Numeric": 429.0,
+          "Value_Range": null,
+          "Value_StdDev": 20.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": 1.0,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "2 mm thick; gauge length 6 mm (AVE)",
+          "Note": "Discontinuous yielding; PLC effect observed"
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at room temperature; loading speed 1 mm/min",
+          "Value_Numeric": 447.0,
+          "Value_Range": null,
+          "Value_StdDev": 19.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": 1.0,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "2 mm thick; gauge length 6 mm",
+          "Note": null
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at room temperature; loading speed 1 mm/min; non-contact AVE extensometer",
+          "Value_Numeric": 8.9,
+          "Value_Range": null,
+          "Value_StdDev": 1.5,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": 1.0,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "2 mm thick; gauge length 6 mm",
+          "Note": "Break elongation; PLC effect observed"
+        },
+        {
+          "Property_Name": "Residual_Stress",
+          "Test_Condition": "X-ray residual stress analyzer (X-350A); Sid-inclination method; depths 0-800 μm",
+          "Value_Numeric": 167.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Tensile residual stress (TRS); positive value indicates tension"
+        },
+        {
+          "Property_Name": "GND_Density",
+          "Test_Condition": "calculated from EBSD",
+          "Value_Numeric": 314000000000000.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "m⁻²",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Geometrically necessary dislocations"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "LPBF-HT",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "AlMgSc",
+        "Nominal_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Al": 92.1,
+            "Mg": 4.7,
+            "Sc": 1.3,
+            "Zr": 0.6,
+            "Mn": 0.8,
+            "Si": 0.01,
+            "other": 0.49
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "LPBF sample followed by aging treatment at 300°C for 4 h"
+      },
+      "Process_Info": {
+        "Process_Category": "AM_LPBF",
+        "Process_Text": {
+          "original": "LPBF process using SLM 125 system; substrate preheated to 100°C; followed by aging treatment at 300°C for 4 h with furnace cooling under high-purity argon protection in TL1200 tube furnace",
+          "simplified": "LPBF (SLM 125) + aging at 300°C/4h/furnace cooling/Ar"
+        },
+        "Equipment": "SLM 125 system; TL1200 tube furnace",
+        "Key_Params": {
+          "Laser_Power_W": null,
+          "Scanning_Speed_mm_s": null,
+          "Layer_Thickness_um": null,
+          "Hatch_Spacing_um": null,
+          "Build_Plate_Temperature_K": 373.15,
+          "Protective_Atmosphere": "Argon",
+          "Aging_Temperature_K": 573.15,
+          "Aging_Time_h": 4,
+          "Cooling_Medium": "Furnace cooling",
+          "Volumetric_Energy_Density_J_mm3": "55.6-648.2",
+          "Oxygen_Content_ppm": null
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Multimodal grains with increased coarse grains compared to LPBF. FEGs 1.254±0.130 μm (56.78%). LAGBs content increased to 6.8%. Mg-rich network disappeared, homogeneous Mg distribution. Dislocation networks in CGs region. Dense nanoprecipitates along grain boundaries in FEGs. Al3(Sc,Zr) ~80 nm diameter, Al6Mn ~20 nm. Dislocation density 2.79×10¹⁴ m⁻².",
+          "simplified": "Grain growth during aging; FEGs 56.78%; LAGBs 6.8%; Mg homogenization; Al3(Sc,Zr) and Al6Mn precipitates; dislocation density 2.79×10¹⁴ m⁻²"
+        },
+        "Main_Phase": "FCC Al",
+        "Precipitates": [
+          {
+            "Phase_Type": "Al3(Sc,Zr)",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Al6Mn",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Mg2Si",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": 1.254,
+        "Precipitate_Size_avg_nm": 80.0,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {}
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at room temperature; loading speed 1 mm/min; INSTRON 68MT-50",
+          "Value_Numeric": 539.0,
+          "Value_Range": null,
+          "Value_StdDev": 6.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": 1.0,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "2 mm thick; gauge length 6 mm",
+          "Note": "~100 MPa increase from LPBF due to Al3(Sc,Zr) precipitation; no PLC effect"
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at room temperature; loading speed 1 mm/min",
+          "Value_Numeric": 566.0,
+          "Value_Range": null,
+          "Value_StdDev": 6.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": 1.0,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "2 mm thick; gauge length 6 mm",
+          "Note": null
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at room temperature; non-contact AVE extensometer",
+          "Value_Numeric": 8.3,
+          "Value_Range": null,
+          "Value_StdDev": 0.2,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": 1.0,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "2 mm thick; gauge length 6 mm",
+          "Note": "Break elongation; no PLC effect"
+        },
+        {
+          "Property_Name": "GND_Density",
+          "Test_Condition": "calculated from EBSD",
+          "Value_Numeric": 279000000000000.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "m⁻²",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Lower than LPBF due to aging"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "HAM",
+      "Gradient_Material": true,
+      "Gradient_Group_ID": "HAM_Group_1",
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "AlMgSc",
+        "Nominal_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Al": 92.1,
+            "Mg": 4.7,
+            "Sc": 1.3,
+            "Zr": 0.6,
+            "Mn": 0.8,
+            "Si": 0.01,
+            "other": 0.49
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "USP-assisted LPBF hybrid additive manufacturing; interlayer USP every 33 layers (~1.0 mm); porosity reduced to 0.049%"
+      },
+      "Process_Info": {
+        "Process_Category": "AM_LPBF",
+        "Process_Text": {
+          "original": "LPBF using SLM 125 system (substrate 100°C, Ar, O2<0.1vol%) + interlayer USP using UPM-3000 with 2.0 mm bearing steel shots at 20 kHz, amplitudes 30-40 μm, distance 16 mm. USP every 33 layers (~1.0 mm), 8 min per treatment, 30 mm diameter impact area. Volumetric energy density optimized.",
+          "simplified": "LPBF + interlayer USP (UPM-3000, 20 kHz, 30-40 μm amplitude, 8 min/33 layers)"
+        },
+        "Equipment": "SLM 125 system; UPM-3000 ultrasonic shot peening equipment",
+        "Key_Params": {
+          "Laser_Power_W": null,
+          "Scanning_Speed_mm_s": null,
+          "Layer_Thickness_um": null,
+          "Hatch_Spacing_um": null,
+          "Build_Plate_Temperature_K": 373.15,
+          "Protective_Atmosphere": "Argon",
+          "USP_Frequency_kHz": 20,
+          "USP_Amplitude_um": "30-40",
+          "USP_Distance_mm": 16,
+          "USP_Layers_Per_Cycle": 33,
+          "USP_Time_per_Treatment_min": 8,
+          "USP_Impact_Diameter_mm": 30,
+          "USP_Shot_Diameter_mm": 2,
+          "Volumetric_Energy_Density_J_mm3": "100-200"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Grain homogenization achieved. Original CCGs transformed into homogeneous equiaxed grains. FEGs 1.235±0.128 μm (66.52%). CRS depth ~700 μm. LAGBs increased to 10.6%. Dense dislocation cells and walls. Mg network eliminated. Keyhole and lack of fusion pores substantially reduced. CRS converted from tensile to compressive (~250 MPa peak at 400-600 μm depth).",
+          "simplified": "Columnar-to-equiaxed transition; FEGs 66.52%; CRS ~250 MPa peak; LAGBs 10.6%; porosity 0.049%"
+        },
+        "Main_Phase": "FCC Al",
+        "Precipitates": [
+          {
+            "Phase_Type": "Al3(Sc,Zr)",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Al6Mn",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": 0.049,
+        "Relative_Density_pct": 99.95,
+        "Grain_Size_avg_um": 1.235,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {}
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at room temperature; loading speed 1 mm/min; INSTRON 68MT-50",
+          "Value_Numeric": 451.0,
+          "Value_Range": null,
+          "Value_StdDev": 4.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": 1.0,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "2 mm thick; gauge length 6 mm",
+          "Note": "Slight increase from LPBF; CRS beneficial for strength"
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at room temperature; loading speed 1 mm/min",
+          "Value_Numeric": 461.0,
+          "Value_Range": null,
+          "Value_StdDev": 8.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": 1.0,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "2 mm thick; gauge length 6 mm",
+          "Note": null
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at room temperature; non-contact AVE extensometer",
+          "Value_Numeric": 6.7,
+          "Value_Range": null,
+          "Value_StdDev": 0.4,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": 1.0,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "2 mm thick; gauge length 6 mm",
+          "Note": "Slight decrease from LPBF; PLC effect observed"
+        },
+        {
+          "Property_Name": "Residual_Stress",
+          "Test_Condition": "X-ray residual stress analyzer (X-350A); depths 0-800 μm",
+          "Value_Numeric": 250.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Compressive residual stress (CRS); TRS converted to CRS by USP; effective depth >600 μm"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "HAM-HT",
+      "Gradient_Material": true,
+      "Gradient_Group_ID": "HAM_Group_1",
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "AlMgSc",
+        "Nominal_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Al": 92.1,
+            "Mg": 4.7,
+            "Sc": 1.3,
+            "Zr": 0.6,
+            "Mn": 0.8,
+            "Si": 0.01,
+            "other": 0.49
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Mg": 4.4,
+            "Al": 95.6
+          },
+          "Measurement_Method": "EDS"
+        },
+        "Note": "HAM followed by aging treatment at 300°C for 4 h; Mg content in FEGs: 4.4±0.8 at.%; highest strength achieved with YS 609 MPa, UTS 626 MPa, ε 7.5%"
+      },
+      "Process_Info": {
+        "Process_Category": "AM_LPBF",
+        "Process_Text": {
+          "original": "LPBF (SLM 125, substrate 100°C, Ar, O2<0.1vol%) + interlayer USP (UPM-3000, 20 kHz, 30-40 μm amplitude, 16 mm distance, 33 layers/cycle, 8 min/treatment, 30 mm diameter) + aging at 300°C for 4 h with furnace cooling under high-purity argon in TL1200 tube furnace",
+          "simplified": "HAM (LPBF+USP) + aging at 300°C/4h/furnace cooling/Ar"
+        },
+        "Equipment": "SLM 125 system; UPM-3000 ultrasonic shot peening equipment; TL1200 tube furnace",
+        "Key_Params": {
+          "Laser_Power_W": null,
+          "Scanning_Speed_mm_s": null,
+          "Layer_Thickness_um": null,
+          "Hatch_Spacing_um": null,
+          "Build_Plate_Temperature_K": 373.15,
+          "Protective_Atmosphere": "Argon",
+          "USP_Frequency_kHz": 20,
+          "USP_Amplitude_um": "30-40",
+          "USP_Distance_mm": 16,
+          "USP_Layers_Per_Cycle": 33,
+          "USP_Time_per_Treatment_min": 8,
+          "USP_Impact_Diameter_mm": 30,
+          "USP_Shot_Diameter_mm": 2,
+          "USP_Effective_Depth_um": 700,
+          "Aging_Temperature_K": 573.15,
+          "Aging_Time_h": 4,
+          "Cooling_Medium": "Furnace cooling"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Hierarchically multi-gradient structures. FEGs 1.241±0.128 μm (61.05%); CGs 1.956 μm. Ultra-fine equiaxed grains (UFEGs) ~0.60±0.21 μm, down to ~200 nm. LAGBs 15.4%. Recrystallized grains 97.1%, substructured 2.4%, deformed 0.5%. Mg network eliminated, Mg solid solution enhanced (4.4±0.8 at.% in FEGs). High-density dislocation (3.61×10¹⁴ m⁻²). Primary Al3(Sc,Zr) ~43.8 nm radius, 2.84 vol%; secondary Al3(Sc,Zr) ~3.2 nm radius, 1.02 vol%. Dense dislocation cells and walls. Al6Mn and Mg2Si precipitates. CRS ~250 MPa peak. Almost fully dense (0.018% porosity).",
+          "simplified": "Multi-gradient microstructure: UFEGs (~0.6 μm, 97.1% recrystallized) + FEGs/CGs; LAGBs 15.4%; dislocation 3.61×10¹⁴ m⁻²; Al3(Sc,Zr) primary/secondary precipitates; CRS ~250 MPa; porosity 0.018%"
+        },
+        "Main_Phase": "FCC Al",
+        "Precipitates": [
+          {
+            "Phase_Type": "Al3(Sc,Zr)",
+            "Volume_Fraction_pct": 2.84
+          },
+          {
+            "Phase_Type": "Al3(Sc,Zr) Secondary",
+            "Volume_Fraction_pct": 1.02
+          },
+          {
+            "Phase_Type": "Al6Mn",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Mg2Si",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": 0.018,
+        "Relative_Density_pct": 99.98,
+        "Grain_Size_avg_um": 1.241,
+        "Precipitate_Size_avg_nm": 3.2,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {}
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at room temperature; loading speed 1 mm/min; INSTRON 68MT-50",
+          "Value_Numeric": 609.0,
+          "Value_Range": null,
+          "Value_StdDev": 10.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": 1.0,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "2 mm thick; gauge length 6 mm (AVE)",
+          "Note": "41.7% increase from LPBF; +70 MPa vs LPBF-HT; ultrahigh strength; no PLC effect; theoretical calculation 624 MPa"
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at room temperature; loading speed 1 mm/min",
+          "Value_Numeric": 626.0,
+          "Value_Range": null,
+          "Value_StdDev": 19.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": 1.0,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "2 mm thick; gauge length 6 mm",
+          "Note": "38.8% increase from LPBF; +60 MPa vs LPBF-HT"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at room temperature; non-contact AVE extensometer; gauge length 6 mm",
+          "Value_Numeric": 7.5,
+          "Value_Range": null,
+          "Value_StdDev": 2.4,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": 1.0,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "2 mm thick; gauge length 6 mm",
+          "Note": "Good ductility maintained; break elongation; no PLC effect"
+        },
+        {
+          "Property_Name": "Residual_Stress",
+          "Test_Condition": "X-ray residual stress analyzer (X-350A); Sid-inclination method; depths 0-800 μm",
+          "Value_Numeric": 250.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Compressive residual stress; TRS and CRS offset each other; effective depth >600 μm"
+        },
+        {
+          "Property_Name": "Dislocation_Strengthening",
+          "Test_Condition": "Calculated from dislocation density",
+          "Value_Numeric": 73.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "From high-density dislocations induced by USP"
+        },
+        {
+          "Property_Name": "GND_Density",
+          "Test_Condition": "calculated from EBSD",
+          "Value_Numeric": 361000000000000.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "m⁻²",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Highest dislocation density among all samples; attributed to USP-induced severe plastic deformation"
+        },
+        {
+          "Property_Name": "Grain_Boundary_Strengthening",
+          "Test_Condition": "Calculated from Hall-Petch relationship",
+          "Value_Numeric": 116.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "From UFEGs and grain refinement"
+        },
+        {
+          "Property_Name": "HDI_Strengthening",
+          "Test_Condition": "Calculated from cyclic loading-unloading-reloading tests",
+          "Value_Numeric": 99.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Unique mechanism from hierarchical gradient microstructures; back stress from hetero-deformation"
+        },
+        {
+          "Property_Name": "Precipitate_Strengthening",
+          "Test_Condition": "Calculated from Orowan mechanism; primary Al3(Sc,Zr) ~24 MPa, secondary Al3(Sc,Zr) ~217 MPa",
+          "Value_Numeric": 241.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Main strengthening mechanism; primary Al3(Sc,Zr) ~2.84 vol%, secondary ~1.02 vol%"
+        },
+        {
+          "Property_Name": "Solid_Solution_Strengthening",
+          "Test_Condition": "Calculated from Mg solution content",
+          "Value_Numeric": 95.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Mainly from Mg in Al matrix"
+        },
+        {
+          "Property_Name": "Yield_Strength_Theoretical",
+          "Test_Condition": "Calculated from multi-strengthening mechanisms",
+          "Value_Numeric": 624.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Consistent with experimental 609 MPa; σ_GB ~116 MPa, σ_ss ~95 MPa, σ_dis ~73 MPa, σ_p ~241 MPa, σ_HDI ~99 MPa"
+        }
+      ]
+    }
+  ]
+}

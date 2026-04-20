@@ -1,0 +1,502 @@
+{
+  "Paper_Metadata": {
+    "Paper_Title": "A high strength Al–Li alloy produced by laser powder bed fusion: Densification, microstructure, and mechanical properties",
+    "DOI": "10.1016/j.addma.2020.101346"
+  },
+  "items": [
+    {
+      "Sample_ID": "2195-LPBF-AF",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "AA2195",
+        "Nominal_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Cu": 3.95,
+            "Li": 1.08,
+            "Mg": 0.68,
+            "Ag": 0.4,
+            "Zr": 0.11,
+            "Al": 92.78,
+            "other": 1.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Cu": 3.82,
+            "Li": 0.82,
+            "Mg": 0.63,
+            "Ag": 0.39,
+            "Zr": 0.14,
+            "Al": 94.2
+          },
+          "Measurement_Method": "ICP-OES"
+        },
+        "Note": "Powder composition as nominal; LPBF sample shows 24% Li loss during processing but still meets AA2195 standard. Al calculated as balance."
+      },
+      "Process_Info": {
+        "Process_Category": "AM_LPBF",
+        "Process_Text": {
+          "original": "Gas-atomized Al-Cu-Li-Mg-Ag-Zr powders (mean particle size 35.3 μm) processed on self-developed LPBF machine at room temperature under protective argon atmosphere. Optimized parameters: laser power 200 W, hatch spacing 0.1 mm, layer thickness 30 μm, scanning velocity 80 mm/s, hatch rotation 90° between consecutive layers.",
+          "simplified": "LPBF of 2195 Al-Li alloy with optimized parameters: 200 W, 80 mm/s, 30 μm layer thickness, 0.1 mm hatch spacing, argon atmosphere."
+        },
+        "Equipment": "Self-developed LPBF machine",
+        "Key_Params": {
+          "Laser_Power_W": 200,
+          "Scanning_Speed_mm_s": 80,
+          "Layer_Thickness_um": 30,
+          "Hatch_Spacing_um": 100,
+          "Hatch_Rotation_deg": 90,
+          "Protective_Atmosphere": "Argon",
+          "Volumetric_Energy_Density_J_mm3": 83.33,
+          "Powder_Size_avg_um": 35.3
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Coarse columnar grain microstructure with epitaxial growth through multiple building layers. MP boundaries and columnar grain boundaries clearly distinguishable. MP interiors show granular precipitates uniformly distributed. MP boundaries show elongated coarse precipitates due to slower solidification rate. Heterogeneous element distribution: Cu and Ag enriched at grain and MP boundaries; Al and Mg show opposite characteristics. High density of dislocations (GND density 2.13×10^13/m²) to accommodate large residual thermal strains.",
+          "simplified": "Coarse columnar grains; heterogeneous Cu/Ag segregation at boundaries; high dislocation density; granular and elongated precipitates at MP boundaries; δ' (Al3Li), Al2O3, and Cu-Mg rich phases identified by TEM/HAADF."
+        },
+        "Main_Phase": "FCC",
+        "Precipitates": [
+          {
+            "Phase_Type": "δ' (Al3Li)",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Al2O3",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Cu-Mg rich phase",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": 99.9,
+        "Grain_Size_avg_um": 37.9,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "SEM": "SEM images showing MP boundaries and columnar grain boundaries; granular precipitates inside MP; elongated coarse precipitates at MP boundaries",
+          "EBSD": "EBSD band contrast and IPF maps; average grain size 37.9 μm; LAGB (0-5°) frequency 13.0%",
+          "TEM": "HAADF images showing three precipitate types (white Cu-Mg rich, grey Al2O3, black δ' Al3Li); EDS elemental mapping",
+          "EPMA": "Elemental distribution maps showing Al, Cu, Mg, Ag inhomogeneity; Cu and Ag enriched at boundaries",
+          "GND_density_m2": 21300000000000.0,
+          "LAGB_frequency_pct": 13.0,
+          "Misorientation_angle_range_deg": "0-5"
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at 298.15 K; strain rate not specified; extension rate 1 mm/min",
+          "Value_Numeric": 207.7,
+          "Value_Range": null,
+          "Value_StdDev": 1.5,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "not specified",
+          "Tensile_Speed_mm_min": 1.0,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM E8 dog-bone; gauge 12 mm × 2.5 mm × 1.5 mm; machined from tensile plate built perpendicular to BD",
+          "Note": "As-fabricated LPBF 2195 sample without heat treatment"
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at 298.15 K; extension rate 1 mm/min",
+          "Value_Numeric": 340.7,
+          "Value_Range": null,
+          "Value_StdDev": 2.9,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": 1.0,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM E8 dog-bone; gauge 12 mm × 2.5 mm × 1.5 mm",
+          "Note": "As-fabricated LPBF 2195 sample without heat treatment"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at 298.15 K; extension rate 1 mm/min",
+          "Value_Numeric": 17.2,
+          "Value_Range": null,
+          "Value_StdDev": 0.9,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": 1.0,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM E8 dog-bone; gauge 12 mm × 2.5 mm × 1.5 mm",
+          "Note": "As-fabricated LPBF 2195 sample without heat treatment; high ductility due to absence of T1 precipitates"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "2195-LPBF-T6",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "AA2195",
+        "Nominal_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Cu": 3.95,
+            "Li": 1.08,
+            "Mg": 0.68,
+            "Ag": 0.4,
+            "Zr": 0.11,
+            "Al": 92.78,
+            "other": 1.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Cu": 3.82,
+            "Li": 0.82,
+            "Mg": 0.63,
+            "Ag": 0.39,
+            "Zr": 0.14,
+            "Al": 94.2
+          },
+          "Measurement_Method": "ICP-OES"
+        },
+        "Note": "Powder composition as nominal; LPBF sample shows 24% Li loss during processing but still meets AA2195 standard. Al calculated as balance."
+      },
+      "Process_Info": {
+        "Process_Category": "AM_LPBF",
+        "Process_Text": {
+          "original": "Gas-atomized Al-Cu-Li-Mg-Ag-Zr powders (mean particle size 35.3 μm) processed on self-developed LPBF machine at room temperature under protective argon atmosphere. Optimized parameters: laser power 200 W, hatch spacing 0.1 mm, layer thickness 30 μm, scanning velocity 80 mm/s, hatch rotation 90° between consecutive layers. Post-LPBF T6 heat treatment: solutionized at 520°C for 1 h, water quenched, aged at 170°C for 6 h, air cooled.",
+          "simplified": "LPBF of 2195 Al-Li alloy (200 W, 80 mm/s, 30 μm, 0.1 mm hatch) followed by T6 heat treatment (520°C/1h solution + water quench + 170°C/6h aging + air cool)."
+        },
+        "Equipment": "Self-developed LPBF machine",
+        "Key_Params": {
+          "Laser_Power_W": 200,
+          "Scanning_Speed_mm_s": 80,
+          "Layer_Thickness_um": 30,
+          "Hatch_Spacing_um": 100,
+          "Hatch_Rotation_deg": 90,
+          "Protective_Atmosphere": "Argon",
+          "Volumetric_Energy_Density_J_mm3": 83.33,
+          "Powder_Size_avg_um": 35.3,
+          "Solution_Temperature_C": 520,
+          "Solution_Time_h": 1,
+          "Aging_Temperature_C": 170,
+          "Aging_Time_h": 6,
+          "Cooling_Medium": "Water quench (solution) / Air cool (aging)"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Coarse columnar grain microstructure retained after T6 treatment (grain size 34.3 μm). Homogeneous microstructure with uniform element distribution. Mg and Ag elements homogeneous; Cu-containing particles evenly distributed. T6 treatment dissolved and uniformly re-precipitated alloying elements. Dominant T1 (Al2CuLi) plates precipitate in areas with high dislocation density; also present at low dislocation locations. T1 plates effectively impede dislocation movement. Dislocation density reduced but still high (GND 1.72×10^13/m²).",
+          "simplified": "Retained coarse columnar grains (34.3 μm); homogeneous element distribution after T6; dominant T1 (Al2CuLi) plates as strengthening phase; high but reduced dislocation density (1.72×10^13/m²); similar LAGB frequency to as-fabricated (11.2%)."
+        },
+        "Main_Phase": "FCC",
+        "Precipitates": [
+          {
+            "Phase_Type": "T1 (Al2CuLi)",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": 99.9,
+        "Grain_Size_avg_um": 34.3,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "SEM": "MP boundaries still distinguishable; columnar grain features retained",
+          "EBSD": "EBSD IPF maps; grain size 34.3 μm; LAGB (0-5°) frequency 11.2%; KAM maps for GND calculation",
+          "TEM": "Bright field images showing T1 plates precipitating at high and low dislocation density regions",
+          "EPMA": "Homogeneous Mg and Ag distribution; evenly distributed Cu-containing particles",
+          "GND_density_m2": 17200000000000.0,
+          "LAGB_frequency_pct": 11.2,
+          "Misorientation_angle_range_deg": "0-5"
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at 298.15 K; strain rate not specified; extension rate 1 mm/min",
+          "Value_Numeric": 521.3,
+          "Value_Range": null,
+          "Value_StdDev": 14.4,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "not specified",
+          "Tensile_Speed_mm_min": 1.0,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM E8 dog-bone; gauge 12 mm × 2.5 mm × 1.5 mm; machined from tensile plate built perpendicular to BD",
+          "Note": "T6 heat-treated LPBF 2195 sample; aging duration 6 h (much faster than conventional 180 h for plate)"
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at 298.15 K; extension rate 1 mm/min",
+          "Value_Numeric": 587.0,
+          "Value_Range": null,
+          "Value_StdDev": 7.2,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": 1.0,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM E8 dog-bone; gauge 12 mm × 2.5 mm × 1.5 mm",
+          "Note": "T6 heat-treated LPBF 2195 sample; better than commercial AA2195-T6 plate (560 MPa)"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at 298.15 K; extension rate 1 mm/min",
+          "Value_Numeric": 6.9,
+          "Value_Range": null,
+          "Value_StdDev": 0.3,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": 1.0,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM E8 dog-bone; gauge 12 mm × 2.5 mm × 1.5 mm",
+          "Note": "T6 heat-treated LPBF 2195 sample; reduced ductility compared to as-fabricated due to T1 precipitate hardening"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "2195-Plate-T6-Ref",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Reference",
+        "Alloy_Name_Raw": "AA2195",
+        "Nominal_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Cu": 4.0,
+            "Li": 1.0,
+            "Mg": 0.525,
+            "Ag": 0.425,
+            "Zr": 0.12,
+            "Al": 92.93,
+            "other": 1.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Commercial AA2195-T6 plate; composition within standard AA2195 range. Nominal values derived from standard composition range midpoints."
+      },
+      "Process_Info": {
+        "Process_Category": "Wrought",
+        "Process_Text": {
+          "original": "Commercial AA2195 plate under T6 condition (solutionized and artificially aged). Requires up to 180 h of aging duration for T6 treatment.",
+          "simplified": "Commercial wrought AA2195-T6 plate with 180 h aging treatment."
+        },
+        "Equipment": null,
+        "Key_Params": {
+          "Aging_Duration_h": 180
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Commercial wrought AA2195-T6 plate microstructure. Precipitates include T1 (Al2CuLi) phase after full T6 aging treatment (180 h).",
+          "simplified": "Wrought microstructure with T1 precipitates after 180 h aging."
+        },
+        "Main_Phase": "FCC",
+        "Precipitates": [
+          {
+            "Phase_Type": "T1 (Al2CuLi)",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "Source": "Commercial plate; data from Kim et al. (2016) reference [36]"
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at 298.15 K (room temperature)",
+          "Value_Numeric": 497.0,
+          "Value_Range": null,
+          "Value_StdDev": 1.9,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "Not specified; commercial plate standard",
+          "Note": "Reference data from commercial AA2195-T6 plate; Kim et al. 2016 (Table 3)"
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at 298.15 K (room temperature)",
+          "Value_Numeric": 560.0,
+          "Value_Range": null,
+          "Value_StdDev": 4.2,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "Not specified; commercial plate standard",
+          "Note": "Reference data from commercial AA2195-T6 plate; Kim et al. 2016 (Table 3)"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at 298.15 K (room temperature)",
+          "Value_Numeric": 6.8,
+          "Value_Range": null,
+          "Value_StdDev": 0.4,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "Not specified; commercial plate standard",
+          "Note": "Reference data from commercial AA2195-T6 plate; Kim et al. 2016 (Table 3)"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "2195-Plate-T8-Ref",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Reference",
+        "Alloy_Name_Raw": "AA2195",
+        "Nominal_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Cu": 4.0,
+            "Li": 1.0,
+            "Mg": 0.525,
+            "Ag": 0.425,
+            "Zr": 0.12,
+            "Al": 92.93,
+            "other": 1.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Commercial AA2195-T8 plate; composition within standard AA2195 range. Nominal values derived from standard composition range midpoints."
+      },
+      "Process_Info": {
+        "Process_Category": "Wrought",
+        "Process_Text": {
+          "original": "Commercial AA2195 plate under T8 condition (solutionized, quenched, pre-stretched 2.5%, then artificially aged for 20 h). Work-hardened condition.",
+          "simplified": "Commercial wrought AA2195-T8 plate with 2.5% pre-stretch deformation and 20 h aging treatment."
+        },
+        "Equipment": null,
+        "Key_Params": {
+          "Deformation_pct": 2.5,
+          "Aging_Duration_h": 20
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Commercial wrought AA2195-T8 plate microstructure. Pre-stretched 2.5% before aging to introduce dislocations that accelerate T1 precipitation.",
+          "simplified": "Wrought microstructure with work hardening (2.5% pre-stretch) and T1 precipitates after 20 h aging."
+        },
+        "Main_Phase": "FCC",
+        "Precipitates": [
+          {
+            "Phase_Type": "T1 (Al2CuLi)",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "Source": "Commercial plate; data from Kim et al. (2016) reference [36]"
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at 298.15 K (room temperature)",
+          "Value_Numeric": 540.0,
+          "Value_Range": null,
+          "Value_StdDev": 29.7,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "Not specified; commercial plate standard",
+          "Note": "Reference data from commercial AA2195-T8 plate; Kim et al. 2016 (Table 3)"
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at 298.15 K (room temperature)",
+          "Value_Numeric": 574.0,
+          "Value_Range": null,
+          "Value_StdDev": 29.6,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "Not specified; commercial plate standard",
+          "Note": "Reference data from commercial AA2195-T8 plate; Kim et al. 2016 (Table 3)"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at 298.15 K (room temperature)",
+          "Value_Numeric": 7.8,
+          "Value_Range": null,
+          "Value_StdDev": 0.3,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "Not specified; commercial plate standard",
+          "Note": "Reference data from commercial AA2195-T8 plate; Kim et al. 2016 (Table 3)"
+        }
+      ]
+    }
+  ]
+}

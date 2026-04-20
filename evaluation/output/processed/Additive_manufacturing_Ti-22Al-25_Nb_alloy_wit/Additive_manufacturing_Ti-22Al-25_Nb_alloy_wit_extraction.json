@@ -1,0 +1,346 @@
+{
+  "Paper_Metadata": {
+    "Paper_Title": "Additive manufacturing Ti-22Al-25 Nb alloy with excellent high temperature tensile properties by electron beam powder bed fusion",
+    "DOI": "10.1016/j.addma.2024.104236"
+  },
+  "items": [
+    {
+      "Sample_ID": "PBF-LB-Ti22Al25Nb",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Ti-22Al-25Nb",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ti": 53.0,
+            "Al": 22.0,
+            "Nb": 25.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ti": 100.0,
+            "Al": 20.47,
+            "O": 0.16,
+            "Nb": 24.38,
+            "N": 0.06
+          },
+          "Measurement_Method": "HORIBA EMGA 930, Thermo ICAP 7200"
+        },
+        "Note": "Balance Ti calculated from measured values; Powder nominal: Al 23.60, O 0.11, Nb 26.10, N <0.04, H <0.004 (at%)"
+      },
+      "Process_Info": {
+        "Process_Category": "AM_LPBF",
+        "Process_Text": {
+          "original": "Laser beam powder bed fusion (PBF-LB) using Renishaw AM-400 system; layer rotation 67°; Power 140 W; scanning speed 0.6 m/s; hatch distance 0.12 mm; layer thickness 30 μm; pre-heating temperature 170°C (maximum device limit); beam diameter 70 μm (FWHM)",
+          "simplified": "PBF-LB with 140 W laser power, 0.6 m/s scanning speed, 30 μm layer thickness, 170°C pre-heating"
+        },
+        "Equipment": "Renishaw AM-400",
+        "Key_Params": {
+          "Power_W": 140,
+          "Scanning_Speed_m_s": 0.6,
+          "Hatch_Distance_mm": 0.11,
+          "Layer_Thickness_um": 30,
+          "Pre_heating_Temperature_C": 170,
+          "Beam_Diameter_um": 70,
+          "Layer_Rotation_deg": 67,
+          "Protective_Atmosphere": "Argon"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Fine columnar β-phase grains with epitaxial growth along building direction; O phase (7.34% area fraction) dispersed in β matrix; β-phase grains tend to grow along (101) and (111) directions; high cooling rate (10^5-10^8 K/s) caused grain refinement; stronger texture intensity compared to PBF-EB samples",
+          "simplified": "Columnar β-phase grains with epitaxial growth; 7.34% O-phase area fraction; grains grow along (101) and (111) directions"
+        },
+        "Main_Phase": "B2/Beta",
+        "Precipitates": [
+          {
+            "Phase_Type": "Orthorhombic (O phase)",
+            "Volume_Fraction_pct": 7.34
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": 99.94,
+        "Grain_Size_avg_um": 67.2,
+        "Precipitate_Size_avg_nm": 50.0,
+        "Precipitate_Volume_Fraction_pct": 7.34,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "XRD": "Bruker D8 Advance, Cu-Kα radiation, 30°-90° 2θ range; O and β phases identified, no α2 phase",
+          "SEM": "Zeiss Sigma 300; chemical etching (1 mL HF: 3 mL HNO3: 10 mL H2O) for 100s",
+          "TEM": "Tecnai G2 F30 with SAED and EDX analysis",
+          "EBSD": "Bruker e-FlashFS with Esprit software, 0.1 μm step size",
+          "Micro-CT": "NanoVoxel 3000, 1 μm spatial resolution",
+          "Beta_grain_size_um": 67.2,
+          "O_phase_grain_diameter_um": "<0.05",
+          "O_phase_area_fraction_pct": 7.34,
+          "Beta_area_fraction_pct": 92.66,
+          "Cooling_rate_K_s": "1e5-1e8",
+          "G_value_K_m": 10000000.0
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at 298.15 K (RT); strain rate 2.5×10^-4 s^-1; horizontal direction",
+          "Value_Numeric": 939.0,
+          "Value_Range": null,
+          "Value_StdDev": 18.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "2.5e-4",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM E8 type geometry",
+          "Note": "RT tensile properties in horizontal direction"
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at 298.15 K (RT); strain rate 2.5×10^-4 s^-1; horizontal direction",
+          "Value_Numeric": 947.0,
+          "Value_Range": null,
+          "Value_StdDev": 20.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "2.5e-4",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM E8 type geometry",
+          "Note": "RT tensile properties in horizontal direction"
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at 923.15 K (650°C); strain rate 1×10^-3 s^-1; 15 min soak time before testing; horizontal direction",
+          "Value_Numeric": 411.0,
+          "Value_Range": null,
+          "Value_StdDev": 29.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": 923.15,
+          "Strain_Rate_s1": "1e-3",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "High-temperature tensile specimen geometry",
+          "Note": "High-temperature tensile properties; rapid decrease at 650°C; brittle fracture observed"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at 298.15 K (RT); strain rate 2.5×10^-4 s^-1; horizontal direction",
+          "Value_Numeric": 15.0,
+          "Value_Range": null,
+          "Value_StdDev": 2.1,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "2.5e-4",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM E8 type geometry",
+          "Note": "RT tensile properties; high ductility with dimple fracture morphology"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at 923.15 K (650°C); strain rate 1×10^-3 s^-1; 15 min soak time before testing; horizontal direction",
+          "Value_Numeric": 0.4,
+          "Value_Range": null,
+          "Value_StdDev": 0.1,
+          "Unit": "%",
+          "Test_Temperature_K": 923.15,
+          "Strain_Rate_s1": "1e-3",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "High-temperature tensile specimen geometry",
+          "Note": "High-temperature tensile properties; near-zero elongation at 650°C; brittle intergranular fracture"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "PBF-EB-Ti22Al25Nb",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Ti-22Al-25Nb",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ti": 53.0,
+            "Al": 22.0,
+            "Nb": 25.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ti": 100.0,
+            "Al": 16.85,
+            "O": 0.22,
+            "Nb": 21.93,
+            "N": 0.04
+          },
+          "Measurement_Method": "HORIBA EMGA 930, Thermo ICAP 7200"
+        },
+        "Note": "Balance Ti calculated from measured values; Powder nominal: Al 23.60, O 0.11, Nb 26.10, N <0.04, H <0.004 (at%); Significant Al loss due to higher pre-heating temperature"
+      },
+      "Process_Info": {
+        "Process_Category": "EBM",
+        "Process_Text": {
+          "original": "Electron beam powder bed fusion (PBF-EB) using Sailong Y150 system; high pre-heating temperature of 830°C (near initial precipitation temperature of O phase); conventional 90° layer rotation; Power 1050 W; scanning speed 5.8 m/s; hatch distance 0.11 mm; layer thickness 50 μm; beam diameter 220 μm (FWHM)",
+          "simplified": "PBF-EB with 1050 W beam power, 5.8 m/s scanning speed, 50 μm layer thickness, 830°C high pre-heating temperature"
+        },
+        "Equipment": "Sailong Y150",
+        "Key_Params": {
+          "Power_W": 1050,
+          "Scanning_Speed_m_s": 5.8,
+          "Hatch_Distance_mm": 0.11,
+          "Layer_Thickness_um": 50,
+          "Pre_heating_Temperature_C": 830,
+          "Beam_Diameter_um": 220,
+          "Layer_Rotation_deg": 90
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Equiaxed β-phase grains with uniform distribution; high area fraction of O phase (42.3%, approximately 6× higher than PBF-LB); β-phase grains grow along (001) direction; lower texture intensity; precipitation and growth of O phase inhibited epitaxial growth of β-phase grains; weaker texture intensity favorable for homogenization of tensile properties",
+          "simplified": "Equiaxed β-phase grains with uniform distribution; 42.3% O-phase area fraction (6× higher than PBF-LB); grains grow along (001) direction; uniform grain morphology"
+        },
+        "Main_Phase": "B2/Beta",
+        "Precipitates": [
+          {
+            "Phase_Type": "Orthorhombic (O phase)",
+            "Volume_Fraction_pct": 42.3
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": 99.2,
+        "Grain_Size_avg_um": 46.5,
+        "Precipitate_Size_avg_nm": 500.0,
+        "Precipitate_Volume_Fraction_pct": 42.3,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "XRD": "Bruker D8 Advance, Cu-Kα radiation, 30°-90° 2θ range; O and β phases identified, no α2 phase; increased O-phase peaks compared to PBF-LB",
+          "SEM": "Zeiss Sigma 300; chemical etching (1 mL HF: 3 mL HNO3: 10 mL H2O) for 100s",
+          "TEM": "Tecnai G2 F30 with SAED and EDX analysis; Al enriched in O phase, Nb enriched in β phase",
+          "EBSD": "Bruker e-FlashFS with Esprit software, 0.1 μm step size",
+          "Micro-CT": "NanoVoxel 3000, 1 μm spatial resolution",
+          "Beta_grain_size_um": 46.5,
+          "O_phase_grain_diameter_um": ">0.5",
+          "O_phase_area_fraction_pct": 42.3,
+          "Beta_area_fraction_pct": 57.7,
+          "Cooling_rate_K_s": "1e3-1e5",
+          "G_value_K_m": 100000.0,
+          "Pre_heating_Temperature_C": 830
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at 298.15 K (RT); strain rate 2.5×10^-4 s^-1; horizontal direction",
+          "Value_Numeric": 943.0,
+          "Value_Range": null,
+          "Value_StdDev": 20.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "2.5e-4",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM E8 type geometry",
+          "Note": "RT tensile properties; poor elongation at RT with brittle fracture; traces of strip-shaped O phase peeling observed"
+        },
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at 923.15 K (650°C); strain rate 1×10^-3 s^-1; 15 min soak time before testing; horizontal direction",
+          "Value_Numeric": 741.0,
+          "Value_Range": null,
+          "Value_StdDev": 24.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": 923.15,
+          "Strain_Rate_s1": "1e-3",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "High-temperature tensile specimen geometry",
+          "Note": "Excellent high-temperature tensile strength at 650°C; breakthrough improvement for TiAl alloys by AM"
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at 298.15 K (RT); strain rate 2.5×10^-4 s^-1; horizontal direction",
+          "Value_Numeric": 989.0,
+          "Value_Range": null,
+          "Value_StdDev": 22.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "2.5e-4",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM E8 type geometry",
+          "Note": "RT tensile properties; excellent UTS but poor elongation; brittle fracture morphology"
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at 923.15 K (650°C); strain rate 1×10^-3 s^-1; 15 min soak time before testing; horizontal direction",
+          "Value_Numeric": 803.0,
+          "Value_Range": null,
+          "Value_StdDev": 30.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": 923.15,
+          "Strain_Rate_s1": "1e-3",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "High-temperature tensile specimen geometry",
+          "Note": "Excellent high-temperature tensile strength at 650°C (803 MPa); transgranular fracture mechanism; breakthrough for TiAl AM alloys"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at 298.15 K (RT); strain rate 2.5×10^-4 s^-1; horizontal direction",
+          "Value_Numeric": 2.5,
+          "Value_Range": null,
+          "Value_StdDev": 0.3,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "2.5e-4",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM E8 type geometry",
+          "Note": "RT tensile properties; low ductility; brittle fracture"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at 923.15 K (650°C); strain rate 1×10^-3 s^-1; 15 min soak time before testing; horizontal direction",
+          "Value_Numeric": 3.0,
+          "Value_Range": null,
+          "Value_StdDev": 0.5,
+          "Unit": "%",
+          "Test_Temperature_K": 923.15,
+          "Strain_Rate_s1": "1e-3",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "High-temperature tensile specimen geometry",
+          "Note": "Improved ductility at 650°C with dimples on fracture surface; transgranular fracture mechanism"
+        }
+      ]
+    }
+  ]
+}

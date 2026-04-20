@@ -11,6 +11,14 @@ def test_default_rules_loaded_from_yaml():
     assert isinstance(default_rules.precipitate_keywords, list)
 
 
+def test_default_rules_cover_new_process_routes_and_ebm_params():
+    assert "Powder_Metallurgy" in default_rules.process_category_keywords
+    assert "laam" in default_rules.process_category_keywords["AM_DED"]
+    assert "electron beam powder bed fusion" in default_rules.process_category_keywords["EBM"]
+    assert "Beam_Current_mA" in default_rules.parameter_patterns
+    assert "Acceleration_Voltage_kV" in default_rules.parameter_patterns
+
+
 def test_domain_rules_from_yaml_custom_path(tmp_path: Path):
     yaml_content = """
 valid_elements:

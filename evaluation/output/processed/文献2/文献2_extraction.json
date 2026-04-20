@@ -1,0 +1,593 @@
+{
+  "Paper_Metadata": {
+    "Paper_Title": "High strength Al–Li alloy development for laser powder bed fusion",
+    "DOI": "10.1016/j.addma.2021.102249"
+  },
+  "items": [
+    {
+      "Sample_ID": "S1-LaserGlazing",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Al-4Cu-1.25Li",
+        "Nominal_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Cu": 4.0,
+            "Li": 1.25,
+            "Al": 90.75,
+            "other": 4.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Balanced with Al. Nominal composition for laser glazing screening sample #1."
+      },
+      "Process_Info": {
+        "Process_Category": "Casting",
+        "Process_Text": {
+          "original": "Casting of ingots from high purity aluminum (99.99%), Al-10Li, Al-50Cu, and Al-2Sc-1Zr master alloys. Thin cylinders sectioned (30 mm diameter, 5 mm thickness), polished to P800 grit. Laser glazing performed with IPG YLR-500 fiber laser (500 W max). Processing: laser power 500 W, beam defocusing 0 mm, scanning velocities 400/600/800 mm/s, hatch spacing 0.1 mm.",
+          "simplified": "Cast ingot preparation followed by laser glazing simulation (500 W, 400-800 mm/s scan speed, 0.1 mm hatch)"
+        },
+        "Equipment": "IPG YLR-500 fiber laser (500 W max)",
+        "Key_Params": {
+          "Laser_Power_W": 500.0,
+          "Beam_Defocusing_mm": 0.0,
+          "Scanning_Velocity_mm_s": [
+            400.0,
+            600.0,
+            800.0
+          ],
+          "Hatch_Spacing_mm": 0.1
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Cast region shows typical dendrite structure with white phases distributed along dendrite boundaries. Laser glazing region shows dissolution of interdendritic phases due to high cooling rate. Small amount of fine Al2Cu phases left in laser glazing region. Cracks observed in molten pools of laser glazing regions.",
+          "simplified": "Dendritic microstructure in cast region; fine phases in laser glazing region; cracks present at grain boundaries in laser glazing region"
+        },
+        "Main_Phase": "FCC",
+        "Precipitates": [
+          {
+            "Phase_Type": "Al2Cu",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": 257.9,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "OM": "Optical microscope imaging of longitudinal sections",
+          "SEM-EDS": "Backscattered electron imaging and EDS line scanning",
+          "EBSD": "Grain boundary maps, KAM analysis, GND density calculations",
+          "cast_region_ECD_um": 257.9,
+          "laser_glazing_region_ECD_um": 16.0,
+          "fitted_ellipse_aspect_ratio_cast": 2.0,
+          "crack_status": "cracks_present"
+        }
+      },
+      "Properties_Info": []
+    },
+    {
+      "Sample_ID": "S2-LaserGlazing",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Al-4Cu-1.25Li-0.4Sc-0.2Zr",
+        "Nominal_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Cu": 4.0,
+            "Li": 1.25,
+            "Sc": 0.4,
+            "Zr": 0.2,
+            "Al": 90.15,
+            "other": 4.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Balanced with Al. Nominal composition for laser glazing screening sample #2."
+      },
+      "Process_Info": {
+        "Process_Category": "Casting",
+        "Process_Text": {
+          "original": "Casting of ingots from high purity aluminum (99.99%), Al-10Li, Al-50Cu, and Al-2Sc-1Zr master alloys. Thin cylinders sectioned (30 mm diameter, 5 mm thickness), polished to P800 grit. Laser glazing performed with IPG YLR-500 fiber laser (500 W max). Processing: laser power 500 W, beam defocusing 0 mm, scanning velocities 400/600/800 mm/s, hatch spacing 0.1 mm.",
+          "simplified": "Cast ingot preparation followed by laser glazing simulation (500 W, 400-800 mm/s scan speed, 0.1 mm hatch)"
+        },
+        "Equipment": "IPG YLR-500 fiber laser (500 W max)",
+        "Key_Params": {
+          "Laser_Power_W": 500.0,
+          "Beam_Defocusing_mm": 0.0,
+          "Scanning_Velocity_mm_s": [
+            400.0,
+            600.0,
+            800.0
+          ],
+          "Hatch_Spacing_mm": 0.1
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Cast region microstructure consists of fine equiaxed grains with polygonal phases inside grains and intergranular phases. Laser glazing region shows near-absence of Cu segregation and intergranular phases. Polygonal Al3(Sc,Zr) phases present. Cracks observed in molten pools.",
+          "simplified": "Fine equiaxed grains in cast region; Al3(Sc,Zr) polygonal phases; columnar grains in laser glazing region with cracks"
+        },
+        "Main_Phase": "FCC",
+        "Precipitates": [
+          {
+            "Phase_Type": "Al3(Sc,Zr)",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Al2Cu",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": 15.6,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "OM": "Optical microscope imaging",
+          "SEM-EDS": "Backscattered electron imaging",
+          "EBSD": "Grain boundary analysis",
+          "cast_region_ECD_um": 15.6,
+          "fitted_ellipse_aspect_ratio_cast": 2.0,
+          "crack_status": "cracks_present"
+        }
+      },
+      "Properties_Info": []
+    },
+    {
+      "Sample_ID": "S3-LaserGlazing",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Al-4Cu-1.25Li-0.6Sc-0.3Zr",
+        "Nominal_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Cu": 4.0,
+            "Li": 1.25,
+            "Sc": 0.6,
+            "Zr": 0.3,
+            "Al": 89.85,
+            "other": 4.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Balanced with Al. Nominal composition for laser glazing screening sample #3."
+      },
+      "Process_Info": {
+        "Process_Category": "Casting",
+        "Process_Text": {
+          "original": "Casting of ingots from high purity aluminum (99.99%), Al-10Li, Al-50Cu, and Al-2Sc-1Zr master alloys. Thin cylinders sectioned (30 mm diameter, 5 mm thickness), polished to P800 grit. Laser glazing performed with IPG YLR-500 fiber laser (500 W max). Processing: laser power 500 W, beam defocusing 0 mm, scanning velocities 400/600/800 mm/s, hatch spacing 0.1 mm.",
+          "simplified": "Cast ingot preparation followed by laser glazing simulation (500 W, 400-800 mm/s scan speed, 0.1 mm hatch)"
+        },
+        "Equipment": "IPG YLR-500 fiber laser (500 W max)",
+        "Key_Params": {
+          "Laser_Power_W": 500.0,
+          "Beam_Defocusing_mm": 0.0,
+          "Scanning_Velocity_mm_s": [
+            400.0,
+            600.0,
+            800.0
+          ],
+          "Hatch_Spacing_mm": 0.1
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Similar microstructure to S2 with further refined grains. Fine equiaxed grains in cast region. Columnar grains in laser glazing region with some equiaxed grains at boundaries. Polygonal Al3(Sc,Zr) phases present. Cracks observed.",
+          "simplified": "Refined equiaxed grains; Al3(Sc,Zr) phases; columnar grains in laser glazing region with cracks"
+        },
+        "Main_Phase": "FCC",
+        "Precipitates": [
+          {
+            "Phase_Type": "Al3(Sc,Zr)",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Al2Cu",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": 13.8,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "OM": "Optical microscope imaging",
+          "SEM-EDS": "Backscattered electron imaging",
+          "EBSD": "Grain boundary analysis",
+          "cast_region_ECD_um": 13.8,
+          "fitted_ellipse_aspect_ratio_cast": 2.0,
+          "crack_status": "cracks_present"
+        }
+      },
+      "Properties_Info": []
+    },
+    {
+      "Sample_ID": "S4-LaserGlazing",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Al-4Cu-1.25Li-0.8Sc-0.4Zr",
+        "Nominal_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Cu": 4.0,
+            "Li": 1.25,
+            "Sc": 0.8,
+            "Zr": 0.4,
+            "Al": 89.55,
+            "other": 4.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Balanced with Al. Nominal composition for laser glazing screening sample #4. Suggested inoculation for LPBF."
+      },
+      "Process_Info": {
+        "Process_Category": "Casting",
+        "Process_Text": {
+          "original": "Casting of ingots from high purity aluminum (99.99%), Al-10Li, Al-50Cu, and Al-2Sc-1Zr master alloys. Thin cylinders sectioned (30 mm diameter, 5 mm thickness), polished to P800 grit. Laser glazing performed with IPG YLR-500 fiber laser (500 W max). Processing: laser power 500 W, beam defocusing 0 mm, scanning velocities 400/600/800 mm/s, hatch spacing 0.1 mm.",
+          "simplified": "Cast ingot preparation followed by laser glazing simulation (500 W, 400-800 mm/s scan speed, 0.1 mm hatch)"
+        },
+        "Equipment": "IPG YLR-500 fiber laser (500 W max)",
+        "Key_Params": {
+          "Laser_Power_W": 500.0,
+          "Beam_Defocusing_mm": 0.0,
+          "Scanning_Velocity_mm_s": [
+            400.0,
+            600.0,
+            800.0
+          ],
+          "Hatch_Spacing_mm": 0.1
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Fine equiaxed grains in cast region. Laser glazing region shows refined columnar grains with equiaxed grains at boundaries. Al3(Sc,Zr) polygonal phases present. No cracks observed in laser glazing regions. Suggested as optimized inoculation for LPBF.",
+          "simplified": "Crack-free microstructure; refined grains; Al3(Sc,Zr) precipitates; columnar with equiaxed boundary grains"
+        },
+        "Main_Phase": "FCC",
+        "Precipitates": [
+          {
+            "Phase_Type": "Al3(Sc,Zr)",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Al2Cu",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": 11.7,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "OM": "Optical microscope imaging",
+          "SEM-EDS": "Backscattered electron imaging",
+          "EBSD": "Grain boundary maps and KAM analysis",
+          "cast_region_ECD_um": 11.7,
+          "fitted_ellipse_aspect_ratio_cast": 2.0,
+          "crack_status": "crack_free"
+        }
+      },
+      "Properties_Info": []
+    },
+    {
+      "Sample_ID": "S5-LaserGlazing",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Al-4Cu-1.25Li-1.0Sc-0.5Zr",
+        "Nominal_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Cu": 4.0,
+            "Li": 1.25,
+            "Sc": 1.0,
+            "Zr": 0.5,
+            "Al": 89.25,
+            "other": 4.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Balanced with Al. Nominal composition for laser glazing screening sample #5. Optimized composition converted to powder for LPBF."
+      },
+      "Process_Info": {
+        "Process_Category": "Casting",
+        "Process_Text": {
+          "original": "Casting of ingots from high purity aluminum (99.99%), Al-10Li, Al-50Cu, and Al-2Sc-1Zr master alloys. Thin cylinders sectioned (30 mm diameter, 5 mm thickness), polished to P800 grit. Laser glazing performed with IPG YLR-500 fiber laser (500 W max). Processing: laser power 500 W, beam defocusing 0 mm, scanning velocities 400/600/800 mm/s, hatch spacing 0.1 mm.",
+          "simplified": "Cast ingot preparation followed by laser glazing simulation (500 W, 400-800 mm/s scan speed, 0.1 mm hatch)"
+        },
+        "Equipment": "IPG YLR-500 fiber laser (500 W max)",
+        "Key_Params": {
+          "Laser_Power_W": 500.0,
+          "Beam_Defocusing_mm": 0.0,
+          "Scanning_Velocity_mm_s": [
+            400.0,
+            600.0,
+            800.0
+          ],
+          "Hatch_Spacing_mm": 0.1
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Cast region: equiaxed grains (ECD 18.2 um) with larger and clustered polygonal Al3(Sc,Zr) phases due to high Sc/Zr content exceeding solubility limits. Laser glazing region: finest grains (ECD 1.4 um) with aspect ratio 1.65, nearly fully equiaxed. Al3(Sc,Zr) phases act as heterogeneous nucleation sites. No cracks observed.",
+          "simplified": "Crack-free; finest grains in laser glazing region; nearly fully equiaxed; Al3(Sc,Zr) nucleation sites"
+        },
+        "Main_Phase": "FCC",
+        "Precipitates": [
+          {
+            "Phase_Type": "Al3(Sc,Zr)",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Al2Cu",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": 18.2,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "OM": "Optical microscope imaging",
+          "SEM-EDS": "EDS line scan confirming Al3(Sc,Zr) and Cu-containing phases",
+          "EBSD": "Grain boundary maps, KAM maps, GND density analysis",
+          "cast_region_ECD_um": 18.2,
+          "laser_glazing_region_ECD_um": 1.4,
+          "fitted_ellipse_aspect_ratio_cast": 2.0,
+          "fitted_ellipse_aspect_ratio_laser_glazing": 1.65,
+          "crack_status": "crack_free",
+          "polygonal_phase_size_increase": "increased with Sc/Zr content"
+        }
+      },
+      "Properties_Info": []
+    },
+    {
+      "Sample_ID": "LPBF-AlCuLiScZr",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Al-Cu-Li-Sc-Zr powder (novel LPBF alloy)",
+        "Nominal_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Cu": 3.89,
+            "Li": 1.22,
+            "Sc": 0.98,
+            "Zr": 0.43,
+            "Al": 93.48
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Cu": 3.89,
+            "Li": 1.22,
+            "Sc": 0.98,
+            "Zr": 0.43,
+            "Al": 93.48
+          },
+          "Measurement_Method": "ICP-OES"
+        },
+        "Note": "Balanced with Al. Powder composition measured by ICP-OES. Optimized Al-Cu-Li-Sc-Zr alloy specifically designed for LPBF. Produced by inert gas atomization."
+      },
+      "Process_Info": {
+        "Process_Category": "AM_LPBF",
+        "Process_Text": {
+          "original": "Al-Cu-Li-Sc-Zr powder produced by Hunan Hengji Powder Technology using inert gas atomization. LPBF processing with LiM-X260A machine (IPG YLR-500 fiber laser, same as in-house machine). Optimized LPBF parameters: laser power 300 W, scanning velocity 1200 mm/s, hatch spacing 0.1 mm, layer thickness 40 um, hatch style rotation 90 deg.",
+          "simplified": "Gas atomized powder; LPBF with 300 W, 1200 mm/s scan speed, 40 um layer thickness, 0.1 mm hatch spacing, 90 deg rotation"
+        },
+        "Equipment": "LiM-X260A LPBF machine with IPG YLR-500 fiber laser",
+        "Key_Params": {
+          "Laser_Power_W": 300.0,
+          "Scanning_Velocity_mm_s": 1200.0,
+          "Hatch_Spacing_mm": 0.1,
+          "Layer_Thickness_um": 40.0,
+          "Hatch_Rotation_deg": 90.0,
+          "Volumetric_Energy_Density_J_mm3": null
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Bimodal grain microstructure consisting of fine equiaxed grains at molten pool boundaries and fine columnar grains inside molten pools. Equiaxed region caused by high number density of primary Al3(Sc,Zr) nucleation sites. Columnar region related to low number density of nucleation sites associated with high temperature gradient.",
+          "simplified": "Bimodal microstructure; equiaxed grains at pool boundaries; columnar grains inside pools; Al3(Sc,Zr) nucleation sites"
+        },
+        "Main_Phase": "FCC",
+        "Precipitates": [
+          {
+            "Phase_Type": "Al3(Sc,Zr)",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": 99.9,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "OM": "Density and porosity analysis",
+          "EBSD": "Grain boundary maps and statistics",
+          "powder_particle_size_distribution": "D10/D50/D90 values from Mastersizer 3000",
+          "Li_loss_rate_pct": 9.0,
+          "building_efficiency_ratio_vs_2195": "20x higher"
+        }
+      },
+      "Properties_Info": []
+    },
+    {
+      "Sample_ID": "LPBF-AlCuLiScZr-AsBuilt",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Al-Cu-Li-Sc-Zr LPBF as-fabricated",
+        "Nominal_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Cu": 3.89,
+            "Li": 1.22,
+            "Sc": 0.98,
+            "Zr": 0.43,
+            "Al": 93.48
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Cu": 3.93,
+            "Li": 1.11,
+            "Sc": 0.97,
+            "Zr": 0.42,
+            "Al": 93.57
+          },
+          "Measurement_Method": "ICP-OES"
+        },
+        "Note": "Balanced with Al. LPBF sample measured composition showing 9% Li loss from powder to LPBF sample."
+      },
+      "Process_Info": {
+        "Process_Category": "AM_LPBF",
+        "Process_Text": {
+          "original": "LPBF processing with LiM-X260A machine (IPG YLR-500 fiber laser). Optimized parameters: laser power 300 W, scanning velocity 1200 mm/s, hatch spacing 0.1 mm, layer thickness 40 um, hatch style rotation 90 deg. Relative density >99.9% confirmed by ImagePro software. Cuboid samples: 8 mm x 8 mm x 6 mm. Tensile plates: 84 mm x 5 mm x 11 mm. Tensile tests conducted quasistatically by Zwick/Roell tester with 25 mm clip gauge extensometer according to ASTM B557M-10.",
+          "simplified": "LPBF as-fabricated; 300 W, 1200 mm/s, 40 um layer, 99.9% density; ASTM B557M-10 tensile testing"
+        },
+        "Equipment": "LiM-X260A LPBF machine with IPG YLR-500 fiber laser; Zwick/Roell tester",
+        "Key_Params": {
+          "Laser_Power_W": 300.0,
+          "Scanning_Velocity_mm_s": 1200.0,
+          "Hatch_Spacing_mm": 0.1,
+          "Layer_Thickness_um": 40.0,
+          "Hatch_Rotation_deg": 90.0
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Bimodal grain microstructure consisting of fine equiaxed grains at molten pool boundaries and fine columnar grains inside molten pools. Equiaxed grains: ECD 0.6 um, area fraction 0.75. Columnar grains: ECD 2.5 um, width 1.6 um. Fine Al3(Sc,Zr) precipitates act as heterogeneous nucleation sites. No cracks observed.",
+          "simplified": "Bimodal microstructure with 0.6 um equiaxed grains (75%) and 2.5 um columnar grains; Al3(Sc,Zr) precipitates; fully dense (99.9%)"
+        },
+        "Main_Phase": "FCC",
+        "Precipitates": [
+          {
+            "Phase_Type": "Al3(Sc,Zr)",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": 99.9,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "OM": "Porosity analysis",
+          "EBSD": "Grain size statistics: equiaxed and columnar grains; area fraction alpha = 0.75",
+          "equiaxed_grain_ECD_um": 0.6,
+          "columnar_grain_ECD_um": 2.5,
+          "equiaxed_grain_area_fraction_alpha": 0.75,
+          "columnar_grain_width_D2_um": 1.6,
+          "grain_boundary_strengthening_MPa": 198,
+          "Li_loss_rate_pct": 9.0
+        }
+      },
+      "Properties_Info": []
+    },
+    {
+      "Sample_ID": "Cast-AlCuLiScZr",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Al-Cu-Li-Sc-Zr cast alloy",
+        "Nominal_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Cu": 3.89,
+            "Li": 1.22,
+            "Sc": 0.98,
+            "Zr": 0.43,
+            "Al": 93.48
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Balanced with Al. Cast Al-Cu-Li-Sc-Zr alloy used as comparison baseline."
+      },
+      "Process_Info": {
+        "Process_Category": "Casting",
+        "Process_Text": {
+          "original": "Cast ingot preparation from high purity aluminum (99.99%), Al-10Li, Al-50Cu, and Al-2Sc-1Zr master alloys.",
+          "simplified": "Conventional casting"
+        },
+        "Equipment": null,
+        "Key_Params": {}
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Cast microstructure with large amount of coarse Al3(Sc,Zr) particles. Much worse tensile properties compared to LPBF sample due to coarse particles and possible metallurgical defects.",
+          "simplified": "Cast structure with coarse Al3(Sc,Zr) precipitates; coarse particles leading to inferior properties"
+        },
+        "Main_Phase": "FCC",
+        "Precipitates": [
+          {
+            "Phase_Type": "Al3(Sc,Zr)",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "coarse_Al3(Sc,Zr)_particles": "large amount present"
+        }
+      },
+      "Properties_Info": []
+    }
+  ]
+}

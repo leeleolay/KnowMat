@@ -1,0 +1,430 @@
+{
+  "Paper_Metadata": {
+    "Paper_Title": "Achieving superior high-temperature mechanical properties in Al-Cu-Li-Sc-Zr alloy with nano-scale microstructure via laser additive manufacturing",
+    "DOI": "10.1080/21663831.2023.2285388"
+  },
+  "items": [
+    {
+      "Sample_ID": "AF",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Al-Cu-Li-Sc-Zr",
+        "Nominal_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Al": 93.48,
+            "Cu": 3.89,
+            "Li": 1.22,
+            "Sc": 0.98,
+            "Zr": 0.43
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Powder composition reported as Al-3.89Cu-1.22Li-0.98Sc-0.43Zr wt%; Al balance computed as 93.48 wt%"
+      },
+      "Process_Info": {
+        "Process_Category": "AM_LPBF",
+        "Process_Text": {
+          "original": "Gas-atomized alloy powder fabricated by LPBF using LiM-X260A LPBF machine; Laser power 300 W, scanning velocity 1200 mm/s, hatch spacing 0.1 mm, layer thickness 40 um; relative density exceeding 99.9%; as-fabricated condition with no post-processing",
+          "simplified": "LPBF as-fabricated; 300 W, 1200 mm/s, 0.1 mm hatch, 40 um layer thickness"
+        },
+        "Equipment": "LiM-X260A LPBF machine",
+        "Key_Params": {
+          "Laser_Power_W": 300,
+          "Scanning_Speed_mm_s": 1200,
+          "Hatch_Spacing_um": 100,
+          "Layer_Thickness_um": 40,
+          "Volumetric_Energy_Density_J_mm3": 62.5
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Nearly random grain orientation distribution confirmed by IPF maps and weak pole figures with max texture intensity 2.79; fine equiaxed grains (avg 1.49 um) and coarse columnar grains (avg 1.84 um); Al2Cu and AlCuSc precipitates stacking along grain boundaries; Cu-rich and Sc-rich precipitates at grain boundaries; smaller Al2Cu and AlCuSc precipitates (42 nm) within coarse grains attributed to interdendritic segregation; Zr supersaturated in Al matrix; nanoscale structure present",
+          "simplified": "Random orientation FCC matrix; fine equiaxed (1.49 um) and columnar grains (1.84 um); Al2Cu and AlCuSc precipitates at grain boundaries (116-117 nm) and intragranular (42 nm); Zr supersaturated in matrix"
+        },
+        "Main_Phase": "FCC",
+        "Precipitates": [
+          {
+            "Phase_Type": "Al2Cu",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "AlCuSc",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Al3(Sc,Zr)",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": 99.9,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "EBSD": "IPF maps showing nearly random grain orientation; weak texture with max intensity 2.79; fine equiaxed grains 1.49 um, coarse columnar grains 1.84 um",
+          "TKD": "Phase map identifying Al2Cu and AlCuSc phases at grain boundaries",
+          "TEM": "HAADF images and EDS maps showing Cu-rich and Sc-rich precipitates along grain boundaries; precipitate sizes 116-117 nm at boundaries, 42 nm intragranular",
+          "SEM": "Zeiss Gemini 300 SEM with advanced EBSD detector; AZtecCrystal software for data analysis",
+          "Equiaxed_Grain_Size_avg_um": 1.49,
+          "Columnar_Grain_Size_avg_um": 1.84,
+          "Equiaxed_Precipitate_Size_avg_nm": 116,
+          "Columnar_Precipitate_Size_avg_nm": 117,
+          "Intragranular_Precipitate_Size_avg_nm": 42,
+          "Texture_Intensity_max": 2.79
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at RT; ASTM B557M-10 standard; ISO 6892-2:2018; strain rate not specified",
+          "Value_Numeric": 482.0,
+          "Value_Range": null,
+          "Value_StdDev": 1.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "not specified",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "image",
+          "Test_Specimen": "ASTM B557M-10, gauge 32x6x3 mm",
+          "Note": "Room temperature as-fabricated"
+        },
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at 200 °C; 10 min hold before loading; ISO 6892-2:2018",
+          "Value_Numeric": 402.0,
+          "Value_Range": null,
+          "Value_StdDev": 14.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": 473.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": null,
+          "Test_Specimen": "ASTM B557M-10, gauge 32x6x3 mm",
+          "Note": "Retains 83% of RT yield strength at 200°C"
+        },
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at 250 °C; 10 min hold before loading; ISO 6892-2:2018",
+          "Value_Numeric": 355.0,
+          "Value_Range": null,
+          "Value_StdDev": 10.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": 523.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": null,
+          "Test_Specimen": "ASTM B557M-10, gauge 32x6x3 mm",
+          "Note": "Retains 74% of RT yield strength at 250°C"
+        },
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at 300 °C; 10 min hold before loading; ISO 6892-2:2018",
+          "Value_Numeric": 177.0,
+          "Value_Range": null,
+          "Value_StdDev": 7.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": 573.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": null,
+          "Test_Specimen": "ASTM B557M-10, gauge 32x6x3 mm",
+          "Note": "Drops to 37% of RT yield strength at 300°C"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at RT; ASTM B557M-10 standard; ISO 6892-2:2018",
+          "Value_Numeric": 9.0,
+          "Value_Range": null,
+          "Value_StdDev": 1.0,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": null,
+          "Test_Specimen": "ASTM B557M-10, gauge 32x6x3 mm",
+          "Note": "Room temperature as-fabricated"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at 200 °C; 10 min hold before loading; ISO 6892-2:2018",
+          "Value_Numeric": 11.0,
+          "Value_Range": null,
+          "Value_StdDev": 2.0,
+          "Unit": "%",
+          "Test_Temperature_K": 473.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": null,
+          "Test_Specimen": "ASTM B557M-10, gauge 32x6x3 mm",
+          "Note": "200°C as-fabricated"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at 250 °C; 10 min hold before loading; ISO 6892-2:2018",
+          "Value_Numeric": 16.0,
+          "Value_Range": null,
+          "Value_StdDev": 2.0,
+          "Unit": "%",
+          "Test_Temperature_K": 523.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": null,
+          "Test_Specimen": "ASTM B557M-10, gauge 32x6x3 mm",
+          "Note": "250°C as-fabricated"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at 300 °C; 10 min hold before loading; ISO 6892-2:2018",
+          "Value_Numeric": 26.0,
+          "Value_Range": null,
+          "Value_StdDev": 3.0,
+          "Unit": "%",
+          "Test_Temperature_K": 573.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": null,
+          "Test_Specimen": "ASTM B557M-10, gauge 32x6x3 mm",
+          "Note": "Nearly 3x RT elongation at 300°C"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "HT",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Al-Cu-Li-Sc-Zr",
+        "Nominal_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Al": 93.48,
+            "Cu": 3.89,
+            "Li": 1.22,
+            "Sc": 0.98,
+            "Zr": 0.43
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Powder composition reported as Al-3.89Cu-1.22Li-0.98Sc-0.43Zr wt%; Al balance computed as 93.48 wt%"
+      },
+      "Process_Info": {
+        "Process_Category": "AM_LPBF",
+        "Process_Text": {
+          "original": "Gas-atomized alloy powder fabricated by LPBF using LiM-X260A LPBF machine; Laser power 300 W, scanning velocity 1200 mm/s, hatch spacing 0.1 mm, layer thickness 40 um; relative density exceeding 99.9%; then heat-treated: gradual heating at 10 °C/min from RT to 300°C in KSL-1400X muffle furnace, held at 300°C for 1 h, cooled to ambient temperature in air",
+          "simplified": "LPBF heat-treated; 300 W, 1200 mm/s, 0.1 mm hatch, 40 um layer; HT at 300°C for 1 h, air cooled"
+        },
+        "Equipment": "LiM-X260A LPBF machine; KSL-1400X muffle furnace",
+        "Key_Params": {
+          "Laser_Power_W": 300,
+          "Scanning_Speed_mm_s": 1200,
+          "Hatch_Spacing_um": 100,
+          "Layer_Thickness_um": 40,
+          "Volumetric_Energy_Density_J_mm3": 62.5,
+          "Solution_Temperature_K": 573.15,
+          "Solution_Time_h": 1,
+          "Heating_Rate_C_min": 10,
+          "Cooling_Medium": "Air"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Nearly random grain orientation distribution confirmed by IPF maps and weak pole figures with max texture intensity 1.83; fine equiaxed grains (avg 1.53 um) and coarse columnar grains (avg 1.76 um); no significant grain coarsening after HT; increased number of precipitates in both equiaxed and columnar grain areas; fine precipitates within columnar grains coalesced and grew to 72 nm (71% growth from AF); nearly continuously stacked precipitates along grain boundaries (125 nm equiaxed, 123 nm columnar); ring-shaped structure at nanoscale around equiaxed grains; strip-shaped structure along columnar grain boundaries",
+          "simplified": "Random orientation FCC matrix; fine equiaxed (1.53 um) and columnar grains (1.76 um); increased precipitate density; intragranular precipitates 72 nm; grain boundary precipitates 123-125 nm; stable nanostructure after HT"
+        },
+        "Main_Phase": "FCC",
+        "Precipitates": [
+          {
+            "Phase_Type": "Al2Cu",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "AlCuSc",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Al3(Sc,Zr)",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": 99.9,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "EBSD": "IPF maps showing nearly random grain orientation; weak texture with max intensity 1.83; fine equiaxed grains 1.53 um, coarse columnar grains 1.76 um",
+          "TKD": "Phase map identifying Al2Cu and AlCuSc phases at grain boundaries",
+          "TEM": "HAADF images and EDS maps showing increased precipitate density after HT; intragranular precipitates 72 nm (coalesced from 42 nm); grain boundary precipitates 123-125 nm",
+          "SEM": "Zeiss Gemini 300 SEM with advanced EBSD detector; AZtecCrystal software for data analysis",
+          "Equiaxed_Grain_Size_avg_um": 1.53,
+          "Columnar_Grain_Size_avg_um": 1.76,
+          "Equiaxed_Grain_Boundary_Precipitate_Size_avg_nm": 125,
+          "Columnar_Grain_Boundary_Precipitate_Size_avg_nm": 123,
+          "Intragranular_Precipitate_Size_avg_nm": 72,
+          "Texture_Intensity_max": 1.83
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at RT; ASTM B557M-10 standard; ISO 6892-2:2018",
+          "Value_Numeric": 595.0,
+          "Value_Range": null,
+          "Value_StdDev": 14.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": null,
+          "Test_Specimen": "ASTM B557M-10, gauge 32x6x3 mm",
+          "Note": "Room temperature heat-treated; brittle nature with only 2% elongation"
+        },
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at 200 °C; 10 min hold before loading; ISO 6892-2:2018",
+          "Value_Numeric": 366.0,
+          "Value_Range": null,
+          "Value_StdDev": 3.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": 473.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": null,
+          "Test_Specimen": "ASTM B557M-10, gauge 32x6x3 mm",
+          "Note": "HT sample slightly lower YS than AF at 200°C"
+        },
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at 250 °C; 10 min hold before loading; ISO 6892-2:2018",
+          "Value_Numeric": 319.0,
+          "Value_Range": null,
+          "Value_StdDev": 13.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": 523.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": null,
+          "Test_Specimen": "ASTM B557M-10, gauge 32x6x3 mm",
+          "Note": "HT-250°C"
+        },
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at 300 °C; 10 min hold before loading; ISO 6892-2:2018",
+          "Value_Numeric": 170.0,
+          "Value_Range": null,
+          "Value_StdDev": 7.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": 573.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": null,
+          "Test_Specimen": "ASTM B557M-10, gauge 32x6x3 mm",
+          "Note": "HT-300°C"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at RT; ASTM B557M-10 standard; ISO 6892-2:2018",
+          "Value_Numeric": 2.0,
+          "Value_Range": null,
+          "Value_StdDev": 1.0,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": null,
+          "Test_Specimen": "ASTM B557M-10, gauge 32x6x3 mm",
+          "Note": "Brittle at room temperature"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at 200 °C; 10 min hold before loading; ISO 6892-2:2018",
+          "Value_Numeric": 16.0,
+          "Value_Range": null,
+          "Value_StdDev": 5.0,
+          "Unit": "%",
+          "Test_Temperature_K": 473.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": null,
+          "Test_Specimen": "ASTM B557M-10, gauge 32x6x3 mm",
+          "Note": "HT-200°C; superior ductility compared to AF at high temperature"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at 250 °C; 10 min hold before loading; ISO 6892-2:2018",
+          "Value_Numeric": 30.0,
+          "Value_Range": null,
+          "Value_StdDev": 7.0,
+          "Unit": "%",
+          "Test_Temperature_K": 523.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": null,
+          "Test_Specimen": "ASTM B557M-10, gauge 32x6x3 mm",
+          "Note": "HT-250°C; superplasticity effect observed"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at 300 °C; 10 min hold before loading; ISO 6892-2:2018",
+          "Value_Numeric": 38.0,
+          "Value_Range": null,
+          "Value_StdDev": 9.0,
+          "Unit": "%",
+          "Test_Temperature_K": 573.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": null,
+          "Test_Specimen": "ASTM B557M-10, gauge 32x6x3 mm",
+          "Note": "Maximum elongation 38% at 300°C; superplasticity effect"
+        }
+      ]
+    }
+  ]
+}

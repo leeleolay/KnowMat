@@ -1,0 +1,336 @@
+{
+  "Paper_Metadata": {
+    "Paper_Title": "3-D printed ultrastrong heat-resistant aluminum alloy achieved by bioinspired nanoscale amorphous confinement",
+    "DOI": "10.1016/j.mattod.2026.103267"
+  },
+  "items": [
+    {
+      "Sample_ID": "FVS0812-TiB2-as-printed",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "FVS0812",
+        "Nominal_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Al": 88.28,
+            "Fe": 8.43,
+            "V": 1.33,
+            "Si": 1.48,
+            "C": 0.018,
+            "S": 0.08,
+            "O": 0.048,
+            "N": 0.06,
+            "other": 0.274
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Al-8.5Fe-1.3V-1.7Si nominal composition; 2 wt% TiB2 nanoparticles (50-100 nm) added as nucleating agents; powder size range 15-53 um with D50 of 34.3 um"
+      },
+      "Process_Info": {
+        "Process_Category": "AM_LPBF",
+        "Process_Text": {
+          "original": "Gas-atomized FVS0812 powder (Al-8.5Fe-1.3V-1.7Si, wt.%) mixed with 2 wt% TiB2 nanoparticles (50-100 nm) by mechanical stirring in anhydrous ethanol at 1000 rpm for 3 h; dried in vacuum oven at 60 C for 48 h; LPBF performed using EP-M150 Metal 3D Printer under argon atmosphere with laser power 150 W, scan speed 1000 mm/s, scan spacing 0.08 mm, layer thickness 0.02 mm; build platform preheated to 200 C; cooled to room temperature and ultrasonically cleaned.",
+          "simplified": "LPBF of FVS0812 alloy with 2 wt% TiB2 nanoparticles; EP-M150 printer; 150 W, 1000 mm/s, 0.08 mm spacing, 0.02 mm layer, Ar atmosphere, 200 C build plate"
+        },
+        "Equipment": "EP-M150 Metal 3D Printer (Hangzhou Eplus 3d Tech, China)",
+        "Key_Params": {
+          "Laser_Power_W": 150.0,
+          "Scanning_Speed_mm_s": 1000.0,
+          "Hatch_Spacing_um": 80.0,
+          "Layer_Thickness_um": 20.0,
+          "Build_Plate_Temperature_C": 200.0,
+          "Protective_Atmosphere": "Argon",
+          "Powder_Size_avg_um": 34.3,
+          "TiB2_loading_wt_pct": 2.0,
+          "Mixing_Time_h": 3.0,
+          "Mixing_Speed_rpm": 1000.0
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Dominant fusion zone (~80%) with heat-affected zone near pool boundary; equiaxed grains (~1.6 um) with subtle columnar grains; alpha-Al cells (~67 nm diameter) with continuous amorphous cell boundaries (~14 nm wide, ~38% volume fraction); Fe and Si enriched at cell boundaries, Al depleted; TiV nucleation cores (~50 nm) enriched with Ti and V within grains; ~1% Al8Fe2Si precipitates (1-2 um); amorphous boundaries confirmed by TEM FFT patterns and DSC exothermic peak.",
+          "simplified": "Equiaxed grain structure (~1.6 um); alpha-Al cells (~67 nm) with continuous amorphous boundaries (~14 nm, ~38 vol%); TiV nucleants; Al8Fe2Si precipitates (~1%)"
+        },
+        "Main_Phase": "FCC (alpha-Al)",
+        "Precipitates": [
+          {
+            "Phase_Type": "Al8Fe2Si",
+            "Volume_Fraction_pct": 1.0
+          },
+          {
+            "Phase_Type": "TiV",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": 1.6,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "XRD": "D8 Discover (Cu-Ka), micro-XRD (Co-Ka, 0.5 mm beam); amorphous phase indicated by broad diffuse scattering hump at 2theta 45-55 deg",
+          "SEM": "Apreo S LoVac; EBSD at 20 kV, 13 nA beam current",
+          "TEM": "FEI Talos F200X at 200 kV; FEI Themis Z spherical aberration-corrected TEM; SAED patterns confirm amorphous cell boundaries",
+          "APT": "LEAP 5000X (CAMECA); UV laser 60 pJ, 100 kHz, 50 K; cell boundary composition: Al 59-77%, Fe 14-27%, Si 4-13%, V 0-4%, Ti 0-1%",
+          "DSC": "DSC 204 F1 Phoenix; 10 K/min heating rate; exothermic peak attributed to amorphous phase crystallization",
+          "alpha_Al_cell_diameter_nm": 67.0,
+          "cell_boundary_width_nm": 14.0,
+          "amorphous_phase_fraction_pct": 38.0,
+          "fusion_zone_fraction_pct": 80.0,
+          "TiV_particle_size_nm": 12.0
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at 298.15 K; strain rate 5e-4 s^-1",
+          "Value_Numeric": 523.0,
+          "Value_Range": null,
+          "Value_StdDev": 10.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "5e-4 s^-1",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM E8 dog-bone, gauge 10 x 2 x 1 mm",
+          "Note": "Room temperature tensile test"
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at 298.15 K; strain rate 5e-4 s^-1",
+          "Value_Numeric": 676.0,
+          "Value_Range": null,
+          "Value_StdDev": 4.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "5e-4 s^-1",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM E8 dog-bone, gauge 10 x 2 x 1 mm",
+          "Note": "Room temperature tensile test; among highest UTS for 3D-printed Al alloys"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at 298.15 K; strain rate 5e-4 s^-1",
+          "Value_Numeric": 5.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "5e-4 s^-1",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM E8 dog-bone, gauge 10 x 2 x 1 mm",
+          "Note": "Room temperature tensile test; elongation to fracture"
+        },
+        {
+          "Property_Name": "Creep_Steady_State_Rate",
+          "Test_Condition": "at 573.15 K (300 C); applied stresses 100 MPa and 150 MPa",
+          "Value_Numeric": 1e-08,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "s^-1",
+          "Test_Temperature_K": 573.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "Cylindrical, gauge diameter 3 mm, gauge length 40 mm",
+          "Note": "Creep rate reduced by 1-3 orders of magnitude compared to other Al alloys; GNCJ-30 testing machine with high-temperature extensometer"
+        },
+        {
+          "Property_Name": "Nanoindentation_Hardness",
+          "Test_Condition": "at 298.15 K; indentation depth 0.1 um; indent spacing 1 um; loading rate 0.05 um/s; 2000 data points",
+          "Value_Numeric": 3.0,
+          "Value_Range": "2.8-3.2",
+          "Value_StdDev": null,
+          "Unit": "GPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "FT-I04 Femto-Indenter",
+          "Note": "Fusion zone hardness; heterogeneous distribution map generated"
+        },
+        {
+          "Property_Name": "Nanoindentation_Hardness",
+          "Test_Condition": "at 298.15 K; indentation depth 0.1 um; indent spacing 1 um; loading rate 0.05 um/s; 2000 data points",
+          "Value_Numeric": 1.9,
+          "Value_Range": "1.6-2.2",
+          "Value_StdDev": null,
+          "Unit": "GPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "FT-I04 Femto-Indenter",
+          "Note": "Heat-affected zone hardness near pool boundary; heterogeneous distribution map generated"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "FVS0812-TiB2-thermal-exposed",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "FVS0812",
+        "Nominal_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Al": 88.28,
+            "Fe": 8.43,
+            "V": 1.33,
+            "Si": 1.48,
+            "C": 0.018,
+            "S": 0.08,
+            "O": 0.048,
+            "N": 0.06,
+            "other": 0.274
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Same alloy as printed; after thermal exposure at 300 C for 100 h; Al-8.5Fe-1.3V-1.7Si nominal composition with 2 wt% TiB2"
+      },
+      "Process_Info": {
+        "Process_Category": "Unknown",
+        "Process_Text": {
+          "original": "Same as-printed FVS0812 + TiB2 alloy thermally exposed at 300 C for 100 h in air or inert atmosphere; followed by tensile testing from room temperature to 400 C.",
+          "simplified": "FVS0812 + TiB2 as-printed alloy after thermal exposure at 300 C for 100 h"
+        },
+        "Equipment": null,
+        "Key_Params": {
+          "Thermal_Exposure_Temperature_C": 300.0,
+          "Thermal_Exposure_Time_h": 100.0
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Grain size ~1.95 um (marginal increase from ~1.6 um); fusion zone fraction decreased to ~63%; alpha-Al cells ~72 nm diameter comparable to as-printed; amorphous phase largely preserved in fusion zone with continuous network; limited Al12(FeV)3Si nanocrystals in network; HAZ shows interconnected Al12(FeV)3Si nanocrystals at cell boundaries with nanoscale gaps compromising network integrity.",
+          "simplified": "Good thermal stability; grain size ~1.95 um; cells ~72 nm; amorphous phase largely preserved with partial crystallization; HAZ with nanocrystalline boundaries"
+        },
+        "Main_Phase": "FCC (alpha-Al)",
+        "Precipitates": [
+          {
+            "Phase_Type": "Al12(FeV)3Si",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Al8Fe2Si",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": 1.95,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "XRD": "Micro-XRD; weakened broad diffuse scattering hump indicating partial crystallization",
+          "TEM": "FFT patterns show absence of periodic diffraction spots confirming preserved amorphous phase",
+          "DSC": "DSC 204 F1; weakened exothermic peak due to partial crystallization",
+          "alpha_Al_cell_diameter_nm": 72.0,
+          "fusion_zone_fraction_pct": 63.0,
+          "hardness_retention_pct": 85.0,
+          "strength_retention_pct": 80.0
+        }
+      },
+      "Properties_Info": []
+    },
+    {
+      "Sample_ID": "FVS0812-no-TiB2",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Reference",
+        "Alloy_Name_Raw": "FVS0812",
+        "Nominal_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Al": 88.28,
+            "Fe": 8.43,
+            "V": 1.33,
+            "Si": 1.48,
+            "C": 0.018,
+            "S": 0.08,
+            "O": 0.048,
+            "N": 0.06,
+            "other": 0.274
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "FVS0812 alloy without TiB2 nanoparticle addition; used as comparison baseline; Al-8.5Fe-1.3V-1.7Si composition"
+      },
+      "Process_Info": {
+        "Process_Category": "AM_LPBF",
+        "Process_Text": {
+          "original": "FVS0812 powder processed by LPBF without TiB2 nanoparticle addition; same LPBF parameters as TiB2-containing alloy (150 W, 1000 mm/s, 0.08 mm spacing, 0.02 mm layer, Ar, 200 C build plate).",
+          "simplified": "LPBF of FVS0812 without TiB2; EP-M150 printer; same parameters as TiB2 version"
+        },
+        "Equipment": "EP-M150 Metal 3D Printer (Hangzhou Eplus 3d Tech, China)",
+        "Key_Params": {
+          "Laser_Power_W": 150.0,
+          "Scanning_Speed_mm_s": 1000.0,
+          "Hatch_Spacing_um": 80.0,
+          "Layer_Thickness_um": 20.0,
+          "Build_Plate_Temperature_C": 200.0,
+          "Protective_Atmosphere": "Argon"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Coarse columnar grain structure with average grain size ~7.3 um (compared to ~1.6 um with TiB2); no grain refinement from TiB2 nanoparticles; poor formability with high tendency for cracking and edge warping; restricts structural integrity and dimensional accuracy.",
+          "simplified": "Coarse columnar grains (~7.3 um); poor printability with cracking tendency"
+        },
+        "Main_Phase": "FCC (alpha-Al)",
+        "Precipitates": [
+          {
+            "Phase_Type": "Al8Fe2Si",
+            "Volume_Fraction_pct": 1.0
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": 7.3,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "SEM": "Apreo S LoVac; EBSD analysis",
+          "XRD": "Powder XRD for morphology comparison",
+          "coarse_columnar_grains": true,
+          "poor_printability": true,
+          "cracking_tendency": "high"
+        }
+      },
+      "Properties_Info": []
+    }
+  ]
+}

@@ -1,0 +1,1013 @@
+{
+  "Paper_Metadata": {
+    "Paper_Title": "Powder recycling for electron beam powder bed fusion of TiAl alloy☆",
+    "DOI": "10.1016/j.matdes.2025.114473"
+  },
+  "items": [
+    {
+      "Sample_ID": "S0",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Ti-48Al-2Cr-2Nb",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ti": 48.0,
+            "Al": 48.0,
+            "Cr": 2.0,
+            "Nb": 2.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Al": 47.51,
+            "O": 0.068,
+            "Cr": 2.12,
+            "Nb": 2.04,
+            "Ti": 48.262
+          },
+          "Measurement_Method": "Titration (Al), ICP-AES (Cr, Nb); OH-300 oxygen analyzer (O)"
+        },
+        "Note": "Powder nominal composition: Ti-48Al-2Cr-2Nb (at.%). Powder Al depletion from 48.43 at.% (R0) to 46.31 at.% (R70). O uptake from 560 ppm to 2000 ppm over 70 cycles."
+      },
+      "Process_Info": {
+        "Process_Category": "AM_EB-PBF",
+        "Process_Text": {
+          "original": "EIGA (Electrode Induction Gas Atomization) powder production, 53-150 μm particle size. EB-PBF (Electron Beam Powder Bed Fusion) building using Qbeam S200 equipment (60 kV accelerating voltage). Building temperature 900-1100°C, powder bed preheating 900-1150°C, layer thickness 50 μm. Melting strategy: Hatching with line offsets 0.1 mm. EA (Energy Area) values: 1.80-2.24 J/mm². Average single furnace building time ~20 h. Thin-walled samples built with same process parameters.",
+          "simplified": "EIGA powder, EB-PBF (Qbeam S200, 60 kV, 50 μm layer, 900-1100°C build temp)"
+        },
+        "Equipment": "Qbeam S200, Beijing Quick Beam Technology Co., Ltd.",
+        "Key_Params": {
+          "Accelerating_Voltage_kV": 60,
+          "Layer_Thickness_um": 50,
+          "Build_Plate_Temperature_C": 1070,
+          "Powder_Bed_Preheating_Temperature_C": "900-1150",
+          "Building_Temperature_C": "900-1100",
+          "Energy_Area_J_mm2": "1.80-2.24",
+          "Melting_Strategy": "Hatching",
+          "Line_Offset_mm": 0.1,
+          "Scanning_Speed_m_s": "1.8-2.3",
+          "Mean_Beam_Current_mA": "5.40-8.60",
+          "Powder_Size_avg_um": "53-150",
+          "Process_Equipment": "Qbeam S200"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Equiaxed γ grains, fine lamellar colonies (α₂ + γ), and dispersed bright spots (β₀/B₂) along lamellar colony boundaries. Distinct γ bands with annealed twins observed in S0. β₀/B₂ phase primarily distributed near grain boundaries. LAGB 5.2%, HAGB 94.8%. Twin boundaries of γ [110]70° ~12.5%. KAM values up to 4.97.",
+          "simplified": "Equiaxed γ grains + fine lamellar colonies (α₂ + γ); β₀/B₂ precipitates at grain boundaries; γ bands with twins"
+        },
+        "Main_Phase": "Gamma",
+        "Precipitates": [
+          {
+            "Phase_Type": "Beta0/B2",
+            "Volume_Fraction_pct": 2.0
+          },
+          {
+            "Phase_Type": "Alpha2",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "C14 Laves",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": 10.0,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": 2.0,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {}
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at RT (298.15 K); strain rate 1×10⁻⁴ s⁻¹",
+          "Value_Numeric": 610.0,
+          "Value_Range": "560-660",
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1×10⁻⁴",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "image",
+          "Test_Specimen": "12 mm gauge length, 2 mm width, 1 mm thickness (thin-walled)",
+          "Note": "Yield strength increased with recycling cycles"
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at RT (298.15 K); strain rate 1×10⁻⁴ s⁻¹",
+          "Value_Numeric": 716.0,
+          "Value_Range": "682-750",
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1×10⁻⁴",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "12 mm gauge length, 2 mm width, 1 mm thickness (thin-walled)",
+          "Note": "S0 value; tensile strength ranged 682-750 MPa across all samples"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at RT (298.15 K); strain rate 1×10⁻⁴ s⁻¹",
+          "Value_Numeric": 2.1,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1×10⁻⁴",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "12 mm gauge length, 2 mm width, 1 mm thickness (thin-walled)",
+          "Note": "S0 value; plasticity initially increased then decreased with cycling; S15 showed highest plasticity; S70 showed 60% reduction to 0.8%"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "S5",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Ti-48Al-2Cr-2Nb",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ti": 48.0,
+            "Al": 48.0,
+            "Cr": 2.0,
+            "Nb": 2.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Al": 47.67,
+            "O": 0.068,
+            "Cr": 2.03,
+            "Nb": 2.04,
+            "Ti": 48.192
+          },
+          "Measurement_Method": "Titration (Al), ICP-AES (Cr, Nb); OH-300 oxygen analyzer (O)"
+        },
+        "Note": "From R5 recycled powder. O content 680 ppm. Al 47.67 at.%."
+      },
+      "Process_Info": {
+        "Process_Category": "AM_EB-PBF",
+        "Process_Text": {
+          "original": "EIGA powder recycled 5 cycles. EB-PBF (Qbeam S200, 60 kV, 50 μm layer). Building temperature 900-1100°C. Thin-walled sample S5 processed from R5 powder.",
+          "simplified": "EB-PBF from R5 recycled powder"
+        },
+        "Equipment": "Qbeam S200, Beijing Quick Beam Technology Co., Ltd.",
+        "Key_Params": {
+          "Accelerating_Voltage_kV": 60,
+          "Layer_Thickness_um": 50,
+          "Build_Plate_Temperature_C": 1070,
+          "Powder_Bed_Preheating_Temperature_C": "900-1150",
+          "Building_Temperature_C": "900-1100",
+          "Recycling_Cycles": 5,
+          "Process_Equipment": "Qbeam S200"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Similar to S0 with equiaxed γ grains, fine lamellar colonies (α₂ + γ), dispersed β₀/B₂ bright spots. Pronounced γ bands with annealed twins. β₀/B₂ content increased compared to S0.",
+          "simplified": "Equiaxed γ + lamellar colonies; γ bands present; increased β₀/B₂"
+        },
+        "Main_Phase": "Gamma",
+        "Precipitates": [
+          {
+            "Phase_Type": "Beta0/B2",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Alpha2",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {}
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at RT (298.15 K); strain rate 1×10⁻⁴ s⁻¹",
+          "Value_Numeric": 600.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1×10⁻⁴",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "12 mm gauge length, 2 mm width, 1 mm thickness",
+          "Note": "Estimated from stress-strain behavior"
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at RT (298.15 K); strain rate 1×10⁻⁴ s⁻¹",
+          "Value_Numeric": 730.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1×10⁻⁴",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "image",
+          "Test_Specimen": "12 mm gauge length, 2 mm width, 1 mm thickness",
+          "Note": "From stress-strain curve Fig. 10(a)"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at RT (298.15 K); strain rate 1×10⁻⁴ s⁻¹",
+          "Value_Numeric": 1.8,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1×10⁻⁴",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "image",
+          "Test_Specimen": "12 mm gauge length, 2 mm width, 1 mm thickness",
+          "Note": "From stress-strain curve; plasticity decreasing with cycling"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "S10",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Ti-48Al-2Cr-2Nb",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ti": 48.0,
+            "Al": 48.0,
+            "Cr": 2.0,
+            "Nb": 2.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Al": 47.56,
+            "O": 0.073,
+            "Cr": 1.98,
+            "Nb": 2.04,
+            "Ti": 48.347
+          },
+          "Measurement_Method": "Titration (Al), ICP-AES (Cr, Nb); OH-300 oxygen analyzer (O)"
+        },
+        "Note": "From R10 recycled powder. O content 730 ppm."
+      },
+      "Process_Info": {
+        "Process_Category": "AM_EB-PBF",
+        "Process_Text": {
+          "original": "EIGA powder recycled 10 cycles. EB-PBF (Qbeam S200, 60 kV, 50 μm layer). Building temperature 900-1100°C. Thin-walled sample S10 processed from R10 powder.",
+          "simplified": "EB-PBF from R10 recycled powder"
+        },
+        "Equipment": "Qbeam S200, Beijing Quick Beam Technology Co., Ltd.",
+        "Key_Params": {
+          "Accelerating_Voltage_kV": 60,
+          "Layer_Thickness_um": 50,
+          "Building_Temperature_C": "900-1100",
+          "Recycling_Cycles": 10,
+          "Process_Equipment": "Qbeam S200"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Equiaxed γ grains, fine lamellar colonies (α₂ + γ), dispersed bright spots (β₀/B₂). Pronounced γ bands with annealed twins similar to S0. Increased β₀/B₂ content.",
+          "simplified": "Equiaxed γ + lamellar colonies; γ bands present; β₀/B₂ dispersoids"
+        },
+        "Main_Phase": "Gamma",
+        "Precipitates": [
+          {
+            "Phase_Type": "Beta0/B2",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Alpha2",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {}
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at RT (298.15 K); strain rate 1×10⁻⁴ s⁻¹",
+          "Value_Numeric": 620.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1×10⁻⁴",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "12 mm gauge length, 2 mm width, 1 mm thickness",
+          "Note": "Estimated"
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at RT (298.15 K); strain rate 1×10⁻⁴ s⁻¹",
+          "Value_Numeric": 740.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1×10⁻⁴",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "image",
+          "Test_Specimen": "12 mm gauge length, 2 mm width, 1 mm thickness",
+          "Note": "From stress-strain curve Fig. 10(a)"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at RT (298.15 K); strain rate 1×10⁻⁴ s⁻¹",
+          "Value_Numeric": 1.6,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1×10⁻⁴",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "12 mm gauge length, 2 mm width, 1 mm thickness",
+          "Note": "Decreasing trend with recycling cycles"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "S15",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Ti-48Al-2Cr-2Nb",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ti": 48.0,
+            "Al": 48.0,
+            "Cr": 2.0,
+            "Nb": 2.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Al": 46.95,
+            "O": 0.074,
+            "Cr": 1.92,
+            "Nb": 2.06,
+            "Ti": 48.996
+          },
+          "Measurement_Method": "Titration (Al), ICP-AES (Cr, Nb); OH-300 oxygen analyzer (O)"
+        },
+        "Note": "From R15 recycled powder. O content 740 ppm. Significant Al depletion (~1.5 at.% from initial). Critical degradation threshold."
+      },
+      "Process_Info": {
+        "Process_Category": "AM_EB-PBF",
+        "Process_Text": {
+          "original": "EIGA powder recycled 15 cycles. EB-PBF (Qbeam S200, 60 kV, 50 μm layer). Building temperature 900-1100°C. Thin-walled sample S15 processed from R15 powder. After 15 cycles, >93% powders irradiated by EB.",
+          "simplified": "EB-PBF from R15 recycled powder (>93% EB-irradiated)"
+        },
+        "Equipment": "Qbeam S200, Beijing Quick Beam Technology Co., Ltd.",
+        "Key_Params": {
+          "Accelerating_Voltage_kV": 60,
+          "Layer_Thickness_um": 50,
+          "Building_Temperature_C": "900-1100",
+          "Recycling_Cycles": 15,
+          "EB_Irradiated_Powder_Pct": 93,
+          "Process_Equipment": "Qbeam S200"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Equiaxed γ grains, fine lamellar colonies (α₂ + γ), dispersed bright spots (β₀/B₂). More pronounced lamellar clusters than S0. γ bands not pronounced in S15. β₀/B₂ content increased. LAGB 7.40%. Twin boundaries decreased. KAM max 4.99.",
+          "simplified": "Equiaxed γ + lamellar colonies; pronounced lamellar clusters; β₀/B₂ at grain boundaries; no distinct γ bands"
+        },
+        "Main_Phase": "Gamma",
+        "Precipitates": [
+          {
+            "Phase_Type": "Beta0/B2",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "C15 Laves",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Alpha2",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": 10.0,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {}
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at RT (298.15 K); strain rate 1×10⁻⁴ s⁻¹",
+          "Value_Numeric": 610.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1×10⁻⁴",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "image",
+          "Test_Specimen": "12 mm gauge length, 2 mm width, 1 mm thickness",
+          "Note": "From stress-strain curve"
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at RT (298.15 K); strain rate 1×10⁻⁴ s⁻¹",
+          "Value_Numeric": 735.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1×10⁻⁴",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "12 mm gauge length, 2 mm width, 1 mm thickness",
+          "Note": "Highest plasticity observed in S15"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at RT (298.15 K); strain rate 1×10⁻⁴ s⁻¹",
+          "Value_Numeric": 2.3,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1×10⁻⁴",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "12 mm gauge length, 2 mm width, 1 mm thickness",
+          "Note": "Highest plasticity due to elimination of large-scale γ-band structures and proliferation of twin boundaries"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "S30",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Ti-48Al-2Cr-2Nb",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ti": 48.0,
+            "Al": 48.0,
+            "Cr": 2.0,
+            "Nb": 2.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Al": 46.89,
+            "O": 0.086,
+            "Cr": 2.02,
+            "Nb": 2.01,
+            "Ti": 48.994
+          },
+          "Measurement_Method": "Titration (Al), ICP-AES (Cr, Nb); OH-300 oxygen analyzer (O)"
+        },
+        "Note": "From R30 recycled powder. O content 860±10 ppm. Al 46.89±0.6 at.%. After 30 cycles, >99.6% powders irradiated by EB."
+      },
+      "Process_Info": {
+        "Process_Category": "AM_EB-PBF",
+        "Process_Text": {
+          "original": "EIGA powder recycled 30 cycles. EB-PBF (Qbeam S200, 60 kV, 50 μm layer). Building temperature 900-1100°C. Thin-walled sample S30 from R30 powder. After 30 cycles, >99.6% powder EB-irradiated.",
+          "simplified": "EB-PBF from R30 recycled powder (>99.6% EB-irradiated)"
+        },
+        "Equipment": "Qbeam S200, Beijing Quick Beam Technology Co., Ltd.",
+        "Key_Params": {
+          "Accelerating_Voltage_kV": 60,
+          "Layer_Thickness_um": 50,
+          "Building_Temperature_C": "900-1100",
+          "Recycling_Cycles": 30,
+          "EB_Irradiated_Powder_Pct": 99.6,
+          "Process_Equipment": "Qbeam S200"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Equiaxed γ grains, fine lamellar colonies (α₂ + γ), dispersed bright spots (β₀/B₂) along boundaries and inside lamellar colonies. γ bands pronounced similar to S0. β₀/B₂ phase content increased. Bright spots grew larger and transformed from point-like to irregular agglomerations.",
+          "simplified": "Equiaxed γ + lamellar colonies; β₀/B₂ agglomerates at boundaries and inside colonies; γ bands present"
+        },
+        "Main_Phase": "Gamma",
+        "Precipitates": [
+          {
+            "Phase_Type": "Beta0/B2",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "C14 Laves",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Alpha2",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {}
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at RT (298.15 K); strain rate 1×10⁻⁴ s⁻¹",
+          "Value_Numeric": 640.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1×10⁻⁴",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "image",
+          "Test_Specimen": "12 mm gauge length, 2 mm width, 1 mm thickness",
+          "Note": "From stress-strain curve"
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at RT (298.15 K); strain rate 1×10⁻⁴ s⁻¹",
+          "Value_Numeric": 750.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1×10⁻⁴",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "image",
+          "Test_Specimen": "12 mm gauge length, 2 mm width, 1 mm thickness",
+          "Note": "From stress-strain curve"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at RT (298.15 K); strain rate 1×10⁻⁴ s⁻¹",
+          "Value_Numeric": 1.5,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1×10⁻⁴",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "12 mm gauge length, 2 mm width, 1 mm thickness",
+          "Note": "Decreasing trend"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "S30b",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Ti-48Al-2Cr-2Nb",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ti": 48.0,
+            "Al": 48.0,
+            "Cr": 2.0,
+            "Nb": 2.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Al": 47.56,
+            "O": 0.076,
+            "Cr": 2.14,
+            "Nb": 2.03,
+            "Ti": 48.194
+          },
+          "Measurement_Method": "Titration (Al), ICP-AES (Cr, Nb); OH-300 oxygen analyzer (O)"
+        },
+        "Note": "From R30b powder (after adding 10 kg fresh powder to R30). O content 760±15 ppm. Al 47.56±0.2 at.%. New powder comprised ~30.3% of mixture."
+      },
+      "Process_Info": {
+        "Process_Category": "AM_EB-PBF",
+        "Process_Text": {
+          "original": "After 30 cycles, 10 kg fresh powder mixed with R30 powder (tilting mixer, 30 r/min, 30-45 min, inert gas). EB-PBF (Qbeam S200, 60 kV, 50 μm layer). Building temperature 900-1100°C. Thin-walled sample S30b from R30b powder. New powder ~30.3%.",
+          "simplified": "EB-PBF from R30b (30% fresh powder addition)"
+        },
+        "Equipment": "Qbeam S200, Beijing Quick Beam Technology Co., Ltd.",
+        "Key_Params": {
+          "Accelerating_Voltage_kV": 60,
+          "Layer_Thickness_um": 50,
+          "Building_Temperature_C": "900-1100",
+          "Recycling_Cycles": 30,
+          "Fresh_Powder_Addition_kg": 10,
+          "Fresh_Powder_Pct": 30.3,
+          "Process_Equipment": "Qbeam S200"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Equiaxed γ grains, fine lamellar colonies (α₂ + γ), dispersed bright spots (β₀/B₂). γ bands reappeared. Slightly reduced β₀/B₂ content compared to S30. Pronounced lamellar clusters.",
+          "simplified": "Equiaxed γ + lamellar colonies; γ bands reappeared; reduced β₀/B₂"
+        },
+        "Main_Phase": "Gamma",
+        "Precipitates": [
+          {
+            "Phase_Type": "Beta0/B2",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Alpha2",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {}
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at RT (298.15 K); strain rate 1×10⁻⁴ s⁻¹",
+          "Value_Numeric": 600.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1×10⁻⁴",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "image",
+          "Test_Specimen": "12 mm gauge length, 2 mm width, 1 mm thickness",
+          "Note": "From stress-strain curve"
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at RT (298.15 K); strain rate 1×10⁻⁴ s⁻¹",
+          "Value_Numeric": 720.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1×10⁻⁴",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "12 mm gauge length, 2 mm width, 1 mm thickness",
+          "Note": "Improved compared to S30 due to fresh powder addition"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at RT (298.15 K); strain rate 1×10⁻⁴ s⁻¹",
+          "Value_Numeric": 1.8,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1×10⁻⁴",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "12 mm gauge length, 2 mm width, 1 mm thickness",
+          "Note": "Improved elongation compared to S30"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "S45",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Ti-48Al-2Cr-2Nb",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ti": 48.0,
+            "Al": 48.0,
+            "Cr": 2.0,
+            "Nb": 2.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Al": 47.35,
+            "O": 0.09,
+            "Cr": 1.98,
+            "Nb": 2.04,
+            "Ti": 48.54
+          },
+          "Measurement_Method": "Titration (Al), ICP-AES (Cr, Nb); OH-300 oxygen analyzer (O)"
+        },
+        "Note": "From R45 recycled powder. O content 900 ppm. Al 47.35 at.%. New powder proportion reduced to 2.4%."
+      },
+      "Process_Info": {
+        "Process_Category": "AM_EB-PBF",
+        "Process_Text": {
+          "original": "EIGA powder recycled 45 cycles (with 10 kg fresh powder added at R30). EB-PBF (Qbeam S200, 60 kV, 50 μm layer). Building temperature 900-1100°C. Thin-walled sample S45 from R45 powder. New powder ~2.4%. Irregular powder proportion >30%.",
+          "simplified": "EB-PBF from R45 recycled powder"
+        },
+        "Equipment": "Qbeam S200, Beijing Quick Beam Technology Co., Ltd.",
+        "Key_Params": {
+          "Accelerating_Voltage_kV": 60,
+          "Layer_Thickness_um": 50,
+          "Building_Temperature_C": "900-1100",
+          "Recycling_Cycles": 45,
+          "Fresh_Powder_Pct": 2.4,
+          "Irregular_Powder_Pct": 30,
+          "Process_Equipment": "Qbeam S200"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Equiaxed γ grains, fine lamellar colonies (α₂ + γ), dispersed bright spots (β₀/B₂). γ bands barely visible. β₀/B₂ content increased; spheroidized and agglomerated.",
+          "simplified": "Equiaxed γ + lamellar colonies; reduced γ bands; increased β₀/B₂ agglomerates"
+        },
+        "Main_Phase": "Gamma",
+        "Precipitates": [
+          {
+            "Phase_Type": "Beta0/B2",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "C14 Laves",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Alpha2",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {}
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at RT (298.15 K); strain rate 1×10⁻⁴ s⁻¹",
+          "Value_Numeric": 645.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1×10⁻⁴",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "image",
+          "Test_Specimen": "12 mm gauge length, 2 mm width, 1 mm thickness",
+          "Note": "From stress-strain curve"
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at RT (298.15 K); strain rate 1×10⁻⁴ s⁻¹",
+          "Value_Numeric": 745.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1×10⁻⁴",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "image",
+          "Test_Specimen": "12 mm gauge length, 2 mm width, 1 mm thickness",
+          "Note": "From stress-strain curve"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at RT (298.15 K); strain rate 1×10⁻⁴ s⁻¹",
+          "Value_Numeric": 1.3,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1×10⁻⁴",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "12 mm gauge length, 2 mm width, 1 mm thickness",
+          "Note": "Decreasing trend continuing"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "S70",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Ti-48Al-2Cr-2Nb",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ti": 48.0,
+            "Al": 48.0,
+            "Cr": 2.0,
+            "Nb": 2.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Al": 47.04,
+            "O": 0.094,
+            "Cr": 1.83,
+            "Nb": 1.99,
+            "Ti": 49.046
+          },
+          "Measurement_Method": "Titration (Al), ICP-AES (Cr, Nb); OH-300 oxygen analyzer (O)"
+        },
+        "Note": "From R70 recycled powder. O content 940±40 ppm. Al 47.04±0.5 at.%. New powder proportion reduced to 0.04%. Al content range 42.12-49.52 at.% (heterogeneous). Irregular powder >30%."
+      },
+      "Process_Info": {
+        "Process_Category": "AM_EB-PBF",
+        "Process_Text": {
+          "original": "EIGA powder recycled 70 cycles (with 10 kg fresh powder added at R30). EB-PBF (Qbeam S200, 60 kV, 50 μm layer). Building temperature 900-1100°C. Thin-walled sample S70 from R70 powder. New powder ~0.04%. Irregular powder proportion >30%. Grain refinement from heterogeneous nucleation (Cr-rich aggregates, TiCr₂, Al₂O₃).",
+          "simplified": "EB-PBF from R70 recycled powder (0.04% fresh); significant grain refinement"
+        },
+        "Equipment": "Qbeam S200, Beijing Quick Beam Technology Co., Ltd.",
+        "Key_Params": {
+          "Accelerating_Voltage_kV": 60,
+          "Layer_Thickness_um": 50,
+          "Building_Temperature_C": "900-1100",
+          "Recycling_Cycles": 70,
+          "Fresh_Powder_Pct": 0.04,
+          "Irregular_Powder_Pct": 30,
+          "Process_Equipment": "Qbeam S200"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Equiaxed γ grains, fine lamellar colonies (α₂ + γ), and dispersed bright spots (β₀/B₂) at boundaries and inside γ bulk. γ bands barely visible. β₀/B₂ spots grew larger, transformed from point-like to irregular agglomerations. Grain refinement: over 60% grains <5 μm. LAGB 8.15%. Twin boundaries decreased to 5.61%. KAM max 4.99 with uneven distribution. More regions with high KAM.",
+          "simplified": "Fibrous γ + lamellar colonies; fine grains <10 μm (60% <5 μm); β₀/B₂ agglomerates; reduced twin boundaries"
+        },
+        "Main_Phase": "Gamma",
+        "Precipitates": [
+          {
+            "Phase_Type": "Beta0/B2",
+            "Volume_Fraction_pct": 4.6
+          },
+          {
+            "Phase_Type": "C14 Laves",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Alpha2",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": 10.0,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": 4.6,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {}
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at RT (298.15 K); strain rate 1×10⁻⁴ s⁻¹",
+          "Value_Numeric": 660.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1×10⁻⁴",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "image",
+          "Test_Specimen": "12 mm gauge length, 2 mm width, 1 mm thickness",
+          "Note": "From stress-strain curve; highest yield strength"
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at RT (298.15 K); strain rate 1×10⁻⁴ s⁻¹",
+          "Value_Numeric": 750.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1×10⁻⁴",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "12 mm gauge length, 2 mm width, 1 mm thickness",
+          "Note": "Highest tensile strength; brittle fracture in parallel specimens due to excessive O (>2000 ppm) and grain boundary embrittlement"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at RT (298.15 K); strain rate 1×10⁻⁴ s⁻¹",
+          "Value_Numeric": 0.8,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1×10⁻⁴",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "12 mm gauge length, 2 mm width, 1 mm thickness",
+          "Note": "60% reduction from S0 (2.1%); brittle fracture observed in parallel specimens due to O enrichment and oxide dispersion"
+        },
+        {
+          "Property_Name": "Surface_Roughness_Ra",
+          "Test_Condition": "White light interferometry and contact profilometry",
+          "Value_Numeric": 11.8,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "μm",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "Side surface of thin-walled S70",
+          "Note": "More fusion lines and abnormal convex points on surface"
+        }
+      ]
+    }
+  ]
+}

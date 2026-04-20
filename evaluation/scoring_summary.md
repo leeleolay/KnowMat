@@ -1,67 +1,131 @@
 # Extraction Scoring Report
 
-- Groundtruth dir: `E:\informationextract\evaluation\groundtruth`
-- Output dir: `E:\informationextract\evaluation\output`
+- Groundtruth dir: `/Users/zhangziyu02/Desktop/太行实验室/KnowMat/evaluation/groundtruth`
+- Output dir: `/Users/zhangziyu02/Desktop/太行实验室/KnowMat/evaluation/output`
 - Drop zero elements: `False`
 - Value tolerance: `0.1`
 - Temp tolerance (K): `1.0`
 - Allow Celsius shift: `False`
 - Ignore test unit: `False`
 - Material match uses tests: `False`
-- JSON report: `E:\informationextract\evaluation\scoring_report.json`
+- JSON report: `/Users/zhangziyu02/Desktop/太行实验室/KnowMat/evaluation/scoring_report.json`
 
 ## Overall
 
 ### Composition Element Detection
 
-- TP/FP/FN: `71` / `0` / `1`
-- Precision/Recall/F1: `1.0000` / `0.9861` / `0.9930`
+- TP/FP/FN: `0` / `0` / `0`
+- Precision/Recall/F1: `0.0000` / `0.0000` / `0.0000`
 
 ### Composition Value Error
 
-- Count: `71`
-- MAE: `1.936338`
-- Max Abs Error: `52.42`
-- Exact Rate: `0.549296`
-- Within Tol Rate: `0.619718`
+- Count: `0`
+- MAE: `None`
+- Max Abs Error: `None`
+- Exact Rate: `None`
+- Within Tol Rate: `None`
 
 ### Performance Test Detection
 
-- TP/FP/FN: `6` / `3` / `0`
-- Precision/Recall/F1: `0.6667` / `1.0000` / `0.8000`
+- TP/FP/FN: `0` / `0` / `0`
+- Precision/Recall/F1: `0.0000` / `0.0000` / `0.0000`
 
 ### Performance Test Value Error
 
-- Count: `6`
-- MAE: `0.0`
-- Max Abs Error: `0.0`
-- Exact Rate: `1.0`
-- Within Tol Rate: `1.0`
+- Count: `0`
+- MAE: `None`
+- Max Abs Error: `None`
+- Exact Rate: `None`
+- Within Tol Rate: `None`
 
 ### Material-Level Full Hit
 
-- Full Hit / Total: `10` / `11`
-- Hit Rate: `0.909091`
+- Full Hit / Total: `0` / `0`
+- Hit Rate: `None`
 
 ## By Temperature (K)
 
 | Temp_K | Test TP | Test FP | Test FN | Test F1 | Value Count | Value MAE | Value MaxErr |
 |---:|---:|---:|---:|---:|---:|---:|---:|
-| null | 0 | 3 | 0 | 0.0000 | 0 | None | None |
-| 298.15 | 6 | 0 | 0 | 1.0000 | 6 | 0.0 | 0.0 |
 
 ## By Property Type
 
 | Property | Test TP | Test FP | Test FN | Test F1 | Value Count | Value MAE | Value MaxErr |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| microhardness | 6 | 0 | 0 | 1.0000 | 6 | 0.0 | 0.0 |
-| relativedensity | 0 | 3 | 0 | 0.0000 | 0 | None | None |
 
 ## Per Article
 
-### Article `AYzJ5YexzHG1b1fwF_ul`
-- Composition Detection P/R/F1: `1.0000` / `0.9861` / `0.9930`
-- Composition Value MAE: `1.936338` (count=71)
-- Material Full Hit: `10/11` (hit_rate=0.909091)
-- Test Detection P/R/F1: `0.6667` / `1.0000` / `0.8000`
-- Test Value MAE: `0.0` (count=6)
+### Article `1-Additively manufactured heterogeneous precipitation-strengthened high-entropy alloys with high strength and ductility`
+- Missing output extraction file.
+
+### Article `1-人工核对结果_fixed`
+- Missing output extraction file.
+
+### Article `2-Superior corrosion resistance and its origins in an additively manufactured Co-Cr-Ni-Al-Ti high-entropy alloy with nano-lamellar precipitates`
+- Missing output extraction file.
+
+### Article `2-人工核对结果_fixed`
+- Missing output extraction file.
+
+### Article `3-Nanotwinned precipitates induced ultra-strong AlCoCrFeNi2.1 eutectic high-entropy alloy through additive manufacturing_fixed`
+- Missing output extraction file.
+
+### Article `3-人工核对结果`
+- Missing output extraction file.
+
+### Article `4-Highly printable, strong, and ductile ordered intermetallic alloy_1`
+- Missing output extraction file.
+
+### Article `4-人工核对结果_fixed`
+- Missing output extraction file.
+
+### Article `5-In situ tuning of FCC–BCC dual phase and mechanical properties in multi-principal element alloys via laser-aided additive manufacturing_fixed`
+- Missing output extraction file.
+
+### Article `5-人工核对结果_fixed`
+- Missing output extraction file.
+
+### Article `Additive manufacturing Ti-22Al-25 Nb alloy wit`
+- Missing output extraction file.
+
+### Article `Effect of building direction on the microstructure_fixed`
+- Missing output extraction file.
+
+### Article `Electron beam powder bed fusion of Y2O3γ-TiAl_fixed`
+- Missing output extraction file.
+
+### Article `Peculiar microstructural evolution and tensile`
+- Missing output extraction file.
+
+### Article `Powder recycling for electron beam powder bed_fixed`
+- Missing output extraction file.
+
+### Article `文献 (1)人工修正结果`
+- Missing output extraction file.
+
+### Article `文献 (2)人工修正结果_fixed`
+- Missing output extraction file.
+
+### Article `文献 (3)人工修正结果`
+- Missing output extraction file.
+
+### Article `文献 (4)人工修正结果`
+- Missing output extraction file.
+
+### Article `文献 (5)人工修正结果`
+- Missing output extraction file.
+
+### Article `文献1-人工修正结果_fixed`
+- Missing output extraction file.
+
+### Article `文献2-人工修正结果`
+- Missing output extraction file.
+
+### Article `文献3-人工修正结果`
+- Missing output extraction file.
+
+### Article `文献4-人工修正结果`
+- Missing output extraction file.
+
+### Article `文献5-人工修正结果`
+- Missing output extraction file.

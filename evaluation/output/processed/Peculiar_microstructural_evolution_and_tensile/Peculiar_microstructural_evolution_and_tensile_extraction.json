@@ -1,0 +1,575 @@
+{
+  "Paper_Metadata": {
+    "Paper_Title": "Peculiar microstructural evolution and tensile properties of $ \\beta $-containing $ \\gamma $-TiAl alloys fabricated by electron beam melting",
+    "DOI": "10.1016/j.addma.2021.102091"
+  },
+  "items": [
+    {
+      "Sample_ID": "R1",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Ti-44Al-4Cr (44-4)",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ti": 52.0,
+            "Al": 44.0,
+            "Cr": 4.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ti": 51.93,
+            "Al": 43.9,
+            "Cr": 4.0,
+            "O": 0.18
+          },
+          "Measurement_Method": "ICP-OES for metallic elements; inert gas fusion for oxygen"
+        },
+        "Note": "Raw powder composition: Ti-44.8Al-4.0Cr-0.15O (at%). Al content decreases by ~0.9 at% during EBM fabrication due to evaporation."
+      },
+      "Process_Info": {
+        "Process_Category": "EBM",
+        "Process_Text": {
+          "original": "Rectangular rods (10×10×30 mm) fabricated using Arcam Q10 EBM system at accelerating voltage 60 kV, preheating temperature 1333 K, layer thickness 90 μm, beam current 28 mA, scanning speed 800 mm/s, energy density 4.0 J/mm². Building direction parallel to longitudinal direction of rods. No post-annealing or HIP treatment.",
+          "simplified": "EBM Arcam Q10, 60 kV, 1333 K preheat, 90 μm layer, ED=4.0 J/mm² (high energy density condition)"
+        },
+        "Equipment": "Arcam Q10 EBM system",
+        "Key_Params": {
+          "Acceleration_Voltage_kV": 60,
+          "Beam_Current_mA": 28,
+          "Scanning_Speed_mm_s": 800,
+          "Layer_Thickness_um": 90,
+          "Build_Plate_Temperature_K": 1333.0,
+          "Energy_Density_J_mm2": 4.0,
+          "Line_Offset_h": "varied"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Uniform α₂/β/γ mixed structure composed of two regions: (1) α₂/γ lamellar region and (2) β/γ dual phase region with ~50% β phase. Volume fraction of β phase in β/γ dual phase region is ~50%. Compared to low ED microstructure, this HED microstructure has coarser lamellar spacing (λ = 62.1 nm vs 32.5 nm).",
+          "simplified": "Uniform HED microstructure with α₂/β/γ mixed structure; α₂/γ lamellar region and β/γ dual phase region (~50% each)"
+        },
+        "Main_Phase": "Gamma (γ-TiAl)",
+        "Precipitates": [
+          {
+            "Phase_Type": "Alpha2 (α2-Ti3Al)",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Beta (B2 ordered)",
+            "Volume_Fraction_pct": 30.0
+          },
+          {
+            "Phase_Type": "Gamma (γ-TiAl)",
+            "Volume_Fraction_pct": 20.0
+          }
+        ],
+        "Porosity_pct": 0.4,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": 62.1,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "TEM": "BF images and SAED patterns of β phase (B=[110]β), lamellar structure in HED microstructure. Dislocations and twins observed in γ phase at 1023 K.",
+          "SEM_BSE": "α2 phase appears gray, γ phase appears black, β phase appears white in BSE contrast",
+          "OM": "Cross-section observations for defect analysis",
+          "HED_microstructure": true,
+          "alpha2_beta_gamma_mixed_structure_vol_pct": 100,
+          "alpha2_gamma_lamellar_region_vol_pct": 35,
+          "beta_gamma_dual_phase_region_vol_pct": 65,
+          "beta_phase_vol_pct": 30,
+          "all_alpha2_gamma_vol_pct": 50,
+          "all_gamma_vol_pct": 20,
+          "lamellar_spacing_nm": 62.1,
+          "defect_fraction_fd_pct": 0.1,
+          "pore_fraction_fp_pct": 0.4,
+          "energy_density_J_mm2": 4.0
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at 298 K (RT); strain rate 1.7×10⁻⁴ s⁻¹; vacuum",
+          "Value_Numeric": 773.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.0,
+          "Strain_Rate_s1": "1.7×10⁻⁴",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM-like specimen, gauge dimensions 5.0×1.5×0.5 mm, cut from center of rods, loading axis parallel to building direction",
+          "Note": "RT tensile strength exceeds cast 48-2-2 alloys (450-550 MPa) and comparable to cast TNM alloys (700-800 MPa)"
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at 1023 K (HT); strain rate 1.7×10⁻⁴ s⁻¹; vacuum",
+          "Value_Numeric": 644.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 1023.0,
+          "Strain_Rate_s1": "1.7×10⁻⁴",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM-like specimen, gauge dimensions 5.0×1.5×0.5 mm, cut from center of rods, loading axis parallel to building direction",
+          "Note": "Higher than cast 48-2-2 (~450 MPa) and TNM alloys (~600 MPa)"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at 298 K (RT); strain rate 1.7×10⁻⁴ s⁻¹; vacuum",
+          "Value_Numeric": 1.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "%",
+          "Test_Temperature_K": 298.0,
+          "Strain_Rate_s1": "1.7×10⁻⁴",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM-like specimen, gauge dimensions 5.0×1.5×0.5 mm",
+          "Note": "Less than 1% elongation at RT regardless of process parameters; limited plastic deformation due to brittle fracture, not defects"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at 1023 K (HT); strain rate 1.7×10⁻⁴ s⁻¹; vacuum",
+          "Value_Numeric": 40.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "%",
+          "Test_Temperature_K": 1023.0,
+          "Strain_Rate_s1": "1.7×10⁻⁴",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM-like specimen, gauge dimensions 5.0×1.5×0.5 mm",
+          "Note": "Approximately 40% elongation at 1023 K, significantly higher than cast alloys (~10%)"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "R5",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Ti-44Al-4Cr (44-4)",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ti": 52.0,
+            "Al": 44.0,
+            "Cr": 4.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ti": 51.93,
+            "Al": 43.9,
+            "Cr": 4.0,
+            "O": 0.18
+          },
+          "Measurement_Method": "ICP-OES for metallic elements; inert gas fusion for oxygen"
+        },
+        "Note": "Raw powder composition: Ti-44.8Al-4.0Cr-0.15O (at%). Al content decreases by ~0.9 at% during EBM fabrication due to evaporation."
+      },
+      "Process_Info": {
+        "Process_Category": "EBM",
+        "Process_Text": {
+          "original": "Rectangular rods (10×10×30 mm) fabricated using Arcam Q10 EBM system at accelerating voltage 60 kV, preheating temperature 1333 K, layer thickness 90 μm, beam current 6 mA, scanning speed 5000 mm/s, energy density 1.4 J/mm². Building direction parallel to longitudinal direction of rods. No post-annealing or HIP treatment.",
+          "simplified": "EBM Arcam Q10, 60 kV, 1333 K preheat, 90 μm layer, ED=1.4 J/mm² (low energy density condition)"
+        },
+        "Equipment": "Arcam Q10 EBM system",
+        "Key_Params": {
+          "Acceleration_Voltage_kV": 60,
+          "Beam_Current_mA": 6,
+          "Scanning_Speed_mm_s": 5000,
+          "Layer_Thickness_um": 90,
+          "Build_Plate_Temperature_K": 1333.0,
+          "Energy_Density_J_mm2": 1.4,
+          "Line_Offset_h": "varied"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Layered microstructure perpendicular to building direction, composed of alternating layers A and B (each ~45 μm wide). Layer A: ultrafine α₂/γ lamellar grains with jagged grain boundaries + β/γ cell structure. Layer B: α₂/β/γ mixed structure (same as HED microstructure). Ultrafine lamellar spacing (λ = 32.5 nm) is smaller than HED microstructure (62.1 nm) due to lower Al content in massive α grains. β/γ cell structure has ~75% γ phase volume fraction. Formation mechanism: rapid cooling leads to massive α transformation (β→α) without β+α phase separation.",
+          "simplified": "LED layered microstructure with ultrafine α₂/γ lamellar grains (λ=32.5 nm) in layer A and α₂/β/γ mixed structure in layer B; each layer ~45 μm wide"
+        },
+        "Main_Phase": "Gamma (γ-TiAl)",
+        "Precipitates": [
+          {
+            "Phase_Type": "Alpha2 (α2-Ti3Al)",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Beta (B2 ordered)",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Beta/Gamma cell structure",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": 0.4,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": 32.5,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "TEM": "BF images and SAED patterns of lamellar structure; massive α grain formation confirmed by jagged grain boundaries",
+          "SEM_BSE": "α2 phase appears gray, γ phase appears black, β phase appears white in BSE contrast",
+          "OM": "Cross-section observations for defect and microstructure analysis",
+          "LED_microstructure": true,
+          "layered_structure_perpendicular_to_BD": true,
+          "layer_A_width_um": 45,
+          "layer_B_width_um": 45,
+          "combined_layer_width_equals_powder_layer_thickness": true,
+          "alpha2_gamma_lamellar_grain_vol_pct": "high (decreases with increasing ED)",
+          "beta_gamma_cell_structure_vol_pct": "present",
+          "alpha2_beta_gamma_mixed_structure_vol_pct": "lower than HED",
+          "ultrafine_lamellar_spacing_nm": 32.5,
+          "coarser_lamellar_spacing_nm": 62.1,
+          "defect_fraction_fd_pct": 0.2,
+          "pore_fraction_fp_pct": 0.4,
+          "energy_density_J_mm2": 1.4,
+          "massively_transformed_alpha_grains": true
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at 298 K (RT); strain rate 1.7×10⁻⁴ s⁻¹; vacuum",
+          "Value_Numeric": 700.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.0,
+          "Strain_Rate_s1": "1.7×10⁻⁴",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM-like specimen, gauge dimensions 5.0×1.5×0.5 mm, cut from center of rods, loading axis parallel to building direction",
+          "Note": "Strength depends strongly on volume fraction of ultrafine α₂/γ lamellar grains (Vα2/γG)"
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at 1023 K (HT); strain rate 1.7×10⁻⁴ s⁻¹; vacuum",
+          "Value_Numeric": 550.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 1023.0,
+          "Strain_Rate_s1": "1.7×10⁻⁴",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM-like specimen, gauge dimensions 5.0×1.5×0.5 mm, cut from center of rods, loading axis parallel to building direction",
+          "Note": "HT strength maintained despite lower β phase content due to solid solution strengthening from high Cr in ultrafine lamellar grains"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at 298 K (RT); strain rate 1.7×10⁻⁴ s⁻¹; vacuum",
+          "Value_Numeric": 1.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "%",
+          "Test_Temperature_K": 298.0,
+          "Strain_Rate_s1": "1.7×10⁻⁴",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM-like specimen, gauge dimensions 5.0×1.5×0.5 mm",
+          "Note": "Less than 1% elongation at RT regardless of process parameters; brittle fracture"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at 1023 K (HT); strain rate 1.7×10⁻⁴ s⁻¹; vacuum",
+          "Value_Numeric": 40.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "%",
+          "Test_Temperature_K": 1023.0,
+          "Strain_Rate_s1": "1.7×10⁻⁴",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM-like specimen, gauge dimensions 5.0×1.5×0.5 mm",
+          "Note": "Approximately 40% elongation at 1023 K, significantly higher than cast alloys (~10%)"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "R2",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Ti-44Al-4Cr (44-4)",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ti": 52.0,
+            "Al": 44.0,
+            "Cr": 4.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ti": 51.93,
+            "Al": 43.9,
+            "Cr": 4.0,
+            "O": 0.18
+          },
+          "Measurement_Method": "ICP-OES for metallic elements; inert gas fusion for oxygen"
+        },
+        "Note": "Raw powder composition: Ti-44.8Al-4.0Cr-0.15O (at%). Al content decreases by ~0.9 at% during EBM fabrication. Intermediate ED condition (3.2 J/mm²)."
+      },
+      "Process_Info": {
+        "Process_Category": "EBM",
+        "Process_Text": {
+          "original": "Rectangular rods (10×10×30 mm) fabricated using Arcam Q10 EBM system at accelerating voltage 60 kV, preheating temperature 1333 K, layer thickness 90 μm, beam current ~15 mA, scanning speed ~1500 mm/s, energy density 3.2 J/mm². Building direction parallel to longitudinal direction of rods. No post-annealing or HIP treatment.",
+          "simplified": "EBM Arcam Q10, 60 kV, 1333 K preheat, 90 μm layer, ED=3.2 J/mm² (intermediate/transitional energy density)"
+        },
+        "Equipment": "Arcam Q10 EBM system",
+        "Key_Params": {
+          "Acceleration_Voltage_kV": 60,
+          "Beam_Current_mA": 15,
+          "Scanning_Speed_mm_s": 1500,
+          "Layer_Thickness_um": 90,
+          "Build_Plate_Temperature_K": 1333.0,
+          "Energy_Density_J_mm2": 3.2,
+          "Line_Offset_h": "varied"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Microstructure transition stage between LED and HED types. Contains mixture of layered microstructure features and α₂/β/γ mixed structure. Approaching ED boundary of ~3 J/mm².",
+          "simplified": "Transitional microstructure between LED and HED types; mixed features of both microstructural types"
+        },
+        "Main_Phase": "Gamma (γ-TiAl)",
+        "Precipitates": [
+          {
+            "Phase_Type": "Alpha2 (α2-Ti3Al)",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Beta (B2 ordered)",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": 0.4,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "SEM_BSE": "Microstructure observation of cross-sections",
+          "OM": "Defect and porosity analysis",
+          "transition_microstructure": true,
+          "alpha2_beta_gamma_mixed_structure_vol_pct": "intermediate",
+          "alpha2_gamma_lamellar_grain_vol_pct": "intermediate",
+          "beta_gamma_cell_structure_vol_pct": "intermediate",
+          "defect_fraction_fd_pct": 0.1,
+          "pore_fraction_fp_pct": 0.4,
+          "energy_density_J_mm2": 3.2
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at 298 K (RT); strain rate 1.7×10⁻⁴ s⁻¹; vacuum",
+          "Value_Numeric": 725.0,
+          "Value_Range": "700-750",
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.0,
+          "Strain_Rate_s1": "1.7×10⁻⁴",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM-like specimen, gauge dimensions 5.0×1.5×0.5 mm, cut from center of rods, loading axis parallel to building direction",
+          "Note": "RT strength intermediate between R1 (773 MPa) and R5 (higher strength at low ED)"
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at 1023 K (HT); strain rate 1.7×10⁻⁴ s⁻¹; vacuum",
+          "Value_Numeric": 575.0,
+          "Value_Range": "550-600",
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 1023.0,
+          "Strain_Rate_s1": "1.7×10⁻⁴",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM-like specimen, gauge dimensions 5.0×1.5×0.5 mm, cut from center of rods, loading axis parallel to building direction",
+          "Note": "HT strength nearly constant up to ~3 J/mm² then increases with higher ED"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at 298 K (RT); strain rate 1.7×10⁻⁴ s⁻¹; vacuum",
+          "Value_Numeric": 1.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "%",
+          "Test_Temperature_K": 298.0,
+          "Strain_Rate_s1": "1.7×10⁻⁴",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM-like specimen, gauge dimensions 5.0×1.5×0.5 mm",
+          "Note": "Less than 1% elongation at RT regardless of process parameters; brittle fracture"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at 1023 K (HT); strain rate 1.7×10⁻⁴ s⁻¹; vacuum",
+          "Value_Numeric": 40.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "%",
+          "Test_Temperature_K": 1023.0,
+          "Strain_Rate_s1": "1.7×10⁻⁴",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM-like specimen, gauge dimensions 5.0×1.5×0.5 mm",
+          "Note": "Approximately 40% elongation at 1023 K regardless of fabrication conditions"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "Raw_Powder",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Ti-44Al-4Cr (44-4) gas atomized powder",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ti": 52.0,
+            "Al": 44.0,
+            "Cr": 4.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ti": 52.0,
+            "Al": 44.8,
+            "Cr": 4.0,
+            "O": 0.15
+          },
+          "Measurement_Method": "ICP-OES for metallic elements; inert gas fusion for oxygen"
+        },
+        "Note": "Raw powder fabricated by Ar gas atomization from master ingots (Kobe Steel). Al content adjusted ~1 at% higher than nominal to account for evaporation during EBM. O content derived from surface oxide layer."
+      },
+      "Process_Info": {
+        "Process_Category": "Powder_Metallurgy",
+        "Process_Text": {
+          "original": "Raw powder fabricated by Ar gas atomization from master ingots of Ti-44Al-4Cr alloy provided by Kobe Steel, Ltd. Atomization performed at Osaka Yakin Kogyo Co., Ltd., Japan.",
+          "simplified": "Ar gas atomization from master ingots"
+        },
+        "Equipment": "Ar gas atomization system (Osaka Yakin Kogyo Co., Ltd.)",
+        "Key_Params": {}
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Spherical powder particles observed by SEM. Particles have circularity K = 0.94 indicating near-spherical shape. Mean diameter (dm) = 70.2 μm with single-peak narrow distribution. High flowability indicated by angle of repose ~44.8°. Small amounts of fine particles (≤10 μm) and satellites contribute to flowability.",
+          "simplified": "Spherical gas-atomized powder; mean diameter 70.2 μm; K=0.94; high flowability"
+        },
+        "Main_Phase": null,
+        "Precipitates": [],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "SEM": "Morphology observation of raw powder particles",
+          "ImageJ": "Circularity measurement from projected area and perimeter (K = 4πA/P²)",
+          "Laser_diffraction": "Particle size distribution analysis",
+          "circularity_K": 0.94,
+          "mean_diameter_dm_um": 70.2,
+          "angle_of_repose_deg": 44.8,
+          "particle_size_distribution": "single peak with narrow width",
+          "flowability": "high (comparable to other EBM powders)"
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Angle_of_Repose",
+          "Test_Condition": "Measured using revolution powder analyzer; indicates powder flowability",
+          "Value_Numeric": 44.8,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "degrees",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "Raw powder",
+          "Note": "Angle of repose comparable to other reported EBM powders; indicates good flowability"
+        },
+        {
+          "Property_Name": "Particle_Size_Mean_Diameter",
+          "Test_Condition": "Measured by laser diffraction particle size distribution analyzer; at least 200 particles measured",
+          "Value_Numeric": 70.2,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "μm",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "Raw powder sample",
+          "Note": "Single peak distribution with narrow width"
+        },
+        {
+          "Property_Name": "Powder_Circularity",
+          "Test_Condition": "Calculated from K = 4πA/P² where A = projected area, P = perimeter; measured using ImageJ software; at least 200 particles",
+          "Value_Numeric": 0.94,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "Raw powder particles",
+          "Note": "Near-spherical shape suitable for EBM"
+        }
+      ]
+    }
+  ]
+}

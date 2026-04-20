@@ -30,6 +30,46 @@ from knowmat.states import TargetSchema
 logger = logging.getLogger(__name__)
 
 
+_AQF_TECHNIQUE_KEYS = {
+    "apt",
+    "clsm",
+    "ebsd",
+    "ebsdmap",
+    "edx",
+    "eis",
+    "microct",
+    "micro_ct",
+    "micro-ct",
+    "om",
+    "opticalmicroscopy",
+    "sem",
+    "stem",
+    "tem",
+    "xps",
+    "xrd",
+}
+
+_PROCESS_CATEGORY_PATTERNS: List[Tuple[str, Tuple[str, ...]]] = [
+    ("Laser_Glazing", ("laser glazing", "laser glazed", "laser remelting", "laser surface remelting")),
+    ("Hybrid_AM", ("hybrid additive manufacturing", "lpbf + uam", "u-lpbf", "uam")),
+    ("Powder_Recycling", ("powder recycling", "recycled powder", "powder reuse", "reuse cycle")),
+    ("AM_DED", ("laser-aided additive manufacturing", "laser aided additive manufacturing", "laam", "directed energy deposition", "ded", "lens", "laser cladding", "laser metal deposition")),
+    ("EBM", ("electron beam powder bed fusion", "powder bed fusion electron beam", "pbf-eb", "electron beam melting", "arcam")),
+    ("AM_SLM", ("selective laser melting", "slm")),
+    ("AM_LPBF", ("laser powder bed fusion", "lpbf", "l-pbf", "pbf-lb", "laser beam powder bed fusion")),
+    ("WAAM", ("wire arc additive manufacturing", "waam", "wire arc additive")),
+    ("Powder_Metallurgy", ("powder metallurgy", "powder-metallurgy", "pm route", "hipped", "sintered", "isothermal forging", "isothermally forged")),
+    ("SPS", ("spark plasma sintering", "sps")),
+    ("HIP", ("hot isostatic pressing", "hip")),
+    ("Mechanical_Alloying", ("mechanical alloying", "high-energy ball milling", "ball milling")),
+    ("Wrought", ("thermomechanical processing", "wrought", "wrought alloy", "rolled", "rolling", "forged", "forging", "extruded", "extrusion")),
+    ("Arc_Melting", ("vacuum arc melting", "arc melting", "arc-melting")),
+    ("Casting", ("casting", "cast", "suction casting", "melt spinning", "induction melting")),
+    ("HeatTreat", ("heat treatment", "heat treated", "heat-treated", "annealed", "annealing", "aged", "aging", "solution treatment", "solutionized", "stress relieved", "stress-relieved")),
+    ("AM", ("additive manufacturing", "additively manufactured", "3d printing")),
+]
+
+
 class SchemaConverter:
     """Convert LLM-extracted data to the target HEA dataset schema."""
 
@@ -149,7 +189,12 @@ class SchemaConverter:
                 or f"Material_{mat_idx}"
             )
 
-            nominal_comp = self._normalize_reported_composition(comp.get("nominal_composition"))
+            balance_hint = self._pick_balance_element(None, alloy_name)
+            nominal_comp = self._normalize_reported_composition(
+                comp.get("nominal_composition"),
+                preferred_balance_element=balance_hint,
+                fill_missing_balance=False,
+            )
             nominal_type = self._normalize_composition_type(comp.get("nominal_composition_type"))
 
             inferred_nominal, inferred_nominal_type = self._infer_nominal_from_commercial_name(alloy_name)
@@ -201,11 +246,15 @@ class SchemaConverter:
             process_payload = self._to_text_payload(str(process_text_raw or "not provided"))
             process_text_for_rules = self._extract_text_payload(process_payload)
 
-            process_category = (
-                str(comp.get("process_category") or "").strip()
-                or sample.get("Process_Category")
-                or self.infer_process_category(str(process_text_raw or ""), comp_raw=alloy_name)
-                or "Unknown"
+            process_category_code = self._resolve_process_category(
+                comp.get("process_category") or sample.get("Process_Category"),
+                str(process_text_raw or ""),
+                comp_raw=alloy_name,
+            )
+            process_category = self._humanize_process_category(
+                process_category_code,
+                process_text=str(process_text_raw or ""),
+                comp_raw=alloy_name,
             )
 
             key_params = self._canonicalize_key_params(
@@ -216,6 +265,15 @@ class SchemaConverter:
             micro_payload = self._to_text_payload(str(micro_text_raw or "not provided"))
             micro_text_for_rules = self._extract_text_payload(micro_payload)
             gradient_material = self._infer_gradient_material(comp, alloy_name, process_text_for_rules)
+            advanced_micro_features = self._normalize_advanced_quantitative_features(
+                comp.get("characterisation"),
+                allow_direct_dict=False,
+            )
+            advanced_micro_features.update(
+                self._normalize_advanced_quantitative_features(
+                    comp.get("advanced_quantitative_features")
+                )
+            )
 
             item = {
                 "Sample_ID": self._clean_optional_str(comp.get("sample_id")) or sample.get("Sample_ID"),
@@ -260,9 +318,7 @@ class SchemaConverter:
                     "Precipitate_Size_avg_nm": self._coerce_float(comp.get("precipitate_size_avg_nm")),
                     "Precipitate_Volume_Fraction_pct": self._coerce_float(comp.get("precipitate_volume_fraction_pct")),
                     "Phase_Fraction_pct": self._coerce_float(comp.get("phase_fraction_pct")),
-                    "Advanced_Quantitative_Features": self._normalize_advanced_quantitative_features(
-                        comp.get("characterisation")
-                    ),
+                    "Advanced_Quantitative_Features": advanced_micro_features,
                 },
                 "Properties_Info": self._build_lab_properties_from_internal(
                     comp,
@@ -320,6 +376,202 @@ class SchemaConverter:
             return None
         text = str(value).strip()
         return text or None
+
+    @staticmethod
+    def _contains_numeric_signal(value: Any) -> bool:
+        if value is None or isinstance(value, bool):
+            return False
+        if isinstance(value, (int, float)):
+            return math.isfinite(float(value))
+        if isinstance(value, dict):
+            return any(SchemaConverter._contains_numeric_signal(v) for v in value.values())
+        if isinstance(value, list):
+            return any(SchemaConverter._contains_numeric_signal(v) for v in value)
+        return bool(
+            re.search(
+                r"[-+]?\d+(?:\.\d+)?(?:e[-+]?\d+)?",
+                str(value),
+                re.IGNORECASE,
+            )
+        )
+
+    def _match_process_category_patterns(self, text: str) -> Dict[str, List[str]]:
+        matched: Dict[str, List[str]] = defaultdict(list)
+        lowered = str(text or "").lower()
+        for category, keywords in _PROCESS_CATEGORY_PATTERNS:
+            for keyword in keywords:
+                if re.search(
+                    rf"(?<![A-Za-z0-9]){re.escape(keyword.lower())}(?![A-Za-z0-9])",
+                    lowered,
+                ):
+                    matched[category].append(keyword)
+        return matched
+
+    @staticmethod
+    def _normalize_process_category_token(value: Any) -> Optional[str]:
+        if value is None:
+            return None
+        text = str(value).strip()
+        if not text:
+            return None
+        segments = [seg.strip() for seg in re.split(r"\s*\+\s*", text) if seg.strip()]
+        for segment in segments or [text]:
+            lowered = segment.lower()
+            for category, keywords in _PROCESS_CATEGORY_PATTERNS:
+                if lowered == category.lower():
+                    return category
+                if any(keyword in lowered for keyword in keywords):
+                    return category
+            normalized = lowered.replace(" ", "_").replace("-", "_")
+            if normalized in {
+                "am_lpbf",
+                "am_slm",
+                "am_ded",
+                "waam",
+                "ebm",
+                "powder_metallurgy",
+                "wrought",
+                "sps",
+                "hip",
+                "arc_melting",
+                "heattreat",
+                "casting",
+                "forging",
+                "rolling",
+                "mechanical_alloying",
+            }:
+                return normalized.replace("heattreat", "HeatTreat").replace("powder_metallurgy", "Powder_Metallurgy").replace("arc_melting", "Arc_Melting").replace("mechanical_alloying", "Mechanical_Alloying").replace("am_lpbf", "AM_LPBF").replace("am_slm", "AM_SLM").replace("am_ded", "AM_DED").replace("waam", "WAAM").replace("ebm", "EBM").replace("wrought", "Wrought").replace("sps", "SPS").replace("hip", "HIP").replace("casting", "Casting").replace("forging", "Forging").replace("rolling", "Rolling")
+        return None
+
+    @staticmethod
+    def _infer_process_post_treatment(text: str) -> Optional[str]:
+        lowered = str(text or "").lower()
+        if not lowered:
+            return None
+        if re.search(r"thermal stabili[sz](?:ation|ed)", lowered):
+            return "Thermal Stabilization"
+        if re.search(r"\bisothermal\s+ag(?:e|ed|ing)\b", lowered):
+            return "isothermal aging"
+        if re.search(r"\bpost[-\s]?processing\b", lowered):
+            return "Post-Processing"
+        if re.search(
+            r"\b(heat[-\s]?treat(?:ed|ment)?|aged|aging|anneal(?:ed|ing)?|solution(?:ized|ing|\s+treatment)?|stress[-\s]?relie(?:f|ved)|homogeni[sz](?:ed|ation)|t6|t8)\b",
+            lowered,
+        ):
+            return "Heat Treatment"
+        return None
+
+    def _humanize_process_category(self, category: str, process_text: str = "", comp_raw: str = "") -> str:
+        combined = " ".join(part for part in (str(process_text or ""), str(comp_raw or "")) if part).lower()
+        suffix = self._infer_process_post_treatment(combined)
+
+        if category == "Laser_Glazing":
+            base = "Laser Glazing"
+        elif category == "Hybrid_AM":
+            if "lpbf" in combined and "uam" in combined:
+                base = "Hybrid Additive Manufacturing (LPBF + UAM)"
+            else:
+                base = "Hybrid Additive Manufacturing"
+        elif category == "Powder_Recycling":
+            base = "Powder recycling"
+        elif category == "AM_DED":
+            if any(token in combined for token in ("laam", "laser-aided additive manufacturing", "laser aided additive manufacturing")):
+                base = "Laser-Aided Additive Manufacturing (LAAM)"
+            else:
+                base = "Directed Energy Deposition (DED)"
+        elif category == "AM_SLM":
+            base = "Selective Laser Melting (SLM)"
+        elif category == "AM_LPBF":
+            if re.search(r"\bselective laser melting\b|\bslm\b", combined) and not re.search(
+                r"\blpbf\b|laser powder bed fusion|l-pbf|pbf-lb",
+                combined,
+            ):
+                base = "Selective Laser Melting (SLM)"
+            else:
+                base = "Laser Powder Bed Fusion (LPBF)"
+        elif category == "WAAM":
+            base = "Wire Arc Additive Manufacturing (WAAM)"
+        elif category == "EBM":
+            if re.search(r"pbf-eb|powder bed fusion", combined):
+                base = "Electron beam powder bed fusion (PBF-EB)"
+            else:
+                base = "Electron beam melting (EBM)"
+        elif category == "Powder_Metallurgy":
+            base = "Powder Metallurgy"
+        elif category == "Wrought":
+            if any(token in combined for token in ("thermomechanical", "rolling", "rolled", "forging", "forged", "extrusion", "extruded")):
+                base = "Thermomechanical Processing"
+            else:
+                base = "Wrought"
+        elif category == "SPS":
+            base = "Spark Plasma Sintering"
+        elif category == "HIP":
+            base = "Hot isostatic pressing"
+        elif category == "Arc_Melting":
+            base = "Arc Melting"
+        elif category == "HeatTreat":
+            base = "Heat Treatment"
+        elif category == "Casting":
+            if "laser glazing" in combined or "laser remelting" in combined:
+                base = "Laser Glazing"
+                suffix = None
+            else:
+                base = "Casting"
+        elif category == "Mechanical_Alloying":
+            base = "Mechanical Alloying"
+        elif category == "AM":
+            base = "Additive Manufacturing"
+        else:
+            base = self._clean_optional_str(category) or "Unknown"
+
+        if suffix and base != "Unknown" and not base.endswith(suffix):
+            return f"{base} + {suffix}"
+        return base
+
+    def _resolve_process_category(self, raw_category: Any, process_text: str, comp_raw: str = "") -> str:
+        combined = " ".join(
+            part
+            for part in (
+                str(raw_category or ""),
+                str(process_text or ""),
+                str(comp_raw or ""),
+            )
+            if part
+        )
+        matches = self._match_process_category_patterns(combined)
+        inferred = self.infer_process_category(process_text or combined, comp_raw=comp_raw)
+        current = self._normalize_process_category_token(raw_category)
+
+        if current in {None, "Unknown", "AM"} and inferred != "Unknown":
+            current = inferred
+
+        am_specific = next(
+            (
+                category
+                for category in ("EBM", "AM_DED", "AM_SLM", "AM_LPBF", "WAAM", "Hybrid_AM")
+                if matches.get(category)
+            ),
+            None,
+        )
+        if current == "Powder_Metallurgy" and am_specific:
+            current = am_specific
+        elif current in {None, "Unknown"} and am_specific:
+            current = am_specific
+
+        if current == "AM_SLM":
+            current = "AM_LPBF" if matches.get("AM_LPBF") else "AM_SLM"
+
+        if current in {None, "Unknown"}:
+            current = self._normalize_process_category_token(combined) or inferred
+
+        if current == "Casting" and matches.get("Laser_Glazing"):
+            current = "Laser_Glazing"
+        if current in {None, "Unknown"} and matches.get("Powder_Recycling"):
+            current = "Powder_Recycling"
+        if current in {None, "Unknown"} and matches.get("Hybrid_AM"):
+            current = "Hybrid_AM"
+
+        return current or "Unknown"
 
     @staticmethod
     def _parse_value_with_optional_std(raw: Any) -> Tuple[Optional[float], Optional[float], Optional[str]]:
@@ -1586,8 +1838,11 @@ class SchemaConverter:
                 or f"Material_{idx}"
             )
             sample_id = self._clean_optional_str(item.get("Sample_ID"))
+            balance_hint = self._pick_balance_element(None, alloy_name)
             nominal_elements = self._normalize_reported_composition(
-                nominal.get("Elements_Normalized")
+                nominal.get("Elements_Normalized"),
+                preferred_balance_element=balance_hint,
+                fill_missing_balance=False,
             )
             measured_elements = self._normalize_reported_composition(
                 measured.get("Elements_Normalized"),
@@ -1634,9 +1889,15 @@ class SchemaConverter:
                 process_info["Process_Text"] = self._to_text_payload(
                     str(process_text or "not provided")
                 )
-            process_info["Process_Category"] = (
-                self._clean_optional_str(process_info.get("Process_Category"))
-                or "Unknown"
+            resolved_process_category = self._resolve_process_category(
+                process_info.get("Process_Category"),
+                self._extract_text_payload(process_info.get("Process_Text")),
+                comp_raw=alloy_name,
+            )
+            process_info["Process_Category"] = self._humanize_process_category(
+                resolved_process_category,
+                process_text=self._extract_text_payload(process_info.get("Process_Text")),
+                comp_raw=alloy_name,
             )
             process_info["Equipment"] = self._clean_optional_str(process_info.get("Equipment"))
             process_info["Key_Params"] = self._canonicalize_key_params(
@@ -2303,28 +2564,62 @@ class SchemaConverter:
         return sorted(normalized, key=_rank)
 
     @staticmethod
-    def _normalize_advanced_quantitative_features(payload: Any) -> Dict[str, Any]:
+    def _normalize_advanced_quantitative_features(
+        payload: Any,
+        allow_direct_dict: bool = True,
+    ) -> Dict[str, Any]:
         if isinstance(payload, dict):
             if "Advanced_Quantitative_Features" in payload:
                 nested = payload.get("Advanced_Quantitative_Features")
                 if isinstance(nested, dict):
-                    return {str(k): v for k, v in nested.items() if v is not None}
+                    return SchemaConverter._normalize_advanced_quantitative_features(nested)
                 if isinstance(nested, str):
                     try:
                         parsed = json.loads(nested)
                     except Exception:
                         parsed = {}
                     if isinstance(parsed, dict):
-                        return {str(k): v for k, v in parsed.items() if v is not None}
+                        return SchemaConverter._normalize_advanced_quantitative_features(parsed)
                     return {}
-            return {}
+            if not allow_direct_dict:
+                return {}
+            normalized: Dict[str, Any] = {}
+            for raw_key, raw_value in payload.items():
+                key = str(raw_key).strip()
+                if not key or raw_value is None:
+                    continue
+                key_norm = re.sub(r"[\s_\-]+", "", key).lower()
+                if key_norm in _AQF_TECHNIQUE_KEYS:
+                    if isinstance(raw_value, dict):
+                        normalized.update(
+                            SchemaConverter._normalize_advanced_quantitative_features(raw_value)
+                        )
+                    continue
+                if isinstance(raw_value, dict):
+                    nested = SchemaConverter._normalize_advanced_quantitative_features(raw_value)
+                    if nested:
+                        normalized[key] = nested
+                    continue
+                if isinstance(raw_value, list):
+                    cleaned_list = [
+                        item
+                        for item in raw_value
+                        if SchemaConverter._contains_numeric_signal(item)
+                    ]
+                    if cleaned_list:
+                        normalized[key] = cleaned_list
+                    continue
+                if not SchemaConverter._contains_numeric_signal(raw_value):
+                    continue
+                normalized[key] = raw_value
+            return normalized
         if isinstance(payload, str):
             try:
                 parsed = json.loads(payload)
             except Exception:
                 return {}
             if isinstance(parsed, dict):
-                return {str(k): v for k, v in parsed.items() if v is not None}
+                return SchemaConverter._normalize_advanced_quantitative_features(parsed)
         return {}
 
     def _expand_variable_materials_in_target_schema(
@@ -2871,6 +3166,7 @@ class SchemaConverter:
         self,
         comp_map: Any,
         preferred_balance_element: Optional[str] = None,
+        fill_missing_balance: bool = True,
     ) -> Optional[Dict[str, float]]:
         """Clean a reported composition map and add/adjust ``other`` to close sum to 100.
 
@@ -2905,13 +3201,23 @@ class SchemaConverter:
         if not cleaned:
             return None
 
+        if (
+            preferred_balance_element
+            and preferred_balance_element not in cleaned
+            and preferred_balance_element in self.rules.valid_elements
+            and self._coerce_float(cleaned.get("other")) is not None
+            and float(cleaned.get("other")) > 50.0
+        ):
+            cleaned[preferred_balance_element] = cleaned.pop("other")
+
         non_other_total = sum(v for k, v in cleaned.items() if k != "other")
         balance_delta = round(100.0 - non_other_total, 6)
 
         # When measured composition omits matrix element (e.g., Ti in EDX table),
         # prefer filling that matrix element by balance instead of pushing into "other".
         if (
-            preferred_balance_element
+            fill_missing_balance
+            and preferred_balance_element
             and preferred_balance_element not in cleaned
             and preferred_balance_element in self.rules.valid_elements
             and balance_delta > 0
@@ -3065,6 +3371,7 @@ class SchemaConverter:
                     normalized_nominal = self._normalize_reported_composition(
                         patched_nominal,
                         preferred_balance_element=balance_element,
+                        fill_missing_balance=False,
                     )
                     if normalized_nominal is not None:
                         comp["nominal_composition"] = normalized_nominal
@@ -3165,7 +3472,14 @@ class SchemaConverter:
             patched = dict(mat)
             comp_info = dict(patched.get("Composition_Info") or {})
 
-            nominal_comp = self._normalize_reported_composition(p.get("nominal_composition"))
+            nominal_comp = self._normalize_reported_composition(
+                p.get("nominal_composition"),
+                preferred_balance_element=self._pick_balance_element(
+                    None,
+                    str(patched.get("Alloy_Name_Raw") or p.get("composition") or ""),
+                ),
+                fill_missing_balance=False,
+            )
             measured_comp = self._normalize_reported_composition(
                 p.get("measured_composition"),
                 preferred_balance_element=self._pick_balance_element(
@@ -3323,6 +3637,31 @@ class SchemaConverter:
             ranked = sorted(inferred_nominal.items(), key=lambda kv: kv[1], reverse=True)
             if ranked:
                 return ranked[0][0]
+        inferred_from_name = self._infer_matrix_element_from_raw_name(raw_name)
+        if inferred_from_name:
+            return inferred_from_name
+        return None
+
+    def _infer_matrix_element_from_raw_name(self, raw_name: str) -> Optional[str]:
+        text = str(raw_name or "").strip()
+        if not text:
+            return None
+        lowered = text.lower()
+        explicit_patterns = (
+            (r"\bal(?:uminum|uminium)?[-\s]?based\b|\baa\d{4}\b", "Al"),
+            (r"\bni(?:ckel)?[-\s]?based\b|\binconel\b|\bin718\b", "Ni"),
+            (r"\bti(?:tanium)?[-\s]?based\b|\bti64\b|\bti-?6al-?4v\b", "Ti"),
+            (r"\bfe(?:rritic|ron)?[-\s]?based\b", "Fe"),
+            (r"\bco(?:balt)?[-\s]?based\b", "Co"),
+            (r"\bmg(?:nesium)?[-\s]?based\b", "Mg"),
+            (r"\bcu(?:pper)?[-\s]?based\b", "Cu"),
+        )
+        for pattern, element in explicit_patterns:
+            if re.search(pattern, lowered):
+                return element
+        first_elem = re.match(r"\s*([A-Z][a-z]?)", text)
+        if first_elem and first_elem.group(1) in self.rules.valid_elements:
+            return first_elem.group(1)
         return None
 
     @staticmethod
@@ -3790,7 +4129,7 @@ class SchemaConverter:
                     params[k] = v
 
         if not process_text:
-            return params
+            return self._canonicalize_key_params(params)
 
         def _safe_float(token: Any) -> Optional[float]:
             if token is None:
@@ -3844,6 +4183,35 @@ class SchemaConverter:
         if not params:
             return {}
 
+        def _format_number(value: float) -> Any:
+            if not math.isfinite(value):
+                return None
+            rounded = round(value, 6)
+            if abs(rounded - round(rounded)) < 1e-9:
+                return int(round(rounded))
+            return rounded
+
+        def _convert_value(value: Any, scale: float = 1.0, offset: float = 0.0) -> Any:
+            if value is None or isinstance(value, bool):
+                return value
+            if isinstance(value, (int, float)):
+                return _format_number(float(value) * scale + offset)
+            text = str(value).strip()
+            if not text:
+                return value
+            range_match = re.fullmatch(
+                r"\s*(-?\d+(?:\.\d+)?)\s*[-~]\s*(-?\d+(?:\.\d+)?)\s*",
+                text,
+            )
+            if range_match:
+                lo = float(range_match.group(1)) * scale + offset
+                hi = float(range_match.group(2)) * scale + offset
+                return f"{_format_number(lo)}-{_format_number(hi)}"
+            try:
+                return _format_number(float(text) * scale + offset)
+            except Exception:
+                return value
+
         out: Dict[str, Any] = {}
         disallowed = {
             "Relative_Density_pct",
@@ -3866,20 +4234,50 @@ class SchemaConverter:
             "Hardness_HV",
             "Hardness_HRC",
             "Hardness_HB",
+            "Process_Category",
+            "Equipment",
         }
         key_alias = {
             "Scan_Speed_mm_s": "Scanning_Speed_mm_s",
+            "Scanning_Velocity_mm_s": "Scanning_Speed_mm_s",
+            "Scanning_Speed_mm_min": "Scanning_Speed_mm_s",
+            "Scanning_Speed_m_s": "Scanning_Speed_mm_s",
             "Shielding_Gas": "Protective_Atmosphere",
             "Process_Gas": "Protective_Atmosphere",
             "Preheat_Temperature_C": "Build_Plate_Temperature_K",
             "Preheat_Temperature_K": "Build_Plate_Temperature_K",
+            "Pre_heating_Temperature_C": "Build_Plate_Temperature_K",
+            "Pre_Heating_Temperature_degC": "Build_Plate_Temperature_K",
+            "Build_Plate_Temperature_C": "Build_Plate_Temperature_K",
+            "Build_Plate_Preheat_K": "Build_Plate_Temperature_K",
+            "Building_Temperature_K": "Build_Plate_Temperature_K",
+            "Building_temperature_K": "Build_Plate_Temperature_K",
+            "Powder_Bed_Temperature_K": "Build_Plate_Temperature_K",
+            "Powder_bed_preheating_temperature_K": "Build_Plate_Temperature_K",
             "Hatch_Distance_um": "Hatch_Spacing_um",
             "Hatch_Distance_um_Range": "Hatch_Spacing_um_Range",
+            "Hatch_Distance_mm": "Hatch_Spacing_mm",
             "Energy_Density_J_mm3": "Volumetric_Energy_Density_J_mm3",
             "Energy_Density_J_mm3_Range": "Volumetric_Energy_Density_J_mm3_Range",
             "Energy_Density_J_mm3_FullDensification": "Volumetric_Energy_Density_J_mm3_FullDensification",
             "Energy_Density_J_mm3_Optimal": "Volumetric_Energy_Density_J_mm3_Optimal",
             "Energy_Density_J_mm3_Optimal_Range": "Volumetric_Energy_Density_J_mm3_Optimal_Range",
+            "Layer_Thickness_mm": "Layer_Thickness_um",
+            "Power_W": "Laser_Power_W",
+            "Aging_Temperature_C": "Aging_Temperature_K",
+            "Age_Temperature_C": "Aging_Temperature_K",
+            "Age_Temperature_K": "Aging_Temperature_K",
+            "Aging_Duration_h": "Aging_Time_h",
+            "Age_Duration_h": "Aging_Time_h",
+            "Solution_Temperature_C": "Solution_Temperature_K",
+            "Annealing_Temperature_C": "Annealing_Temperature_K",
+            "Heating_Rate_C_min": "Heating_Rate_K_min",
+            "Mean_beam_current_mA": "Beam_Current_mA",
+            "Voltage_kV": "Acceleration_Voltage_kV",
+            "Beam_Diameter_um": "Beam_diameter_um",
+            "Beam_Size_um": "Beam_diameter_um",
+            "Laser_Spot_Size_um": "Spot_Size_um",
+            "Powder_Feeding_Rate_g_min": "Powder_Feed_Rate_g_min",
         }
 
         for raw_key, raw_val in params.items():
@@ -3888,15 +4286,27 @@ class SchemaConverter:
                 continue
             val = raw_val
 
-            if key == "Build_Plate_Temperature_K" and raw_val is not None:
-                try:
-                    num = float(raw_val)
-                    if str(raw_key).endswith("_C"):
-                        val = round(num + 273.15, 2)
-                    else:
-                        val = num
-                except Exception:
-                    val = raw_val
+            if key == "Scanning_Speed_mm_s" and str(raw_key) == "Scanning_Speed_mm_min":
+                val = _convert_value(raw_val, scale=1.0 / 60.0)
+            elif key == "Scanning_Speed_mm_s" and str(raw_key) == "Scanning_Speed_m_s":
+                val = _convert_value(raw_val, scale=1000.0)
+            elif key == "Layer_Thickness_um" and str(raw_key) == "Layer_Thickness_mm":
+                val = _convert_value(raw_val, scale=1000.0)
+            elif key == "Build_Plate_Temperature_K" and raw_val is not None:
+                if str(raw_key).endswith("_C") or str(raw_key) in {
+                    "Pre_Heating_Temperature_degC",
+                    "Pre_heating_Temperature_C",
+                    "Build_Plate_Temperature_C",
+                }:
+                    val = _convert_value(raw_val, offset=273.15)
+                else:
+                    val = _convert_value(raw_val)
+            elif key in {"Aging_Temperature_K", "Solution_Temperature_K", "Annealing_Temperature_K"} and str(raw_key).endswith("_C"):
+                val = _convert_value(raw_val, offset=273.15)
+            elif key == "Heating_Rate_K_min":
+                val = _convert_value(raw_val)
+            elif key in {"Laser_Power_W", "Acceleration_Voltage_kV", "Beam_Current_mA"}:
+                val = _convert_value(raw_val)
 
             if key == "Protective_Atmosphere" and isinstance(val, str):
                 vv = val.strip().lower()
@@ -4146,18 +4556,54 @@ class SchemaConverter:
 
     def infer_process_category(self, process_text: str, comp_raw: str = "") -> str:
         """Classify manufacturing process from free text."""
-        t = (process_text or "").lower()
-        c = (comp_raw or "").lower()
-        base = "Unknown"
-        for category, keywords in self.rules.process_category_keywords.items():
-            if any(
-                re.search(rf"(?<![A-Za-z0-9]){re.escape(kw.lower())}(?![A-Za-z0-9])", t)
-                for kw in keywords
-            ):
-                base = category
-                break
+        combined = " ".join(part for part in (str(process_text or ""), str(comp_raw or "")) if part)
+        t = combined.lower()
+        matches = self._match_process_category_patterns(combined)
 
-        # SLM is a LPBF sub-family. Use LPBF as the canonical parent category.
+        if matches.get("Laser_Glazing"):
+            return "Laser_Glazing"
+        if matches.get("Hybrid_AM"):
+            return "Hybrid_AM"
+        if matches.get("Powder_Recycling"):
+            return "Powder_Recycling"
+        if matches.get("EBM"):
+            return "EBM"
+        if matches.get("AM_DED"):
+            return "AM_DED"
+        if matches.get("AM_SLM"):
+            base = "AM_SLM"
+        elif matches.get("AM_LPBF"):
+            base = "AM_LPBF"
+        elif matches.get("WAAM"):
+            base = "WAAM"
+        elif matches.get("Powder_Metallurgy") and not (
+            matches.get("AM_SLM")
+            or matches.get("AM_LPBF")
+            or matches.get("AM_DED")
+            or matches.get("EBM")
+            or matches.get("WAAM")
+            or re.search(r"\b(additive manufacturing|additively manufactured|3d printing)\b", t)
+        ):
+            base = "Powder_Metallurgy"
+        elif matches.get("Wrought"):
+            base = "Wrought"
+        elif matches.get("SPS"):
+            base = "SPS"
+        elif matches.get("HIP"):
+            base = "HIP"
+        elif matches.get("Arc_Melting"):
+            base = "Arc_Melting"
+        elif matches.get("Casting"):
+            base = "Casting"
+        elif matches.get("Mechanical_Alloying"):
+            base = "Mechanical_Alloying"
+        elif matches.get("HeatTreat"):
+            base = "HeatTreat"
+        elif re.search(r"\b(additive manufacturing|additively manufactured|3d printing)\b", t):
+            base = "AM"
+        else:
+            base = "Unknown"
+
         if base == "AM_SLM":
             base = "AM_LPBF"
 
@@ -4167,7 +4613,7 @@ class SchemaConverter:
             graded_kw = ("graded", "multigraded", "gradient", "stepwise", "layers per blend")
             if any(kw in t for kw in blend_kw):
                 suffixes.append("Powder_Blending")
-            if any(kw in t for kw in graded_kw) or "graded" in c or "gradient" in c:
+            if any(kw in t for kw in graded_kw) or "graded" in (comp_raw or "").lower() or "gradient" in (comp_raw or "").lower():
                 suffixes.append("Graded_Composition")
             if suffixes:
                 return f"{base} + " + " + ".join(suffixes)
@@ -4315,6 +4761,11 @@ class SchemaConverter:
                 current == "AM_SLM" and inferred_process_category.startswith("AM_LPBF")
             ):
                 process_category = inferred_process_category
+        resolved_process_category = self._resolve_process_category(
+            process_category,
+            process_text or "",
+            comp_raw=comp_raw,
+        )
 
         key_params = self.parse_key_params(process_text or "", comp.get("processing_params"))
         if orientation and "Build_Orientation" not in key_params:
@@ -4322,7 +4773,11 @@ class SchemaConverter:
 
         return {
             "Sample_ID": f"S{mat_idx:03d}_{s_idx:02d}_{condition_suffix}",
-            "Process_Category": process_category,
+            "Process_Category": self._humanize_process_category(
+                resolved_process_category,
+                process_text=process_text or "",
+                comp_raw=comp_raw,
+            ),
             "Process_Text_For_AI": process_text or "not provided",
             "Key_Params_JSON": key_params,
             "Main_Phase": main_phase or "",

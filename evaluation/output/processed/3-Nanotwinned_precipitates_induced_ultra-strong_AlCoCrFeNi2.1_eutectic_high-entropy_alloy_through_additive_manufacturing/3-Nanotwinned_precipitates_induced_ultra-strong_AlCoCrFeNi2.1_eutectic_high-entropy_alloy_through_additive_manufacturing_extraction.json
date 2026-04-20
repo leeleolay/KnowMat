@@ -1,0 +1,405 @@
+{
+  "Paper_Metadata": {
+    "Paper_Title": "Nanotwinned precipitates induced ultra-strong AlCoCrFeNi_{2.1} eutectic high-entropy alloy through additive manufacturing",
+    "DOI": "10.1016/j.mattod.2025.05.022"
+  },
+  "items": [
+    {
+      "Sample_ID": "AB-001",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "AlCoCrFeNi2.1",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Al": 16.39,
+            "Co": 16.39,
+            "Cr": 16.39,
+            "Fe": 16.39,
+            "Ni": 34.43,
+            "other": 0.01
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Al": 9.41,
+            "Co": 10.61,
+            "Cr": 10.13,
+            "Fe": 10.15,
+            "Ni": 39.27,
+            "other": 20.43
+          },
+          "Measurement_Method": "EDS (STEM)"
+        },
+        "Note": "Powder nominal formula is AlCoCrFeNi2.1 (at%); measured as-built composition totals ~79.6 at%, balance attributed to oxygen in powder. B2 phase measured composition: Al15.9Co16.9Cr15.7Fe16.8Ni34.7 (at%)."
+      },
+      "Process_Info": {
+        "Process_Category": "AM_LPBF",
+        "Process_Text": {
+          "original": "Gas-atomized AlCoCrFeNi2.1 powder (particle size 15-53 µm, avg 31.5 µm) fabricated by LangFeng Material Technology Co., Ltd.; PBF-LB performed on EOS M100 (200 W fiber laser, 40 µm spot diameter) with optimized parameters: laser power 100 W, scan speed 1000 mm/s, hatch spacing 0.05 mm, layer thickness 0.02 mm; no preheating; high-purity argon atmosphere (<1000 ppm oxygen); scan direction rotated 67° per layer; final printed rectangular plates 40 mm × 8 mm × 4 mm building height; relative density >99%.",
+          "simplified": "PBF-LB (EOS M100, 100 W, 1000 mm/s, 0.05 mm hatch, 0.02 mm layer, 40 µm spot, no preheat, Ar atmosphere, 67° inter-layer rotation); relative density >99%."
+        },
+        "Equipment": "EOS M100 Laser-sintering system (200 W fiber laser)",
+        "Key_Params": {
+          "Laser_Power_W": 100.0,
+          "Scanning_Speed_mm_s": 1000.0,
+          "Hatch_Spacing_mm": 0.05,
+          "Layer_Thickness_mm": 0.02,
+          "Laser_Spot_Size_um": 40.0,
+          "Powder_Size_avg_um": 31.5,
+          "Powder_Size_Range_um": "15-53",
+          "Inter_Layer_Rotation_deg": 67.0,
+          "Protective_Atmosphere": "Argon (<1000 ppm O2)",
+          "Build_Plate_Preheat_K": 298.15
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Dual-phase hierarchical microstructure with nano-lamellar and cellular eutectic colonies. Lamellar colonies: alternating FCC (λFCC = 87 nm) and ordered B2 (λB2 = 160 nm) nanolayers with K-S orientation relationship. Cellular colonies: BCC subgrains (~800 nm) with ordered-B2 structure encapsulated by disordered FCC interfacial nanolayer (~14 nm), N-W orientation relationship. No precipitates in as-built condition. High dislocation density. B2 volume fraction 83.6%, FCC 16.4%. Biconinuous Ni-Al-rich and Co-Cr-Fe-rich nanostructures within B2 colonies indicating spinodal decomposition.",
+          "simplified": "Dual-phase B2-dominant (83.6 vol%) microstructure with nano-lamellar and cellular eutectic colonies; K-S and N-W orientation relationships; high dislocation density; no precipitates; spinodal decomposition in B2 colonies."
+        },
+        "Main_Phase": "B2",
+        "Precipitates": [],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "XRD": "Bruker D8 Advance, Cu-Kα, 40 kV/40 mA, 2θ 20°-100°",
+          "SEM": "FEI Scios with HKL EBSD system; mechanically ground and electrolytically polished",
+          "TEM": "JEOL JEM-2100F at 200 kV; Cs-corrected FEI Themis Z at 300 kV for HAADF-STEM and HRTEM",
+          "APT": "CAMECA LEAP 5000XR at 70 K, voltage mode, 200 kHz, 20% pulse fraction",
+          "EDS": "STEM-EDS for compositional analysis of all phases",
+          "B2_Volume_Fraction_pct": 83.6,
+          "FCC_Volume_Fraction_pct": 16.4,
+          "FCC_Lamellar_Thickness_nm": 87.0,
+          "B2_Lamellar_Thickness_nm": 160.0,
+          "Cellular_Subgrain_Size_avg_nm": 800.0,
+          "FCC_Interfacial_Nanolayer_Thickness_nm": 14.0,
+          "FCC_Phase_Al_at_pct": 14.1,
+          "B2_Phase_Al_at_pct": 16.8
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at 298.15 K; strain rate 1.0×10^-3 s^-1; perpendicular to build direction",
+          "Value_Numeric": 1388.0,
+          "Value_Range": null,
+          "Value_StdDev": 10.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1.0×10^-3",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "dog-bone, gauge 8 mm × 2 mm × 1 mm; thickness 1.1 mm",
+          "Note": null
+        },
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at 873.15 K (600°C); strain rate 1.0×10^-3 s^-1; perpendicular to build direction",
+          "Value_Numeric": 1090.0,
+          "Value_Range": null,
+          "Value_StdDev": 34.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": 873.15,
+          "Strain_Rate_s1": "1.0×10^-3",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "dog-bone, gauge 8 mm × 2 mm × 1 mm; thickness 1.1 mm",
+          "Note": "As-built sample tested at 600°C"
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at 298.15 K; strain rate 1.0×10^-3 s^-1; perpendicular to build direction",
+          "Value_Numeric": 1731.0,
+          "Value_Range": null,
+          "Value_StdDev": 31.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1.0×10^-3",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "dog-bone, gauge 8 mm × 2 mm × 1 mm; thickness 1.1 mm",
+          "Note": null
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at 873.15 K (600°C); strain rate 1.0×10^-3 s^-1; perpendicular to build direction",
+          "Value_Numeric": 1133.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 873.15,
+          "Strain_Rate_s1": "1.0×10^-3",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "image",
+          "Test_Specimen": "dog-bone, gauge 8 mm × 2 mm × 1 mm; thickness 1.1 mm",
+          "Note": "As-built sample tested at 600°C; value derived from Figure 4a stress-strain curve"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at 298.15 K; strain rate 1.0×10^-3 s^-1; perpendicular to build direction; uniform elongation",
+          "Value_Numeric": 3.9,
+          "Value_Range": null,
+          "Value_StdDev": 0.3,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1.0×10^-3",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "dog-bone, gauge 8 mm × 2 mm × 1 mm; thickness 1.1 mm",
+          "Note": "Reported as uniform elongation; generic 'elongation' in source mapped to Elongation_Total"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at 873.15 K (600°C); strain rate 1.0×10^-3 s^-1; perpendicular to build direction; uniform elongation",
+          "Value_Numeric": 3.0,
+          "Value_Range": null,
+          "Value_StdDev": 0.14,
+          "Unit": "%",
+          "Test_Temperature_K": 873.15,
+          "Strain_Rate_s1": "1.0×10^-3",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "dog-bone, gauge 8 mm × 2 mm × 1 mm; thickness 1.1 mm",
+          "Note": "As-built sample at 600°C"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "AA-001",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "AlCoCrFeNi2.1",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Al": 16.39,
+            "Co": 16.39,
+            "Cr": 16.39,
+            "Fe": 16.39,
+            "Ni": 34.43,
+            "other": 0.01
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Al": 9.41,
+            "Co": 10.61,
+            "Cr": 10.13,
+            "Fe": 10.15,
+            "Ni": 39.27,
+            "other": 20.43
+          },
+          "Measurement_Method": "EDS (STEM)"
+        },
+        "Note": "Powder nominal formula is AlCoCrFeNi2.1 (at%); measured as-built composition totals ~79.6 at%, balance attributed to oxygen in powder. Post-annealing at 600°C for 8h water quench does not change overall composition. B2 phase measured composition: Al15.9Co16.9Cr15.7Fe16.8Ni34.7 (at%). NT FCC precipitates composition: Co24.4Cr24.4Fe24.4Ni24.4Al2.4 (at%)."
+      },
+      "Process_Info": {
+        "Process_Category": "AM_LPBF",
+        "Process_Text": {
+          "original": "Gas-atomized AlCoCrFeNi2.1 powder (particle size 15-53 µm, avg 31.5 µm) fabricated by LangFeng Material Technology Co., Ltd.; PBF-LB performed on EOS M100 (200 W fiber laser, 40 µm spot diameter) with optimized parameters: laser power 100 W, scan speed 1000 mm/s, hatch spacing 0.05 mm, layer thickness 0.02 mm; no preheating; high-purity argon atmosphere (<1000 ppm oxygen); scan direction rotated 67° per layer; final printed rectangular plates 40 mm × 8 mm × 4 mm building height; relative density >99%. Post-heat treatment: annealing at 600°C for 8 h in muffle furnace followed by water quenching.",
+          "simplified": "PBF-LB (EOS M100, 100 W, 1000 mm/s, 0.05 mm hatch, 0.02 mm layer, 40 µm spot, no preheat, Ar atmosphere, 67° rotation) followed by annealing at 600°C for 8 h, water quench."
+        },
+        "Equipment": "EOS M100 Laser-sintering system (200 W fiber laser); Muffle furnace (post-heat treatment)",
+        "Key_Params": {
+          "Laser_Power_W": 100.0,
+          "Scanning_Speed_mm_s": 1000.0,
+          "Hatch_Spacing_mm": 0.05,
+          "Layer_Thickness_mm": 0.02,
+          "Laser_Spot_Size_um": 40.0,
+          "Powder_Size_avg_um": 31.5,
+          "Powder_Size_Range_um": "15-53",
+          "Inter_Layer_Rotation_deg": 67.0,
+          "Protective_Atmosphere": "Argon (<1000 ppm O2)",
+          "Build_Plate_Preheat_K": 298.15,
+          "Annealing_Temperature_C": 600.0,
+          "Annealing_Time_h": 8.0,
+          "Cooling_Medium": "Water quench",
+          "Solution_Temperature_C": 600.0
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Multiple-order hierarchical multiphase architecture after annealing at 600°C for 8 h. Retains mixture of nano-lamellar and cellular eutectic colonies with slight coarsening: λFCC from 87→96 nm, λB2 from 160→176 nm, cellular diameter ~549→653 nm. High-density needle-like nanoprecipitates (~180 nm length, ~20 nm diameter, aspect ratio ~8.75) evenly distributed in B2 phases. Two distinct precipitate types: Type I (FCC, width >20 nm) with ultrafine nanotwins (twin thickness 0.4-16 nm, avg 2.4 nm), 76% of needle-like precipitates; Type II (HCP, width <10 nm) with high-density stacking faults (SF spacing 0.4-2.9 nm, avg 1.1 nm), ~24% of needle-like precipitates. 76% of needle-like nanoprecipitates are FCC-type. L12 precipitates identified in FCC phase (superlattice SAED spots). NT FCC precipitates are semi-coherent with B2 matrix (K-S relationship). HCP precipitates follow Burgers orientation relationship with B2 matrix. Volume fractions: 20% in lamellar colonies, 45% in cellular colonies. APT: Co, Cr, Fe partitioned into NT FCC precipitates; Ni and Al depleted. NT precipitate composition: CoCrFeNi ~24.4 at.% each, Al 2.4 at.% (CoCrFeNiAl0.1 HEA).",
+          "simplified": "B2-dominant microstructure (83.6 vol%) with high-density NT FCC needle-like precipitates (76%, avg twin thickness 2.4 nm) and HCP precipitates with stacking faults (24%); L12 in FCC phase; semi-coherent precipitate-matrix interfaces with K-S and Burgers orientation relationships; NT precipitates correspond to CoCrFeNiAl0.1 HEA."
+        },
+        "Main_Phase": "B2",
+        "Precipitates": [
+          {
+            "Phase_Type": "NT FCC",
+            "Volume_Fraction_pct": 20.0
+          },
+          {
+            "Phase_Type": "HCP",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "L12",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": 180.0,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "XRD": "Bruker D8 Advance, Cu-Kα, 40 kV/40 mA, 2θ 20°-100°",
+          "SEM": "FEI Scios with HKL EBSD system; mechanically ground and electrolytically polished",
+          "TEM": "JEOL JEM-2100F at 200 kV; Cs-corrected FEI Themis Z at 300 kV for HAADF-STEM and HRTEM",
+          "APT": "CAMECA LEAP 5000XR at 70 K, voltage mode, 200 kHz, 20% pulse fraction",
+          "EDS": "STEM-EDS for compositional analysis of all phases; APT for 3D compositional mapping",
+          "B2_Volume_Fraction_pct": 83.6,
+          "FCC_Volume_Fraction_pct": 16.4,
+          "FCC_Lamellar_Thickness_nm": 96.0,
+          "B2_Lamellar_Thickness_nm": 176.0,
+          "Cellular_Diameter_avg_nm": 653.0,
+          "Precipitate_Length_avg_nm": 180.0,
+          "Precipitate_Diameter_avg_nm": 20.0,
+          "Precipitate_Aspect_Ratio": 8.75,
+          "Twin_Thickness_avg_nm": 2.4,
+          "Twin_Thickness_range_nm": "0.4-16",
+          "Stacking_Fault_Spacing_avg_nm": 1.1,
+          "Stacking_Fault_Spacing_range_nm": "0.4-2.9",
+          "Interprecipitate_Spacing_nm": 64.0,
+          "FCC_Precipitates_pct_of_needles": 76.0,
+          "HCP_Precipitates_pct_of_needles": 24.0,
+          "Lattice_Misfit_HCP_B2_pct": 1.4,
+          "Lattice_Misfit_FCC_B2_pct": 2.4,
+          "NT_Precipitates_Volume_Fraction_Lamellar_pct": 20.0,
+          "NT_Precipitates_Volume_Fraction_Cellular_pct": 45.0,
+          "FCC_Phase_Al_at_pct": 14.1,
+          "B2_Phase_Al_at_pct": 16.8,
+          "NT_FCC_Precipitate_Composition_at_pct": {
+            "Al": 2.4,
+            "Co": 24.4,
+            "Cr": 24.4,
+            "Fe": 24.4,
+            "Ni": 24.4
+          }
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at 298.15 K; strain rate 1.0×10^-3 s^-1; perpendicular to build direction",
+          "Value_Numeric": 1723.0,
+          "Value_Range": null,
+          "Value_StdDev": 37.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1.0×10^-3",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "dog-bone, gauge 8 mm × 2 mm × 1 mm; thickness 1.1 mm",
+          "Note": "Post-annealed at 600°C for 8 h; increment of ~335 MPa vs as-built; NT precipitate strengthening contribution ~565 MPa"
+        },
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at 873.15 K (600°C); strain rate 1.0×10^-3 s^-1; perpendicular to build direction",
+          "Value_Numeric": 1090.0,
+          "Value_Range": null,
+          "Value_StdDev": 34.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": 873.15,
+          "Strain_Rate_s1": "1.0×10^-3",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "dog-bone, gauge 8 mm × 2 mm × 1 mm; thickness 1.1 mm",
+          "Note": "As-annealed sample tested at 600°C"
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at 298.15 K; strain rate 1.0×10^-3 s^-1; perpendicular to build direction",
+          "Value_Numeric": 2153.0,
+          "Value_Range": null,
+          "Value_StdDev": 24.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1.0×10^-3",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "dog-bone, gauge 8 mm × 2 mm × 1 mm; thickness 1.1 mm",
+          "Note": "Post-annealed at 600°C for 8 h; highest reported σu for additively manufactured AlCoCrFeNi2.1 EHEA"
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at 873.15 K (600°C); strain rate 1.0×10^-3 s^-1; perpendicular to build direction",
+          "Value_Numeric": 1133.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 873.15,
+          "Strain_Rate_s1": "1.0×10^-3",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "dog-bone, gauge 8 mm × 2 mm × 1 mm; thickness 1.1 mm",
+          "Note": "As-annealed sample tested at 600°C; surpasses most additively manufactured metals for intermediate-temperature applications"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at 298.15 K; strain rate 1.0×10^-3 s^-1; perpendicular to build direction; uniform elongation",
+          "Value_Numeric": 3.9,
+          "Value_Range": null,
+          "Value_StdDev": 0.3,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1.0×10^-3",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "dog-bone, gauge 8 mm × 2 mm × 1 mm; thickness 1.1 mm",
+          "Note": "Reported as uniform elongation; generic 'elongation' in source; as-annealed ductility comparable to as-built due to simultaneous reduction of dislocation strengthening and ordering degree"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at 873.15 K (600°C); strain rate 1.0×10^-3 s^-1; perpendicular to build direction; uniform elongation",
+          "Value_Numeric": 3.0,
+          "Value_Range": null,
+          "Value_StdDev": 0.14,
+          "Unit": "%",
+          "Test_Temperature_K": 873.15,
+          "Strain_Rate_s1": "1.0×10^-3",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "dog-bone, gauge 8 mm × 2 mm × 1 mm; thickness 1.1 mm",
+          "Note": "As-annealed sample at 600°C"
+        }
+      ]
+    }
+  ]
+}

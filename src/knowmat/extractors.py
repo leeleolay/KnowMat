@@ -24,6 +24,7 @@ adjust the model name or temperature via environment variables.
 """
 
 import logging
+import json
 import os
 import re
 import time
@@ -35,6 +36,23 @@ from trustcall import create_extractor
 from knowmat.app_config import settings
 
 logger = logging.getLogger(__name__)
+
+
+_AQF_TECHNIQUE_KEYS = {
+    "apt",
+    "clsm",
+    "ebsd",
+    "edx",
+    "eis",
+    "microct",
+    "micro_ct",
+    "micro-ct",
+    "sem",
+    "stem",
+    "tem",
+    "xps",
+    "xrd",
+}
 
 
 def _llm_connection_kwargs() -> Dict[str, str]:
@@ -110,6 +128,53 @@ def _coerce_numeric_leaf(value: Any) -> Optional[float]:
         return None
 
 
+def _contains_numeric_signal(value: Any) -> bool:
+    if value is None or isinstance(value, bool):
+        return False
+    if isinstance(value, (int, float)):
+        return True
+    if isinstance(value, dict):
+        return any(_contains_numeric_signal(v) for v in value.values())
+    if isinstance(value, list):
+        return any(_contains_numeric_signal(v) for v in value)
+    return bool(re.search(r"[-+]?\d+(?:\.\d+)?(?:e[-+]?\d+)?", str(value), re.IGNORECASE))
+
+
+def _infer_balance_element_from_context(*texts: Any) -> Optional[str]:
+    joined = " ".join(str(text or "") for text in texts if text)
+    lowered = joined.lower()
+    explicit_patterns = (
+        (r"\bal(?:uminum|uminium)?[-\s]?based\b|\baa\d{4}\b", "Al"),
+        (r"\bni(?:ckel)?[-\s]?based\b|\binconel\b|\bin718\b", "Ni"),
+        (r"\bti(?:tanium)?[-\s]?based\b|\bti64\b|\bti-?6al-?4v\b", "Ti"),
+        (r"\bfe(?:rritic|ron)?[-\s]?based\b", "Fe"),
+        (r"\bco(?:balt)?[-\s]?based\b", "Co"),
+        (r"\bmg(?:nesium)?[-\s]?based\b", "Mg"),
+        (r"\bcu(?:pper)?[-\s]?based\b", "Cu"),
+    )
+    for pattern, element in explicit_patterns:
+        if re.search(pattern, lowered):
+            return element
+    match = re.search(r"\b([A-Z][a-z]?)(?=\d|\b)", joined)
+    if match:
+        return match.group(1)
+    return None
+
+
+def _repair_large_other_bucket(payload: Any, fallback_element: Optional[str]) -> Any:
+    if not isinstance(payload, dict) or not fallback_element:
+        return payload
+    other = _coerce_numeric_leaf(payload.get("other"))
+    if other is None or other <= 50:
+        return payload
+    if fallback_element in payload:
+        return payload
+    repaired = dict(payload)
+    repaired.pop("other", None)
+    repaired[fallback_element] = other
+    return repaired
+
+
 def _normalize_composition_map(payload: Any) -> Any:
     """Normalize flat or step-keyed composition maps.
 
@@ -134,6 +199,78 @@ def _normalize_composition_map(payload: Any) -> Any:
         if numeric is not None:
             normalized[key] = numeric
     return normalized or None
+
+
+def _normalize_feature_map(payload: Any) -> Any:
+    """Normalize free-form advanced feature maps without destroying ranges."""
+    if payload is None:
+        return None
+    if isinstance(payload, str):
+        text = payload.strip()
+        if not text:
+            return None
+        try:
+            payload = json.loads(text)
+        except Exception:
+            return None
+
+    if not isinstance(payload, dict):
+        return None
+
+    if "Advanced_Quantitative_Features" in payload:
+        nested = _normalize_feature_map(payload.get("Advanced_Quantitative_Features"))
+        if nested is not None:
+            return nested
+
+    normalized: Dict[str, Any] = {}
+    for raw_key, raw_value in payload.items():
+        key = str(raw_key).strip()
+        if not key or raw_value is None:
+            continue
+        key_norm = re.sub(r"[\s_\-]+", "", key).lower()
+        if key_norm in _AQF_TECHNIQUE_KEYS:
+            if isinstance(raw_value, dict):
+                nested = _normalize_feature_map(raw_value)
+                if nested:
+                    normalized.update(nested)
+            continue
+        if isinstance(raw_value, dict):
+            nested = _normalize_feature_map(raw_value)
+            if nested:
+                normalized[key] = nested
+            continue
+        if isinstance(raw_value, list):
+            cleaned = [item for item in raw_value if item is not None and _contains_numeric_signal(item)]
+            if cleaned:
+                normalized[key] = cleaned
+            continue
+        if not _contains_numeric_signal(raw_value):
+            continue
+        normalized[key] = raw_value
+    return normalized or None
+
+
+def _normalize_metric_key_fragment(value: Any) -> str:
+    text = re.sub(r"[^A-Za-z0-9]+", "_", str(value or "").strip()).strip("_")
+    return text or "value"
+
+
+def _structured_micro_key(parent_field: str, child_key: Any) -> str:
+    fragment = _normalize_metric_key_fragment(child_key)
+    lowered = fragment.lower()
+    if parent_field == "phase_fraction_pct":
+        return fragment if lowered.endswith("phase_fraction_pct") else f"{fragment}_phase_fraction_pct"
+    if parent_field == "precipitate_size_avg_nm":
+        return fragment if lowered.endswith("nm") else f"{fragment}_nm"
+    if parent_field == "precipitate_volume_fraction_pct":
+        return fragment if lowered.endswith("pct") else f"{fragment}_volume_fraction_pct"
+    if parent_field == "grain_size_avg_um":
+        return fragment if lowered.endswith("um") else f"{fragment}_grain_size_um"
+    if parent_field == "porosity_pct":
+        return fragment if lowered.endswith("pct") else f"{fragment}_porosity_pct"
+    if parent_field == "relative_density_pct":
+        return fragment if lowered.endswith("pct") else f"{fragment}_relative_density_pct"
+    return f"{fragment}_{parent_field}"
 
 
 class _LazyExtractor:
@@ -426,7 +563,19 @@ class CompositionProperties(BaseModel):
         default=None,
         description=(
             "Stable specimen identifier for this runtime composition. "
-            "All tests belonging to the same specimen should share the same sample_id."
+            "All tests belonging to the same specimen should share the same sample_id. "
+            "Prefer informative IDs such as {alloy}_{route}_{state} when the paper gives enough context; "
+            "avoid overly generic labels like AP/HT unless the source itself only uses that code. "
+            "For retained comparison matrices, preserve the explicit family/state granularity from the paper "
+            "(for example R0 vs R5 vs S0 vs S15, theta0 vs theta45 vs theta90, As_Fabricated vs T6, "
+            "Powder vs PBF_EB vs PBF_LB). Do not drop the family prefix when it distinguishes retained specimens. "
+            "If the same specimen appears under a shorthand code and a long descriptive alias, choose one canonical "
+            "sample_id rather than emitting duplicate entries. For Reference items, preserve the explicit benchmark "
+            "label/state rather than collapsing multiple named benchmarks into one umbrella id such as Pure_Al_Reference "
+            "or various_AM_alloys_reference. Do not invent a standalone sample_id for powder, ingot, or "
+            "intermediate-route mentions unless that state is itself a retained specimen with sample-resolved evidence. "
+            "Do not create separate sample_id entries for testing temperatures, creep stresses, exposure times, or "
+            "optimization breadcrumbs unless the paper clearly retains them as standalone specimens in the final comparison set."
         ),
     )
 
@@ -460,6 +609,14 @@ class CompositionProperties(BaseModel):
             "Material role in this paper. "
             "'Target' = synthesized, processed, or tested in this work (has original experimental data). "
             "'Reference' = only cited from other papers for comparison (no original data). "
+            "Use 'Reference' only when the current paper reports specimen-resolved comparison rows/values/caption data "
+            "for that benchmark material. Named cast/baseline/benchmark alloys appearing in a current-paper "
+            "comparison table, figure, caption, or legend should still be emitted as standalone Reference entries. "
+            "Generic literature discussion, broad landscape plots, review-style alloy lists, umbrella labels "
+            "such as 'various AM alloys', or narrative 'better than X/Y/Z' claims should not become standalone "
+            "Reference entries. If the retained comparison set explicitly includes state-paired benchmarks or "
+            "directly characterized upstream endpoints, keep those exact labels as items rather than collapsing or "
+            "dropping them. "
             "Default to 'Target' if unclear."
         )
     )
@@ -479,6 +636,8 @@ class CompositionProperties(BaseModel):
         description=(
             "Nominal bulk composition by element when available. Preferred form is a flat "
             "element->number map such as {'Ti': 88.9, 'Al': 6.4}. "
+            "Design / target / supplier values belong here. "
+            "If a named element is marked Bal./balance, compute and store that element explicitly instead of using 'other'. "
             "Never encode graded steps as nested percentage keys; emit separate compositions instead. "
             "Use null if not provided."
         ),
@@ -496,6 +655,7 @@ class CompositionProperties(BaseModel):
         default=None,
         description=(
             "Measured composition by element (e.g., EDS/EPMA) when available. "
+            "Use this for ICP-OES/EDS/EPMA/SEM-EDS measured tables rather than nominal design formulas. "
             "Preferred form is a flat element->number map. "
             "Never encode graded steps as nested percentage keys; emit separate compositions instead. "
             "Use null if not provided."
@@ -522,7 +682,7 @@ class CompositionProperties(BaseModel):
         default=None,
         description=(
             "Top-level composition note for special annotations such as ranges, upper-limit impurities, "
-            "or other composition caveats. Use null if not needed."
+            "balance handling, or other composition caveats. Use null if not needed."
         ),
     )
     
@@ -539,7 +699,9 @@ class CompositionProperties(BaseModel):
         description=(
             "Primary crystal structure identified from XRD, EBSD, or similar characterization. "
             "Use matrix-phase labels such as Gamma matrix, BCC, FCC, HCP, or amorphous. "
-            "Do not use Laves, carbides, or gamma-prime as the main phase. "
+            "Combined matrix labels such as 'FCC + BCC' or 'FCC + L12' are allowed when the paper explicitly "
+            "describes a dual-phase or multi-phase matrix. "
+            "Do not use isolated Laves, carbides, or gamma-prime precipitates as the main phase. "
             "Use null if not mentioned."
         )
     )
@@ -599,6 +761,18 @@ class CompositionProperties(BaseModel):
             "Use null if not reported."
         ),
     )
+
+    advanced_quantitative_features: Optional[Dict[str, Any]] = Field(
+        default=None,
+        description=(
+            "Free-form quantified microstructure metrics not covered by the root scalar fields. "
+            "Use explicit dynamic keys such as 'Cell_Size_avg_um', 'KAM_Value_deg', "
+            "'Equiaxed_Grain_Size_avg_um', or 'Dislocation_Density_m2'. "
+            "Keep separate sub-populations separate instead of averaging them into one scalar. "
+            "Store only quantitative values, ranges, or numerically anchored metrics here; "
+            "do not store technique headings or narrative method descriptions such as SEM/TEM/XRD/EBSD summaries."
+        ),
+    )
     
     processing_conditions: str = Field(
         default="not provided",
@@ -619,6 +793,7 @@ class CompositionProperties(BaseModel):
             "Layer_Thickness_um (float), Hatch_Spacing_um (float), "
             "Build_Plate_Temperature_K (float), Protective_Atmosphere (str, e.g. 'Argon'), "
             "Volumetric_Energy_Density_J_mm3 (float/range), Oxygen_Content_ppm (float), "
+            "Beam_Current_mA (float), Acceleration_Voltage_kV (float), "
             "Build_Orientation (str, e.g. 'Parallel-BD'). "
             "For heat-treatment ranges, preserve strings such as '1273-1373' or '2-4' instead of averaging. "
             "Include ONLY parameters with explicit values in the paper. "
@@ -649,14 +824,16 @@ class CompositionProperties(BaseModel):
     process_category: Optional[str] = Field(
         default=None,
         description=(
-            "Manufacturing process category. Use one of: "
-            "AM_DED, AM_LPBF, AM_SLM, SPS, Arc_Melting, HeatTreat, Casting, or Unknown. "
-            "AM_DED: Directed Energy Deposition / LENS. "
-            "AM_LPBF: Laser Powder Bed Fusion. "
-            "AM_SLM: Selective Laser Melting. "
-            "SPS: Spark Plasma Sintering. "
-            "HeatTreat: Heat treatment, annealing, aging. "
-            "Casting: Arc melting, melt spinning, casting."
+            "Base manufacturing process category. Prefer the base route rather than only the latest post-treatment. "
+            "Supported values include: AM_DED, AM_LPBF, AM_SLM, WAAM, EBM, Powder_Metallurgy, "
+            "Wrought, SPS, Arc_Melting, HeatTreat, Casting, Forging, Rolling, Mechanical_Alloying, or Unknown. "
+            "AM_DED covers DED/LENS/LAAM/laser cladding style deposition routes. "
+            "EBM covers electron beam melting / PBF-EB / electron beam powder bed fusion. "
+            "Powder_Metallurgy covers consolidated PM/HIP/extrusion/isothermal-forging routes only. "
+            "Do not label a final LPBF/DED/EBM specimen as Powder_Metallurgy just because the paper also describes "
+            "powder production, powder characterization, or feedstock preparation. "
+            "Likewise, do not create a separate Powder_Metallurgy/feedstock item unless the powder or upstream state "
+            "is explicitly characterized or tabulated as its own specimen in the paper."
         )
     )
 
@@ -707,13 +884,52 @@ class CompositionProperties(BaseModel):
             "Characterisation techniques and their findings keyed by technique names. "
             "Use structured keys: 'XRD', 'Microstructure', 'EBSD', 'TEM', 'SEM', 'APT', etc. "
             "'XRD' should contain phase identification and instrument details. "
-            "'Microstructure' should contain grain morphology and distribution descriptions."
+            "'Microstructure' should contain grain morphology and distribution descriptions. "
+            "Do not use this field as the primary storage location for advanced quantitative metrics; "
+            "use advanced_quantitative_features for those."
         )
     )
     properties_of_composition: List[Property] = Field(
         default_factory=list,
-        description="List of standard properties extracted for this composition."
+        description=(
+            "List of properties extracted for this specimen. Multiple test temperatures, creep stresses, "
+            "exposure times, and loading conditions for the same specimen should stay in this list rather than "
+            "triggering new composition entries."
+        )
     )
+
+    @model_validator(mode="before")
+    @classmethod
+    def repair_structured_microstructure_scalars(cls, data: Any) -> Any:
+        if not isinstance(data, dict):
+            return data
+
+        repaired = dict(data)
+        aqf = _normalize_feature_map(repaired.get("advanced_quantitative_features")) or {}
+        moved_any = False
+        structured_fields = (
+            "grain_size_avg_um",
+            "precipitate_size_avg_nm",
+            "precipitate_volume_fraction_pct",
+            "phase_fraction_pct",
+            "porosity_pct",
+            "relative_density_pct",
+        )
+
+        for field_name in structured_fields:
+            value = repaired.get(field_name)
+            if not isinstance(value, dict):
+                continue
+            for child_key, child_value in value.items():
+                if child_value is None:
+                    continue
+                aqf[_structured_micro_key(field_name, child_key)] = child_value
+            repaired[field_name] = None
+            moved_any = True
+
+        if moved_any:
+            repaired["advanced_quantitative_features"] = aqf or None
+        return repaired
 
     @model_validator(mode="after")
     def fill_composition_from_normalized(self) -> "CompositionProperties":
@@ -722,12 +938,26 @@ class CompositionProperties(BaseModel):
         if not self.composition and self.composition_normalized:
             updates["composition"] = self.composition_normalized
 
-        nominal = _normalize_composition_map(self.nominal_composition)
-        measured = _normalize_composition_map(self.measured_composition)
+        balance_element = _infer_balance_element_from_context(
+            self.alloy_name_raw,
+            self.composition_normalized,
+            self.composition,
+        )
+        nominal = _repair_large_other_bucket(
+            _normalize_composition_map(self.nominal_composition),
+            balance_element,
+        )
+        measured = _repair_large_other_bucket(
+            _normalize_composition_map(self.measured_composition),
+            balance_element,
+        )
+        advanced_features = _normalize_feature_map(self.advanced_quantitative_features)
         if nominal != self.nominal_composition:
             updates["nominal_composition"] = nominal
         if measured != self.measured_composition:
             updates["measured_composition"] = measured
+        if advanced_features != self.advanced_quantitative_features:
+            updates["advanced_quantitative_features"] = advanced_features
 
         if updates:
             return self.model_copy(update=updates)

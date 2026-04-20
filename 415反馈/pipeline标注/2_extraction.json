@@ -1,0 +1,240 @@
+{
+  "Paper_Metadata": {
+    "Paper_Title": "Engineering on the grain boundaries (GBs) of metal is aiming for reducing susceptibility to hydrogen embrit-",
+    "DOI": "10.1016/j.mtcomm.2025.111997"
+  },
+  "items": [
+    {
+      "Sample_ID": "GB-Fe-512configs",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "alpha-iron (BCC)",
+        "Nominal_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Fe": 100.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Pure alpha-iron grain boundary model with 10 hydrogen atoms randomly placed as probe for diffusion calculation; 512 distinct grain boundary configurations generated via SO(3) Monte-Carlo sampling"
+      },
+      "Process_Info": {
+        "Process_Category": "AM_LPBF",
+        "Process_Text": {
+          "original": "Molecular dynamics simulation with annealing process: heating from 333K to 1000K in 0.2 ns, equilibration at 1000K for 0.5 ns, cooling from 1000K to 333K in 0.2 ns, equilibration at 333K for 0.1 ns, followed by 10-ns diffusion simulation in NVT ensemble at 333K. NPT ensemble with 0 pressure used during annealing. Force field: EAM potential. Hydrogen atoms randomly placed in simulation box.",
+          "simplified": "MD simulation of alpha-iron grain boundaries with annealing and NVT diffusion steps at 333K; EAM force field; 10 hydrogen atoms as probe"
+        },
+        "Equipment": "LAMMPS (simulation); OVITO (visualization)",
+        "Key_Params": {
+          "Temperature_Heating_K": "333-1000",
+          "Annealing_Time_ns": 0.2,
+          "Equilibration_Time_ns": 0.5,
+          "Cooling_Time_ns": 0.2,
+          "Diffusion_Simulation_Time_ns": 10.0,
+          "Timestep_fs": 1.0,
+          "Simulation_Temperature_K": 333.0,
+          "Box_Size_nm": 2.8,
+          "Grain_Boundary_Gap_nm": 0.1,
+          "Hydrogen_Atoms_Count": 10,
+          "MSD_Collection_Step": 100,
+          "Ensemble": "NPT (annealing), NVT (diffusion)",
+          "Force_Field": "EAM",
+          "Software": "LAMMPS",
+          "Visualization": "OVITO"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Grain boundary structures generated via Monte-Carlo sampling from SO(3) group with axis-angle representation. Upper and bottom BCC iron grains with different orientations form interface with ~0.1 nm gap. Non-BCC atoms exist near grain boundaries and act as hydrogen traps. Systems annealed to reach equilibrated state.",
+          "simplified": "Simulated grain boundaries in alpha-iron; disordered/non-BCC atoms at interfaces act as hydrogen traps; 512 distinct GB configurations studied"
+        },
+        "Main_Phase": "BCC (alpha-iron)",
+        "Precipitates": [],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {}
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Hydrogen_Diffusion_Coefficient_in_Bulk_BCC_Iron",
+          "Test_Condition": "at 333 K; pure BCC structure of alpha-iron; EAM force field validation",
+          "Value_Numeric": 12.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "10^-5 cm²/s",
+          "Test_Temperature_K": 333.0,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": null,
+          "Test_Specimen": "Pure bulk BCC alpha-iron",
+          "Note": "Bulk diffusion coefficient for reference; GB diffusion is ~1% of this value"
+        },
+        {
+          "Property_Name": "Hydrogen_Diffusion_Coefficient_in_Grain_Boundaries_Highest",
+          "Test_Condition": "at 333 K; NVT ensemble; 10-ns simulation; 10 hydrogen atoms as probe; MSD calculated every 100 steps",
+          "Value_Numeric": 7.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "10^-5 cm²/s",
+          "Test_Temperature_K": 333.0,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": null,
+          "Test_Specimen": "Grain boundary configuration approaching bulk-like BCC structure",
+          "Note": "Highest diffusion coefficient in 512 GB structures; close to bulk BCC iron diffusion"
+        },
+        {
+          "Property_Name": "Hydrogen_Diffusion_Coefficient_in_Grain_Boundaries_Lowest",
+          "Test_Condition": "at 333 K; NVT ensemble; 10-ns simulation; 10 hydrogen atoms as probe; MSD calculated every 100 steps",
+          "Value_Numeric": 0.015,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "10^-5 cm²/s",
+          "Test_Temperature_K": 333.0,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": null,
+          "Test_Specimen": "Grain boundary configuration with >40% non-BCC atoms",
+          "Note": "Lowest diffusion coefficient in 512 GB structures; ~0.1% of bulk BCC diffusion"
+        },
+        {
+          "Property_Name": "Hydrogen_Diffusion_Coefficient_in_Grain_Boundaries_Most_Common",
+          "Test_Condition": "at 333 K; NVT ensemble; 10-ns simulation; 10 hydrogen atoms as probe; MSD calculated every 100 steps",
+          "Value_Numeric": 0.12,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "10^-5 cm²/s",
+          "Test_Temperature_K": 333.0,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": null,
+          "Test_Specimen": "Most common grain boundary configuration with ~10% non-BCC atoms",
+          "Note": "Most common diffusion coefficient in 512 GB structures; ~1% of bulk BCC diffusion"
+        },
+        {
+          "Property_Name": "Machine_Learning_Training_Loss",
+          "Test_Condition": "MSE loss after 512 epochs training",
+          "Value_Numeric": 0.06,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "SchNet neural network",
+          "Note": "Final training loss"
+        },
+        {
+          "Property_Name": "Machine_Learning_Validation_Loss",
+          "Test_Condition": "MSE loss after 512 epochs validation",
+          "Value_Numeric": 0.09,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "SchNet neural network",
+          "Note": "Final validation loss"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "BCC-Fe-bulk",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Reference",
+        "Alloy_Name_Raw": "bulk alpha-iron (BCC)",
+        "Nominal_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Fe": 100.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Pure bulk BCC alpha-iron for hydrogen diffusion validation; experimental reference data"
+      },
+      "Process_Info": {
+        "Process_Category": "Unknown",
+        "Process_Text": {
+          "original": "Pure bulk BCC alpha-iron structure for MD validation. Hydrogen diffusion calculated at 333K, 500K, 666K, and 999K. Results compared with experimental data.",
+          "simplified": "Bulk BCC iron for hydrogen diffusion validation; tested at multiple temperatures"
+        },
+        "Equipment": "LAMMPS",
+        "Key_Params": {
+          "Simulation_Temperatures_K": [
+            333,
+            500,
+            666,
+            999
+          ],
+          "Test_Temperatures_for_Validation": true,
+          "Software": "LAMMPS",
+          "Force_Field": "EAM"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Pure BCC crystal structure of alpha-iron without grain boundaries. Used as baseline for hydrogen diffusion comparison.",
+          "simplified": "Pure bulk BCC alpha-iron structure without grain boundaries"
+        },
+        "Main_Phase": "BCC (alpha-iron)",
+        "Precipitates": [],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {}
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Hydrogen_Diffusion_Coefficient_Simulation_at_333K",
+          "Test_Condition": "at 333 K; MD simulation with EAM force field; 3 runs with different random seeds",
+          "Value_Numeric": 12.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "10^-5 cm²/s",
+          "Test_Temperature_K": 333.0,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": null,
+          "Test_Specimen": "Pure bulk BCC alpha-iron",
+          "Note": "Working temperature of natural gas pipes; accepted agreement with experiment"
+        }
+      ]
+    }
+  ]
+}

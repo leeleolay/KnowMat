@@ -1,0 +1,1331 @@
+{
+  "Paper_Metadata": {
+    "Paper_Title": "Powder recycling for electron beam powder bed fusion of TiAl alloy☆",
+    "DOI": "10.1016/j.matdes.2025.114473"
+  },
+  "items": [
+    {
+      "Sample_ID": "R0",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Ti-48Al-2Cr-2Nb",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ti": 48.0,
+            "Al": 48.0,
+            "Cr": 2.0,
+            "Nb": 2.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Al": 48.43,
+            "O": 0.056,
+            "Ti": 51.514
+          },
+          "Measurement_Method": "titration and OH-300 oxygen analyzer"
+        },
+        "Note": "Virgin EIGA powder; O content 560 ppm; Al ± 0.12 at.%"
+      },
+      "Process_Info": {
+        "Process_Category": "Unknown",
+        "Process_Text": {
+          "original": "Ti-48Al-2Cr-2Nb powders produced by EIGA with particle size ranging from 53-150 μm; Qbeam S200 EB-PBF equipment; accelerating voltage 60 kV; substrate preheating temperature 1070°C; powder bed preheating temperature 900-1150°C; building temperature 900-1100°C; layer thickness 50 μm; hatching melting strategy with scanning speeds 1.8-2.3 m/s; mean beam current 5.40-8.60 mA; line offset 0.1 mm; EA 1.80-2.24 J/mm²; approximately 20 h per furnace building cycle",
+          "simplified": "EIGA Ti-48Al-2Cr-2Nb powder (53-150 μm); Qbeam S200 EB-PBF; 60 kV; 50 μm layer; powder bed 900-1150°C; hatching strategy"
+        },
+        "Equipment": "Qbeam S200, Beijing Quick Beam Technology Co.",
+        "Key_Params": {
+          "Beam_Current_mA": [
+            5.4,
+            7.35,
+            8.6
+          ],
+          "Acceleration_Voltage_kV": 60,
+          "Layer_Thickness_um": 50,
+          "Build_Plate_Temperature_K": 1343.15,
+          "Powder_Bed_Temperature_K": "1173.15-1423.15",
+          "Building_Temperature_K": "1173.15-1373.15",
+          "Scanning_Speed_m_s": [
+            1.8,
+            2.1,
+            2.3
+          ],
+          "Line_Offset_mm": 0.1,
+          "Energy_Area_J_mm2": [
+            1.8,
+            1.94,
+            2.24
+          ],
+          "Furnace_Time_h": 20,
+          "Powder_Size_um": "53-150",
+          "Protective_Atmosphere": "High vacuum",
+          "Equipment": "Qbeam S200, Beijing Quick Beam Technology Co."
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Initial powder particles exhibited dendritic microstructure with dark S-segregation enriched in Al and bright β segregation enriched in Ti and Cr; high sphericity with hollow and satellite particles as primary defects; surface oxide film composed of mixed TiO₂/Al₂O₃ (53.98%:46.02%)",
+          "simplified": "Dendritic microstructure with S-segregation and β segregation; mixed oxide surface layer"
+        },
+        "Main_Phase": "gamma + alpha/alpha2",
+        "Precipitates": [],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "XRD": "γ and α/α₂ phases; disordered phases",
+          "SEM": "Dendritic microstructure with segregation",
+          "XPS": "Surface oxides TiO₂ 53.98%, Al₂O₃ 46.02%",
+          "TEM": "Homogeneous alpha-phase structures in virgin powders",
+          "Oxygen_Content_ppm": 560,
+          "Al_Content_atpct": 48.43,
+          "Oxide_Surface_TiO2_pct": 53.98,
+          "Oxide_Surface_Al2O3_pct": 46.02,
+          "Morphology": "high sphericity with hollow and satellite particles"
+        }
+      },
+      "Properties_Info": []
+    },
+    {
+      "Sample_ID": "R1",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Ti-48Al-2Cr-2Nb",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ti": 48.0,
+            "Al": 48.0,
+            "Cr": 2.0,
+            "Nb": 2.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Al": 48.47,
+            "O": 0.058,
+            "Ti": 51.472
+          },
+          "Measurement_Method": "titration and OH-300 oxygen analyzer"
+        },
+        "Note": "First recycled powder (1 cycle); O content 580 ppm; Al ± 0.2 at.%"
+      },
+      "Process_Info": {
+        "Process_Category": "Unknown",
+        "Process_Text": {
+          "original": "First recycled powder after 1 EB-PBF building cycle; same EIGA Ti-48Al-2Cr-2Nb powder; powder recovery system processing, sieving, mixing, and reloading; tilting mixer 30 r/min for 30-45 min under inert gas atmosphere",
+          "simplified": "First recycled powder (1 cycle); standard PRS recovery and mixing"
+        },
+        "Equipment": "Qbeam S200, Beijing Quick Beam Technology Co.",
+        "Key_Params": {
+          "Recycling_Cycles": 1,
+          "Mixing_Speed_rpm": 30,
+          "Mixing_Time_min": "30-45",
+          "Protective_Atmosphere": "Inert gas"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "α/α₂-phase gradually decreased with increasing recycling; interdendritic γ-region expanded; small amount of irregular particles observed",
+          "simplified": "α/α₂ phase decreasing; γ region expanding; few irregular particles"
+        },
+        "Main_Phase": "gamma + alpha/alpha2",
+        "Precipitates": [],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "XRD": "α/α₂ phase decreasing, γ expanding",
+          "SEM": "Irregular particles appearing",
+          "Oxygen_Content_ppm": 580,
+          "Al_Content_atpct": 48.47,
+          "Morphology": "small amount of irregular particles observed"
+        }
+      },
+      "Properties_Info": []
+    },
+    {
+      "Sample_ID": "R5",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Ti-48Al-2Cr-2Nb",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ti": 48.0,
+            "Al": 48.0,
+            "Cr": 2.0,
+            "Nb": 2.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Al": 48.32,
+            "O": 0.066,
+            "Ti": 51.614
+          },
+          "Measurement_Method": "titration and OH-300 oxygen analyzer"
+        },
+        "Note": "5 recycling cycles; O content 660 ppm; Al ± 0.2 at.%; minimal Al loss (<0.5 at.%)"
+      },
+      "Process_Info": {
+        "Process_Category": "Unknown",
+        "Process_Text": {
+          "original": "After 5 EB-PBF building cycles; same EIGA Ti-48Al-2Cr-2Nb powder; powder recovery system processing, sieving, mixing, and reloading after each cycle; total thermal exposure time approximately 100 h",
+          "simplified": "5 recycled powder (100 h thermal exposure); PRS recovery and mixing"
+        },
+        "Equipment": "Qbeam S200, Beijing Quick Beam Technology Co.",
+        "Key_Params": {
+          "Recycling_Cycles": 5,
+          "Thermal_Exposure_h": 100,
+          "Mixing_Speed_rpm": 30,
+          "Mixing_Time_min": "30-45",
+          "Protective_Atmosphere": "Inert gas"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "α/α₂-phase gradually decreased; interdendritic γ-region continued to expand; small amount of irregular particles observed; particle size distribution narrowed, improving uniformity; enhanced flowability and apparent density",
+          "simplified": "α/α₂ decreasing, γ increasing; narrow PSD; improved flowability"
+        },
+        "Main_Phase": "gamma + alpha/alpha2",
+        "Precipitates": [],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "XRD": "α/α₂ decreasing, γ increasing",
+          "SEM": "Irregular particles present",
+          "Oxygen_Content_ppm": 660,
+          "Al_Content_atpct": 48.32,
+          "Morphology": "small amount of irregular particles",
+          "Particle_Size_Distribution": "narrowed after first cycle, improved uniformity"
+        }
+      },
+      "Properties_Info": []
+    },
+    {
+      "Sample_ID": "R10",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Ti-48Al-2Cr-2Nb",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ti": 48.0,
+            "Al": 48.0,
+            "Cr": 2.0,
+            "Nb": 2.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "10 recycling cycles; particle size distribution continued to narrow with 50-100 μm particles predominant; >30% of powders unirradiated by EB (minimizing Al loss)"
+      },
+      "Process_Info": {
+        "Process_Category": "Unknown",
+        "Process_Text": {
+          "original": "After 10 EB-PBF building cycles; same EIGA Ti-48Al-2Cr-2Nb powder; powder recovery system processing; total thermal exposure approximately 200 h; >30% of powders still unirradiated",
+          "simplified": "10 recycled powder (200 h thermal exposure); most powders now EB-irradiated"
+        },
+        "Equipment": "Qbeam S200, Beijing Quick Beam Technology Co.",
+        "Key_Params": {
+          "Recycling_Cycles": 10,
+          "Thermal_Exposure_h": 200,
+          "Mixing_Speed_rpm": 30,
+          "Mixing_Time_min": "30-45"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Particle size distribution narrowed; 50-100 μm particles predominant; increased irregular particles; flowability enhanced; apparent density elevated through removal of large irregular particles",
+          "simplified": "Narrowed PSD; 50-100 μm dominant; irregular particles increased"
+        },
+        "Main_Phase": "gamma",
+        "Precipitates": [],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "XRD": "γ phase increasing",
+          "Morphology": "increased irregular particles compared to R5",
+          "Particle_Size_Distribution": "50-100 μm particles predominant"
+        }
+      },
+      "Properties_Info": []
+    },
+    {
+      "Sample_ID": "R15",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Ti-48Al-2Cr-2Nb",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ti": 48.0,
+            "Al": 48.0,
+            "Cr": 2.0,
+            "Nb": 2.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Al": 47.24,
+            "O": 0.089,
+            "Ti": 52.671
+          },
+          "Measurement_Method": "titration and OH-300 oxygen analyzer"
+        },
+        "Note": "15 recycling cycles; O content 890 ppm (22 ppm/cycle uptake); Al ± 0.1 at.%; >93% of powders now EB-irradiated"
+      },
+      "Process_Info": {
+        "Process_Category": "Unknown",
+        "Process_Text": {
+          "original": "After 15 EB-PBF building cycles; same EIGA Ti-48Al-2Cr-2Nb powder; powder recovery system processing; total thermal exposure approximately 300 h; >93% of powders EB-irradiated; two distinct types of irregular particles emerged: fused satellite particles and partially surface melted particles",
+          "simplified": "15 recycled powder (300 h thermal exposure); >93% EB-irradiated; C14 Laves phase (10-20 nm) precipitation beginning"
+        },
+        "Equipment": "Qbeam S200, Beijing Quick Beam Technology Co.",
+        "Key_Params": {
+          "Recycling_Cycles": 15,
+          "Thermal_Exposure_h": 300,
+          "Oxygen_Uptake_ppm_cycle": 22
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "α/α₂-phase continued to decrease; interdendritic γ-region expanded; two distinct types of irregular particles emerged: fused satellite particles adhering to larger counterparts and particles with partial surface melting traces without complete fusion; Cr-Ti Laves phases (10-20 nm) identified by TEM at oxide/matrix interfaces; Cr enrichment at oxide/matrix interfaces; progressive γ-phase coarsening beginning; surface oxide beginning transition from mixed TiO₂/Al₂O₃ to Al₂O₃-dominated",
+          "simplified": "γ phase dominant; α/α₂ decreasing; C14 Laves (10-20 nm) at boundaries; Cr enrichment at interfaces; oxide transition beginning"
+        },
+        "Main_Phase": "gamma",
+        "Precipitates": [
+          {
+            "Phase_Type": "C14 Laves phase",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": 15.0,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "XRD": "γ dominant, α/α₂ decreasing",
+          "TEM": "Cr-Ti Laves 10-20 nm; Cr enrichment at interfaces",
+          "XPS": "Surface oxide beginning Al₂O₃ enrichment",
+          "Oxygen_Content_ppm": 890,
+          "Al_Content_atpct": 47.24,
+          "Morphology": "two distinct types of irregular particles: fused satellite particles and partially melted particles",
+          "EB_Irradiated_Powder_pct": 93
+        }
+      },
+      "Properties_Info": []
+    },
+    {
+      "Sample_ID": "R30",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Ti-48Al-2Cr-2Nb",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ti": 48.0,
+            "Al": 48.0,
+            "Cr": 2.0,
+            "Nb": 2.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Al": 46.81,
+            "O": 0.12,
+            "Ti": 53.07
+          },
+          "Measurement_Method": "titration and OH-300 oxygen analyzer"
+        },
+        "Note": "30 recycling cycles; O content 1200 ppm (accelerated to 27.33 ppm/cycle in 15-30 cycles); Al ± 0.7 at.%; significant 1.62-2 at.% Al loss; powder predominantly γ-phase; S-segregation disappeared; block-like α₂ morphology appeared"
+      },
+      "Process_Info": {
+        "Process_Category": "Unknown",
+        "Process_Text": {
+          "original": "After 30 EB-PBF building cycles; same EIGA Ti-48Al-2Cr-2Nb powder; powder recovery system processing; total thermal exposure approximately 600 h; >99.6% of powders EB-irradiated at least once; rod-shaped particles dominated irregular particles; powder lost dendritic structure showing dispersed Cr-enriched bright spots; Ti/O-rich regions at particle edges",
+          "simplified": "30 recycled powder (600 h thermal exposure); >99.6% EB-irradiated; γ dominant; α₂ block-like morphology; Laves phase at edges"
+        },
+        "Equipment": "Qbeam S200, Beijing Quick Beam Technology Co.",
+        "Key_Params": {
+          "Recycling_Cycles": 30,
+          "Thermal_Exposure_h": 600,
+          "Oxygen_Uptake_ppm_cycle": 27.33,
+          "Al_Loss_atpct": "1.62-2"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Powder predominantly composed of γ-phase; S-segregation disappeared due to high diffusion rate of Al at 900-1150°C; bright dendritic structure caused by β segregation transformed into block-like α₂ morphology; powder particles containing aggregated bright spots enriched with Cr, decreased Ti and Al; Ti/O-rich regions at particle edges despite lacking continuous oxide films; distinct oxide layers with Cr enrichment at oxide/matrix interfaces; progressive γ-phase coarsening; surface oxide continued transition to Al₂O₃-dominated",
+          "simplified": "γ dominant; α₂ block-like; Cr-rich bright spots; oxide layers; Al₂O₃ enrichment continuing"
+        },
+        "Main_Phase": "gamma",
+        "Precipitates": [
+          {
+            "Phase_Type": "C14 Laves phase",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "alpha2",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "XRD": "γ predominant",
+          "TEM": "Ti/O-rich regions at edges; oxide layers; Cr enrichment",
+          "BSE": "Block-like α₂; Cr-enriched spots",
+          "Oxygen_Content_ppm": 1200,
+          "Al_Content_atpct": 46.81,
+          "Al_Loss_atpct": 1.62,
+          "Morphology": "rod-shaped particles dominated irregular particles; distinct oxide layers with Cr enrichment at oxide/matrix interfaces",
+          "EB_Irradiated_Powder_pct": 99.6
+        }
+      },
+      "Properties_Info": []
+    },
+    {
+      "Sample_ID": "R30b",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Ti-48Al-2Cr-2Nb",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ti": 48.0,
+            "Al": 48.0,
+            "Cr": 2.0,
+            "Nb": 2.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Al": 47.86,
+            "O": 0.086,
+            "Ti": 52.054
+          },
+          "Measurement_Method": "titration and OH-300 oxygen analyzer"
+        },
+        "Note": "30 cycles + 10 kg fresh powder addition (R30b); O content 860 ppm (reduced from 1200); Al ± 0.5 at.%; new powder ~30.3% of mixture after remixing; broadening of particle size distribution due to fresh powder addition"
+      },
+      "Process_Info": {
+        "Process_Category": "Unknown",
+        "Process_Text": {
+          "original": "After 30 cycles, 10 kg of new powders mixed (from original batch); post-mixing new powders comprised approximately 30.3% of mixture; tilting mixer 30 r/min for 30-45 min under inert gas atmosphere; broadening of particle size distribution",
+          "simplified": "30 cycles + 30.3% fresh powder addition; mixed powder; broadened PSD"
+        },
+        "Equipment": "Qbeam S200, Beijing Quick Beam Technology Co.",
+        "Key_Params": {
+          "Recycling_Cycles": "30+fresh addition",
+          "Fresh_Powder_kg": 10,
+          "Fresh_Powder_pct": 30.3,
+          "Mixing_Speed_rpm": 30,
+          "Mixing_Time_min": "30-45"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "After adding fresh powders, three structures observed: some powder particles lost dendritic structure completely showing dispersed bright spots enriched with Cr with decreased Ti and Al content; particle size distribution broadened due to fresh powder introducing fines (<50 μm) and coarse particles (>100 μm)",
+          "simplified": "Mixed microstructure; fresh and aged powder blend; broadened PSD"
+        },
+        "Main_Phase": "gamma",
+        "Precipitates": [],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "XRD": "Mixed phase composition",
+          "Oxygen_Content_ppm": 860,
+          "Al_Content_atpct": 47.86,
+          "Fresh_Powder_pct": 30.3,
+          "Morphology": "broadened PSD from fresh powder addition; some particles lost dendritic structure with dispersed Cr-enriched bright spots"
+        }
+      },
+      "Properties_Info": []
+    },
+    {
+      "Sample_ID": "R45",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Ti-48Al-2Cr-2Nb",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ti": 48.0,
+            "Al": 48.0,
+            "Cr": 2.0,
+            "Nb": 2.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Al": 47.12,
+            "O": 0.13,
+            "Ti": 52.75
+          },
+          "Measurement_Method": "titration and OH-300 oxygen analyzer"
+        },
+        "Note": "45 recycling cycles; O content 1300 ppm; Al ± 0.6 at.%; fresh powder only 2.4% of mixture; irregular powder >30%; semi-molten agglomerates with elongated structures"
+      },
+      "Process_Info": {
+        "Process_Category": "Unknown",
+        "Process_Text": {
+          "original": "After 45 EB-PBF building cycles following R30b mixing; total thermal exposure approximately 900 h; fresh powder only 2.4% of mixture; >97% of powders EB-irradiated; semi-molten agglomerates with elongated structures that evaded sieving; irregular powder proportion >30%",
+          "simplified": "45 recycled powder (900 h thermal exposure); 2.4% fresh powder; >30% irregular particles; semi-molten agglomerates"
+        },
+        "Equipment": "Qbeam S200, Beijing Quick Beam Technology Co.",
+        "Key_Params": {
+          "Recycling_Cycles": 45,
+          "Thermal_Exposure_h": 900,
+          "Fresh_Powder_pct": 2.4,
+          "Irregular_Powder_pct": 30
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Irregularly shaped particles increased; powder particles containing aggregated bright spots; semi-molten agglomerates with elongated structures evading sieving; particle size distribution broadened due to elongated agglomerates (53-150 μm) and adhered fines (<50 μm) coexisting; Laves phase formation continuing",
+          "simplified": "Increased irregular particles; elongated agglomerates; broadened PSD; Laves phase continuing"
+        },
+        "Main_Phase": "gamma",
+        "Precipitates": [
+          {
+            "Phase_Type": "C14 Laves phase",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "XRD": "Continued phase evolution; Laves increasing",
+          "Oxygen_Content_ppm": 1300,
+          "Al_Content_atpct": 47.12,
+          "Fresh_Powder_pct": 2.4,
+          "Morphology": "semi-molten agglomerates with elongated structures; irregular powder >30%; elongated agglomerates evading sieving"
+        }
+      },
+      "Properties_Info": []
+    },
+    {
+      "Sample_ID": "R70",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Ti-48Al-2Cr-2Nb",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ti": 48.0,
+            "Al": 48.0,
+            "Cr": 2.0,
+            "Nb": 2.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Al": 46.31,
+            "O": 0.2,
+            "Ti": 53.49
+          },
+          "Measurement_Method": "titration and OH-300 oxygen analyzer"
+        },
+        "Note": "70 recycling cycles; O content 2000 ppm (28 ppm/cycle in 45-70 cycles); Al ± 3 at.% (extreme variation 42.12-49.52 at.%); fresh powder only 0.04%; heterogeneous irradiation and melting histories; Ti-Nb-Cr precipitates identified; surface oxide 82.11% Al₂O₃"
+      },
+      "Process_Info": {
+        "Process_Category": "Unknown",
+        "Process_Text": {
+          "original": "After 70 EB-PBF building cycles; total thermal exposure approximately 1400 h; fresh powder only 0.04% of mixture; extreme Al content variation (42.12-49.52 at.%) reflecting heterogeneous irradiation and melting histories; Ti-Nb-Cr precipitates (2-3 μm) in irregular powders; surface oxide transformed to 82.11% Al₂O₃-dominated; Cr enrichment at oxide/matrix interfaces",
+          "simplified": "70 recycled powder (1400 h thermal exposure); 0.04% fresh powder; Al₂O₃-dominated surface (82.11%); Ti-Nb-Cr precipitates; heterogeneous Al distribution"
+        },
+        "Equipment": "Qbeam S200, Beijing Quick Beam Technology Co.",
+        "Key_Params": {
+          "Recycling_Cycles": 70,
+          "Thermal_Exposure_h": 1400,
+          "Fresh_Powder_pct": 0.04,
+          "Oxygen_Uptake_ppm_cycle": 28,
+          "Irregular_Powder_pct": 30
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Irregularly shaped particles increased; powder particles containing aggregated bright spots (Ti, Cr, Nb enriched, Al depleted); Ti-Nb-Cr precipitates (2-3 μm) distributed around boundaries and within α₂ regions; microstructures of irregular powders non-uniform due to varying Al loss during melting; lamellar agglomerates (α₂+γ) in Al-poor areas; surface oxide transitioned from mixed TiO₂/Al₂O₃ (53.98%:46.02%) to Al₂O₃-dominated (82.11%); Ti³⁺/Cr³⁺ enrichment; oxide densification",
+          "simplified": "γ dominant; Ti-Nb-Cr precipitates 2-3 μm; Al₂O₃-dominated oxide (82.11%); heterogeneous microstructure from Al variation"
+        },
+        "Main_Phase": "gamma",
+        "Precipitates": [
+          {
+            "Phase_Type": "Ti-Nb-Cr precipitates",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "C14 Laves phase",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "XRD": "γ dominant; α/α₂ decreased; Al₂O₃ oxide 82.11%",
+          "TEM": "Ti-Nb-Cr precipitates 2-3 μm; Cr enrichment at interfaces",
+          "XPS": "Al₂O₃ 82.11%; Ti³⁺/Cr³⁺ enrichment; Al-O peak shifts",
+          "Oxygen_Content_ppm": 2000,
+          "Al_Content_atpct": 46.31,
+          "Al_Content_Range_atpct": "42.12-49.52",
+          "Fresh_Powder_pct": 0.04,
+          "Morphology": "semi-molten agglomerates with elongated structures; irregular powder >30%; heterogeneous Al content from uneven melting",
+          "Oxide_Surface_Al2O3_pct": 82.11,
+          "TiO2_Reduction_pct": "from 53.98% to selective oxidation"
+        }
+      },
+      "Properties_Info": []
+    },
+    {
+      "Sample_ID": "S0",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Ti-48Al-2Cr-2Nb",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ti": 48.0,
+            "Al": 48.0,
+            "Cr": 2.0,
+            "Nb": 2.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Al": 47.51,
+            "Cr": 2.12,
+            "Nb": 2.04,
+            "O": 0.068,
+            "Ti": 48.262
+          },
+          "Measurement_Method": "ICP-AES, titration, OH-300 oxygen analyzer"
+        },
+        "Note": "Thin-walled part from R0 (new) powder; γ-band structures with annealed twins; β₀/B₂ phase distributed near grain boundaries"
+      },
+      "Process_Info": {
+        "Process_Category": "Unknown",
+        "Process_Text": {
+          "original": "Thin-walled Ti-48Al-2Cr-2Nb parts fabricated using EB-PBF (Qbeam S200); built from R0 (new) powder; layer thickness 50 μm; powder bed temperature 900-1150°C; building temperature 900-1100°C; hatching melting strategy with multiple scanning parameters; tensile specimens machined to 12 mm gauge length, 2 mm width, 1 mm thickness",
+          "simplified": "EB-PBF thin-walled parts from virgin powder; 50 μm layer; 900-1100°C build temp"
+        },
+        "Equipment": "Qbeam S200, Beijing Quick Beam Technology Co.",
+        "Key_Params": {
+          "Beam_Current_mA": [
+            5.4,
+            7.35,
+            8.6
+          ],
+          "Acceleration_Voltage_kV": 60,
+          "Layer_Thickness_um": 50,
+          "Build_Plate_Temperature_K": 1343.15,
+          "Powder_Bed_Temperature_K": "1173.15-1423.15",
+          "Building_Temperature_K": "1173.15-1373.15",
+          "Scanning_Speed_m_s": [
+            1.8,
+            2.1,
+            2.3
+          ],
+          "Line_Offset_mm": 0.1,
+          "Energy_Area_J_mm2": [
+            1.8,
+            1.94,
+            2.24
+          ],
+          "Equipment": "Qbeam S200"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Equiaxed γ grains, fine lamellar colonies (α₂+γ), and dispersed bright spots (β₀/B₂) along lamellar colony boundaries; distinct γ bands with annealed twins; β₀/B₂ phase distributed near grain boundaries; sub-micron-sized β₀/B₂ precipitates between equiaxed γ grains and lamellar colonies; Ti-rich, Al-poor in lamellar colonies and γ grains; KAM max 4.97; LAGB 5.2%; γ [110] 70° twin boundaries 12.5%",
+          "simplified": "Equiaxed γ + lamellar α₂+γ colonies; β₀/B₂ at boundaries; γ bands with twins; grain size <10 μm; KAM 4.97"
+        },
+        "Main_Phase": "gamma + alpha2",
+        "Precipitates": [
+          {
+            "Phase_Type": "beta0/B2",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": 10.0,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "XRD": "γ and α₂ phases",
+          "EBSD": "γ bands with twins; β₀/B₂ near grain boundaries",
+          "BSE": "Equiaxed γ; lamellar colonies; β₀/B₂ spots",
+          "TEM": "β₀/B₂ precipitates; Ti-rich Al-poor regions",
+          "Al_Content_atpct": 47.51,
+          "Cr_Content_atpct": 2.12,
+          "Nb_Content_atpct": 2.04,
+          "O_Content_ppm": 680,
+          "Grain_Size_avg_um": 10,
+          "Twin_Boundary_gamma_110_70deg_pct": 12.5,
+          "LAGB_pct": 5.2,
+          "KAM_max": 4.97
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at RT (298.15 K); strain rate 1×10⁻⁴ s⁻¹",
+          "Value_Numeric": 716.0,
+          "Value_Range": "682-750",
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1e-4",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "12 mm gauge length, 2 mm width, 1 mm thickness",
+          "Note": "RT ultimate tensile strength; range from 682-750 MPa"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "S5",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Ti-48Al-2Cr-2Nb",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ti": 48.0,
+            "Al": 48.0,
+            "Cr": 2.0,
+            "Nb": 2.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Al": 47.67,
+            "Cr": 2.03,
+            "Nb": 2.04,
+            "O": 0.068,
+            "Ti": 48.192
+          },
+          "Measurement_Method": "ICP-AES, titration, OH-300 oxygen analyzer"
+        },
+        "Note": "Thin-walled part from R5 powder; γ-band structures with annealed twins; O content 680 ppm"
+      },
+      "Process_Info": {
+        "Process_Category": "Unknown",
+        "Process_Text": {
+          "original": "Thin-walled Ti-48Al-2Cr-2Nb parts fabricated using EB-PBF from R5 powder; layer thickness 50 μm; building temperature 900-1100°C; tensile specimens 12 mm gauge length, 2 mm width, 1 mm thickness",
+          "simplified": "EB-PBF thin-walled from R5 powder; 50 μm layer; 900-1100°C"
+        },
+        "Equipment": "Qbeam S200, Beijing Quick Beam Technology Co.",
+        "Key_Params": {
+          "Layer_Thickness_um": 50,
+          "Building_Temperature_K": "1173.15-1373.15",
+          "Equipment": "Qbeam S200"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Equiaxed γ grains, fine lamellar colonies (α₂+γ), and dispersed bright spots (β₀/B₂) along lamellar colony boundaries; distinct γ bands with annealed twins similar to S0",
+          "simplified": "Equiaxed γ + lamellar α₂+γ colonies; β₀/B₂ at boundaries; γ bands with twins"
+        },
+        "Main_Phase": "gamma + alpha2",
+        "Precipitates": [
+          {
+            "Phase_Type": "beta0/B2",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "XRD": "γ and α₂ phases",
+          "BSE": "Equiaxed γ; lamellar colonies; β₀/B₂ spots",
+          "EBSD": "γ bands with twins; similar to S0",
+          "Al_Content_atpct": 47.67,
+          "Cr_Content_atpct": 2.03,
+          "Nb_Content_atpct": 2.04,
+          "O_Content_ppm": 680
+        }
+      },
+      "Properties_Info": []
+    },
+    {
+      "Sample_ID": "S10",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Ti-48Al-2Cr-2Nb",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ti": 48.0,
+            "Al": 48.0,
+            "Cr": 2.0,
+            "Nb": 2.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Al": 47.56,
+            "Cr": 1.98,
+            "Nb": 2.04,
+            "O": 0.073,
+            "Ti": 48.347
+          },
+          "Measurement_Method": "ICP-AES, titration, OH-300 oxygen analyzer"
+        },
+        "Note": "Thin-walled part from R10 powder; γ-band structures with annealed twins; O content 730 ppm"
+      },
+      "Process_Info": {
+        "Process_Category": "Unknown",
+        "Process_Text": {
+          "original": "Thin-walled Ti-48Al-2Cr-2Nb parts from R10 powder; EB-PBF; layer thickness 50 μm; building temp 900-1100°C",
+          "simplified": "EB-PBF thin-walled from R10 powder"
+        },
+        "Equipment": "Qbeam S200, Beijing Quick Beam Technology Co.",
+        "Key_Params": {
+          "Layer_Thickness_um": 50,
+          "Building_Temperature_K": "1173.15-1373.15"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Equiaxed γ grains, fine lamellar colonies (α₂+γ), and dispersed bright spots (β₀/B₂) along lamellar colony boundaries; distinct γ bands with annealed twins",
+          "simplified": "Equiaxed γ + lamellar α₂+γ colonies; β₀/B₂ at boundaries; γ bands with twins"
+        },
+        "Main_Phase": "gamma + alpha2",
+        "Precipitates": [
+          {
+            "Phase_Type": "beta0/B2",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "XRD": "γ and α₂ phases",
+          "BSE": "Equiaxed γ; lamellar colonies; β₀/B₂ spots",
+          "Al_Content_atpct": 47.56,
+          "Cr_Content_atpct": 1.98,
+          "Nb_Content_atpct": 2.04,
+          "O_Content_ppm": 730
+        }
+      },
+      "Properties_Info": []
+    },
+    {
+      "Sample_ID": "S15",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Ti-48Al-2Cr-2Nb",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ti": 48.0,
+            "Al": 48.0,
+            "Cr": 2.0,
+            "Nb": 2.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Al": 46.95,
+            "Cr": 1.92,
+            "Nb": 2.06,
+            "O": 0.074,
+            "Ti": 48.996
+          },
+          "Measurement_Method": "ICP-AES, titration, OH-300 oxygen analyzer"
+        },
+        "Note": "Thin-walled part from R15 powder; pronounced γ bands absent; more pronounced lamellar clusters; O content 740 ppm; significant Al decrease to 46.95 at.%"
+      },
+      "Process_Info": {
+        "Process_Category": "Unknown",
+        "Process_Text": {
+          "original": "Thin-walled Ti-48Al-2Cr-2Nb parts from R15 powder; EB-PBF; layer thickness 50 μm; building temp 900-1100°C; tensile specimens 12 mm gauge length, 2 mm width, 1 mm thickness",
+          "simplified": "EB-PBF thin-walled from R15 powder"
+        },
+        "Equipment": "Qbeam S200, Beijing Quick Beam Technology Co.",
+        "Key_Params": {
+          "Layer_Thickness_um": 50,
+          "Building_Temperature_K": "1173.15-1373.15"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Equiaxed γ grains, fine lamellar colonies (α₂+γ), and increased dispersed bright spots (β₀/B₂) along lamellar colony boundaries and inside γ bulk; pronounced γ bands absent; more pronounced lamellar clusters; KAM max 4.99; LAGB 7.4%; C₁₅ Laves phase (Cr₁.₉₃Ti₁.₀₇) dispersed around lamellar colony boundaries and within α₂ regions; Ti and Cr enriched without significant Al and Nb enrichment in precipitates; grain size <10 μm with excellent uniformity",
+          "simplified": "Equiaxed γ + lamellar α₂+γ; increased β₀/B₂; C₁₅ Laves at boundaries; no γ bands; <10 μm grains"
+        },
+        "Main_Phase": "gamma + alpha2",
+        "Precipitates": [
+          {
+            "Phase_Type": "beta0/B2",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "C15 Laves phase",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": 10.0,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "XRD": "γ and α₂; β₀/B₂ appearing",
+          "EBSD": "No γ bands; more lamellar clusters; KAM 4.99; LAGB 7.4%",
+          "TEM": "C₁₅ Laves (Cr₁.₉₃Ti₁.₀₇); Ti/Cr enriched precipitates",
+          "BSE": "Increased bright spots; more lamellar clusters",
+          "Al_Content_atpct": 46.95,
+          "Cr_Content_atpct": 1.92,
+          "Nb_Content_atpct": 2.06,
+          "O_Content_ppm": 740,
+          "Beta0_B2_Phase_pct": "increasing",
+          "Grain_Size_avg_um": 10,
+          "Twin_Boundary_gamma_110_70deg_pct": "less than S0",
+          "LAGB_pct": 7.4,
+          "KAM_max": 4.99,
+          "Laves_Phase_pct": "1.2 vol% per 0.1 at.% Al loss"
+        }
+      },
+      "Properties_Info": []
+    },
+    {
+      "Sample_ID": "S30",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Ti-48Al-2Cr-2Nb",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ti": 48.0,
+            "Al": 48.0,
+            "Cr": 2.0,
+            "Nb": 2.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Al": 46.89,
+            "Cr": 2.02,
+            "Nb": 2.01,
+            "O": 0.086,
+            "Ti": 48.994
+          },
+          "Measurement_Method": "ICP-AES, titration, OH-300 oxygen analyzer"
+        },
+        "Note": "Thin-walled part from R30 powder; β₀/B₂ phase peaks prominent in XRD; O content 860 ± 10 ppm; Al ± 0.6 at.%"
+      },
+      "Process_Info": {
+        "Process_Category": "Unknown",
+        "Process_Text": {
+          "original": "Thin-walled Ti-48Al-2Cr-2Nb parts from R30 powder; EB-PBF; layer thickness 50 μm; building temp 900-1100°C; tensile specimens 12 mm gauge length, 2 mm width, 1 mm thickness",
+          "simplified": "EB-PBF thin-walled from R30 powder; increased Laves/β₀/B₂ phases"
+        },
+        "Equipment": "Qbeam S200, Beijing Quick Beam Technology Co.",
+        "Key_Params": {
+          "Layer_Thickness_um": 50,
+          "Building_Temperature_K": "1173.15-1373.15"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Equiaxed γ grains, fine lamellar colonies (α₂+γ), and increased dispersed bright spots (β₀/B₂) inside lamellar colonies and γ bulk; β₀/B₂ phase peaks prominent in XRD; γ bands barely visible; grain size <10 μm; β₀/B₂ phase content increasing",
+          "simplified": "γ + lamellar α₂+γ; prominent β₀/B₂ peaks; increased β₀/B₂ inside colonies; <10 μm grains"
+        },
+        "Main_Phase": "gamma + alpha2 + B2",
+        "Precipitates": [
+          {
+            "Phase_Type": "beta0/B2",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Laves phase",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "XRD": "γ, α₂, β₀/B₂ prominent; Laves present but low",
+          "EBSD": "Pronounced γ bands; β₀/B₂ near grain boundaries; increasing phase content",
+          "BSE": "Increased bright spots; β₀/B₂ inside colonies and γ bulk",
+          "Al_Content_atpct": 46.89,
+          "Cr_Content_atpct": 2.02,
+          "Nb_Content_atpct": 2.01,
+          "O_Content_ppm": 860,
+          "Beta0_B2_Phase_pct": "increasing",
+          "Grain_Size_avg_um": "<10"
+        }
+      },
+      "Properties_Info": []
+    },
+    {
+      "Sample_ID": "S30b",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Ti-48Al-2Cr-2Nb",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ti": 48.0,
+            "Al": 48.0,
+            "Cr": 2.0,
+            "Nb": 2.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Al": 47.56,
+            "Cr": 2.14,
+            "Nb": 2.03,
+            "O": 0.076,
+            "Ti": 48.194
+          },
+          "Measurement_Method": "ICP-AES, titration, OH-300 oxygen analyzer"
+        },
+        "Note": "Thin-walled part from R30b powder (30 cycles + 10 kg fresh); improved ductility vs S30; O content 760 ± 15 ppm; Al ± 0.2 at.%; γ band reappeared; bright spots reduced vs S30"
+      },
+      "Process_Info": {
+        "Process_Category": "Unknown",
+        "Process_Text": {
+          "original": "Thin-walled Ti-48Al-2Cr-2Nb parts from R30b powder (30 cycles + 10 kg fresh powder); EB-PBF; layer thickness 50 μm; building temp 900-1100°C; improved ductility observed",
+          "simplified": "EB-PBF thin-walled from R30b (30% fresh powder); improved properties"
+        },
+        "Equipment": "Qbeam S200, Beijing Quick Beam Technology Co.",
+        "Key_Params": {
+          "Layer_Thickness_um": 50,
+          "Building_Temperature_K": "1173.15-1373.15",
+          "Fresh_Powder_pct": 30.3
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Equiaxed γ grains, fine lamellar colonies (α₂+γ); γ band reappeared; bright spots (β₀/B₂) reduced vs S30; more pronounced lamellar clusters",
+          "simplified": "γ + lamellar α₂+γ; γ bands returned; reduced β₀/B₂; improved ductility"
+        },
+        "Main_Phase": "gamma + alpha2",
+        "Precipitates": [
+          {
+            "Phase_Type": "beta0/B2",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "XRD": "γ and α₂; reduced β₀/B₂",
+          "BSE": "γ bands; reduced bright spots",
+          "Al_Content_atpct": 47.56,
+          "Cr_Content_atpct": 2.14,
+          "Nb_Content_atpct": 2.03,
+          "O_Content_ppm": 760,
+          "Fresh_Powder_pct": 30.3,
+          "Beta0_B2_Phase_pct": "reduced"
+        }
+      },
+      "Properties_Info": []
+    },
+    {
+      "Sample_ID": "S45",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Ti-48Al-2Cr-2Nb",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ti": 48.0,
+            "Al": 48.0,
+            "Cr": 2.0,
+            "Nb": 2.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Al": 47.35,
+            "Cr": 1.98,
+            "Nb": 2.04,
+            "O": 0.09,
+            "Ti": 48.54
+          },
+          "Measurement_Method": "ICP-AES, titration, OH-300 oxygen analyzer"
+        },
+        "Note": "Thin-walled part from R45 powder; γ bands barely visible; O content 900 ppm; β₀/B₂ phase content increased"
+      },
+      "Process_Info": {
+        "Process_Category": "Unknown",
+        "Process_Text": {
+          "original": "Thin-walled Ti-48Al-2Cr-2Nb parts from R45 powder; EB-PBF; layer thickness 50 μm; building temp 900-1100°C; tensile specimens 12 mm gauge length, 2 mm width, 1 mm thickness",
+          "simplified": "EB-PBF thin-walled from R45 powder"
+        },
+        "Equipment": "Qbeam S200, Beijing Quick Beam Technology Co.",
+        "Key_Params": {
+          "Layer_Thickness_um": 50,
+          "Building_Temperature_K": "1173.15-1373.15"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Equiaxed γ grains, fine lamellar colonies (α₂+γ); γ bands barely visible; increased spheroidized and agglomerated β₀/B₂ phase; grain size <10 μm; β₀/B₂ phase content increased",
+          "simplified": "γ + lamellar α₂+γ; γ bands faint; increased β₀/B₂ agglomerates; <10 μm grains"
+        },
+        "Main_Phase": "gamma + alpha2 + B2",
+        "Precipitates": [
+          {
+            "Phase_Type": "beta0/B2",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Laves phase",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "XRD": "γ, α₂, β₀/B₂ peaks",
+          "BSE": "γ bands faint; increased β₀/B₂",
+          "Al_Content_atpct": 47.35,
+          "Cr_Content_atpct": 1.98,
+          "Nb_Content_atpct": 2.04,
+          "O_Content_ppm": 900,
+          "Beta0_B2_Phase_pct": "increased",
+          "Grain_Size_avg_um": "<10"
+        }
+      },
+      "Properties_Info": []
+    },
+    {
+      "Sample_ID": "S70",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Ti-48Al-2Cr-2Nb",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ti": 48.0,
+            "Al": 48.0,
+            "Cr": 2.0,
+            "Nb": 2.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Al": 47.04,
+            "Cr": 1.83,
+            "Nb": 1.99,
+            "O": 0.094,
+            "Ti": 49.046
+          },
+          "Measurement_Method": "ICP-AES, titration, OH-300 oxygen analyzer"
+        },
+        "Note": "Thin-walled part from R70 powder; highest strength 750 MPa; brittle fracture in two parallel specimens; O content 940 ± 40 ppm; Al ± 0.5 at.%; >60% grains <5 μm; β₀/B₂ phase 4.6%; C₁₄ Laves phase (TiNbCr₄)"
+      },
+      "Process_Info": {
+        "Process_Category": "Unknown",
+        "Process_Text": {
+          "original": "Thin-walled Ti-48Al-2Cr-2Nb parts from R70 powder; EB-PBF; layer thickness 50 μm; building temp 900-1100°C; 70 recycling cycles; tensile specimens 12 mm gauge length, 2 mm width, 1 mm thickness; brittle fracture in two parallel specimens from excessive O contamination (>2000 ppm powder) and irregular powder content",
+          "simplified": "EB-PBF thin-walled from R70 powder; highest strength; brittle fracture; grain refinement <5 μm; 4.6% β₀/B₂"
+        },
+        "Equipment": "Qbeam S200, Beijing Quick Beam Technology Co.",
+        "Key_Params": {
+          "Layer_Thickness_um": 50,
+          "Building_Temperature_K": "1173.15-1373.15",
+          "Recycling_Cycles": 70
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Equiaxed γ grains, fine lamellar colonies (α₂+γ); spheroidized and agglomerated β₀/B₂ grown larger from point-like to irregular agglomerations; β₀/B₂ inside lamellar colonies and γ bulk; γ bands barely visible; grain size <5 μm with >60% <5 μm; C₁₄ Laves phase (TiNbCr₄) 2-3 μm at boundaries and within α₂ regions; Ti, Cr, Nb enriched with notable Al depletion in precipitates; KAM max 4.99; LAGB 8.15%; twin boundaries 5.61%; grain refinement from heterogeneous nucleation (partially unmelted Cr-rich aggregates, TiCr₂, Al₂O₃); Hall-Petch strengthening from grain refinement; Orowan strengthening from submicron intergranular precipitates; grain boundary proliferation and oxide dispersion embrittled material",
+          "simplified": "γ + lamellar α₂+γ; 4.6% β₀/B₂ (agglomerated); C₁₄ Laves (TiNbCr₄) 2-3 μm; <5 μm grains (60% <5 μm); Hall-Petch + Orowan strengthening; embrittled"
+        },
+        "Main_Phase": "gamma + alpha2 + B2",
+        "Precipitates": [
+          {
+            "Phase_Type": "beta0/B2",
+            "Volume_Fraction_pct": 4.6
+          },
+          {
+            "Phase_Type": "C14 Laves phase",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": 5.0,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "XRD": "γ, α₂, β₀/B₂ prominent; C₁₄ Laves",
+          "EBSD": "Grain size <5 μm (60% <5 μm); KAM 4.99; LAGB 8.15%; twins 5.61%",
+          "TEM": "C₁₄ Laves (TiNbCr₄) 2-3 μm; Ti/Cr/Nb enriched; Al depleted",
+          "BSE": "Irregular β₀/B₂ agglomerates; fine grains",
+          "Al_Content_atpct": 47.04,
+          "Cr_Content_atpct": 1.83,
+          "Nb_Content_atpct": 1.99,
+          "O_Content_ppm": 940,
+          "Beta0_B2_Phase_pct": 4.6,
+          "Grain_Size_avg_um": 5,
+          "Grains_Under5um_pct": 60,
+          "Twin_Boundary_gamma_110_70deg_pct": 5.61,
+          "LAGB_pct": 8.15,
+          "KAM_max": 4.99,
+          "Hall_Petch_Strengthening": "grain refinement from <10 μm to <5 μm",
+          "Orowan_Strengthening": "from submicron intergranular precipitates",
+          "Critical_Al_Loss": 1.5,
+          "Al_Loss_per_cycle_atpct": "0.05-0.08",
+          "Strength_Increase_per_01atpct_Al_loss_MPa": "3.2 ± 0.5",
+          "Ductility_Reduction_per_01atpct_Al_loss_pct": "0.8 ± 0.2",
+          "Laves_Increase_per_01atpct_Al_loss_volpct": 1.2,
+          "O_Effect_Amplification_per_100ppm_pct": 12
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at RT; strain rate 1×10⁻⁴ s⁻¹",
+          "Value_Numeric": 750.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1e-4",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "12 mm gauge length, 2 mm width, 1 mm thickness",
+          "Note": "Highest ultimate tensile strength (750 MPa); increased 3.2±0.5 MPa per 0.1 at.% Al loss; grain refinement + Laves/B₂ phases + Hall-Petch + Orowan strengthening"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at RT; strain rate 1×10⁻⁴ s⁻¹",
+          "Value_Numeric": 0.8,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1e-4",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "12 mm gauge length, 2 mm width, 1 mm thickness",
+          "Note": "Lowest ductility (0.8%); 60% reduction (2.1%-0.8%); reduced 0.8±0.2% per 0.1 at.% Al loss; brittle fracture in two parallel specimens from excessive O contamination (>2000 ppm) and irregular powder"
+        }
+      ]
+    }
+  ]
+}

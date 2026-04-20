@@ -1,0 +1,506 @@
+{
+  "Paper_Metadata": {
+    "Paper_Title": "Effect of building direction on the microstructure and tensile properties of Ti-48Al-2Cr-2Nb alloy additively manufactured by electron beam melting",
+    "DOI": "10.1016/j.addma.2016.11.001"
+  },
+  "items": [
+    {
+      "Sample_ID": "EBM-TiAl-theta-0",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Ti-48Al-2Cr-2Nb",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ti": 48.0,
+            "Al": 48.0,
+            "Cr": 2.0,
+            "Nb": 2.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ti": 48.97,
+            "Al": 46.3,
+            "Cr": 1.72,
+            "Nb": 2.1,
+            "C": 0.049,
+            "O": 0.215,
+            "N": 0.02,
+            "other": 0.626
+          },
+          "Measurement_Method": "Not specified (composition table)"
+        },
+        "Note": "Al loss of approximately 2 at% due to evaporation during EBM process. Ti balance computed as 100 - sum of other elements."
+      },
+      "Process_Info": {
+        "Process_Category": "EBM",
+        "Process_Text": {
+          "original": "Ti-48Al-2Cr-2Nb alloy powder (average diameter ~100 um) fabricated using Arcam A2X EBM system (Arcam AB, Moelndal, Sweden). Electron beam scanned in zigzag pattern with 90 degree rotation between layers. Layer thickness 90 um. Pre-heating temperature 1060 degC before melting. Acceleration voltage 60 kV. Building direction angle theta = 0 degrees between building direction and cylindrical axis.",
+          "simplified": "EBM of Ti-48Al-2Cr-2Nb powder using Arcam A2X system; 60 kV acceleration voltage; 90 um layer thickness; 1060 degC pre-heating; zigzag beam pattern with 90 deg rotation per layer; theta=0 deg build orientation."
+        },
+        "Equipment": "Arcam A2X EBM system (Arcam AB, Mölndal, Sweden)",
+        "Key_Params": {
+          "Acceleration_Voltage_kV": 60,
+          "Layer_Thickness_um": 90,
+          "Pre_Heating_Temperature_degC": 1060,
+          "Powder_Size_avg_um": 100,
+          "Beam_Pattern": "zigzag",
+          "Layer_Rotation_deg": 90
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Unique layered microstructure composed of duplex-like regions and gamma bands. Duplex-like region: predominantly lamellar-structured gamma/alpha2 fine grains and fine equiaxed gamma grains. Gamma bands: coarser equiaxed gamma phase grains forming chains perpendicular to building direction. Layers arranged perpendicular to building direction. Layer thickness: duplex-like ~60 um, gamma bands ~30 um. Total layer thickness ~90 um corresponds to powder layer thickness. Beta phase exists mostly near surface region.",
+          "simplified": "Layered microstructure with alternating duplex-like regions (fine lamellar gamma/alpha2 + fine equiaxed gamma, ~60 um thick) and gamma bands (coarser equiaxed gamma, ~30 um thick). Two-phase gamma + alpha2 matrix."
+        },
+        "Main_Phase": "Gamma + Alpha2",
+        "Precipitates": [
+          {
+            "Phase_Type": "Alpha2 (Ti3Al)",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Beta phase",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": 0.5,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "XRD": "Philips X-pert Pro; gamma-TiAl (L10) and alpha2-Ti3Al (D019) phases identified; minor beta (bcc) near surface",
+          "SEM-EBSD": "Layered microstructure observation; beta phases confirmed near surface region",
+          "TEM": "Lamellar structure analysis; orientation relationship {111}gamma // (0001)alpha2, <110>gamma // <11-20>alpha2 confirmed",
+          "OM": "Microstructure observation after etching (HF-HNO3-H2O solution)",
+          "Duplex_Like_Region_Thickness_avg_um": 60,
+          "Gamma_Band_Thickness_avg_um": 30,
+          "Gamma_Bands_Grain_Size_avg_um": 20,
+          "Gamma_Lamellae_Thickness_avg_nm": 162,
+          "Alpha2_Lamellae_Thickness_avg_nm": 48,
+          "Total_Layer_Thickness_approx_um": 90
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at ~298 K (room temperature); theta=0 deg loading orientation; strain rate 1.67e-4 s^-1",
+          "Value_Numeric": 605.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1.67e-4 s^-1",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "~0.8 x 1.5 mm cross section, 5 mm gauge length",
+          "Note": "Highest yield strength at room temperature among the three orientations"
+        },
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at 800 degC; theta=0 deg loading orientation; strain rate 1.67e-4 s^-1",
+          "Value_Numeric": 350.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 1073.15,
+          "Strain_Rate_s1": "1.67e-4 s^-1",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "~0.8 x 1.5 mm cross section, 5 mm gauge length",
+          "Note": "Yield strength >350 MPa at 800 degC"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at ~298 K (room temperature); theta=0 deg loading orientation; strain rate 1.67e-4 s^-1",
+          "Value_Numeric": 0.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1.67e-4 s^-1",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "~0.8 x 1.5 mm cross section, 5 mm gauge length",
+          "Note": "Lowest elongation at room temperature among orientations; interface perpendicular to loading axis suppresses shear deformation"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at 800 degC; theta=0 deg loading orientation; strain rate 1.67e-4 s^-1",
+          "Value_Numeric": 40.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "%",
+          "Test_Temperature_K": 1073.15,
+          "Strain_Rate_s1": "1.67e-4 s^-1",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "~0.8 x 1.5 mm cross section, 5 mm gauge length",
+          "Note": "High ductility at 800 degC"
+        },
+        {
+          "Property_Name": "Tensile_Strength",
+          "Test_Condition": "at 800 degC; theta=0 deg loading orientation; strain rate 1.67e-4 s^-1",
+          "Value_Numeric": 350.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 1073.15,
+          "Strain_Rate_s1": "1.67e-4 s^-1",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "~0.8 x 1.5 mm cross section, 5 mm gauge length",
+          "Note": "Ultimate tensile strength exceeds 350 MPa at 800 degC"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "EBM-TiAl-theta-45",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Ti-48Al-2Cr-2Nb",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ti": 48.0,
+            "Al": 48.0,
+            "Cr": 2.0,
+            "Nb": 2.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ti": 48.97,
+            "Al": 46.3,
+            "Cr": 1.72,
+            "Nb": 2.1,
+            "C": 0.049,
+            "O": 0.215,
+            "N": 0.02,
+            "other": 0.626
+          },
+          "Measurement_Method": "Not specified (composition table)"
+        },
+        "Note": "Al loss of approximately 2 at% due to evaporation during EBM process. Ti balance computed as 100 - sum of other elements."
+      },
+      "Process_Info": {
+        "Process_Category": "EBM",
+        "Process_Text": {
+          "original": "Ti-48Al-2Cr-2Nb alloy powder (average diameter ~100 um) fabricated using Arcam A2X EBM system (Arcam AB, Moelndal, Sweden). Electron beam scanned in zigzag pattern with 90 degree rotation between layers. Layer thickness 90 um. Pre-heating temperature 1060 degC before melting. Acceleration voltage 60 kV. Building direction angle theta = 45 degrees between building direction and cylindrical axis.",
+          "simplified": "EBM of Ti-48Al-2Cr-2Nb powder using Arcam A2X system; 60 kV acceleration voltage; 90 um layer thickness; 1060 degC pre-heating; zigzag beam pattern with 90 deg rotation per layer; theta=45 deg build orientation."
+        },
+        "Equipment": "Arcam A2X EBM system (Arcam AB, Mölndal, Sweden)",
+        "Key_Params": {
+          "Acceleration_Voltage_kV": 60,
+          "Layer_Thickness_um": 90,
+          "Pre_Heating_Temperature_degC": 1060,
+          "Powder_Size_avg_um": 100,
+          "Beam_Pattern": "zigzag",
+          "Layer_Rotation_deg": 90
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Unique layered microstructure composed of duplex-like regions and gamma bands. Duplex-like region: predominantly lamellar-structured gamma/alpha2 fine grains and fine equiaxed gamma grains. Gamma bands: coarser equiaxed gamma phase grains forming chains perpendicular to building direction. Layers arranged perpendicular to building direction. Layer thickness: duplex-like ~60 um, gamma bands ~30 um. Total layer thickness ~90 um corresponds to powder layer thickness. Beta phase exists mostly near surface region.",
+          "simplified": "Layered microstructure with alternating duplex-like regions (fine lamellar gamma/alpha2 + fine equiaxed gamma, ~60 um thick) and gamma bands (coarser equiaxed gamma, ~30 um thick). Two-phase gamma + alpha2 matrix."
+        },
+        "Main_Phase": "Gamma + Alpha2",
+        "Precipitates": [
+          {
+            "Phase_Type": "Alpha2 (Ti3Al)",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Beta phase",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": 0.5,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "XRD": "Philips X-pert Pro; gamma-TiAl (L10) and alpha2-Ti3Al (D019) phases identified; minor beta (bcc) near surface",
+          "SEM-EBSD": "Layered microstructure observation; beta phases confirmed near surface region",
+          "TEM": "Lamellar structure analysis; orientation relationship {111}gamma // (0001)alpha2, <110>gamma // <11-20>alpha2 confirmed",
+          "OM": "Microstructure observation after etching (HF-HNO3-H2O solution)",
+          "Duplex_Like_Region_Thickness_avg_um": 60,
+          "Gamma_Band_Thickness_avg_um": 30,
+          "Gamma_Bands_Grain_Size_avg_um": 20,
+          "Gamma_Lamellae_Thickness_avg_nm": 162,
+          "Alpha2_Lamellae_Thickness_avg_nm": 48,
+          "Total_Layer_Thickness_approx_um": 90
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at ~298 K (room temperature); theta=45 deg loading orientation; strain rate 1.67e-4 s^-1",
+          "Value_Numeric": 566.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1.67e-4 s^-1",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "~0.8 x 1.5 mm cross section, 5 mm gauge length",
+          "Note": "Slightly lower than theta=0 deg and theta=90 deg at room temperature, but still >550 MPa"
+        },
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at 800 degC; theta=45 deg loading orientation; strain rate 1.67e-4 s^-1",
+          "Value_Numeric": 350.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 1073.15,
+          "Strain_Rate_s1": "1.67e-4 s^-1",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "~0.8 x 1.5 mm cross section, 5 mm gauge length",
+          "Note": "Yield strength >350 MPa at 800 degC"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at ~298 K (room temperature); theta=45 deg loading orientation; strain rate 1.67e-4 s^-1",
+          "Value_Numeric": 2.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1.67e-4 s^-1",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "~0.8 x 1.5 mm cross section, 5 mm gauge length",
+          "Note": "Significantly improved ductility at room temperature due to localized shear deformation in gamma bands; higher than cast alloys"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at 800 degC; theta=45 deg loading orientation; strain rate 1.67e-4 s^-1",
+          "Value_Numeric": 40.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "%",
+          "Test_Temperature_K": 1073.15,
+          "Strain_Rate_s1": "1.67e-4 s^-1",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "~0.8 x 1.5 mm cross section, 5 mm gauge length",
+          "Note": "High ductility at 800 degC"
+        },
+        {
+          "Property_Name": "Tensile_Strength",
+          "Test_Condition": "at 800 degC; theta=45 deg loading orientation; strain rate 1.67e-4 s^-1",
+          "Value_Numeric": 350.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 1073.15,
+          "Strain_Rate_s1": "1.67e-4 s^-1",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "~0.8 x 1.5 mm cross section, 5 mm gauge length",
+          "Note": "Ultimate tensile strength exceeds 350 MPa at 800 degC"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "EBM-TiAl-theta-90",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Ti-48Al-2Cr-2Nb",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ti": 48.0,
+            "Al": 48.0,
+            "Cr": 2.0,
+            "Nb": 2.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ti": 48.97,
+            "Al": 46.3,
+            "Cr": 1.72,
+            "Nb": 2.1,
+            "C": 0.049,
+            "O": 0.215,
+            "N": 0.02,
+            "other": 0.626
+          },
+          "Measurement_Method": "Not specified (composition table)"
+        },
+        "Note": "Al loss of approximately 2 at% due to evaporation during EBM process. Ti balance computed as 100 - sum of other elements."
+      },
+      "Process_Info": {
+        "Process_Category": "EBM",
+        "Process_Text": {
+          "original": "Ti-48Al-2Cr-2Nb alloy powder (average diameter ~100 um) fabricated using Arcam A2X EBM system (Arcam AB, Moelndal, Sweden). Electron beam scanned in zigzag pattern with 90 degree rotation between layers. Layer thickness 90 um. Pre-heating temperature 1060 degC before melting. Acceleration voltage 60 kV. Building direction angle theta = 90 degrees between building direction and cylindrical axis.",
+          "simplified": "EBM of Ti-48Al-2Cr-2Nb powder using Arcam A2X system; 60 kV acceleration voltage; 90 um layer thickness; 1060 degC pre-heating; zigzag beam pattern with 90 deg rotation per layer; theta=90 deg build orientation."
+        },
+        "Equipment": "Arcam A2X EBM system (Arcam AB, Mölndal, Sweden)",
+        "Key_Params": {
+          "Acceleration_Voltage_kV": 60,
+          "Layer_Thickness_um": 90,
+          "Pre_Heating_Temperature_degC": 1060,
+          "Powder_Size_avg_um": 100,
+          "Beam_Pattern": "zigzag",
+          "Layer_Rotation_deg": 90
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Unique layered microstructure composed of duplex-like regions and gamma bands. Duplex-like region: predominantly lamellar-structured gamma/alpha2 fine grains and fine equiaxed gamma grains. Gamma bands: coarser equiaxed gamma phase grains forming chains perpendicular to building direction. Layers arranged perpendicular to building direction. Layer thickness: duplex-like ~60 um, gamma bands ~30 um. Total layer thickness ~90 um corresponds to powder layer thickness. Beta phase exists mostly near surface region.",
+          "simplified": "Layered microstructure with alternating duplex-like regions (fine lamellar gamma/alpha2 + fine equiaxed gamma, ~60 um thick) and gamma bands (coarser equiaxed gamma, ~30 um thick). Two-phase gamma + alpha2 matrix."
+        },
+        "Main_Phase": "Gamma + Alpha2",
+        "Precipitates": [
+          {
+            "Phase_Type": "Alpha2 (Ti3Al)",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Beta phase",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": 0.5,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "XRD": "Philips X-pert Pro; gamma-TiAl (L10) and alpha2-Ti3Al (D019) phases identified; minor beta (bcc) near surface",
+          "SEM-EBSD": "Layered microstructure observation; beta phases confirmed near surface region",
+          "TEM": "Lamellar structure analysis; orientation relationship {111}gamma // (0001)alpha2, <110>gamma // <11-20>alpha2 confirmed",
+          "OM": "Microstructure observation after etching (HF-HNO3-H2O solution)",
+          "Duplex_Like_Region_Thickness_avg_um": 60,
+          "Gamma_Band_Thickness_avg_um": 30,
+          "Gamma_Bands_Grain_Size_avg_um": 20,
+          "Gamma_Lamellae_Thickness_avg_nm": 162,
+          "Alpha2_Lamellae_Thickness_avg_nm": 48,
+          "Total_Layer_Thickness_approx_um": 90
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at ~298 K (room temperature); theta=90 deg loading orientation; strain rate 1.67e-4 s^-1",
+          "Value_Numeric": 587.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1.67e-4 s^-1",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "~0.8 x 1.5 mm cross section, 5 mm gauge length",
+          "Note": "Yield strength between theta=0 deg and theta=45 deg at room temperature"
+        },
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at 800 degC; theta=90 deg loading orientation; strain rate 1.67e-4 s^-1",
+          "Value_Numeric": 350.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 1073.15,
+          "Strain_Rate_s1": "1.67e-4 s^-1",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "~0.8 x 1.5 mm cross section, 5 mm gauge length",
+          "Note": "Yield strength >350 MPa at 800 degC; smallest anisotropy at high temperature"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at ~298 K (room temperature); theta=90 deg loading orientation; strain rate 1.67e-4 s^-1",
+          "Value_Numeric": 0.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1.67e-4 s^-1",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "~0.8 x 1.5 mm cross section, 5 mm gauge length",
+          "Note": "Low elongation at room temperature; slightly higher than theta=0 deg due to different crack propagation path"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at 800 degC; theta=90 deg loading orientation; strain rate 1.67e-4 s^-1",
+          "Value_Numeric": 40.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "%",
+          "Test_Temperature_K": 1073.15,
+          "Strain_Rate_s1": "1.67e-4 s^-1",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "~0.8 x 1.5 mm cross section, 5 mm gauge length",
+          "Note": "High ductility at 800 degC; BDTT shifted to lower temperature compared to other orientations"
+        },
+        {
+          "Property_Name": "Tensile_Strength",
+          "Test_Condition": "at 800 degC; theta=90 deg loading orientation; strain rate 1.67e-4 s^-1",
+          "Value_Numeric": 350.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 1073.15,
+          "Strain_Rate_s1": "1.67e-4 s^-1",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "~0.8 x 1.5 mm cross section, 5 mm gauge length",
+          "Note": "Ultimate tensile strength exceeds 350 MPa at 800 degC"
+        }
+      ]
+    }
+  ]
+}

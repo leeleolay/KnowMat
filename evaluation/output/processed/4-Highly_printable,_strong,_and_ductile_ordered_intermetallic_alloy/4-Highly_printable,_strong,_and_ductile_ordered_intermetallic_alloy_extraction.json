@@ -1,0 +1,356 @@
+{
+  "Paper_Metadata": {
+    "Paper_Title": "Highly printable, strong, and ductile ordered intermetallic alloy",
+    "DOI": "10.1038/s41467-025-56355-2"
+  },
+  "items": [
+    {
+      "Sample_ID": "CCIMA-Powder",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Reference",
+        "Alloy_Name_Raw": "CCIMA",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ni": 58.48,
+            "Co": 18.9,
+            "Si": 11.6,
+            "Ti": 6.6,
+            "Al": 4.4,
+            "B": 0.02
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": "ICP-OES"
+        },
+        "Note": "Pre-alloyed CCIMA powder fabricated using electrode induction melting gas atomization (EIGA). Powder particle size ranged from 24.2 to 58.2 μm with mean diameter D50 = 37.6 μm."
+      },
+      "Process_Info": {
+        "Process_Category": "Powder_Metallurgy",
+        "Process_Text": {
+          "original": "Pre-alloyed CCIMA powder with composition Ni58.48Co18.9Si11.6Ti6.6Al4.4B0.02 (at. %) was fabricated using the electrode induction melting gas atomization (EIGA) technique.",
+          "simplified": "Electrode induction melting gas atomization (EIGA) powder fabrication."
+        },
+        "Equipment": null,
+        "Key_Params": {}
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Powder_Characterization: Powder particles exhibit nearly spherical shape. Particle size determined by Mastersizer 3000 laser particle size analyzer.",
+          "simplified": "Powder_Characterization: Powder particles exhibit nearly spherical shape. Particle size determined by Mastersizer 3000 laser particle size analyzer."
+        },
+        "Main_Phase": null,
+        "Precipitates": [],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "Powder_Characterization": "Powder particles exhibit nearly spherical shape. Particle size determined by Mastersizer 3000 laser particle size analyzer.",
+          "Particle_Size_Range_um": "24.2-58.2",
+          "Particle_Size_D50_um": 37.6
+        }
+      },
+      "Properties_Info": []
+    },
+    {
+      "Sample_ID": "CCIMA-AP",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "CCIMA",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ni": 58.48,
+            "Co": 18.9,
+            "Si": 11.6,
+            "Ti": 6.6,
+            "Al": 4.4,
+            "B": 0.02
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "As-printed CCIMA. Nearly fully dense samples obtained when laser scanning speeds varied from 600 to 1000 mm/s."
+      },
+      "Process_Info": {
+        "Process_Category": "AM_LPBF",
+        "Process_Text": {
+          "original": "LPBF using SLM 125HL machine equipped with IPG fiber laser (max power 400W, beam diameter 64 μm). Laser power 200W, scanning speed 900 mm/s. Layer thickness 0.03 mm, hatch distance 0.12 mm, laser-beam rotation 67°. Argon protective atmosphere with oxygen content below 400 ppm. 316 L stainless steel substrate heated to 200°C.",
+          "simplified": "LPBF with laser power 200W, scanning speed 900 mm/s, layer thickness 30 μm, hatch spacing 120 μm, 67° rotation, Ar atmosphere."
+        },
+        "Equipment": "SLM 125HL",
+        "Key_Params": {
+          "Laser_Power_W": 200.0,
+          "Scanning_Speed_mm_s": 900.0,
+          "Layer_Thickness_um": 30.0,
+          "Hatch_Spacing_um": 120.0,
+          "Build_Plate_Temperature_K": 473.15,
+          "Protective_Atmosphere": "Argon",
+          "Oxygen_Content_ppm": 400.0,
+          "Beam_Diameter_um": 64.0,
+          "Laser_Rotation_deg": 67.0
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "As-printed CCIMA contains dendritic microstructure consisting of brittle G phase. Micro-CT reveals only a few pore defects with low porosity of 0.005%. No micro-cracks detected by micro-CT or optical microscopy. Average pore diameter 22.0 μm.",
+          "simplified": "As-printed microstructure with G phase dendrites, low porosity 0.005%, crack-free."
+        },
+        "Main_Phase": "L12",
+        "Precipitates": [
+          {
+            "Phase_Type": "G phase",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": 0.005,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "Micro-CT": "Diondo D2 machine with W radiation at 30 μA and 210 kV. Sample rotated 0° to 360° with step size 0.2°, scan resolution 2 μm.",
+          "SEM": "FEI Scios, 20 kV, 3 nA, BSE mode.",
+          "Average_Pore_Diameter_um": 22.0,
+          "Processing_Window_Scanning_Speed_mm_s": "600-1000"
+        }
+      },
+      "Properties_Info": []
+    },
+    {
+      "Sample_ID": "CCIMA-TS",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "CCIMA",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ni": 58.48,
+            "Co": 18.9,
+            "Si": 11.6,
+            "Ti": 6.6,
+            "Al": 4.4,
+            "B": 0.02
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ni": 58.1,
+            "Co": 19.5,
+            "Si": 11.5,
+            "Ti": 6.6,
+            "Al": 4.3
+          },
+          "Measurement_Method": "SEM-EDS"
+        },
+        "Note": "Measured composition shows very small chemical change compared with pre-alloyed powder. B content below SEM-EDS detection limit."
+      },
+      "Process_Info": {
+        "Process_Category": "AM_LPBF",
+        "Process_Text": {
+          "original": "LPBF using SLM 125HL machine equipped with IPG fiber laser (max power 400W, beam diameter 64 μm). Laser power 200W, scanning speed 900 mm/s. Layer thickness 0.03 mm, hatch distance 0.12 mm, laser-beam rotation 67°. Argon protective atmosphere with oxygen content below 400 ppm. 316 L stainless steel substrate heated to 200°C. As-printed samples then subjected to single-step thermal stabilization treatment at 1000°C for 2h followed by air cooling.",
+          "simplified": "LPBF (200W, 900 mm/s) followed by thermal stabilization at 1000°C/2h with air cooling."
+        },
+        "Equipment": "SLM 125HL",
+        "Key_Params": {
+          "Laser_Power_W": 200.0,
+          "Scanning_Speed_mm_s": 900.0,
+          "Layer_Thickness_um": 30.0,
+          "Hatch_Spacing_um": 120.0,
+          "Build_Plate_Temperature_K": 473.15,
+          "Protective_Atmosphere": "Argon",
+          "Oxygen_Content_ppm": 400.0,
+          "Beam_Diameter_um": 64.0,
+          "Laser_Rotation_deg": 67.0,
+          "Solution_Temperature_K": 1273.15,
+          "Solution_Time_h": 2.0,
+          "Cooling_Medium": "Air"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Highly ordered L12-type (Ni,Co)3(Si,Ti,Al) chemically complex superlattice structure. Random grain distribution with fully equiaxed grains and homogeneous elemental distributions. Disordered interfacial nanolayer (DINL) at grain boundaries with ~5 nm thickness, rich in Co and B, depleted in Ni, Si, Ti, Al. DINL identified as disordered FCC solid-solution (γ phase) highly coherent with adjacent ordered L12 grain. Volume fraction of DINL calculated to be 0.08%. Grain interior shows homogeneous compositional distributions without undesired elemental clustering or precipitation at atomic scale.",
+          "simplified": "L12-type ordered superlattice grains (17.7 μm avg) with disordered FCC nanolayer (~5 nm) at grain boundaries. Co and B co-segregated at grain boundaries. Homogeneous elemental distribution in grain interiors."
+        },
+        "Main_Phase": "L12",
+        "Precipitates": [],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": 17.7,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "XRD": "L12-type ordered superlattice structure confirmed. No detrimental phases detected.",
+          "EBSD": "Random grain distribution, max texture index 2.56, equiaxed grains ~17.7 μm.",
+          "TEM": "Grain interior with superlattice diffraction spots confirming highly ordered L12 structure.",
+          "APT": "Homogeneous elemental distribution in grain interior. Co and B segregation at grain boundaries forming DINL.",
+          "AC-STEM": "DINL identified as disordered FCC γ phase, highly coherent with ordered L12 grain. Ni and Co occupy face centers (A-type sublattice), Si/Ti/Al occupy vertices (B-type sublattice).",
+          "DINL_Thickness_nm": 5.0,
+          "DINL_Volume_Fraction_pct": 0.08,
+          "Max_Texture_Index": 2.56,
+          "Dislocation_Density_Initial_m2": 160000000000000.0,
+          "Dislocation_Density_Final_m2": 5340000000000000.0,
+          "Work_Hardening_Rate_Max_GPa": 5.1,
+          "Work_Hardening_Exponent_Max": 0.6,
+          "True_Stress_Yield_MPa": 730,
+          "True_Stress_Hardened_MPa": 2190,
+          "APB_Energy_mJ_m2": 301,
+          "SISF_Energy_mJ_m2": 200,
+          "C44_Elastic_Constant_GPa": 130.0,
+          "Co_Concentration_in_DINL_atpct": 50.64,
+          "Co_Concentration_in_Grain_atpct": 18.95,
+          "B_Segregation_in_DINL_atpct": 0.85,
+          "B_Content_in_Grain_atpct": 0.02,
+          "Grain_Size_XY_Plane": "equiaxed ~17.7 μm"
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at 298.15 K; strain rate 1e-3 s^-1; perpendicular to building direction",
+          "Value_Numeric": 1620.0,
+          "Value_Range": null,
+          "Value_StdDev": 30.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1e-3 s^-1",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "image",
+          "Test_Specimen": "ASTM E8, flat dog-bone-shaped tensile samples with gauge length 12.5 mm and cross-section ~3.2 × 3 mm^2",
+          "Note": "Thermal-stabilized CCIMA (1000°C/2h)."
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at 298.15 K; strain rate 1e-3 s^-1; perpendicular to building direction",
+          "Value_Numeric": 1620.0,
+          "Value_Range": null,
+          "Value_StdDev": 30.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1e-3 s^-1",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM E8, flat dog-bone-shaped tensile samples with gauge length 12.5 mm and cross-section ~3.2 × 3 mm^2",
+          "Note": "Thermal-stabilized CCIMA shows tensile strength reaching 1620 MPa."
+        },
+        {
+          "Property_Name": "Elongation_Uniform",
+          "Test_Condition": "at 298.15 K; strain rate 1e-3 s^-1; perpendicular to building direction",
+          "Value_Numeric": 35.0,
+          "Value_Range": null,
+          "Value_StdDev": 3.0,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1e-3 s^-1",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM E8, flat dog-bone-shaped tensile samples with gauge length 12.5 mm and cross-section ~3.2 × 3 mm^2",
+          "Note": "Uniform elongation of 35%. Large ductility achieved with high strength."
+        },
+        {
+          "Property_Name": "Dislocation_Density",
+          "Test_Condition": "Calculated using modified Williamson-Hall method at different deformation strains from 5% to 35%",
+          "Value_Numeric": 2.75,
+          "Value_Range": "0.16-5.34",
+          "Value_StdDev": null,
+          "Unit": "m^-2",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Rapid increase in dislocation density during plastic deformation from 5% to 35% strain."
+        },
+        {
+          "Property_Name": "True_Stress_Final",
+          "Test_Condition": "at 298.15 K; true stress-strain curve after hardening",
+          "Value_Numeric": 2190.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "image",
+          "Test_Specimen": null,
+          "Note": "True stress after work hardening."
+        },
+        {
+          "Property_Name": "True_Stress_Yield",
+          "Test_Condition": "at 298.15 K; true stress-strain curve",
+          "Value_Numeric": 730.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "image",
+          "Test_Specimen": null,
+          "Note": "True stress at yield from true stress-strain curve."
+        },
+        {
+          "Property_Name": "Work_Hardening_Exponent_Max",
+          "Test_Condition": "at 298.15 K; maximum value in Stage II",
+          "Value_Numeric": 0.6,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Maximum work hardening exponent achieved in Stage II deformation."
+        },
+        {
+          "Property_Name": "Work_Hardening_Rate_Max",
+          "Test_Condition": "at 298.15 K; maximum value in Stage II",
+          "Value_Numeric": 5.1,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "GPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Maximum work hardening rate achieved in Stage II deformation."
+        }
+      ]
+    }
+  ]
+}

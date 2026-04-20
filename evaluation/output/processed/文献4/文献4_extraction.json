@@ -1,0 +1,430 @@
+{
+  "Paper_Metadata": {
+    "Paper_Title": "Additive manufacturing of an ultrastrong, deformable Al alloy with nanoscale intermetallics",
+    "DOI": "10.1038/s41467-024-48693-4"
+  },
+  "items": [
+    {
+      "Sample_ID": "Al92Ti2Fe2Co2Ni2_200W",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Al92Ti2Fe2Co2Ni2",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Al": 92.0,
+            "Ti": 2.0,
+            "Fe": 2.0,
+            "Co": 2.0,
+            "Ni": 2.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Nominal composition as reported in atomic percent. Powder size -53+15 μm gas atomized powder."
+      },
+      "Process_Info": {
+        "Process_Category": "AM_LPBF",
+        "Process_Text": {
+          "original": "Selective laser melting (SLM) performed using SLM 125 HL metal 3D printer in Argon atmosphere with oxygen level below 1000 PPM. Printing conducted with 400 W IPG fiber laser (λ = 1070 nm), laser power 200 W, scan speed 1200 mm/s, hatch space 100 μm, layer thickness 30 μm, laser spot 70 μm diameter. Build plate preheated to 200°C, layer rotation 67°.",
+          "simplified": "LPBF of Al92Ti2Fe2Co2Ni2 powder; 200 W laser power, 1200 mm/s scan speed, 100 μm hatch spacing, 30 μm layer thickness, 67° rotation"
+        },
+        "Equipment": "SLM 125 HL metal 3D printer; IPG fiber laser (400 W, λ = 1070 nm)",
+        "Key_Params": {
+          "Laser_Power_W": 200,
+          "Scanning_Speed_mm_s": 1200,
+          "Hatch_Spacing_um": 100,
+          "Layer_Thickness_um": 30,
+          "Laser_Spot_Size_um": 70,
+          "Build_Plate_Temperature_C": 200,
+          "Layer_Rotation_deg": 67,
+          "Protective_Atmosphere": "Argon (<1000 PPM O2)",
+          "Powder_Size_avg_um": "-53+15",
+          "Volumetric_Energy_Density_J_mm3": "200 W / (1200 mm/s × 100 μm × 30 μm) = 55.6 J/mm3"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Heterogeneous microstructure with coarse rosettes (36 vol.%), nanoscale cellular precipitates (4 vol.%), and Al-rich matrix (60 vol.%). Coarse rosettes have laminate thickness of 150-300 nm consisting of Al3Ti cores surrounded by alternating Al3Ti and medium-entropy Al9(Fe,Co,Ni)2 intermetallics. Fine rosettes with laminate spacing 20-60 nm are dominant near melt pool boundaries. Melt pools are ~120 μm wide and ~80 μm deep.",
+          "simplified": "Heterogeneous FCC Al matrix with coarse and fine intermetallic rosettes; Al3Ti and Al9(Fe,Co,Ni)2 phases with nanoscale lamellar structure"
+        },
+        "Main_Phase": "FCC Al",
+        "Precipitates": [
+          {
+            "Phase_Type": "Al3Ti",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Al9(Fe,Co,Ni)2",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "XRD": "Al3Ti DO22 (I4/mmm, a=0.384 nm, c=0.860 nm) and L12 (Pm3m, a=0.398 nm); Al9(Fe,Co,Ni)2 monoclinic (P21/c, a=0.622 nm, b=0.629 nm, c=0.856 nm, β=94.8°)",
+          "SEM": "Back scattered SEM; melt pool morphology; coarse/fine rosette distribution",
+          "TEM": "BF-TEM, STEM, HRTEM, SAED; phase identification and defect analysis",
+          "APT": "Atom probe tomography; solute distribution and grain boundary segregation",
+          "Nanoindentation": "Berkovich tip, 800 nm depth, 100×100 μm area with 121 indents",
+          "Coarse_Rosette_Volume_Fraction_pct": 36,
+          "Cellular_Precipitate_Volume_Fraction_pct": 4,
+          "Al_Matrix_Volume_Fraction_pct": 60,
+          "Dislocation_Density_m2": "4.7e13 to 1.0e14"
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Ultimate_Strength_Compressive",
+          "Test_Condition": "at ~298 K (room temperature); strain rate 10^-3 s^-1",
+          "Value_Numeric": 800.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1e-3",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "Cylindrical, 6 mm diameter × 12 mm height",
+          "Note": "Engineering stress exceeding 800 MPa with substantial plastic deformability around 20%; typical barreling phenomenon observed"
+        },
+        {
+          "Property_Name": "Elongation_Compressive",
+          "Test_Condition": "at ~298 K (room temperature)",
+          "Value_Numeric": 20.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1e-3",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "Cylindrical, 6 mm diameter × 12 mm height",
+          "Note": "Prominent plastic deformability observed; barreling phenomenon typical of ductile metallic materials"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "Al92Ti2Fe2Co2Ni2_250W",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Al92Ti2Fe2Co2Ni2",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Al": 92.0,
+            "Ti": 2.0,
+            "Fe": 2.0,
+            "Co": 2.0,
+            "Ni": 2.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Nominal composition as reported in atomic percent. Powder size -53+15 μm gas atomized powder."
+      },
+      "Process_Info": {
+        "Process_Category": "AM_LPBF",
+        "Process_Text": {
+          "original": "Selective laser melting (SLM) performed using SLM 125 HL metal 3D printer in Argon atmosphere with oxygen level below 1000 PPM. Printing conducted with 400 W IPG fiber laser (λ = 1070 nm), laser power 250 W, scan speed 1200 mm/s, hatch space 100 μm, layer thickness 30 μm, laser spot 70 μm diameter. Build plate preheated to 200°C, layer rotation 67°.",
+          "simplified": "LPBF of Al92Ti2Fe2Co2Ni2 powder; 250 W laser power, 1200 mm/s scan speed, 100 μm hatch spacing, 30 μm layer thickness, 67° rotation"
+        },
+        "Equipment": "SLM 125 HL metal 3D printer; IPG fiber laser (400 W, λ = 1070 nm)",
+        "Key_Params": {
+          "Laser_Power_W": 250,
+          "Scanning_Speed_mm_s": 1200,
+          "Hatch_Spacing_um": 100,
+          "Layer_Thickness_um": 30,
+          "Laser_Spot_Size_um": 70,
+          "Build_Plate_Temperature_C": 200,
+          "Layer_Rotation_deg": 67,
+          "Protective_Atmosphere": "Argon (<1000 PPM O2)",
+          "Powder_Size_avg_um": "-53+15",
+          "Volumetric_Energy_Density_J_mm3": "250 W / (1200 mm/s × 100 μm × 30 μm) = 69.4 J/mm3"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Heterogeneous microstructure with coarse rosettes (36 vol.%), nanoscale cellular precipitates (4 vol.%), and Al-rich matrix (60 vol.%). Coarse rosettes have laminate thickness of 150-300 nm consisting of Al3Ti cores surrounded by alternating Al3Ti and medium-entropy Al9(Fe,Co,Ni)2 intermetallics. Fine rosettes with laminate spacing 20-60 nm are dominant near melt pool boundaries. Melt pools are ~120 μm wide and ~80 μm deep.",
+          "simplified": "Heterogeneous FCC Al matrix with coarse and fine intermetallic rosettes; Al3Ti and Al9(Fe,Co,Ni)2 phases with nanoscale lamellar structure"
+        },
+        "Main_Phase": "FCC Al",
+        "Precipitates": [
+          {
+            "Phase_Type": "Al3Ti",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Al9(Fe,Co,Ni)2",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "XRD": "Al3Ti DO22 (I4/mmm, a=0.384 nm, c=0.860 nm) and L12 (Pm3m, a=0.398 nm); Al9(Fe,Co,Ni)2 monoclinic (P21/c, a=0.622 nm, b=0.629 nm, c=0.856 nm, β=94.8°)",
+          "SEM": "Back scattered SEM; melt pool morphology; coarse/fine rosette distribution",
+          "TEM": "BF-TEM, STEM, HRTEM, SAED; phase identification and defect analysis",
+          "APT": "Atom probe tomography; solute distribution and grain boundary segregation",
+          "Nanoindentation": "Berkovich tip, 800 nm depth, 100×100 μm area with 121 indents",
+          "Coarse_Rosette_Volume_Fraction_pct": 36,
+          "Cellular_Precipitate_Volume_Fraction_pct": 4,
+          "Al_Matrix_Volume_Fraction_pct": 60,
+          "Dislocation_Density_m2": "4.7e13 to 1.0e14"
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Ultimate_Strength_Compressive",
+          "Test_Condition": "at ~298 K (room temperature); strain rate 10^-3 s^-1",
+          "Value_Numeric": 550.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1e-3",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "Cylindrical, 6 mm diameter × 12 mm height",
+          "Note": "Flow stress decreased compared to 200 W; compressive strain 5-20%"
+        },
+        {
+          "Property_Name": "Elongation_Compressive",
+          "Test_Condition": "at ~298 K (room temperature)",
+          "Value_Numeric": 12.5,
+          "Value_Range": "5-20",
+          "Value_StdDev": null,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1e-3",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "Cylindrical, 6 mm diameter × 12 mm height",
+          "Note": "Compressive strain range with significant variability"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "Al92Ti2Fe2Co2Ni2_300W",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Al92Ti2Fe2Co2Ni2",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Al": 92.0,
+            "Ti": 2.0,
+            "Fe": 2.0,
+            "Co": 2.0,
+            "Ni": 2.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Nominal composition as reported in atomic percent. Powder size -53+15 μm gas atomized powder."
+      },
+      "Process_Info": {
+        "Process_Category": "AM_LPBF",
+        "Process_Text": {
+          "original": "Selective laser melting (SLM) performed using SLM 125 HL metal 3D printer in Argon atmosphere with oxygen level below 1000 PPM. Printing conducted with 400 W IPG fiber laser (λ = 1070 nm), laser power 300 W, scan speed 1200 mm/s, hatch space 100 μm, layer thickness 30 μm, laser spot 70 μm diameter. Build plate preheated to 200°C, layer rotation 67°. Cubic samples 10×10×5 mm printed for microstructure characterization, nanoindentation, and micropillar compression tests.",
+          "simplified": "LPBF of Al92Ti2Fe2Co2Ni2 powder; 300 W laser power, 1200 mm/s scan speed, 100 μm hatch spacing, 30 μm layer thickness, 67° rotation"
+        },
+        "Equipment": "SLM 125 HL metal 3D printer; IPG fiber laser (400 W, λ = 1070 nm)",
+        "Key_Params": {
+          "Laser_Power_W": 300,
+          "Scanning_Speed_mm_s": 1200,
+          "Hatch_Spacing_um": 100,
+          "Layer_Thickness_um": 30,
+          "Laser_Spot_Size_um": 70,
+          "Build_Plate_Temperature_C": 200,
+          "Layer_Rotation_deg": 67,
+          "Protective_Atmosphere": "Argon (<1000 PPM O2)",
+          "Powder_Size_avg_um": "-53+15",
+          "Volumetric_Energy_Density_J_mm3": "300 W / (1200 mm/s × 100 μm × 30 μm) = 83.3 J/mm3"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Heterogeneous microstructure with coarse rosettes (36 vol.%), nanoscale cellular precipitates (4 vol.%), and Al-rich matrix (60 vol.%) in melt pool center. Fine rosettes (97 vol.%) with thin Al matrix layers (3 vol.%) near melt pool boundaries. Coarse rosettes have laminate thickness of 150-300 nm; fine rosettes have 20-60 nm laminate spacing. Al3Ti cores surrounded by alternating Al3Ti and medium-entropy Al9(Fe,Co,Ni)2 intermetallics. Cellular boundaries enriched in Al9(Fe,Co,Ni)2. Polycrystalline composite colonies ~1 μm in dimension. Melt pools ~120 μm wide and ~80 μm deep.",
+          "simplified": "Heterogeneous FCC Al matrix with gradient from coarse rosettes (center) to fine rosettes (boundaries); Al3Ti and Al9(Fe,Co,Ni)2 intermetallics with nanolamellar structure"
+        },
+        "Main_Phase": "FCC Al",
+        "Precipitates": [
+          {
+            "Phase_Type": "Al3Ti",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Al9(Fe,Co,Ni)2",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "XRD": "Al3Ti DO22 (I4/mmm, a=0.384 nm, c=0.860 nm) and L12 (Pm3m, a=0.398 nm); Al9(Fe,Co,Ni)2 monoclinic (P21/c, a=0.622 nm, b=0.629 nm, c=0.856 nm, β=94.8°)",
+          "SEM": "Back scattered SEM; melt pool morphology; coarse/fine rosette distribution across XY (horizontal) and XZ (vertical) planes",
+          "TEM": "BF-TEM, STEM, HRTEM, SAED, ASTAR orientation mapping; phase identification, defect analysis, orientation relationships: [130]Al3Ti // [100]Al9(Fe,Co,Ni)2, (002)Al3Ti // (001)Al9(Fe,Co,Ni)2",
+          "APT": "Atom probe tomography (CAMECA LEAP 5000XS); solute distribution, grain boundary segregation, composition across phases",
+          "Nanoindentation": "Berkovich tip, 800 nm depth, 100×100 μm area with 121 indents (10 μm spacing) using Bruker Hysitron TI Premier",
+          "Coarse_Rosette_Volume_Fraction_pct": 36,
+          "Cellular_Precipitate_Volume_Fraction_pct": 4,
+          "Al_Matrix_Volume_Fraction_pct": 60,
+          "Fine_Rosette_Volume_Fraction_pct": 97,
+          "Al_Matrix_Fine_Rosette_pct": 3,
+          "Dislocation_Density_m2": "4.7e13 to 1.0e14",
+          "Grain_Colony_Size_um": 1
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Ultimate_Strength_Compressive",
+          "Test_Condition": "at ~298 K (room temperature); strain rate 10^-3 s^-1",
+          "Value_Numeric": 550.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1e-3",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "Cylindrical, 6 mm diameter × 12 mm height",
+          "Note": "Flow stress decreased compared to 200 W; compressive strain 5-20%"
+        },
+        {
+          "Property_Name": "Elongation_Compressive",
+          "Test_Condition": "at ~298 K (room temperature)",
+          "Value_Numeric": 12.5,
+          "Value_Range": "5-20",
+          "Value_StdDev": null,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1e-3",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "Cylindrical, 6 mm diameter × 12 mm height",
+          "Note": "Compressive strain range; uniform deformation strain ~7% followed by toughening"
+        },
+        {
+          "Property_Name": "Elastic_Modulus",
+          "Test_Condition": "at ~298 K (room temperature)",
+          "Value_Numeric": 140.0,
+          "Value_Range": "130-150",
+          "Value_StdDev": null,
+          "Unit": "GPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "100×100 μm area with 121 indents, 10 μm spacing",
+          "Note": "Hard melt pool boundaries: 140-150 GPa; soft melt pool interiors: 130-140 GPa"
+        },
+        {
+          "Property_Name": "Back_Stress",
+          "Test_Condition": "at ~298 K (room temperature); determined from loading-unloading hysteresis loops using σ_b = (σ_1 + σ_2)/2",
+          "Value_Numeric": 600.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "Micropillars from fine and coarse rosette regions",
+          "Note": "Fine rosettes carry very high back stress ~600 MPa vs ~250 MPa in coarse rosettes; back stress rises quickly and reaches plateau during deformation"
+        },
+        {
+          "Property_Name": "Micropillar_Compressive_Strain",
+          "Test_Condition": "at ~298 K (room temperature); in situ SEM micropillar compression",
+          "Value_Numeric": 15.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "5e-3",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "Micropillars: 10 μm height, 5 μm diameter, 2:1 aspect ratio; FIB fabricated",
+          "Note": "Fine rosette region shows at least 15% plasticity; uniform co-deformation of matrix and precipitates prevents localized shear bands"
+        },
+        {
+          "Property_Name": "Micropillar_Compressive_Strength",
+          "Test_Condition": "at ~298 K (room temperature); in situ SEM micropillar compression; strain rate 5×10^-3 s^-1",
+          "Value_Numeric": 900.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "5e-3",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "Micropillars: 10 μm height, 5 μm diameter, 2:1 aspect ratio; FIB fabricated; 10 and 20 μm diamond flat-punch tips",
+          "Note": "Fine rosette region can achieve true flow stress exceeding 900 MPa (up to 1 GPa); coarse rosette region ~500 MPa; engineering stress for fine rosette reaches 1.18 GPa"
+        },
+        {
+          "Property_Name": "Nanoindentation_Hardness",
+          "Test_Condition": "at ~298 K (room temperature); displacement-control mode, 800 nm depth",
+          "Value_Numeric": 3.5,
+          "Value_Range": "2.5-4.5",
+          "Value_StdDev": null,
+          "Unit": "GPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "100×100 μm area with 121 indents, 10 μm spacing",
+          "Note": "Melt pool boundaries: 3.5-4.5 GPa (finer microstructure); melt pool interior: 2.5-3.0 GPa"
+        }
+      ]
+    }
+  ]
+}

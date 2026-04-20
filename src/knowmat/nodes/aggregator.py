@@ -31,7 +31,7 @@ def aggregate_runs(state: KnowMatState) -> Dict[str, Any]:
     1. Select the highest-confidence run as the base
     2. Add compositions from other runs that don't appear in base
     3. For each composition, prefer values from higher-confidence runs
-    4. Preserve ALL characterisation data from all sources
+    4. Preserve ALL characterisation data and advanced quantitative features from all sources
     
     This is purely merging - no validation, no hallucination checks.
     Those happen in Stage 2 (Validation Agent).
@@ -128,7 +128,19 @@ def aggregate_runs(state: KnowMatState) -> Dict[str, Any]:
                     elif len(details) > len(existing_char.get(technique, "")):
                         existing_char[technique] = details
                 existing["characterisation"] = existing_char
-                
+
+                # Merge advanced quantitative microstructure metrics
+                existing_features = dict(existing.get("advanced_quantitative_features") or {})
+                new_features = comp.get("advanced_quantitative_features") or {}
+                for feature_name, feature_value in new_features.items():
+                    current_value = existing_features.get(feature_name)
+                    if feature_name not in existing_features:
+                        existing_features[feature_name] = feature_value
+                    elif current_value in (None, "", [], {}) and feature_value not in (None, "", [], {}):
+                        existing_features[feature_name] = feature_value
+                if existing_features:
+                    existing["advanced_quantitative_features"] = existing_features
+
                 # Merge properties (avoid duplicates by property_name + property_symbol)
                 existing_props = existing.get("properties_of_composition", [])
                 new_props = comp.get("properties_of_composition", [])

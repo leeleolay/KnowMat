@@ -1,0 +1,223 @@
+{
+  "Paper_Metadata": {
+    "Paper_Title": "Highly printable, strong, and ductile ordered intermetallic alloy",
+    "DOI": "10.1038/s41467-025-56355-2"
+  },
+  "items": [
+    {
+      "Sample_ID": "CCIMA-LPBF",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "CCIMA",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ni": 58.48,
+            "Co": 18.9,
+            "Si": 11.6,
+            "Ti": 6.6,
+            "Al": 4.4,
+            "B": 0.02
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ni": 58.48,
+            "Co": 18.9,
+            "Si": 11.6,
+            "Ti": 6.6,
+            "Al": 4.4,
+            "B": 0.02
+          },
+          "Measurement_Method": "ICP-OES"
+        },
+        "Note": "Pre-alloyed powder composition. Thermal-stabilized CCIMA measured by SEM-EDS: Ni58.1Co19.5Si11.5Ti6.6Al4.3 (at%)"
+      },
+      "Process_Info": {
+        "Process_Category": "AM_LPBF",
+        "Process_Text": {
+          "original": "LPBF using SLM 125HL machine equipped with IPG fiber laser (max 400 W, beam diameter 64 μm); laser power 200 W; scanning speed 900 mm/s; layer thickness 0.03 mm; hatch distance 0.12 mm; layer rotation 67°; build plate 316L stainless steel heated to 200°C; argon atmosphere with oxygen <400 ppm; followed by thermal stabilization at 1000°C for 2 h with air cooling.",
+          "simplified": "LPBF (200 W, 900 mm/s) + thermal stabilization (1000°C/2h/air cooling)"
+        },
+        "Equipment": "SLM 125HL (IPG fiber laser, max 400 W, beam diameter 64 μm)",
+        "Key_Params": {
+          "Laser_Power_W": 200,
+          "Scanning_Speed_mm_s": 900,
+          "Layer_Thickness_um": 30,
+          "Hatch_Spacing_um": 120,
+          "Build_Plate_Temperature_K": 473.15,
+          "Protective_Atmosphere": "Argon",
+          "Oxygen_Content_ppm": 400,
+          "Layer_Rotation_deg": 67,
+          "Solution_Temperature_K": 1273.15,
+          "Solution_Time_h": 2,
+          "Cooling_Medium": "Air"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "XRD confirms ordered L12-type crystal structure. EBSD-IPF shows random grain distribution (max texture index 2.56). Grain size 17.7 μm average, fully equiaxed. SEM-EDS shows homogeneous elemental distributions. TEM-BF: dendritic G phase in as-printed eliminated after thermal treatment. SAED pattern shows highly ordered superlattice spots. APT: homogeneous element distribution within grains without elemental clustering. AC-STEM-HAADF: Ni and Co occupy face centers (A-type sublattice), Si, Ti, Al occupy vertices (B-type sublattice). Grain boundary region: 5 nm thick disordered FCC nanolayer (DINL) rich in Co and B, depleted in Ni, Si, Ti, Al. Co concentration up to 50.64±1.23 at% in DINL vs ~18.95±2.04 at% in grain interior. B segregation up to 0.85±0.22 at% in DINL vs ~0.02±0.01 at% in grain. DINL is FCC γ phase coherent with adjacent L12 grain; volume fraction ~0.08%.",
+          "simplified": "L12 ordered superlattice grains (17.7 μm avg) with 5 nm disordered FCC nanolayer (DINL) at grain boundaries enriched in Co and B; homogeneous elemental distribution"
+        },
+        "Main_Phase": "L12 ordered superlattice (Ni,Co)3(Si,Ti,Al)",
+        "Precipitates": [],
+        "Porosity_pct": 0.005,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": 17.7,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {}
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at 298.15 K; strain rate 1×10^-3 s^-1; perpendicular to BD; thermal-stabilized CCIMA",
+          "Value_Numeric": 1620.0,
+          "Value_Range": null,
+          "Value_StdDev": 30.0,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1×10^-3",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM E8, gauge length 25 mm equivalent (flat dog-bone, gauge 12.5 mm, cross-section ~3.2×3 mm^2)",
+          "Note": "Thermal-stabilized CCIMA (1000°C/2h/air cooling)"
+        },
+        {
+          "Property_Name": "Elongation_Uniform",
+          "Test_Condition": "at 298.15 K; strain rate 1×10^-3 s^-1; perpendicular to BD; thermal-stabilized CCIMA",
+          "Value_Numeric": 35.0,
+          "Value_Range": null,
+          "Value_StdDev": 3.0,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1×10^-3",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "ASTM E8, gauge length 25 mm equivalent (flat dog-bone, gauge 12.5 mm, cross-section ~3.2×3 mm^2)",
+          "Note": "Uniform elongation; thermal-stabilized CCIMA; large uniform elongation at high strength level"
+        },
+        {
+          "Property_Name": "DFT_APB_Energy",
+          "Test_Condition": "DFT calculation for APB energy on (111) plane",
+          "Value_Numeric": 301.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "mJ/m^2",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Anti-phase boundary energy"
+        },
+        {
+          "Property_Name": "DFT_SISF_Energy",
+          "Test_Condition": "DFT calculation for SISF energy on (111) plane",
+          "Value_Numeric": 200.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "mJ/m^2",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Superlattice intrinsic stacking fault energy"
+        },
+        {
+          "Property_Name": "DINL_Volume_Fraction_pct",
+          "Test_Condition": "Calculated from f_DINL = 1-(1-t/d)^3 where t=5nm, d=17.7μm",
+          "Value_Numeric": 0.08,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "%",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Volume fraction of disordered interfacial nanolayer"
+        },
+        {
+          "Property_Name": "Dislocation_Density",
+          "Test_Condition": "Evolution from 5% to 35% strain; calculated by modified Williamson-Hall method",
+          "Value_Numeric": 2.75,
+          "Value_Range": "0.16-5.34",
+          "Value_StdDev": null,
+          "Unit": "m^-2",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Rapid increase in dislocation density with deformation strain; contributes to work hardening"
+        },
+        {
+          "Property_Name": "Elastic_Constant_C44",
+          "Test_Condition": "DFT calculated elastic constant",
+          "Value_Numeric": 130.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "GPa",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Elastic constant for CCIMA"
+        },
+        {
+          "Property_Name": "Grain_Boundary_Nanolayer_Thickness",
+          "Test_Condition": "Disordered interfacial nanolayer (DINL) at grain boundaries",
+          "Value_Numeric": 5.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "nm",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "FCC disordered phase (γ) coherent with adjacent L12 grain; volume fraction ~0.08%"
+        },
+        {
+          "Property_Name": "Work_Hardening_Rate_Max",
+          "Test_Condition": "Stage II deformation; maximum WHR achieved",
+          "Value_Numeric": 5100.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Anomalously high work hardening rate; exceeds most metallic materials including HEAs, Ni-based superalloys, and steels"
+        }
+      ]
+    }
+  ]
+}

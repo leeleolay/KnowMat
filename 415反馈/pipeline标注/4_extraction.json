@@ -1,0 +1,582 @@
+{
+  "Paper_Metadata": {
+    "Paper_Title": "$^{c}$ Leibniz Institute for Solid State and Materials Research Dresden, Institute for Materials Chemistry, Helmholtzstr. 20, Dresden 01069, Germany",
+    "DOI": "10.1016/j.jallcom.2025.179955"
+  },
+  "items": [
+    {
+      "Sample_ID": "CoCrFeNi-LPBF-VED-47.6",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "CoCrFeNi HEA",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Co": 25.0,
+            "Cr": 25.0,
+            "Fe": 25.0,
+            "Ni": 25.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Equiatomic composition; powder average particle size 35 µm"
+      },
+      "Process_Info": {
+        "Process_Category": "AM_LPBF",
+        "Process_Text": {
+          "original": "LPBF processing with laser power 120 W, scanning speed 1400 mm/s, laser spot diameter 60 µm, powder layer thickness 30 µm, volumetric energy density (VED) 47.6 J/mm³. Sample sectioned along build direction (Z) for microstructure analysis.",
+          "simplified": "LPBF at VED 47.6 J/mm³ (120W, 1400mm/s)"
+        },
+        "Equipment": "DiMetal-100H custom-built LPBF device",
+        "Key_Params": {
+          "Laser_Power_W": 120.0,
+          "Scanning_Speed_mm_s": 1400.0,
+          "Laser_Spot_Diameter_um": 60.0,
+          "Powder_Layer_Thickness_um": 30.0,
+          "Volumetric_Energy_Density_J_mm3": 47.6
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "At low VED of 47.6 J/mm³, incomplete melting of powder particles occurs. The center of the molten pool fails to reach melting temperature. Voids form between incompletely melted particles, leading to lack of fusion and formation of uneven surface. Resulting microstructure shows numerous irregular pores. FCC crystalline structure predominates.",
+          "simplified": "Incomplete melting with lack-of-fusion pores; FCC phase; high dislocation density near grain boundaries"
+        },
+        "Main_Phase": "FCC",
+        "Precipitates": [],
+        "Porosity_pct": null,
+        "Relative_Density_pct": 86.0,
+        "Grain_Size_avg_um": 16.29,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {}
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "GND_Density",
+          "Test_Condition": "Calculated from KAM values using strain gradient model: ρ_GND = 2θ/φb",
+          "Value_Numeric": 208000000000000.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "m⁻²",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Highest GND density due to smaller grains and higher grain boundary fraction; KAM_avg = 0.30"
+        },
+        {
+          "Property_Name": "Grain_Size_Average",
+          "Test_Condition": null,
+          "Value_Numeric": 16.29,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "µm",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "EBSD lateral section along build direction",
+          "Note": "Smallest grain size among the three VED conditions"
+        },
+        {
+          "Property_Name": "HAGB_Length",
+          "Test_Condition": "High-angle grain boundaries (grain misorientation >15°)",
+          "Value_Numeric": 1000.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "µm",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Highest HAGB length indicating finest grain structure"
+        },
+        {
+          "Property_Name": "MUD_Value",
+          "Test_Condition": "Misorientation uniformity distribution",
+          "Value_Numeric": 11.283,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Lowest texture anisotropy among the three conditions"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "CoCrFeNi-LPBF-VED-185.2",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "CoCrFeNi HEA",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Co": 25.0,
+            "Cr": 25.0,
+            "Fe": 25.0,
+            "Ni": 25.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Equiatomic composition; powder average particle size 35 µm"
+      },
+      "Process_Info": {
+        "Process_Category": "AM_LPBF",
+        "Process_Text": {
+          "original": "LPBF processing with laser power 200 W, scanning speed 600 mm/s, laser spot diameter 60 µm, powder layer thickness 30 µm, volumetric energy density (VED) 185.2 J/mm³. Sample sectioned along build direction (Z) for microstructure analysis.",
+          "simplified": "LPBF at VED 185.2 J/mm³ (200W, 600mm/s)"
+        },
+        "Equipment": "DiMetal-100H custom-built LPBF device",
+        "Key_Params": {
+          "Laser_Power_W": 200.0,
+          "Scanning_Speed_mm_s": 600.0,
+          "Laser_Spot_Diameter_um": 60.0,
+          "Powder_Layer_Thickness_um": 30.0,
+          "Volumetric_Energy_Density_J_mm3": 185.2
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "At intermediate VED of 185.2 J/mm³, complete melting of powder particles is achieved. The laser heats the molten pool center well above melting point while boundary remains below melting point, forming a clear molten pool. Melt spreads and fills voids between particles, resulting in smooth surface and much denser material. Grain coalescence and epitaxial growth occur. FCC phase predominates.",
+          "simplified": "Complete melting with optimal density; FCC phase; moderate grain size; smooth melt track surface"
+        },
+        "Main_Phase": "FCC",
+        "Precipitates": [],
+        "Porosity_pct": null,
+        "Relative_Density_pct": 98.0,
+        "Grain_Size_avg_um": 17.13,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {}
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "GND_Density",
+          "Test_Condition": "Calculated from KAM values using strain gradient model: ρ_GND = 2θ/φb",
+          "Value_Numeric": 180000000000000.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "m⁻²",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Intermediate GND density; coarser grains reduce overall dislocation density; KAM_avg = 0.28"
+        },
+        {
+          "Property_Name": "Grain_Size_Average",
+          "Test_Condition": null,
+          "Value_Numeric": 17.13,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "µm",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "EBSD lateral section along build direction",
+          "Note": "Intermediate grain size among the three VED conditions"
+        },
+        {
+          "Property_Name": "HAGB_Length",
+          "Test_Condition": "High-angle grain boundaries (grain misorientation >15°)",
+          "Value_Numeric": 347.21,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "µm",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Intermediate HAGB length"
+        },
+        {
+          "Property_Name": "MUD_Value",
+          "Test_Condition": "Misorientation uniformity distribution",
+          "Value_Numeric": 16.839,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Intermediate texture anisotropy"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "CoCrFeNi-LPBF-VED-277.8",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "CoCrFeNi HEA",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Co": 25.0,
+            "Cr": 25.0,
+            "Fe": 25.0,
+            "Ni": 25.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Equiatomic composition; powder average particle size 35 µm"
+      },
+      "Process_Info": {
+        "Process_Category": "AM_LPBF",
+        "Process_Text": {
+          "original": "LPBF processing with laser power 200 W, scanning speed 400 mm/s, laser spot diameter 60 µm, powder layer thickness 30 µm, volumetric energy density (VED) 277.8 J/mm³. Sample sectioned along build direction (Z) for microstructure analysis.",
+          "simplified": "LPBF at VED 277.8 J/mm³ (200W, 400mm/s)"
+        },
+        "Equipment": "DiMetal-100H custom-built LPBF device",
+        "Key_Params": {
+          "Laser_Power_W": 200.0,
+          "Scanning_Speed_mm_s": 400.0,
+          "Laser_Spot_Diameter_um": 60.0,
+          "Powder_Layer_Thickness_um": 30.0,
+          "Volumetric_Energy_Density_J_mm3": 277.8
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "At high VED of 277.8 J/mm³, the laser heats the molten pool center to higher temperatures, enlarging the molten pool size and extending high-temperature zone duration. Complete melting of powder particles occurs with voids filled by molten material. However, vaporization occurs at the center of the molten pool reaching 3500 K (boiling point), causing atom evaporation, spattering, and surface irregularities. Grain coalescence and epitaxial growth are enhanced. Columnar grains form across multiple layers. FCC phase predominates.",
+          "simplified": "High-temperature vaporization causing defects; FCC phase; coarsest grain size with columnar structure; epitaxial grain growth"
+        },
+        "Main_Phase": "FCC",
+        "Precipitates": [],
+        "Porosity_pct": null,
+        "Relative_Density_pct": 96.0,
+        "Grain_Size_avg_um": 23.85,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {}
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "GND_Density",
+          "Test_Condition": "Calculated from KAM values using strain gradient model: ρ_GND = 2θ/φb",
+          "Value_Numeric": 146000000000000.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "m⁻²",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Lowest GND density; coarser grains result in fewer grain boundaries; KAM_avg = 0.22"
+        },
+        {
+          "Property_Name": "Grain_Size_Average",
+          "Test_Condition": null,
+          "Value_Numeric": 23.85,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "µm",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "EBSD lateral section along build direction",
+          "Note": "Largest grain size among the three conditions due to enhanced grain coalescence and epitaxial growth"
+        },
+        {
+          "Property_Name": "HAGB_Length",
+          "Test_Condition": "High-angle grain boundaries (grain misorientation >15°)",
+          "Value_Numeric": 144.5,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "µm",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Lowest HAGB length indicating coarsest grain structure with columnar grains"
+        },
+        {
+          "Property_Name": "MUD_Value",
+          "Test_Condition": "Misorientation uniformity distribution",
+          "Value_Numeric": 20.918,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Highest texture anisotropy with coarsening grains"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "CoCrFeNi-MD-100eVps",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": "CoCrFeNi-MD-simulation",
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "CoCrFeNi HEA",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Co": 25.0,
+            "Cr": 25.0,
+            "Fe": 25.0,
+            "Ni": 25.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Equiatomic composition; MD simulation model"
+      },
+      "Process_Info": {
+        "Process_Category": "AM_LPBF",
+        "Process_Text": {
+          "original": "Molecular dynamics simulation of LPBF process using LAMMPS. EAM potential (Fe-Ni-Cr-Co-Cu system). Simulation box: 1000 Å × 150 Å × 25 Å (substrate), powder layer 50 Å width. Total 477,379 atoms. 64 powder particles with diameters 30.15-39.89 Å. Energy input: 100 eV/ps heat input via 'fix heat' command (moving heat source along x-direction). Boundary conditions: fixed in x,y; periodic in z. Heating from 300 K to 2500 K over 0-300 ps, natural cooling 300-600 ps. Time step 0.001 ps.",
+          "simplified": "MD simulation at 100 eV/ps energy input; incomplete melting regime"
+        },
+        "Equipment": "LAMMPS (Large-scale Atomic/Molecular Massively Parallel Simulator); Ovito for visualization and post-processing",
+        "Key_Params": {
+          "Heat_Input_eV_ps": 100.0,
+          "Simulation_Box_X_A": 1000.0,
+          "Simulation_Box_Y_A": 150.0,
+          "Simulation_Box_Z_A": 25.0,
+          "Total_Atoms": 477379,
+          "Powder_Particle_Count": 64,
+          "Powder_Particle_Size_Range_A": "30.15-39.89",
+          "Heating_Rate": "300K to 2500K in 300ps",
+          "Time_Step_ps": 0.001,
+          "Laser_Scan_Direction": "x-direction"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "At 100 eV/ps energy input, incomplete melting occurs. The center of the molten pool fails to heat above melting point. Powder particles retain their initial spherical shape and point-contact morphology at regions far from the irradiated area. Voids form between incompletely melted particles. Stacking faults and twins form during solidification. Dislocations concentrate near grain boundaries. FCC structure predominates with some HCP atoms.",
+          "simplified": "Incomplete melting with lack-of-fusion pores; FCC+HCP phases; dislocations concentrated at grain boundaries"
+        },
+        "Main_Phase": "FCC",
+        "Precipitates": [],
+        "Porosity_pct": null,
+        "Relative_Density_pct": 91.3,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {}
+      },
+      "Properties_Info": []
+    },
+    {
+      "Sample_ID": "CoCrFeNi-MD-300eVps",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": "CoCrFeNi-MD-simulation",
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "CoCrFeNi HEA",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Co": 25.0,
+            "Cr": 25.0,
+            "Fe": 25.0,
+            "Ni": 25.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Equiatomic composition; MD simulation model"
+      },
+      "Process_Info": {
+        "Process_Category": "AM_LPBF",
+        "Process_Text": {
+          "original": "Molecular dynamics simulation of LPBF process using LAMMPS. EAM potential (Fe-Ni-Cr-Co-Cu system). Simulation box: 1000 Å × 150 Å × 25 Å (substrate), powder layer 50 Å width. Total 477,379 atoms. 64 powder particles with diameters 30.15-39.89 Å. Energy input: 300 eV/ps heat input via 'fix heat' command (moving heat source along x-direction). Boundary conditions: fixed in x,y; periodic in z. Heating from 300 K to 2500 K over 0-300 ps, natural cooling 300-600 ps. Time step 0.001 ps.",
+          "simplified": "MD simulation at 300 eV/ps energy input; optimal melting with complete particle fusion"
+        },
+        "Equipment": "LAMMPS (Large-scale Atomic/Molecular Massively Parallel Simulator); Ovito for visualization and post-processing",
+        "Key_Params": {
+          "Heat_Input_eV_ps": 300.0,
+          "Simulation_Box_X_A": 1000.0,
+          "Simulation_Box_Y_A": 150.0,
+          "Simulation_Box_Z_A": 25.0,
+          "Total_Atoms": 477379,
+          "Powder_Particle_Count": 64,
+          "Powder_Particle_Size_Range_A": "30.15-39.89",
+          "Heating_Rate": "300K to 2500K in 300ps",
+          "Time_Step_ps": 0.001,
+          "Laser_Scan_Direction": "x-direction"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "At 300 eV/ps energy input, complete melting of powder particles is achieved. The molten pool center reaches temperature well above melting point while boundary remains below melting point, forming a clear molten pool. Deeper and wider molten pool forms as heat penetrates particle cores. Melt spreads and fills voids between particles under surface tension influence. Adjacent particles fuse together forming continuous structure. Grain coalescence and epitaxial growth occur. FCC structure predominates with regular dislocation distribution concentrated around grain boundaries. Marangoni flow observed with clockwise flow pattern for all atom types.",
+          "simplified": "Complete melting with optimal fusion; FCC phase; regular dislocation distribution; Marangoni convection dominates atomic flow"
+        },
+        "Main_Phase": "FCC",
+        "Precipitates": [],
+        "Porosity_pct": null,
+        "Relative_Density_pct": 98.9,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {}
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Molten_Pool_Temperature",
+          "Test_Condition": "Maximum temperature at molten pool center during heating",
+          "Value_Numeric": 2500.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "K",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Temperature reaches melting point but not boiling point"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "CoCrFeNi-MD-500eVps",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": "CoCrFeNi-MD-simulation",
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "CoCrFeNi HEA",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Co": 25.0,
+            "Cr": 25.0,
+            "Fe": 25.0,
+            "Ni": 25.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Equiatomic composition; MD simulation model"
+      },
+      "Process_Info": {
+        "Process_Category": "AM_LPBF",
+        "Process_Text": {
+          "original": "Molecular dynamics simulation of LPBF process using LAMMPS. EAM potential (Fe-Ni-Cr-Co-Cu system). Simulation box: 1000 Å × 150 Å × 25 Å (substrate), powder layer 50 Å width. Total 477,379 atoms. 64 powder particles with diameters 30.15-39.89 Å. Energy input: 500 eV/ps heat input via 'fix heat' command (moving heat source along x-direction). Boundary conditions: fixed in x,y; periodic in z. Heating from 300 K to 2500 K over 0-300 ps, natural cooling 300-600 ps. Time step 0.001 ps.",
+          "simplified": "MD simulation at 500 eV/ps energy input; high-temperature vaporization regime"
+        },
+        "Equipment": "LAMMPS (Large-scale Atomic/Molecular Massively Parallel Simulator); Ovito for visualization and post-processing",
+        "Key_Params": {
+          "Heat_Input_eV_ps": 500.0,
+          "Simulation_Box_X_A": 1000.0,
+          "Simulation_Box_Y_A": 150.0,
+          "Simulation_Box_Z_A": 25.0,
+          "Total_Atoms": 477379,
+          "Powder_Particle_Count": 64,
+          "Powder_Particle_Size_Range_A": "30.15-39.89",
+          "Heating_Rate": "300K to 2500K in 300ps",
+          "Time_Step_ps": 0.001,
+          "Laser_Scan_Direction": "x-direction"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "At 500 eV/ps energy input, the molten pool center reaches 3500 K (boiling point), causing intense vaporization and spattering. High-temperature zone duration is extended. Complete melting of powder particles with voids filled by molten material. Surface temperature rises and high-temperature region expands. Enhanced grain coalescence and epitaxial growth due to larger temperature gradients. Maximum atomic diffusion and recrystallization. FCC structure predominates with fewer dislocations inside grains.",
+          "simplified": "High-temperature vaporization with atom evaporation; FCC phase; coarsest grains with maximum coalescence; surface irregularities"
+        },
+        "Main_Phase": "FCC",
+        "Precipitates": [],
+        "Porosity_pct": null,
+        "Relative_Density_pct": 97.5,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {}
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Molten_Pool_Temperature",
+          "Test_Condition": "Maximum temperature at molten pool center; equals boiling point",
+          "Value_Numeric": 3500.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "K",
+          "Test_Temperature_K": null,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": null,
+          "Note": "Temperature exceeds boiling point causing vaporization; far-from-equilibrium evaporation process"
+        }
+      ]
+    }
+  ]
+}

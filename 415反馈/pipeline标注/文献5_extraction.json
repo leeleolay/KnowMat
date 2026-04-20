@@ -1,0 +1,247 @@
+{
+  "Paper_Metadata": {
+    "Paper_Title": "Improving ductility via grain structure control in Sc/Zr modified Al-Cu-Li alloys by pulsed-laser powder bed fusion",
+    "DOI": "10.1080/17452759.2025.2526171"
+  },
+  "items": [
+    {
+      "Sample_ID": "CL",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Al-Cu-Li-Sc-Zr",
+        "Nominal_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Al": 93.71,
+            "Cu": 2.88,
+            "Li": 1.79,
+            "Sc": 1.06,
+            "Zr": 0.56
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": "ICP-OES"
+        },
+        "Note": "Powder composition determined by ICP-OES; powder particle diameters ranged from 15 to 53 μm with good sphericity"
+      },
+      "Process_Info": {
+        "Process_Category": "AM_LPBF",
+        "Process_Text": {
+          "original": "LPBF using BLT S200 laser system with continuous laser mode (CL); laser power 800 W, scanning speed 1000 mm/s, hatch spacing 0.08 mm, layer thickness 30 μm, inter-layer rotation 67°; substrate AlSi10Mg preheated to 150°C; argon atmosphere with oxygen concentration below 300 ppm",
+          "simplified": "LPBF with continuous laser (CL) mode, 800 W, 1000 mm/s scanning speed, 30 μm layer thickness, 67° inter-layer rotation, substrate preheated to 150°C"
+        },
+        "Equipment": "BLT S200 laser system",
+        "Key_Params": {
+          "Laser_Power_W": 800,
+          "Scanning_Speed_mm_s": 1000,
+          "Hatch_Spacing_mm": 0.08,
+          "Layer_Thickness_um": 30,
+          "Build_Plate_Temperature_K": 423.0,
+          "Protective_Atmosphere": "Argon",
+          "Oxygen_Content_ppm": 300,
+          "Inter_Layer_Rotation_deg": 67,
+          "Focused_Laser_Diameter_um": 100
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Heterogeneous microstructure comprising columnar grains (CG) in the center and fine equiaxed grains (FG) at the boundaries of melt pools; epitaxial growth along [001] direction with heterogeneous nucleation of primary Al3(Li,Sc,Zr); columnar grains exhibit continuous white precipitate network along grain boundaries; FG regions show denser precipitate distribution; Al-Cu eutectic phases (L → α-Al + θ-Al2Cu) confirmed; Sc/Zr enrichment at melt pool boundary",
+          "simplified": "Heterogeneous microstructure with CG at melt pool center and FG at boundaries; epitaxial growth along [001]; continuous precipitate network along CG grain boundaries; Al-Cu eutectic phases present; Sc/Zr segregation at melt pool boundaries"
+        },
+        "Main_Phase": "alpha-Al",
+        "Precipitates": [
+          {
+            "Phase_Type": "Al3(Li,Sc,Zr)",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "theta-Al2Cu",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": 0.27,
+        "Relative_Density_pct": 99.73,
+        "Grain_Size_avg_um": 1.52,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {}
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at room temperature",
+          "Value_Numeric": 448.97,
+          "Value_Range": null,
+          "Value_StdDev": 4.15,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": 1.0,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "6 mm gauge width, 2 mm gauge thickness, 24 mm gauge length; tensile axis perpendicular to build direction",
+          "Note": "Continuous laser sample"
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at room temperature; strain rate not specified",
+          "Value_Numeric": 471.86,
+          "Value_Range": null,
+          "Value_StdDev": 2.07,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "not specified",
+          "Tensile_Speed_mm_min": 1.0,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "6 mm gauge width, 2 mm gauge thickness, 24 mm gauge length; tensile axis perpendicular to build direction",
+          "Note": "Continuous laser sample"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at room temperature",
+          "Value_Numeric": 4.82,
+          "Value_Range": null,
+          "Value_StdDev": 0.36,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": 1.0,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "6 mm gauge width, 2 mm gauge thickness, 24 mm gauge length; tensile axis perpendicular to build direction",
+          "Note": "Continuous laser sample; reported as elongation (δ) without subtype specification, mapped to Elongation_Total"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "PL",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Al-Cu-Li-Sc-Zr",
+        "Nominal_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Al": 93.71,
+            "Cu": 2.88,
+            "Li": 1.79,
+            "Sc": 1.06,
+            "Zr": 0.56
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": "ICP-OES"
+        },
+        "Note": "Powder composition determined by ICP-OES; powder particle diameters ranged from 15 to 53 μm with good sphericity; equivalent scanning speed 1000 mm/s"
+      },
+      "Process_Info": {
+        "Process_Category": "AM_LPBF",
+        "Process_Text": {
+          "original": "LPBF using Renishaw AM400 with pulsed laser mode (PL); 400 W quasi-continuous mode laser, laser power 800 W, exposure time 50 μs, delay time 10 μs, point spacing 60 μm, hatch spacing 0.08 mm, layer thickness 30 μm, equivalent scanning speed 1000 mm/s, inter-layer rotation 67°; substrate AlSi10Mg preheated to 150°C; argon atmosphere with oxygen concentration below 300 ppm; point-by-point deposition breaks large melt pool into smaller independent pools",
+          "simplified": "LPBF with pulsed laser (PL) mode, 800 W, 50 μs exposure time, 10 μs delay time, 60 μm point spacing, 30 μm layer thickness, equivalent 1000 mm/s scanning speed, 67° inter-layer rotation, substrate preheated to 150°C; independent melt pool formation enables remelting of columnar grains"
+        },
+        "Equipment": "Renishaw AM400 quasi-continuous mode laser system",
+        "Key_Params": {
+          "Laser_Power_W": 800,
+          "Exposure_Time_us": 50,
+          "Delay_Time_us": 10,
+          "Point_Spacing_um": 60,
+          "Hatch_Spacing_mm": 0.08,
+          "Layer_Thickness_um": 30,
+          "Equivalent_Scanning_Speed_mm_s": 1000,
+          "Build_Plate_Temperature_K": 423.0,
+          "Protective_Atmosphere": "Argon",
+          "Oxygen_Content_ppm": 300,
+          "Inter_Layer_Rotation_deg": 67,
+          "Focused_Spot_Diameter_um": 70
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Predominantly equiaxed grain microstructure with sporadic short columnar grains; distinct equiaxed grain structure in XOZ plane with aspect ratio near 1:1; no obvious boundaries between columnar and equiaxed grains; Al3(Li,Sc,Zr) precipitates distributed in both coarse and fine equiaxed grain regions with higher volume fraction in fine grains (2-2.5%) than coarse grains (0.5-1.1%); discontinuous Al-Cu eutectic phases along grain boundaries; Sc elements displaced from boundaries forming clustered accumulations; higher cooling rate compared to continuous laser",
+          "simplified": "Fully equiaxed grain microstructure with minor short columnar grains; uniform grain size distribution; Al3(Li,Sc,Zr) precipitates distributed throughout with higher fraction in fine grain regions (2-2.5%); discontinuous Al-Cu eutectic at boundaries; no Sc/Zr segregation at grain boundaries; higher cooling rate"
+        },
+        "Main_Phase": "alpha-Al",
+        "Precipitates": [
+          {
+            "Phase_Type": "Al3(Li,Sc,Zr)",
+            "Volume_Fraction_pct": 2.0
+          },
+          {
+            "Phase_Type": "theta-Al2Cu",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": 0.21,
+        "Relative_Density_pct": 99.79,
+        "Grain_Size_avg_um": 0.91,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": 2.0,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {}
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at room temperature",
+          "Value_Numeric": 391.65,
+          "Value_Range": null,
+          "Value_StdDev": 3.85,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": 1.0,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "6 mm gauge width, 2 mm gauge thickness, 24 mm gauge length; tensile axis perpendicular to build direction",
+          "Note": "Pulsed laser sample; ~57 MPa lower than CL sample due to loss of HDI strengthening"
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at room temperature; strain rate not specified",
+          "Value_Numeric": 435.77,
+          "Value_Range": null,
+          "Value_StdDev": 0.27,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "not specified",
+          "Tensile_Speed_mm_min": 1.0,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "6 mm gauge width, 2 mm gauge thickness, 24 mm gauge length; tensile axis perpendicular to build direction",
+          "Note": "Pulsed laser sample; 7.6% decrease in tensile strength compared to CL sample"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at room temperature",
+          "Value_Numeric": 10.18,
+          "Value_Range": null,
+          "Value_StdDev": 0.14,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": 1.0,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "image",
+          "Test_Specimen": "6 mm gauge width, 2 mm gauge thickness, 24 mm gauge length; tensile axis perpendicular to build direction",
+          "Note": "Pulsed laser sample; 211% improvement in elongation compared to CL sample (4.82% to 10.18%)"
+        }
+      ]
+    }
+  ]
+}

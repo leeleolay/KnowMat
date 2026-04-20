@@ -1,0 +1,455 @@
+{
+  "Paper_Metadata": {
+    "Paper_Title": "Superior corrosion resistance and its origins in an additively manufactured Co-Cr-Ni-Al-Ti high-entropy alloy with nano-lamellar precipitates",
+    "DOI": "10.1016/j.jmst.2024.12.072"
+  },
+  "items": [
+    {
+      "Sample_ID": "Al5Ti5_SLM_AP",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Al5Ti5 HEA",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ni": 30.0,
+            "Ti": 5.0,
+            "Al": 5.0,
+            "Co": 40.0,
+            "Cr": 20.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": null
+      },
+      "Process_Info": {
+        "Process_Category": "AM_LPBF",
+        "Process_Text": {
+          "original": "Gas-atomized Al5Ti5 HEA powders with average particle size 36.36 μm were used to fabricate bulk specimens via SLM (laser power: 175 W, scan speed: 1000 mm/s, layer thickness: 30 μm, hatching space: 80 μm) under argon atmosphere. Test surface (X-Y plane) perpendicular to building direction.",
+          "simplified": "SLM with optimized parameters (175 W, 1000 mm/s, 30 μm layer thickness, 80 μm hatch spacing) under argon atmosphere"
+        },
+        "Equipment": "SLM-100, Guangdong Hanbang",
+        "Key_Params": {
+          "Scanning_Speed_mm_s": 1000,
+          "Volumetric_Energy_Density_J_mm3": 7.29,
+          "Argon_Atmosphere": true,
+          "Hatch_Spacing_um": 80,
+          "Laser_Power_W": 175,
+          "Layer_Thickness_um": 30,
+          "Powder_Size_avg_um": 36.36,
+          "Protective_Atmosphere": "Argon"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Single-phase FCC structure with conventional polycrystalline morphology. Ti-enriched cellular structures with average size ~400 nm prevail inside grains. Cellular walls are decorated with high density of dislocations (KAM value 0.85°). Cellular boundaries show Ti enrichment and slight Co, Cr depletion. No superlattice spots in SADP along [011] zone axis.",
+          "simplified": "Single-phase FCC with cellular structure (~400 nm); Ti enrichment at cellular boundaries; high dislocation density"
+        },
+        "Main_Phase": "FCC",
+        "Precipitates": [],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": 29.7,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "EIS": "Electrochemical impedance spectroscopy (10^5 to 10^-2 Hz, 10 mV excitation) used for passive film characterization",
+          "SEM": "SEM (Quanta FEG450, FEI) used for cellular structure and corrosion morphology observation",
+          "STEM": "STEM (Talos F200X, FEI) with Super-X EDS detector used for elemental mapping and line-scan analysis; HAADF imaging for passive film structure",
+          "TEM": "TEM (2100F, JEOL) used for SADP analysis of phase structure",
+          "XPS": "XPS (Thermo Scientific Escalab Xi+) used for chemical state analysis of passive films; high-resolution spectra of O 1s, C 1s, Co 2p, Cr 2p, Ni 2p, Al 2p, Ti 2p obtained",
+          "APT": "Atom probe tomography (LEAP 5000XR) used for atomic-scale compositional analysis; 3D reconstructed atom maps and 1D compositional distribution profiles across L12/FCC interphase boundary",
+          "CLSM": "Confocal laser scanning microscopy (VKX3000, Keyence) used for pit depth profiling",
+          "EBSD": "EBSD (EDAX Velocity) used for grain size and KAM analysis; IPF maps and KAM maps obtained",
+          "KAM_value_deg": 0.85,
+          "L12_Volume_fraction_pct": 37,
+          "Lattice_mismatch_delta_pct": 0.28,
+          "APT_FCC_Matrix_composition_atpct": {
+            "Ti": 0.8,
+            "Al": 2.66,
+            "Co": 48.99,
+            "Cr": 31.26,
+            "Ni": 16.29
+          },
+          "APT_L12_Precipitate_composition_atpct": {
+            "Al": 10.43,
+            "Co": 21.42,
+            "Cr": 3.58,
+            "Ni": 52.83,
+            "Ti": 11.75
+          },
+          "Cellular_structure_size_nm": 400
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Corrosion_Potential",
+          "Test_Condition": "in 3.5 wt.% NaCl solution at room temperature; scan rate 0.1 mV/s from -0.6 VSCE towards anodic direction",
+          "Value_Numeric": -336.0,
+          "Value_Range": null,
+          "Value_StdDev": 9.0,
+          "Unit": "mV_SCE",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "14 mm diameter, 5 mm thickness disc; X-Y plane surface perpendicular to building direction",
+          "Note": "Corrosion parameters from potentiodynamic polarization testing"
+        },
+        {
+          "Property_Name": "Passive_Current_Density",
+          "Test_Condition": "in 3.5 wt.% NaCl solution at room temperature",
+          "Value_Numeric": 4.86,
+          "Value_Range": null,
+          "Value_StdDev": 0.23,
+          "Unit": "μA/cm²",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "14 mm diameter, 5 mm thickness disc; X-Y plane surface",
+          "Note": "Passive current density from potentiodynamic polarization testing"
+        },
+        {
+          "Property_Name": "Passive_Film_Resistivity",
+          "Test_Condition": "in 3.5 wt.% NaCl solution after OCP stabilization; EIS analysis with ZView software",
+          "Value_Numeric": 48300.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "Ω·cm",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "14 mm diameter disc",
+          "Note": "Local resistivity distribution follows Young model exponential profile"
+        },
+        {
+          "Property_Name": "Passive_Film_Thickness",
+          "Test_Condition": "in 3.5 wt.% NaCl solution after OCP stabilization for 3600 s",
+          "Value_Numeric": 2.72,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "nm",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "14 mm diameter disc; polished to 5000-grit and mirror polished",
+          "Note": "Passive film thickness calculated from effective capacitance using dielectric constant ~24.1"
+        },
+        {
+          "Property_Name": "Passive_Region_Width",
+          "Test_Condition": "in 3.5 wt.% NaCl solution at room temperature",
+          "Value_Numeric": 691.0,
+          "Value_Range": null,
+          "Value_StdDev": 20.0,
+          "Unit": "mV_SCE",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "14 mm diameter, 5 mm thickness disc",
+          "Note": "Passive region width from potentiodynamic polarization testing"
+        },
+        {
+          "Property_Name": "Pit_Depth",
+          "Test_Condition": "Potentiostatic polarization at 1 VSCE (above Epit) for 120 s",
+          "Value_Numeric": 30.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "μm",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "14 mm diameter disc",
+          "Note": "Corrosion morphology by SEM and CLSM; dense pitting with hemispherical pit shape"
+        },
+        {
+          "Property_Name": "Pitting_Potential",
+          "Test_Condition": "in 3.5 wt.% NaCl solution at room temperature; scan rate 0.1 mV/s",
+          "Value_Numeric": 355.0,
+          "Value_Range": null,
+          "Value_StdDev": 28.0,
+          "Unit": "mV_SCE",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "14 mm diameter, 5 mm thickness disc; X-Y plane surface",
+          "Note": "Pitting potential from potentiodynamic polarization testing"
+        },
+        {
+          "Property_Name": "Polarization_Resistance",
+          "Test_Condition": "in 3.5 wt.% NaCl solution after OCP stabilization; frequency range 10⁵ to 10⁻² Hz; excitation voltage 10 mV",
+          "Value_Numeric": 318000.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "Ω·cm²",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "14 mm diameter disc; polished and ultrasonically cleaned",
+          "Note": "Polarization resistance from EIS Voigt model; higher R_p indicates more stable passive film"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "Al5Ti5_SLM_Aged",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "Al5Ti5 HEA",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Cr": 20.0,
+            "Ni": 30.0,
+            "Ti": 5.0,
+            "Al": 5.0,
+            "Co": 40.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Ni": 30.0,
+            "Ti": 5.0,
+            "Al": 5.0,
+            "Co": 40.0,
+            "Cr": 20.0
+          },
+          "Measurement_Method": "APT (nominal composition verified by atom probe tomography)"
+        },
+        "Note": "L12 phase enriched in Ni, Al, Ti and depleted in Co, Cr; FCC matrix enriched in Co and Cr; volume fraction ~37% calculated by lever rule"
+      },
+      "Process_Info": {
+        "Process_Category": "AM_LPBF",
+        "Process_Text": {
+          "original": "Gas-atomized Al5Ti5 HEA powders with average particle size 36.36 μm were used to fabricate bulk specimens via SLM (laser power: 175 W, scan speed: 1000 mm/s, layer thickness: 30 μm, hatching space: 80 μm) under argon atmosphere. Subsequently, as-printed specimen was aged at 700°C for 4 h to introduce L12 nanoprecipitates. Aging heat treatment ended with air cooling. Test surface (X-Y plane) perpendicular to building direction.",
+          "simplified": "SLM with optimized parameters (175 W, 1000 mm/s, 30 μm layer thickness, 80 μm hatch spacing) under argon atmosphere, followed by aging at 700°C for 4 h with air cooling"
+        },
+        "Equipment": "SLM-100, Guangdong Hanbang",
+        "Key_Params": {
+          "Powder_Size_avg_um": 36.36,
+          "Protective_Atmosphere": "Argon",
+          "Scanning_Speed_mm_s": 1000,
+          "Solution_Aging_Category": "Age after AM",
+          "Hatch_Spacing_um": 80,
+          "Layer_Thickness_um": 30,
+          "Age_Temperature_C": 700,
+          "Age_Temperature_K": 973.15,
+          "Argon_Atmosphere": true,
+          "Laser_Power_W": 175,
+          "Age_Cooling": "Air cooling",
+          "Age_Duration_h": 4
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "FCC + L12 dual-phase structure. Grain size significantly refined to 9.2 μm. Both continuous precipitation (CP) and discontinuous precipitation (DP) regions present. DP region shows lamellar L12 nanorods without cellular structures. SADP shows L12-induced superlattice spots {001} and {011}. L12 phase has coherent interface with FCC matrix (δ = 0.28%). Cellular boundaries in CP region show Ti enrichment and slight Ni enrichment. Cellular boundaries in DP region show L12-like segregation: Ti, Ni, Al enrichment with Co, Cr depletion. Reduced dislocation density (KAM 0.67°).",
+          "simplified": "FCC + L12 dual-phase with lamellar nanorods; grain refined to 9.2 μm; coherent L12/FCC interface (δ = 0.28%); DP regions free of cellular structure"
+        },
+        "Main_Phase": "FCC + L12",
+        "Precipitates": [
+          {
+            "Phase_Type": "L12",
+            "Volume_Fraction_pct": 37.0
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": 9.2,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": 37.0,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "FIB-SEM": "Dual-beam FIB/SEM used for cross-sectional passive film sample preparation; NanoMill (Model 1040) used for final polishing at 900 eV argon ion beam",
+          "HAADF": "Atomic-resolution HAADF imaging (Titan Cubed Themis G2 300 at 300 kV) used for passive film structure analysis",
+          "TEM": "TEM (2100F, JEOL) used for SADP and dark-field imaging of L12 phase; high-resolution TEM for coherent interface observation",
+          "CLSM": "Confocal laser scanning microscopy (VKX3000, Keyence) used for pit depth profiling",
+          "EIS": "Electrochemical impedance spectroscopy used for passive film characterization; larger capacitive arc radius than as-printed",
+          "SEM": "SEM (Quanta FEG450, FEI) used for microstructure and corrosion morphology",
+          "STEM": "STEM (Talos F200X) with Super-X EDS and HAADF for elemental mapping; cross-sectional passive film analysis",
+          "XPS": "XPS (Thermo Scientific Escalab Xi+) used for chemical state analysis of passive films after potentiostatic polarization at 0.15 VSCE for 7200 s",
+          "APT": "Atom probe tomography (LEAP 5000XR) used for atomic-scale compositional analysis; 3D reconstructed atom maps and proximity histogram across L12/FCC interface",
+          "EBSD": "EBSD (EDAX Velocity) used for grain size and KAM analysis; IPF and KAM maps showing refined grains",
+          "KAM_value_deg": 0.67,
+          "L12_Volume_fraction_pct": 37,
+          "Lattice_mismatch_delta_pct": 0.28,
+          "APT_FCC_Matrix_composition_atpct": {
+            "Al": 2.66,
+            "Co": 48.99,
+            "Cr": 31.26,
+            "Ni": 16.29,
+            "Ti": 0.8
+          },
+          "APT_L12_Precipitate_composition_atpct": {
+            "Co": 21.42,
+            "Cr": 3.58,
+            "Ni": 52.83,
+            "Ti": 11.75,
+            "Al": 10.43
+          },
+          "Cellular_structure_size_nm": 400
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Corrosion_Potential",
+          "Test_Condition": "in 3.5 wt.% NaCl solution at room temperature; scan rate 0.1 mV/s from -0.6 VSCE towards anodic direction",
+          "Value_Numeric": -311.0,
+          "Value_Range": null,
+          "Value_StdDev": 15.0,
+          "Unit": "mV_SCE",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "14 mm diameter, 5 mm thickness disc; X-Y plane surface perpendicular to building direction",
+          "Note": "Corrosion parameters from potentiodynamic polarization testing; superior to as-printed alloy"
+        },
+        {
+          "Property_Name": "Passive_Current_Density",
+          "Test_Condition": "in 3.5 wt.% NaCl solution at room temperature",
+          "Value_Numeric": 4.46,
+          "Value_Range": null,
+          "Value_StdDev": 0.35,
+          "Unit": "μA/cm²",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "14 mm diameter, 5 mm thickness disc; X-Y plane surface",
+          "Note": "Passive current density from potentiodynamic polarization testing"
+        },
+        {
+          "Property_Name": "Passive_Film_Resistivity",
+          "Test_Condition": "in 3.5 wt.% NaCl solution after OCP stabilization; EIS analysis with ZView software",
+          "Value_Numeric": 36800.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "Ω·cm",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "14 mm diameter disc",
+          "Note": "Local resistivity distribution follows Young model exponential profile; ρδ = 3.68×10⁴ Ω·cm"
+        },
+        {
+          "Property_Name": "Passive_Film_Thickness",
+          "Test_Condition": "in 3.5 wt.% NaCl solution after OCP stabilization for 3600 s",
+          "Value_Numeric": 3.56,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "nm",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "14 mm diameter disc; polished to 5000-grit and mirror polished",
+          "Note": "Passive film thickness from EIS Voigt model; thicker and more protective than as-printed"
+        },
+        {
+          "Property_Name": "Passive_Region_Width",
+          "Test_Condition": "in 3.5 wt.% NaCl solution at room temperature",
+          "Value_Numeric": 788.0,
+          "Value_Range": null,
+          "Value_StdDev": 25.0,
+          "Unit": "mV_SCE",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "14 mm diameter disc",
+          "Note": "Passive region width from potentiodynamic polarization testing"
+        },
+        {
+          "Property_Name": "Pit_Depth",
+          "Test_Condition": "Potentiostatic polarization at 1 VSCE (above Epit) for 120 s",
+          "Value_Numeric": 30.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "μm",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "14 mm diameter disc",
+          "Note": "Corrosion morphology by SEM and CLSM; irregular pits indicate lower potential difference and superior localized corrosion resistance"
+        },
+        {
+          "Property_Name": "Pitting_Potential",
+          "Test_Condition": "in 3.5 wt.% NaCl solution at room temperature; scan rate 0.1 mV/s",
+          "Value_Numeric": 477.0,
+          "Value_Range": null,
+          "Value_StdDev": 34.0,
+          "Unit": "mV_SCE",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "14 mm diameter, 5 mm thickness disc; X-Y plane surface",
+          "Note": "Pitting potential from potentiodynamic polarization testing"
+        },
+        {
+          "Property_Name": "Polarization_Resistance",
+          "Test_Condition": "in 3.5 wt.% NaCl solution after OCP stabilization; frequency range 10⁵ to 10⁻² Hz; excitation voltage 10 mV",
+          "Value_Numeric": 487000.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "Ω·cm²",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "14 mm diameter disc; polished and ultrasonically cleaned",
+          "Note": "Polarization resistance from EIS; significantly higher than as-printed, confirming superior corrosion resistance"
+        }
+      ]
+    }
+  ]
+}

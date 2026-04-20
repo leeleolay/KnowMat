@@ -13,19 +13,38 @@ Follow the laboratory extraction semantics as the source of truth.
 Step 1: Global metadata and role distinction
 
 - Extract the paper title and DOI into the root `Paper_Metadata` object.
-- Extract this paper's own materials as `Target`.
-- If explicit cited benchmark values are present, you may extract them as separate `Reference` items, but never mix them into a `Target` item.
+- Extract this paper's own retained materials as `Target`.
+- If the current paper highlights direct benchmark specimens or direct comparison rows in its retained comparison set, you may extract them as separate `Reference` items, but never mix them into a `Target` item.
+- If the paper has direct comparison tables/figures/literature benchmark rows that belong to the retained comparison set, each cited comparison alloy/state must be output as its own `Reference` item.
+- Do not create `Reference` items from broad literature landscape plots, review-style alloy lists, umbrella labels such as `various AM alloys`, or generic superiority claims unless the current paper makes them explicit sample-resolved comparator labels.
 
 Step 2: Item decomposition
 
 - One item = one unique combination of composition + process.
-- Split whenever composition, process state, sample/state label, route, orientation/loading mode, or parameter level changes.
+- Before emitting JSON, enumerate all explicit specimen/sample labels from nomenclature tables, processing tables, property tables, captions, and comparison rows. Internally classify each label into exactly one of: `KEEP_TARGET`, `KEEP_REFERENCE`, or `SKIP_NON_ITEM`.
+- Track the inventory count explicitly. Final item count should equal the number of labels assigned to `KEEP_TARGET` + `KEEP_REFERENCE`. If final items are fewer, revisit missing labels; if final items are greater, look for alias duplicates or fake items promoted from background text.
+- Split only when the paper treats the difference as specimen-defining: composition, consolidated route, explicit retained sample/state label, build/loading orientation, or a final reported treatment/parameter cohort with its own aligned process, microstructure, or property evidence.
+- Do not split into new items for test temperature, test stress, creep load, strain rate, dwell time, corrosion environment, or replicate index. Those stay inside `Properties_Info` for the same specimen.
+- Do not automatically split every screening composition, laser-power sweep, aging-time sweep, or exploratory process setting. If those candidates only support selection of one optimized specimen and are not carried forward as enduring specimens in the main comparison set, classify them as `SKIP_NON_ITEM`.
 - Give each item a stable `Sample_ID`; all tests that belong to the same specimen must share that id.
+- One explicit specimen should correspond to at most one item. If the paper uses both a shorthand code and a long descriptive name for the same specimen, merge them into one item with one canonical `Sample_ID`.
 - If the paper defines an abbreviated sample nomenclature table and then reports direction/state-specific rows (for example `3090` in the process table and `B3090` / `S3090` in the property table), you must output one item per explicit row/state.
+- If one alloy appears in multiple retained explicit states such as as-built, annealed, aged 8 h, aged 48 h, heat-stabilized, solutionized, or different build/loading directions, output one item per explicit state even when chemistry is unchanged.
+- `KEEP_TARGET`: this paper treats the label/state as a real retained specimen with sample-resolved process, microstructure, or property evidence.
+- `KEEP_REFERENCE`: this paper gives explicit comparison values/rows/caption/legend entries for that benchmark specimen, and that comparator is a specific label/state rather than a broad literature family.
+- `SKIP_NON_ITEM`: background literature mentions, generic route descriptions, unnamed process fragments, or repeated aliases of an already-kept specimen.
+- If the paper contains a final comparison matrix, final property table, or headline result set, align your item inventory to that retained comparison set first. Do not let upstream screening branches or auxiliary optimization candidates outnumber the final compared specimens unless the paper explicitly keeps them as standalone results specimens.
+- Important exception: if the paper's central contribution IS a process-state or recycle-state matrix, then that whole matrix is the retained comparison set. Do not collapse explicit rows such as `R0/R1/R5/...`, `S0/S5/S10/...`, `as-fabricated/T6`, `single-aged/double-aged`, or similar named state chains to one representative item.
+- If the retained comparison set contains directly characterized upstream or process-comparison endpoints such as powder vs `PBF-LB` vs `PBF-EB`, optimized ingot vs `LPBF` states, or paired recycle families `R*` and `S*`, keep every explicit retained endpoint family/state that has sample-resolved data.
+- If the retained comparison set contains state-paired or label-paired benchmarks such as `2195` as-fabricated vs `2195` T6, `Ni3Al` vs `TiAl`, or multiple named literature alloys in one legend, keep one item per explicit benchmark label/state. Do not collapse several distinct benchmarks into one umbrella reference.
+- When only a subset of labels survives into the retained comparison set, do not invent additional intermediate states from narrative-only mentions. If final retained items are `R1` and `R5`, do not create `R2` or generic `Powder` items unless they are also explicit sample-resolved endpoints.
 - For gradient materials, prefer one item with `Gradient_Material = true` unless the paper explicitly reports layer-specific independent data.
 - Only split a gradient specimen into multiple items when independent per-layer or per-step data is explicit. In that case, keep `Gradient_Material = true` and link all split items with the same `Gradient_Group_ID`.
 - If the same item has multiple testing conditions, keep one item and place all tests in that item's `Properties_Info`.
-- If a variant is explicitly named but only sparse evidence exists, still keep a sparse item.
+- If a variant is explicitly named but only sparse evidence exists, keep a sparse item only when that variant is retained in the paper's actual specimen comparison set.
+- When the paper contains a multi-step route such as casting/ingot screening -> powder preparation -> AM, keep only the upstream states that the paper itself retains as specimen-level comparison endpoints.
+- Feedstock/powder/ingot/cast/recycled-powder/intermediate states should become standalone items only when the paper itself characterizes or tabulates that state as a specimen or uses it as an explicit comparison endpoint. If the powder has its own phase/composition/microstructure data, keep it; if it is only preparation history, keep it in notes/process text.
+- Distinguish retained upstream endpoints from precursor history: a laser-glazed optimized ingot, powder-recycle state, or as-fabricated vs T6 specimen can be a valid retained item; a planar-flow-cast precursor or spray-deposited precursor mentioned only as background inspiration should usually be `SKIP_NON_ITEM`.
 
 Step 3: Composition extraction (`Composition_Info`)
 
@@ -33,7 +52,12 @@ Step 3: Composition extraction (`Composition_Info`)
 - Keep nominal and measured composition strictly separate.
 - Record special composition annotations such as ranges, upper limits, or impurity notes in `Composition_Info.Note` / runtime `composition_note`.
 - `nominal_composition` and `measured_composition` must be flat element->number maps only; never use step keys like `{"0": {...}, "5": {...}}`. If the paper truly reports explicit layer-specific graded data, create separate composition entries instead.
-- Normalize reported composition to 100.0, using `other` only when justified by residual balance.
+- Faithfully reflect the reported composition values. Do not renormalize just to force a 100.0 total; only fill a named balance element or justified residual `other` when the source supports it.
+- Use explicit source cues to separate provenance: design / nominal / target / supplier formula belongs in `nominal_composition`; ICP-OES / EDS / EPMA / measured tables belong in `measured_composition`.
+- Preserve the original unit exactly as reported (`wt%` vs `at%`). Never convert unless the paper explicitly performs that conversion.
+- If a specific element is marked `Bal.` / `balance` / `remainder`, compute that named element as `100 - sum(other explicit elements)` and store it under that element symbol.
+- `other` is only for unresolved trace impurities or residual minor species that are not individually listed. Never use `other` for a known balance element or for a bundle of named elements.
+- If `other` would become the dominant matrix fraction and the alloy system clearly implies a base element, store that base element explicitly instead of leaving it as `other`.
 - Preserve mature commercial alloy names with null normalized arrays if no explicit numeric composition is reported.
 - Never convert trade names or polymer abbreviations into fake element formulas.
 
@@ -41,19 +65,28 @@ Step 4: Process extraction (`Process_Info`)
 
 - Build `Process_Text.original` and `Process_Text.simplified`.
 - Extract explicit equipment information into `Process_Info.Equipment` / runtime `equipment`.
+- Keep `process_category` aligned to the base manufacturing route, not only the latest post-treatment. If the sample is AM + heat treatment, preserve the AM base route and put the post-treatment into `Process_Text` / `Key_Params`.
+- `process_category` is for the consolidated specimen route, not feedstock-only operations. Powder atomization, powder drying, powder characterization, or powder preparation inside an AM paper do not make the final specimen `Powder_Metallurgy`.
 - Extract quantified variables into `Key_Params`.
 - Use canonical parameter names where possible, and dynamic keys with unit hints when needed.
 - Preserve heat-treatment ranges as strings such as `1273-1373` or `2-4`; never average them.
 - For multistage processing, use stage suffixes such as `_Stage1_K` and never average stages.
+- Prefer extracting process parameters from Methods / Experimental / Processing sections and process tables before relying on discussion text.
+- Treat `LAAM`, `laser-aided additive manufacturing`, `laser aided additive manufacturing`, `laser cladding`, and `laser metal deposition` as `AM_DED` when they describe deposition.
+- For `PBF-EB`, `electron beam powder bed fusion`, `electron beam melting`, or `Arcam` routes, use `EBM` and store beam-specific parameters such as `Beam_Current_mA` and `Acceleration_Voltage_kV` rather than `Laser_Power_W`.
+- When the specimen is AM plus explicit aging/annealing/thermal stabilization/stress relief, keep the AM base route and retain the post-treatment in the same item.
 
 Step 5: Microstructure extraction (`Microstructure_Info`)
 
 - Build `Microstructure_Text.original` and `Microstructure_Text.simplified`.
 - `Main_Phase` must describe the matrix phase. Do not label `Laves`, carbides, or gamma-prime as the main phase.
+- If the matrix is explicitly dual-phase or multi-phase, combined labels such as `FCC + BCC` or `FCC + L12` are allowed only when both are reported as base matrix constituents.
 - Put explicit precipitate types into `Precipitates[]` / runtime `precipitates`.
 - Extract `Main_Phase`, `Porosity_pct`, `Relative_Density_pct`, `Grain_Size_avg_um`, `Precipitate_Size_avg_nm`, and `Precipitate_Volume_Fraction_pct` whenever evidence exists.
 - `Relative_Density_pct` must stay null when not reported. Never infer 100%.
 - Put advanced quantified microstructure metrics under `Advanced_Quantitative_Features`.
+- When equiaxed vs columnar, FG vs CG, interior vs wall, or similar sub-regions are reported separately, keep each quantitative value as its own `Advanced_Quantitative_Features` key instead of averaging them into one grain-size field.
+- `Advanced_Quantitative_Features` is quantitative-only: keep numeric values/ranges such as dislocation density, KAM, lattice parameter, phase fraction, or sub-region grain size; do not place `SEM/TEM/XRD/EBSD/APT` narrative descriptions there.
 
 Step 6: Properties extraction (`Properties_Info`)
 
@@ -66,22 +99,38 @@ Step 6: Properties extraction (`Properties_Info`)
 - Also extract `Strain_Rate_s1`, `Tensile_Speed_mm_min`, `Hardness_Load`, `Hardness_Dwell_Time_s`, `Data_Source`, `Test_Specimen`, and `Note` when supported.
 - For ranges, keep midpoint in `Value_Numeric` and source range in `Value_Range`.
 - For mean±std, keep mean in `Value_Numeric` and std in `Value_StdDev`.
-
 - For hardness/microhardness, if unit text is omitted but context indicates Vickers hardness, set `Unit` to `HV`.
+- Enumerate every explicit test temperature, stress level, hold time, orientation, and composition/parameter level. Do not keep only end members or one representative temperature when intermediate rows are explicitly reported.
+- For creep / stress-rupture / high-temperature property matrices, capture every reported temperature-stress-condition combination as separate property entries under the aligned item.
+- Never convert a test-condition matrix into extra items. Multiple test temperatures, creep stresses, exposure times, or loading conditions for the same specimen must stay inside one item unless the paper explicitly says the specimen itself changed before testing.
+- If a property is explicitly reported in a labelled figure, caption, or readable plotted data source, you may set `Data_Source = image`; never invent unlabeled plot values.
+- Use `Hardness_HV` only for Vickers-hardness context. For nanoindentation or instrumented indentation hardness reported in `GPa`, use a dynamic property name such as `Nanoindentation_Hardness` with unit `GPa` instead of relabeling it as `Hardness_HV`.
 
 Step 7: Table alignment and generalization checks
 
 - Reconstruct by header-lock, row-lock, temperature-lock, and unit-lock.
 - Do not guess from ambiguous OCR or unlabeled plot lines.
 - Build the full list of explicit labels and parameter levels before finalizing output.
+- Run a count-parity check before finalizing output: compare the explicit specimen inventory against the final item list and re-open the extraction if the count is much lower or higher than the collected labels.
 - Ensure every clearly supported variant has a corresponding item.
 - Do not overfit to one phrase pattern; preserve generalized extraction behavior across different paper layouts.
+- Check that explicit `Bal.` / balance elements were stored under the real element symbol rather than `other`.
+- Check that explicit literature comparison rows became `Reference` items when supported.
 
 Step 8: Mandatory final self-audit
 
 - Check Target/Reference purity.
+- Check that every explicit collected specimen label was assigned to exactly one of `KEEP_TARGET`, `KEEP_REFERENCE`, or `SKIP_NON_ITEM`.
+- Check count parity: final item count must match the collected `KEEP_TARGET + KEEP_REFERENCE` inventory count.
+- Check that screening candidates, optimization sweeps, and test-condition matrices did not become extra standalone items unless the paper clearly retained them as specimen-level comparison endpoints.
+- Check the opposite failure mode too: do not collapse an explicit retained state matrix or recycle-state matrix to one representative item.
+- Check that directly characterized powder/ingot/process-comparison endpoints were kept when they are part of the retained comparison set.
+- Check that no extra item was created only from a generic process mention, literature survey sentence, or feedstock description without specimen-level evidence.
+- Check that broad literature clouds, review-style alloy lists, or umbrella labels such as `various AM alloys` did not become standalone `Reference` items.
+- Check that distinct benchmark labels/states were not collapsed into one generic reference item.
 - Check no explicit variant, test temperature, or property column is silently dropped.
 - Check MPa/GPa values are not assigned to percentage properties, and percentage values are not assigned to strength fields.
+- Check `Advanced_Quantitative_Features` contains numeric/range-style metrics only, not technique headings or method descriptions.
 - Check the final payload is valid JSON only.
 
 Important output rule:
@@ -98,13 +147,13 @@ DECISION:
 WRONG:
 - One item with sample id "AB,CR,PDA-873,PDA-973".
 
-Example G (Parameter-level split is mandatory)
+Example G (Parameter-level split needs specimen-level downstream evidence)
 INPUT (abstracted):
-- Same chemistry with VED levels: 50, 65, 83 J/mm3.
+- Same chemistry appears in an optimization grid with VED levels 50, 65, 83 J/mm3, but only VED 65 is carried forward as the retained printed specimen in the main microstructure/property comparison.
 DECISION:
-- Output 3 separate items, one per VED level.
+- Keep the retained specimen item only; do not output three standalone items just because the screening grid is mentioned.
 WRONG:
-- One item with `Volumetric_Energy_Density_J_mm3: "50-83"` while rows are level-specific.
+- Emitting one item per exploratory VED level when the paper does not keep those levels as standalone compared specimens.
 
 Example H (Comparison-route retention)
 INPUT (abstracted):
@@ -153,10 +202,10 @@ INPUT (abstracted):
 - Caption/body explicitly names variants: VED 50, 65, 83 and cast W2/Mo2 counterparts.
 - Numeric values are not available as legal table/text cells for all variants.
 DECISION:
-- Keep separate variant items (can be sparse) for each named variant.
+- Keep separate sparse items only for variants that are clearly retained in the paper's actual specimen comparison set.
 - Do not invent plot-pixel values.
 WRONG:
-- Collapse all variants into one generic alloy item because only one averaged numeric set is available.
+- Creating standalone items for every optimization breadcrumb when the paper later keeps only one optimized specimen.
 
 Example N (Gradient specimen should stay whole unless layer data is explicit)
 INPUT (abstracted):
@@ -171,3 +220,178 @@ INPUT (abstracted):
 - Paper gives separate layer-specific compositions or properties for 0/5/10/15/20 wt% B.
 DECISION:
 - Output one item per explicit layer/step, keep `Gradient_Material = true`, and link them with the same `Gradient_Group_ID`.
+
+Example P (State-chain split is mandatory only for retained specimen states)
+INPUT (abstracted):
+- Same chemistry appears as as-built, aged 8 h, and aged 48 h, and each state is retained as its own specimen in the main results.
+DECISION:
+- Output 3 separate items, one per explicit state.
+WRONG:
+- One merged item with one shared property bundle.
+
+Example Q (Base process category must survive post-treatment)
+INPUT (abstracted):
+- Sample is LPBF-built, then solution treated and aged.
+DECISION:
+- Keep `process_category = AM_LPBF`; store the heat treatment in `Process_Text` / `Key_Params`.
+WRONG:
+- Replacing the base route with `HeatTreat` and losing that the sample was additively manufactured.
+
+Example R (Nominal vs measured and balance handling)
+INPUT (abstracted):
+- Table 1 says `ICP-OES measured composition`; alloy formula line says `Ni-20Cr-5Al-Bal. Co`.
+DECISION:
+- Put the table values in `measured_composition`.
+- Put the design formula in `nominal_composition`.
+- Compute `Co = 100 - (Ni + Cr + Al)` and store it as `Co`, not `other`.
+WRONG:
+- Copying the measured table into `nominal_composition` or storing balance Co as `other`.
+
+Example S (EBM parameter naming)
+INPUT (abstracted):
+- Process text says `electron beam powder bed fusion`, `beam current 25 mA`, `acceleration voltage 60 kV`.
+DECISION:
+- Use `process_category = EBM`.
+- Store `Beam_Current_mA = 25` and `Acceleration_Voltage_kV = 60`.
+WRONG:
+- Storing `25` under `Laser_Power_W`.
+
+Example T (Screening route should keep only retained upstream endpoints)
+INPUT (abstracted):
+- Paper screens cast ingots #1-#5, but only one laser-glazed/selected ingot is retained as the optimized upstream specimen before LPBF, and the final comparison set is LPBF state(s) plus benchmark alloys.
+DECISION:
+- Keep the retained upstream ingot endpoint, the LPBF specimen(s), and the explicit benchmark/reference items.
+WRONG:
+- Emitting all screening ingots as standalone items when they function only as optimization breadcrumbs rather than retained comparison specimens.
+
+Example U (Do not drop intermediate temperatures or composition levels)
+INPUT (abstracted):
+- Property table reports x = 0, 0.1, 0.2, 0.3, 0.4 and temperatures RT, 200 C, 400 C.
+DECISION:
+- Keep one item per explicit composition/state and include every explicit test-temperature record under the aligned item.
+WRONG:
+- Keeping only x = 0 and x = 0.4, or only room-temperature properties.
+
+Example V (Reference rows must not be dropped)
+INPUT (abstracted):
+- A comparison figure/table lists `Ref_A`, `Ref_B`, and `AM sample` with explicit alloy names or numeric values.
+DECISION:
+- Keep `AM sample` as `Target`.
+- Keep `Ref_A` and `Ref_B` as separate `Reference` items.
+WRONG:
+- Keeping only the AM sample and mentioning the references inside notes.
+
+Example W (Do not create items from feedstock history alone)
+INPUT (abstracted):
+- Methods mention powder atomization, sieving, and drying, but the paper reports properties only for the printed specimen.
+DECISION:
+- Keep one printed-specimen item.
+- Store powder-preparation history inside process text/notes.
+WRONG:
+- Creating separate `Powder` or `Atomized_Powder` items without specimen-level characterization/property evidence.
+
+Example X (Upstream state stays only if it is explicitly characterized as a specimen)
+INPUT (abstracted):
+- A process-comparison paper reports independent phase/composition/property rows for powder, PBF-EB, PBF-LB, HIP, and HEBM states.
+DECISION:
+- Output separate items for each explicitly characterized state, because each is specimen-resolved in the current paper.
+WRONG:
+- Keeping only the final AM state, or relabeling all upstream states as the final AM route.
+
+Example Y (Alias merge is mandatory)
+INPUT (abstracted):
+- The paper uses both `R0` and `0-cycle recycled powder` for the same specimen.
+DECISION:
+- Emit one item with one canonical `Sample_ID`, not two near-duplicate items.
+WRONG:
+- Creating one item for `R0` and another for `0-cycle recycled powder` when the evidence points to the same specimen.
+
+Example Z (Inventory count parity is mandatory)
+INPUT (abstracted):
+- Explicit specimen inventory after reading the paper is: `AB`, `AA`, `Ref_A`, `Ref_B`, `θ0`, `θ45`, `θ90`.
+DECISION:
+- Final output must contain exactly 7 items unless one label is truly ambiguous and intentionally classified as `SKIP_NON_ITEM`.
+WRONG:
+- Outputting only 3 items because some labels looked similar, or outputting 10 items because aliases/background mentions were duplicated into new specimens.
+
+Example AA (Test matrix stays inside one item)
+INPUT (abstracted):
+- One LPBF specimen is tested at RT, 200 C, and 400 C, plus creep at 300 C under several stress levels.
+DECISION:
+- Keep one specimen item and place every temperature/stress condition under that item's `Properties_Info`.
+WRONG:
+- Creating one item per test temperature or one item per creep stress level.
+
+Example AB (Figure-only benchmark labels still count as Reference items)
+INPUT (abstracted):
+- Final comparison figure labels `AlSi10Mg`, `cast counterpart`, and `Ni3Al benchmark` with explicit property values.
+DECISION:
+- Keep each named benchmark as a separate `Reference` item even if the benchmark appears only in that figure/caption.
+WRONG:
+- Keeping only the paper's own target specimen and burying benchmark labels in notes.
+
+Example AC (Powder-recycling matrices must stay expanded)
+INPUT (abstracted):
+- A recycling paper reports explicit powder states `R0`, `R1`, `R5`, `R15`, `R30`, ... and built-sample states `S0`, `S5`, `S10`, `S15`, ... with per-state oxygen, morphology, microstructure, or tensile data.
+DECISION:
+- Keep one item per explicit retained recycle state. Powder states and built-sample states are both valid items when the paper characterizes them as specimens.
+WRONG:
+- Collapsing the whole recycle matrix to only `R0` or one "best" built sample.
+
+Example AD (Retained upstream endpoint vs precursor history)
+INPUT (abstracted):
+- Paper compares one optimized laser-glazed ingot, LPBF as-fabricated, LPBF T6, and literature benchmark `2195` states.
+- The same paper also narrates earlier screening ingots #1-#5 and several historical precursor routes.
+DECISION:
+- Keep the optimized laser-glazed ingot, the retained LPBF states, and the explicit benchmark states.
+- Skip earlier screening breadcrumbs or precursor routes that are not retained as specimen-level endpoints in the final comparison set.
+WRONG:
+- Either dropping the optimized laser-glazed ingot, or keeping every historical precursor as a separate item.
+
+Example AE (Do not invent precursor references from mechanism discussion)
+INPUT (abstracted):
+- A paper discusses planar-flow-cast ribbons and spray-deposited precursors as inspiration for the microstructure design, but the current paper's actual specimen table contains only one LPBF as-printed alloy.
+DECISION:
+- Keep the LPBF as-printed target item only.
+WRONG:
+- Creating extra `Reference` or `Target` items for planar-flow-cast or spray-deposited precursor routes that are not specimen-resolved comparison endpoints in the current paper.
+
+Example AF (Literature landscape plot does not license one Reference per historical point)
+INPUT (abstracted):
+- A performance map shows the new alloy plus many historical literature alloys, but the caption/body explicitly singles out only `Alloy 1` and one benchmark printable alloy as the direct comparison anchors.
+DECISION:
+- Keep the new alloy state items plus only those explicitly highlighted direct benchmark anchors.
+WRONG:
+- Creating standalone `Reference` items for every historical alloy point in the landscape map.
+
+Example AG (Generic superiority claim is not a specimen inventory)
+INPUT (abstracted):
+- The paper says the new LPBF alloy outperforms `AlSi10Mg` and `Ti64` from prior work, but there is no retained comparison row/legend/state for those alloys in the current paper's actual specimen set.
+DECISION:
+- Keep only the current paper's retained specimen items.
+WRONG:
+- Creating `AlSi10Mg_reference` or `Ti64_reference` items from narrative comparison claims alone.
+
+Example AH (Process-comparison families must stay complete)
+INPUT (abstracted):
+- A paper directly characterizes powder, `PBF-LB`, `PBF-EB`, and several named literature baseline routes in one retained comparison figure/table.
+DECISION:
+- Keep the powder item, each explicit current-paper route, and each named retained literature baseline as separate items.
+WRONG:
+- Keeping only the printed routes and dropping the characterized powder or the named retained baseline routes.
+
+Example AI (Do not invent non-retained intermediate states)
+INPUT (abstracted):
+- A paper narrates `R1`, `R2`, `R5`, and powder evolution, but the retained tensile comparison set keeps only `R1`, `R5`, and two cast benchmarks.
+DECISION:
+- Keep `R1`, `R5`, and the explicit cast benchmarks only.
+WRONG:
+- Creating extra retained items for `R2` or generic `Powder` when those labels are not part of the retained comparison set.
+
+Example AJ (Do not collapse many benchmark labels into one umbrella reference)
+INPUT (abstracted):
+- A comparison legend lists `A356`, `AM Al-Fe-Zr`, and `Cast Al-Zr` as separate named benchmarks.
+DECISION:
+- Keep three separate `Reference` items using the explicit benchmark labels.
+WRONG:
+- Replacing those with one generic item such as `Pure_Al_Reference` or `Cast_Reference`.

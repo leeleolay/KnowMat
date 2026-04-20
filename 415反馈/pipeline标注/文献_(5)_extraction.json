@@ -1,0 +1,365 @@
+{
+  "Paper_Metadata": {
+    "Paper_Title": "Harnessing laser-induced in-situ nanowhiskers for high-strength aluminum alloys via additive manufacturing",
+    "DOI": "10.1016/j.actamat.2026.121987"
+  },
+  "items": [
+    {
+      "Sample_ID": "AA2024_LPBF",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "AA2024",
+        "Nominal_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Al": 93.5,
+            "Cu": 4.4,
+            "Mg": 1.5,
+            "B": 1.5
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Nominal composition based on AA2024 alloy (Al-4.4Cu-1.5Mg) with 1.5 wt% B addition; MgAlB4 whiskers form in-situ from reaction of B with Al and Mg"
+      },
+      "Process_Info": {
+        "Process_Category": "AM_LPBF",
+        "Process_Text": {
+          "original": "LPBF using EP-M260 machine (Eplus 3D Tech Co., Ltd.) equipped with Yb fiber laser (wavelength ~1070 nm, spot size ~75 um, max power ~500 W); optimized parameters: P=300 W, v=1100 mm/s, h=100 um, t=40 um; stripes scanning strategy with 67 deg rotation between layers; short line scanning; substrate preheated to 45 degC; protective argon atmosphere; followed by solution treatment at 505 degC for 1 h, water quenching, natural aging at 25 degC for 30 days",
+          "simplified": "LPBF (P=300W, v=1100mm/s, h=100um, t=40um) with ST (505C/1h) and natural aging (25C/30d)"
+        },
+        "Equipment": "EP-M260 LPBF machine (Eplus 3D Tech Co., Ltd.); Yb fiber laser (~1070 nm wavelength, ~75 um spot size, ~500 W max power)",
+        "Key_Params": {
+          "Laser_Power_W": 300,
+          "Scanning_Speed_mm_s": 1100,
+          "Hatch_Spacing_um": 100,
+          "Layer_Thickness_um": 40,
+          "Build_Plate_Temperature_K": 318.15,
+          "Solution_Temperature_K": 778.15,
+          "Solution_Time_h": 1,
+          "Aging_Temperature_K": 298.15,
+          "Aging_Time_h": 720,
+          "Protective_Atmosphere": "Argon",
+          "Volumetric_Energy_Density_J_mm3": 68.18
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Ultrafine equiaxed grain structure with random orientation (nearly texture-free); MgAlB4 nano-whiskers uniformly distributed throughout matrix (5-15 nm diameter, aspect ratio >20); whiskers located both within grains (~54%) and along grain boundaries (~46%); some whiskers intersect growing grains; partial theta phase (Al2Cu) observed adjacent to whiskers; pronounced Cu segregation at whisker-matrix interfaces facilitating interfacial precipitation; coherent interface between (0112)w plane of whisker and (200)Al plane with low lattice mismatch (2.5%);",
+          "simplified": "Ultrafine equiaxed grains (~1.5 um) with uniformly distributed MgAlB4 nano-whiskers (5-15 nm dia, aspect ratio >20); coherent whisker-Al interface (2.5% mismatch)"
+        },
+        "Main_Phase": "FCC Al matrix",
+        "Precipitates": [
+          {
+            "Phase_Type": "MgAlB4 whisker",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Theta phase (Al2Cu)",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": 99.991,
+        "Grain_Size_avg_um": 1.5,
+        "Precipitate_Size_avg_nm": 10.0,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {}
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at 298.15 K; strain rate 0.5 mm/min (constant); extensometer for strain measurement",
+          "Value_Numeric": 445.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "0.5 mm/min (constant",
+          "Tensile_Speed_mm_min": 0.5,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "Dog-bone tensile specimen: total length 70 mm, gauge section 5 mm diameter, 30 mm length, fillet radii 6 mm",
+          "Note": "Solution treated (505C/1h) and naturally aged (25C/30d) MgAlB4w/AA2024"
+        },
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at 573.15 K (300C); held 15 min for thermal equilibrium before testing",
+          "Value_Numeric": 170.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 573.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "Dog-bone tensile specimen tested on electronic universal testing machine (LE5105)",
+          "Note": "High-temperature tensile test at 300C; yield strength decreased due to recrystallization temperature of Al-Cu matrix being below this threshold"
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at 298.15 K; strain rate 0.5 mm/min (constant); extensometer for strain measurement",
+          "Value_Numeric": 615.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "0.5 mm/min (constant",
+          "Tensile_Speed_mm_min": 0.5,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "Dog-bone tensile specimen: total length 70 mm, gauge section 5 mm diameter, 30 mm length, fillet radii 6 mm",
+          "Note": "Solution treated (505C/1h) and naturally aged (25C/30d) MgAlB4w/AA2024"
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at 423.15 K (150C); held 15 min for thermal equilibrium before testing",
+          "Value_Numeric": 482.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 423.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "Dog-bone tensile specimen tested on electronic universal testing machine (LE5105)",
+          "Note": "High-temperature tensile test at 150C"
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at 473.15 K (200C); held 15 min for thermal equilibrium before testing",
+          "Value_Numeric": 445.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 473.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "Dog-bone tensile specimen tested on electronic universal testing machine (LE5105)",
+          "Note": "High-temperature tensile test at 200C"
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at 523.15 K (250C); held 15 min for thermal equilibrium before testing",
+          "Value_Numeric": 286.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 523.15,
+          "Strain_Rate_s1": null,
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "Dog-bone tensile specimen tested on electronic universal testing machine (LE5105)",
+          "Note": "High-temperature tensile test at 250C"
+        },
+        {
+          "Property_Name": "Elongation_Uniform",
+          "Test_Condition": "at 298.15 K; strain rate 0.5 mm/min (constant); extensometer for strain measurement",
+          "Value_Numeric": 8.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "0.5 mm/min (constant",
+          "Tensile_Speed_mm_min": 0.5,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "Dog-bone tensile specimen: total length 70 mm, gauge section 5 mm diameter, 30 mm length, fillet radii 6 mm",
+          "Note": "Solution treated (505C/1h) and naturally aged (25C/30d) MgAlB4w/AA2024"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "UnST_MgAlB4w_AA2024_LPBF",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "AA2024",
+        "Nominal_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Al": 93.5,
+            "Cu": 4.4,
+            "Mg": 1.5,
+            "B": 1.5
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "As-built MgAlB4w/AA2024 without solution treatment"
+      },
+      "Process_Info": {
+        "Process_Category": "AM_LPBF",
+        "Process_Text": {
+          "original": "LPBF using EP-M260 machine (Eplus 3D Tech Co., Ltd.) equipped with Yb fiber laser; optimized parameters: P=300 W, v=1100 mm/s, h=100 um, t=40 um; stripes scanning strategy with 67 deg rotation between layers; substrate preheated to 45 degC; protective argon atmosphere; as-built condition without solution treatment",
+          "simplified": "LPBF (P=300W, v=1100mm/s) as-built without post-heat treatment"
+        },
+        "Equipment": "EP-M260 LPBF machine (Eplus 3D Tech Co., Ltd.)",
+        "Key_Params": {
+          "Laser_Power_W": 300,
+          "Scanning_Speed_mm_s": 1100,
+          "Hatch_Spacing_um": 100,
+          "Layer_Thickness_um": 40,
+          "Build_Plate_Temperature_K": 318.15,
+          "Protective_Atmosphere": "Argon"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "MgAlB4 whiskers with typical whisker morphology; diameters 5-15 nm, lengths up to several hundred nm; aspect ratios >20; randomly oriented and uniformly distributed throughout matrix; some whiskers entrapped within grains, others along grain boundaries;",
+          "simplified": "MgAlB4 nano-whiskers (5-15 nm dia, aspect ratio >20) uniformly distributed; as-built microstructure"
+        },
+        "Main_Phase": "FCC Al matrix",
+        "Precipitates": [
+          {
+            "Phase_Type": "MgAlB4 whisker",
+            "Volume_Fraction_pct": null
+          },
+          {
+            "Phase_Type": "Theta phase (Al2Cu)",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": 10.0,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {}
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at 298.15 K; strain rate 0.5 mm/min (constant); extensometer for strain measurement",
+          "Value_Numeric": 393.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "0.5 mm/min (constant",
+          "Tensile_Speed_mm_min": 0.5,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "Dog-bone tensile specimen",
+          "Note": "As-built MgAlB4w/AA2024 without solution treatment"
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at 298.15 K; strain rate 0.5 mm/min (constant); extensometer for strain measurement",
+          "Value_Numeric": 536.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "0.5 mm/min (constant",
+          "Tensile_Speed_mm_min": 0.5,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "Dog-bone tensile specimen",
+          "Note": "As-built MgAlB4w/AA2024 without solution treatment"
+        },
+        {
+          "Property_Name": "Elongation_Uniform",
+          "Test_Condition": "at 298.15 K; strain rate 0.5 mm/min (constant); extensometer for strain measurement",
+          "Value_Numeric": 10.3,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "0.5 mm/min (constant",
+          "Tensile_Speed_mm_min": 0.5,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "text",
+          "Test_Specimen": "Dog-bone tensile specimen",
+          "Note": "As-built MgAlB4w/AA2024 without solution treatment"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "AA2024_LPBF_baseline",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "AA2024",
+        "Nominal_Composition": {
+          "Composition_Type": "wt%",
+          "Elements_Normalized": {
+            "Al": 94.1,
+            "Cu": 4.4,
+            "Mg": 1.5
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Pure AA2024 without boron addition used as baseline comparison"
+      },
+      "Process_Info": {
+        "Process_Category": "AM_LPBF",
+        "Process_Text": {
+          "original": "LPBF using EP-M260 machine (Eplus 3D Tech Co., Ltd.) with same optimized parameters as MgAlB4w/AA2024: P=300 W, v=1100 mm/s, h=100 um, t=40 um; stripes scanning strategy with 67 deg rotation between layers; substrate preheated to 45 degC; protective argon atmosphere",
+          "simplified": "LPBF (P=300W, v=1100mm/s, h=100um, t=40um) baseline AA2024 without B addition"
+        },
+        "Equipment": "EP-M260 LPBF machine (Eplus 3D Tech Co., Ltd.)",
+        "Key_Params": {
+          "Laser_Power_W": 300,
+          "Scanning_Speed_mm_s": 1100,
+          "Hatch_Spacing_um": 100,
+          "Layer_Thickness_um": 40,
+          "Build_Plate_Temperature_K": 318.15,
+          "Protective_Atmosphere": "Argon"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Coarse columnar grains extending over several tens to hundreds of um across multiple melt pools; strong <001> texture parallel to build direction; cracks clearly observed along columnar grain boundaries propagating across several grains; large pores predominantly located near grain boundaries; high defect density",
+          "simplified": "Coarse columnar grains (~18.2 um) with strong <001> texture; cracks along GBs; high porosity (defect fraction 4.698%)"
+        },
+        "Main_Phase": "FCC Al matrix",
+        "Precipitates": [
+          {
+            "Phase_Type": "Unknown secondary phases",
+            "Volume_Fraction_pct": null
+          }
+        ],
+        "Porosity_pct": 4.698,
+        "Relative_Density_pct": 95.302,
+        "Grain_Size_avg_um": 18.2,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {}
+      },
+      "Properties_Info": []
+    }
+  ]
+}

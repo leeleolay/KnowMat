@@ -104,6 +104,17 @@ def test_parse_key_params_tolerates_noisy_numeric_tokens():
     assert "Scanning_Speed_mm_s" in params
 
 
+def test_parse_key_params_extracts_ebm_specific_fields_and_power_variants():
+    params = converter.parse_key_params(
+        "electron beam powder bed fusion with beam current of 25 mA, "
+        "acceleration voltage 60 kV, and laser power of 200 W"
+    )
+
+    assert params["Beam_Current_mA"] == 25.0
+    assert params["Acceleration_Voltage_kV"] == 60.0
+    assert params["Laser_Power_W"] == 200.0
+
+
 def test_convert_bootstraps_datasheet_compositions_when_llm_returns_none():
     data = {"compositions": []}
     paper_text = (
@@ -231,6 +242,10 @@ def test_convert_preserves_v5_runtime_fields_and_enforces_main_phase_rules():
                 "grain_size_avg_um": 18.5,
                 "precipitate_size_avg_nm": 120.0,
                 "precipitate_volume_fraction_pct": 3.2,
+                "advanced_quantitative_features": {
+                    "Cell_Size_avg_um": 5.0,
+                    "Equiaxed_Grain_Size_avg_um": 2.4,
+                },
                 "processing_conditions": (
                     "original: LPBF build followed by aging. || simplified: LPBF + aging"
                 ),
@@ -280,6 +295,10 @@ def test_convert_preserves_v5_runtime_fields_and_enforces_main_phase_rules():
         {"Phase_Type": "Laves", "Volume_Fraction_pct": 3.2},
         {"Phase_Type": "MC Carbide", "Volume_Fraction_pct": None},
     ]
+    assert item["Microstructure_Info"]["Advanced_Quantitative_Features"] == {
+        "Cell_Size_avg_um": 5.0,
+        "Equiaxed_Grain_Size_avg_um": 2.4,
+    }
 
     elongation = next(prop for prop in item["Properties_Info"] if prop["Property_Name"] == "Elongation_Total")
     hardness = next(prop for prop in item["Properties_Info"] if prop["Property_Name"] == "Hardness_HV")
@@ -290,6 +309,95 @@ def test_convert_preserves_v5_runtime_fields_and_enforces_main_phase_rules():
     assert hardness["Hardness_Load"] == "200 gf"
     assert hardness["Hardness_Dwell_Time_s"] == 15.0
     assert hardness["Test_Specimen"] == "ASTM E8, gauge length 25 mm"
+
+
+def test_convert_filters_characterisation_noise_from_advanced_quantitative_features():
+    data = {
+        "compositions": [
+            {
+                "composition": "CoCrNi",
+                "alloy_name_raw": "CoCrNi",
+                "nominal_composition": {"Co": 33.3, "Cr": 33.3, "Ni": 33.4},
+                "nominal_composition_type": "at%",
+                "processing_conditions": "original: LPBF build. || simplified: LPBF",
+                "process_category": "AM_LPBF",
+                "characterisation": {
+                    "SEM": "SEM shows dense melt pools and cellular substructure.",
+                    "EBSD": "EBSD reveals strong texture.",
+                },
+                "advanced_quantitative_features": {
+                    "Cell_Size_avg_um": 1.2,
+                    "XRD": "single FCC phase observed",
+                    "Dislocation_Density_m2": "3.2e14",
+                },
+                "properties_of_composition": [],
+            }
+        ]
+    }
+
+    out = converter.convert(data, "aqf_noise.md")
+    aqf = out["items"][0]["Microstructure_Info"]["Advanced_Quantitative_Features"]
+
+    assert aqf == {
+        "Cell_Size_avg_um": 1.2,
+        "Dislocation_Density_m2": "3.2e14",
+    }
+
+
+def test_convert_relabels_pm_false_positive_to_lpbf_with_post_treatment():
+    data = {
+        "compositions": [
+            {
+                "composition": "CCIMA",
+                "sample_id": "CCIMA-TS",
+                "alloy_name_raw": "CCIMA",
+                "nominal_composition": {"Ni": 75.0, "Al": 12.0, "Ti": 8.0, "Cr": 5.0},
+                "nominal_composition_type": "at%",
+                "processing_conditions": (
+                    "original: Gas-atomized powder was characterized before LPBF fabrication, "
+                    "then the LPBF specimen was thermally stabilized at 900 C. "
+                    "|| simplified: LPBF + thermal stabilization"
+                ),
+                "process_category": "Powder_Metallurgy",
+                "properties_of_composition": [],
+            }
+        ]
+    }
+
+    out = converter.convert(data, "pm_false_positive.md")
+
+    assert out["items"][0]["Process_Info"]["Process_Category"] == "Laser Powder Bed Fusion (LPBF) + Thermal Stabilization"
+
+
+def test_parse_key_params_canonicalizes_aliases_units_and_drops_process_noise():
+    params = converter.parse_key_params(
+        "",
+        {
+            "Layer_Thickness_mm": 0.5,
+            "Hatch_Distance_mm": 0.11,
+            "Build_Plate_Temperature_C": 830,
+            "Scanning_Speed_mm_min": 60,
+            "Beam_Diameter_um": 220,
+            "Process_Category": "AM_LPBF",
+        },
+    )
+
+    assert params["Layer_Thickness_um"] == 500
+    assert params["Hatch_Spacing_mm"] == 0.11
+    assert math.isclose(params["Build_Plate_Temperature_K"], 1103.15, rel_tol=1e-9, abs_tol=1e-9)
+    assert params["Scanning_Speed_mm_s"] == 1
+    assert params["Beam_diameter_um"] == 220
+    assert "Process_Category" not in params
+
+
+def test_normalize_reported_composition_reassigns_large_other_to_matrix_element():
+    comp = converter._normalize_reported_composition(
+        {"Ni": 1.0, "Er": 1.0, "Zr": 0.73, "other": 97.27},
+        preferred_balance_element="Al",
+        fill_missing_balance=False,
+    )
+
+    assert comp == {"Ni": 1.0, "Er": 1.0, "Zr": 0.73, "Al": 97.27}
 
 
 def test_parse_key_params_preserves_heat_treatment_ranges():

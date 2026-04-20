@@ -1,0 +1,273 @@
+{
+  "Paper_Metadata": {
+    "Paper_Title": "Additively manufactured heterogeneous precipitation-strengthened high-entropy alloys with high strength and ductility",
+    "DOI": "10.1016/j.addma.2023.103795"
+  },
+  "items": [
+    {
+      "Sample_ID": "AP-HEA",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "CoNiCrFeAlTi-based HEA",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Co": 47.0,
+            "Ni": 28.0,
+            "Cr": 16.0,
+            "Fe": 3.0,
+            "Al": 3.0,
+            "Ti": 3.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": null,
+          "Elements_Normalized": null,
+          "Measurement_Method": null
+        },
+        "Note": "Designed composition Co47Ni28Cr16Fe3Al3Ti3 (at%); overall measured composition close to designed composition (SEM-EDS, Supplementary Tab. S1)"
+      },
+      "Process_Info": {
+        "Process_Category": "AM_DED",
+        "Process_Text": {
+          "original": "DED processing with elemental powders of Co, Ni, Cr, Fe, Al, Ti mechanically mixed in atomic ratio Co47Ni28Cr16Fe3Al3Ti3. Fiber laser wavelength 1080 nm, spot diameter 1.2 mm. Powder feeding via coaxial powder feeding system under argon protection. Powders heated to 120 C for 4 h before use. Laser power 750 W, scanning speed 480 mm/min, layer thickness 0.3 mm, powder feeding rate 14.45 g/min, hatch distance 0.8 mm. Cuboid part 60 mm (length) x 15 mm (width) x 6 mm (height) fabricated.",
+          "simplified": "DED of elemental powder blend Co47Ni28Cr16Fe3Al3Ti3 (at%); 750 W laser, 480 mm/min scan, 0.3 mm layer, 14.45 g/min powder feed, Ar atmosphere"
+        },
+        "Equipment": "Fiber laser DED system (1080 nm wavelength)",
+        "Key_Params": {
+          "Laser_Power_W": 750.0,
+          "Scanning_Speed_mm_s": 8.0,
+          "Layer_Thickness_um": 300.0,
+          "Powder_Feeding_Rate_g_min": 14.45,
+          "Hatch_Spacing_um": 800.0,
+          "Laser_Wavelength_nm": 1080.0,
+          "Spot_Diameter_mm": 1.2,
+          "Protective_Atmosphere": "Argon",
+          "Powder_Drying": "120 C for 4 h",
+          "Build_Dimensions_mm": "60 x 15 x 6"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Typical cellular structure with two separated regions (interior and wall). SEM image shows basic microstructure with Ti-rich zone in the wall (EDS mapping). High-density dislocations generated in both interior (A) and wall (B) regions due to repeated compression-tension cycles during laser scanning. Both A and B regions identified as FCC crystal structure by SAED patterns along [110] zone axis.",
+          "simplified": "Cellular FCC structure with ~5 um diameter; Ti segregation at cell walls; high-density dislocations in both interior and wall regions"
+        },
+        "Main_Phase": "FCC",
+        "Precipitates": [],
+        "Porosity_pct": null,
+        "Relative_Density_pct": 99.999,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": null,
+        "Precipitate_Volume_Fraction_pct": null,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "XRD": "Single FCC phase confirmed; 2 deg/min, 20-100 deg",
+          "SEM": "Cellular structure with Ti-rich wall regions",
+          "TEM": "High-density dislocations in interior and wall; SAED confirms FCC structure along [110] zone axis",
+          "EBSD": "Grain size 93 +/- 36 um in XOY, XOZ, YOZ planes",
+          "APT": "Elemental partitioning analysis of dual-phase wall",
+          "Micro-CT": "Relative density ~99.999%",
+          "Cell_Size_avg_um": 5.0,
+          "Grain_Size_avg_um": 93.0,
+          "Grain_Size_Std_um": 36.0,
+          "SF_Energy_mJ_m2": 11.0
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at room temperature; strain rate 1e-3 s^-1; tensile direction vertical to building direction",
+          "Value_Numeric": 548.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1e-3 s^-1",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "image",
+          "Test_Specimen": "Flat dog-bone-shaped, gauge length 12.5 mm, cross-section 3.2 x 1.5 mm^2",
+          "Note": "AP-HEA as-printed state"
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at room temperature; strain rate 1e-3 s^-1; tensile direction vertical to building direction",
+          "Value_Numeric": 835.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1e-3 s^-1",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "image",
+          "Test_Specimen": "Flat dog-bone-shaped, gauge length 12.5 mm, cross-section 3.2 x 1.5 mm^2",
+          "Note": "AP-HEA as-printed state"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at room temperature; strain rate 1e-3 s^-1; tensile direction vertical to building direction; fracture elongation",
+          "Value_Numeric": 30.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1e-3 s^-1",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "image",
+          "Test_Specimen": "Flat dog-bone-shaped, gauge length 12.5 mm, cross-section 3.2 x 1.5 mm^2",
+          "Note": "Fracture elongation ~30%; deformation mode via mechanical twinning (confirmed by TEM, Fig. 9)"
+        }
+      ]
+    },
+    {
+      "Sample_ID": "HT-HEA",
+      "Gradient_Material": false,
+      "Gradient_Group_ID": null,
+      "Composition_Info": {
+        "Role": "Target",
+        "Alloy_Name_Raw": "CoNiCrFeAlTi-based HEA",
+        "Nominal_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Co": 47.0,
+            "Ni": 28.0,
+            "Cr": 16.0,
+            "Fe": 3.0,
+            "Al": 3.0,
+            "Ti": 3.0
+          }
+        },
+        "Measured_Composition": {
+          "Composition_Type": "at%",
+          "Elements_Normalized": {
+            "Co": 49.5,
+            "Ni": 28.5,
+            "Cr": 16.3,
+            "Fe": 1.9,
+            "Al": 1.7,
+            "Ti": 2.1
+          },
+          "Measurement_Method": "APT and TEM-EDS"
+        },
+        "Note": "Designed composition Co47Ni28Cr16Fe3Al3Ti3 (at%); Interior FCC measured by APT: Co 49.5, Ni 28.5, Cr 16.3, Fe 1.9, Al 1.7, Ti 2.1 at%; Wall L12 measured: Co 20.7, Ni 53.0, Cr 2.1, Fe 0.5, Al 6.1, Ti 17.6 at%; Wall FCC measured: Co 52.2, Ni 23.7, Cr 17.3, Fe 2.7, Al 1.7, Ti 2.4 at%"
+      },
+      "Process_Info": {
+        "Process_Category": "AM_DED",
+        "Process_Text": {
+          "original": "DED processing with elemental powders of Co, Ni, Cr, Fe, Al, Ti mechanically mixed in atomic ratio Co47Ni28Cr16Fe3Al3Ti3. Fiber laser wavelength 1080 nm, spot diameter 1.2 mm. Powder feeding via coaxial powder feeding system under argon protection. Powders heated to 120 C for 4 h before use. Laser power 750 W, scanning speed 480 mm/min, layer thickness 0.3 mm, powder feeding rate 14.45 g/min, hatch distance 0.8 mm. Cuboid part 60 mm (length) x 15 mm (width) x 6 mm (height) fabricated. Subsequent isothermal aging at 800 C for 4 h, cooled to room temperature in air.",
+          "simplified": "DED of elemental powder blend Co47Ni28Cr16Fe3Al3Ti3 (at%); 750 W laser, 480 mm/min scan, 0.3 mm layer, 14.45 g/min powder feed, Ar atmosphere; followed by aging at 800 C for 4 h (air cooled)"
+        },
+        "Equipment": "Fiber laser DED system (1080 nm wavelength)",
+        "Key_Params": {
+          "Laser_Power_W": 750.0,
+          "Scanning_Speed_mm_s": 8.0,
+          "Layer_Thickness_um": 300.0,
+          "Powder_Feeding_Rate_g_min": 14.45,
+          "Hatch_Spacing_um": 800.0,
+          "Laser_Wavelength_nm": 1080.0,
+          "Spot_Diameter_mm": 1.2,
+          "Protective_Atmosphere": "Argon",
+          "Powder_Drying": "120 C for 4 h",
+          "Build_Dimensions_mm": "60 x 15 x 6",
+          "Aging_Temperature_C": 800.0,
+          "Aging_Time_h": 4.0,
+          "Cooling_Medium": "Air"
+        }
+      },
+      "Microstructure_Info": {
+        "Microstructure_Text": {
+          "original": "Unusual heterogeneous cellular structure after thermal treatment. High-density nanoscale L12 precipitates found in the wall. Single-phase (FCC) structure in interior confirmed by SAED. Dual-phase (FCC + L12) structure in wall confirmed by DF-TEM from superlattice reflections. High-density L12 nanoprecipitates in wall with average size 31.0 +/- 5.1 nm. Elemental partitioning: Ni, Al, Ti partition to L12 precipitates; Co, Cr, Fe enriched in FCC matrix. Volume fractions: interior ~53%, wall ~47%.",
+          "simplified": "Heterogeneous cellular structure: single-phase FCC interior and dual-phase (FCC+L12) wall; high-density L12 precipitates (~31 nm) in wall; Ni/Al/Ti partitioning to L12, Co/Cr/Fe partitioning to FCC matrix"
+        },
+        "Main_Phase": "FCC + L12",
+        "Precipitates": [
+          {
+            "Phase_Type": "L12",
+            "Volume_Fraction_pct": 20.8
+          }
+        ],
+        "Porosity_pct": null,
+        "Relative_Density_pct": null,
+        "Grain_Size_avg_um": null,
+        "Precipitate_Size_avg_nm": 31.0,
+        "Precipitate_Volume_Fraction_pct": 20.8,
+        "Phase_Fraction_pct": null,
+        "Advanced_Quantitative_Features": {
+          "XRD": "Phase identification confirming FCC + L12 structure",
+          "SEM": "Cellular structure with high-density nanoparticles in wall (Fig. 4a,b)",
+          "TEM": "Single-phase FCC interior; dual-phase (FCC+L12) wall; L12 precipitates ~31 nm; SAED along [110] zone axis",
+          "APT": "Elemental partitioning: Ni/Al/Ti to L12, Co/Cr/Fe to FCC matrix; composition of L12 and FCC phases measured (Table 1)",
+          "EBSD": "IQ, IPF, KAM maps showing strain partitioning between interior and wall (Fig. 7g-i)",
+          "Interior_Volume_Fraction": 0.53,
+          "Wall_Volume_Fraction": 0.47,
+          "Cell_Size_avg_um": 5.0,
+          "L12_Precipitate_Size_Std_nm": 5.1,
+          "L12_Solvus_Temperature_Interior_C": 797.0,
+          "L12_Solvus_Temperature_Wall_C": 948.0,
+          "Ordering_Strengthening_Contribution_MPa": 806.2,
+          "Solid_Solution_Strengthening_Contribution_MPa": 334.0,
+          "Calculated_YS_Wall_MPa": 1140.2,
+          "Calculated_Overall_YS_MPa": 712.9,
+          "APB_Energy_mJ_m2": 332.5
+        }
+      },
+      "Properties_Info": [
+        {
+          "Property_Name": "Yield_Strength",
+          "Test_Condition": "at room temperature; strain rate 1e-3 s^-1; tensile direction vertical to building direction",
+          "Value_Numeric": 748.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1e-3 s^-1",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "image",
+          "Test_Specimen": "Flat dog-bone-shaped, gauge length 12.5 mm, cross-section 3.2 x 1.5 mm^2",
+          "Note": "HT-HEA heat-treated state; significant increase from AP-HEA (548 MPa to 748 MPa)"
+        },
+        {
+          "Property_Name": "Ultimate_Tensile_Strength",
+          "Test_Condition": "at room temperature; strain rate 1e-3 s^-1; tensile direction vertical to building direction",
+          "Value_Numeric": 1148.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "MPa",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1e-3 s^-1",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "image",
+          "Test_Specimen": "Flat dog-bone-shaped, gauge length 12.5 mm, cross-section 3.2 x 1.5 mm^2",
+          "Note": "HT-HEA heat-treated state; significant increase from AP-HEA (835 MPa to 1148 MPa)"
+        },
+        {
+          "Property_Name": "Elongation_Total",
+          "Test_Condition": "at room temperature; strain rate 1e-3 s^-1; tensile direction vertical to building direction; fracture elongation",
+          "Value_Numeric": 28.0,
+          "Value_Range": null,
+          "Value_StdDev": null,
+          "Unit": "%",
+          "Test_Temperature_K": 298.15,
+          "Strain_Rate_s1": "1e-3 s^-1",
+          "Tensile_Speed_mm_min": null,
+          "Hardness_Load": null,
+          "Hardness_Dwell_Time_s": null,
+          "Data_Source": "image",
+          "Test_Specimen": "Flat dog-bone-shaped, gauge length 12.5 mm, cross-section 3.2 x 1.5 mm^2",
+          "Note": "Fracture elongation ~28%; large ductility maintained despite strength increase; deformation via SFs and HDI strain hardening"
+        }
+      ]
+    }
+  ]
+}
