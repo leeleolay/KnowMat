@@ -19,6 +19,7 @@ from typing import Any, Dict
 from knowmat.extractors import CompositionList, extraction_extractor, get_llm
 from knowmat.prompt_generator import generate_system_prompt, generate_user_prompt
 from knowmat.states import KnowMatState
+from knowmat.app_config import settings
 
 logger = logging.getLogger(__name__)
 
@@ -84,6 +85,18 @@ def extract_data(state: KnowMatState) -> Dict[str, Any]:
     paper_text = state.get("paper_text", "")
     sub_field = state.get("sub_field")
     prompt_updates = state.get("updated_prompt", "").strip()
+
+    # Stage 2: inject multimodal figure descriptions into paper_text before extraction
+    if settings.figure_description_enabled:
+        ocr_items = state.get("ocr_items") or []
+        if ocr_items:
+            from knowmat.pdf.figure_describer import inject_figure_descriptions
+            logger.info("Injecting figure descriptions into paper_text...")
+            try:
+                paper_text = inject_figure_descriptions(paper_text, ocr_items)
+                logger.info("✓ Figure descriptions injected.")
+            except Exception as exc:
+                logger.warning("Figure description injection failed: %s", exc, exc_info=True)
 
     system_prompt = generate_system_prompt(sub_field=sub_field)
     if prompt_updates:

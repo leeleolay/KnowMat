@@ -66,6 +66,12 @@ class Settings(BaseSettings):
     trim_references_section: bool
         Whether to trim content after References/Bibliography/Citations during parsing.
         Defaults to ``False`` to preserve full text (including appendix/supplementary).
+
+    figure_description_enabled: bool
+        When ``True``, uses a multimodal LLM to generate a textual description of
+        each detected figure image and inserts it into ``paper_text`` above the
+        corresponding figure caption.  Requires ``LLM_MODEL`` to support vision.
+        Defaults to ``True``.  Disable via ``KNOWMAT2_FIGURE_DESCRIPTION_ENABLED=0``.
     """
 
     # IO defaults (can be overridden by env or CLI)
@@ -81,6 +87,7 @@ class Settings(BaseSettings):
     manager_model: str = DEFAULT_LLM_MODEL
     flagging_model: str = DEFAULT_LLM_MODEL
     trim_references_section: bool = False
+    figure_description_enabled: bool = True
 
     model_config = ConfigDict(env_prefix="KNOWMAT2_")
 

@@ -196,6 +196,7 @@ class KnowMatState(TypedDict, total=False):
     # PDF parsing results
     paper_text: str
     document_metadata: Optional[DocumentMetadata]
+    ocr_items: Optional[List[Dict[str, Any]]]
     
     # Sub-field detection results
     sub_field: Optional[str]

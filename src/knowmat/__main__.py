@@ -362,17 +362,19 @@ def main(argv: list[str] | None = None) -> None:
     workers = max(1, args.workers)
     ocr_workers = max(1, args.ocr_workers)
     
-    # For GPU environments, force ocr_workers=1 to prevent GPU resource contention
-    # GPU memory is shared and multiple OCR processes will cause OOM
+    # Warn if ocr_workers > 1 on low-VRAM GPUs (< 16 GB), but allow it on high-VRAM cards.
+    _GPU_SAFE_VRAM_GB = 16.0
     try:
         from knowmat.pdf.ocr_engine import get_gpu_memory_info
         used_gb, total_gb = get_gpu_memory_info()
         if total_gb > 0:
-            # GPU detected - warn if ocr_workers > 1
-            if ocr_workers > 1:
-                print(f"\nWarning: GPU detected ({total_gb:.1f} GB). Forcing --ocr-workers to 1 to prevent GPU resource contention.")
-                ocr_workers = 1
             print(f"GPU Memory: {used_gb:.1f}/{total_gb:.1f} GB used")
+            if ocr_workers > 1 and total_gb < _GPU_SAFE_VRAM_GB:
+                print(
+                    f"\nWarning: GPU detected ({total_gb:.1f} GB < {_GPU_SAFE_VRAM_GB:.0f} GB threshold). "
+                    f"Forcing --ocr-workers to 1 to prevent OOM."
+                )
+                ocr_workers = 1
     except Exception:
         pass
     

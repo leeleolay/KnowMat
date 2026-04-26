@@ -48,6 +48,7 @@ from knowmat.pdf.table_structure import (
     release_ppstructurev3_pipeline,
     route_and_reocr,
     seed_legacy_complex_items_from_ppstructurev3,
+    _crop_page_image,
 )
 from knowmat.pdf.section_normalizer import (
     normalize_alloy_strings,
@@ -291,6 +292,51 @@ def _export_tables_to_csv(ocr_items: List[Dict[str, Any]], tables_dir: Path) -> 
                 writer.writerows(rows)
         except OSError as exc:
             logger.warning("Failed to write table CSV %s: %s", csv_path, exc)
+
+
+_FIGURE_CROP_DPI = 200
+
+
+def _crop_and_save_figure_images(
+    ocr_items: List[Dict[str, Any]],
+    pdf_path: str,
+    figures_dir: Path,
+) -> List[Dict[str, Any]]:
+    """Crop figure regions from the PDF and persist them to *figures_dir*.
+
+    For every ``typer == "image"`` item that carries a ``bbox``, the region is
+    rendered from the PDF at :data:`_FIGURE_CROP_DPI` and saved as a JPEG.
+    The ``data.image_path`` field is updated to the saved absolute path so that
+    downstream consumers (e.g. multimodal LLM description) can locate the file.
+    Items without a bbox are left unchanged.
+    """
+    image_items = [it for it in ocr_items if it.get("typer") == "image" and it.get("bbox")]
+    if not image_items:
+        return ocr_items
+
+    try:
+        figures_dir.mkdir(parents=True, exist_ok=True)
+    except OSError as exc:
+        logger.warning("Cannot create figures directory %s: %s", figures_dir, exc)
+        return ocr_items
+
+    counters: Dict[int, int] = {}
+    for item in image_items:
+        page = int(item.get("page") or 0)
+        if page <= 0:
+            continue
+        counters[page] = counters.get(page, 0) + 1
+        n = counters[page]
+        out_path = figures_dir / f"page{page:04d}-fig{n:02d}.jpg"
+        saved = _crop_page_image(pdf_path, page, item["bbox"], _FIGURE_CROP_DPI, out_path)
+        if saved is not None:
+            item.setdefault("data", {})["image_path"] = str(saved)
+            logger.debug("Saved figure crop: %s", saved)
+
+    figure_count = sum(counters.values())
+    if figure_count:
+        logger.info("Cropped and saved %d figure image(s) to %s", figure_count, figures_dir)
+    return ocr_items
 
 
 def _extract_pdf_with_paddleocrvl(
@@ -613,6 +659,10 @@ def _extract_pdf_with_paddleocrvl(
         if save_intermediate and raw_dir is not None:
             tables_dir = out_dir / "tables"
             _export_tables_to_csv(ocr_items, tables_dir)
+
+        # Crop and persist figure images from the PDF
+        figures_dir = out_dir / "figures"
+        ocr_items = _crop_and_save_figure_images(ocr_items, str(work_pdf), figures_dir)
 
         quality = _build_ocr_quality_report(ocr_items, pp_report, low_conf_thr)
 
