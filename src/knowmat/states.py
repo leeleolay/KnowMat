@@ -81,6 +81,8 @@ class DocumentMetadata(TypedDict, total=False):
     page_meta: List[OcrPageMeta]
     ocr_engine: str
     ocr_items: List[Dict[str, Any]]
+    paper_text_path: Optional[str]
+    figure_dir: Optional[str]
 
 
 # ---------------------------------------------------------------------------
@@ -195,6 +197,7 @@ class KnowMatState(TypedDict, total=False):
     
     # PDF parsing results
     paper_text: str
+    paper_text_path: Optional[str]
     document_metadata: Optional[DocumentMetadata]
     ocr_items: Optional[List[Dict[str, Any]]]
     

@@ -9,6 +9,7 @@ from __future__ import annotations
 import json
 import logging
 import os
+import re
 import shutil
 import tempfile
 from concurrent.futures import Future, ThreadPoolExecutor
@@ -21,6 +22,11 @@ from knowmat.pdf.doi_extractor import (
     extract_doi_from_pdf_metadata,
     extract_first_doi,
     extract_first_doi_from_ocr_items,
+)
+from knowmat.pdf.figure_items import (
+    iter_figure_caption_items,
+    iter_resolved_figure_items,
+    normalize_figure_ocr_items,
 )
 from knowmat.pdf.html_cleaner import convert_html_to_markdown
 from knowmat.pdf.ocr_cache import (
@@ -295,22 +301,133 @@ def _export_tables_to_csv(ocr_items: List[Dict[str, Any]], tables_dir: Path) -> 
 
 
 _FIGURE_CROP_DPI = 200
+_LEGACY_IMAGE_BOX_RE = re.compile(
+    r"img_in_image_box_(\d+)_(\d+)_(\d+)_(\d+)\.(?:png|jpe?g|webp)$",
+    re.IGNORECASE,
+)
 
 
-def _crop_and_save_figure_images(
+def _legacy_image_box_to_pdf_bbox(image_path: str, render_dpi: int) -> Optional[List[float]]:
+    match = _LEGACY_IMAGE_BOX_RE.search(Path(str(image_path or "")).name)
+    if not match:
+        return None
+    scale = 72.0 / max(1, render_dpi)
+    x0, y0, x1, y1 = (float(group) for group in match.groups())
+    return [x0 * scale, y0 * scale, x1 * scale, y1 * scale]
+
+
+def _resolve_item_bbox_in_pdf_points(item: Dict[str, Any], render_dpi: int) -> Optional[List[float]]:
+    bbox = item.get("bbox")
+    if isinstance(bbox, list) and len(bbox) == 4:
+        return [float(v) for v in bbox]
+    data = item.get("data")
+    if not isinstance(data, dict):
+        return None
+    legacy = _legacy_image_box_to_pdf_bbox(str(data.get("image_path") or ""), render_dpi)
+    if legacy is not None:
+        item["bbox"] = legacy
+    return legacy
+
+
+def _caption_block_for_figure(
+    pdf_path: str,
+    page_idx: int,
+    figure_num: str,
+    caption: str,
+) -> Optional[Tuple[float, float, float, float]]:
+    try:
+        import fitz  # type: ignore
+    except ImportError:
+        return None
+
+    block_prefixes = [f"figure {figure_num}", f"fig. {figure_num}", f"fig {figure_num}"]
+    caption_prefix = " ".join(str(caption or "").strip().split())[:48].lower()
+    try:
+        doc = fitz.open(pdf_path)
+        page = doc[page_idx - 1]
+        for block in page.get_text("blocks"):
+            x0, y0, x1, y1, text, *_ = block
+            normalized = " ".join(str(text or "").strip().split()).lower()
+            if not normalized:
+                continue
+            if any(normalized.startswith(prefix) for prefix in block_prefixes):
+                doc.close()
+                return (float(x0), float(y0), float(x1), float(y1))
+            if caption_prefix and caption_prefix[:24] in normalized:
+                doc.close()
+                return (float(x0), float(y0), float(x1), float(y1))
+        doc.close()
+    except Exception as exc:
+        logger.debug("Could not resolve caption block for Figure %s on page %d: %s", figure_num, page_idx, exc)
+    return None
+
+
+def _estimate_figure_bbox_from_caption(
+    pdf_path: str,
+    page_idx: int,
+    figure_num: str,
+    caption: str,
+) -> Optional[List[float]]:
+    try:
+        import fitz  # type: ignore
+    except ImportError:
+        return None
+
+    caption_block = _caption_block_for_figure(pdf_path, page_idx, figure_num, caption)
+    if caption_block is None:
+        return None
+
+    try:
+        doc = fitz.open(pdf_path)
+        page = doc[page_idx - 1]
+        page_rect = page.rect
+        cx0, cy0, cx1, _ = caption_block
+        caption_width = max(1.0, cx1 - cx0)
+
+        x_pad = min(96.0, max(36.0, caption_width * 0.22))
+        x0 = max(float(page_rect.x0) + 18.0, cx0 - x_pad)
+        x1 = min(float(page_rect.x1) - 18.0, cx1 + x_pad)
+
+        nearest_above = float(page_rect.y0) + 36.0
+        for block in page.get_text("blocks"):
+            bx0, by0, bx1, by1, text, *_ = block
+            normalized = " ".join(str(text or "").strip().split())
+            if not normalized:
+                continue
+            if by1 >= cy0 - 4.0:
+                continue
+            overlap = min(x1, float(bx1)) - max(x0, float(bx0))
+            if overlap <= 0:
+                continue
+            nearest_above = max(nearest_above, float(by1) + 8.0)
+
+        y0 = nearest_above
+        y1 = max(y0 + 80.0, cy0 - 8.0)
+        if y1 - y0 < 120.0:
+            y0 = max(float(page_rect.y0) + 36.0, y1 - 220.0)
+
+        doc.close()
+        return [x0, y0, x1, y1]
+    except Exception as exc:
+        logger.debug("Could not estimate figure bbox for Figure %s on page %d: %s", figure_num, page_idx, exc)
+        return None
+
+
+def _persist_figure_images(
     ocr_items: List[Dict[str, Any]],
     pdf_path: str,
     figures_dir: Path,
+    *,
+    render_dpi: int,
 ) -> List[Dict[str, Any]]:
-    """Crop figure regions from the PDF and persist them to *figures_dir*.
+    """Persist durable figure images for resolved figure OCR items.
 
-    For every ``typer == "image"`` item that carries a ``bbox``, the region is
-    rendered from the PDF at :data:`_FIGURE_CROP_DPI` and saved as a JPEG.
-    The ``data.image_path`` field is updated to the saved absolute path so that
-    downstream consumers (e.g. multimodal LLM description) can locate the file.
-    Items without a bbox are left unchanged.
+    Supports both current ``bbox``-bearing items and legacy PaddleOCR-VL image
+    paths like ``imgs/img_in_image_box_<x0>_<y0>_<x1>_<y1>.jpg`` by decoding the
+    embedded crop coordinates back into PDF-point space.
     """
-    image_items = [it for it in ocr_items if it.get("typer") == "image" and it.get("bbox")]
+    normalize_figure_ocr_items(ocr_items)
+    image_items = iter_figure_caption_items(ocr_items)
     if not image_items:
         return ocr_items
 
@@ -321,22 +438,67 @@ def _crop_and_save_figure_images(
         return ocr_items
 
     counters: Dict[int, int] = {}
+    updated_any = False
     for item in image_items:
+        data = item.setdefault("data", {})
         page = int(item.get("page") or 0)
         if page <= 0:
             continue
-        counters[page] = counters.get(page, 0) + 1
-        n = counters[page]
-        out_path = figures_dir / f"page{page:04d}-fig{n:02d}.jpg"
-        saved = _crop_page_image(pdf_path, page, item["bbox"], _FIGURE_CROP_DPI, out_path)
+        figure_num = str(data.get("figure_num") or "").strip()
+        figure_key = re.sub(r"[^0-9A-Za-z._-]+", "_", figure_num).strip("_")
+        if figure_key:
+            out_path = figures_dir / f"page{page:04d}-figure{figure_key}.jpg"
+        else:
+            counters[page] = counters.get(page, 0) + 1
+            n = counters[page]
+            out_path = figures_dir / f"page{page:04d}-fig{n:02d}.jpg"
+
+        if out_path.is_file():
+            data["image_path"] = str(out_path.resolve())
+            updated_any = True
+            continue
+
+        bbox = _resolve_item_bbox_in_pdf_points(item, render_dpi)
+        saved = None
+        if bbox is None and figure_num:
+            bbox = _estimate_figure_bbox_from_caption(
+                pdf_path,
+                page,
+                figure_num,
+                str(data.get("caption") or ""),
+            )
+            if bbox is not None:
+                item["bbox"] = bbox
+                updated_any = True
+        if bbox is not None:
+            saved = _crop_page_image(pdf_path, page, bbox, _FIGURE_CROP_DPI, out_path)
         if saved is not None:
-            item.setdefault("data", {})["image_path"] = str(saved)
+            data["image_path"] = str(saved.resolve())
+            updated_any = True
             logger.debug("Saved figure crop: %s", saved)
 
-    figure_count = sum(counters.values())
+    if updated_any:
+        normalize_figure_ocr_items(ocr_items)
+        image_items = iter_figure_caption_items(ocr_items)
+    figure_count = sum(
+        1 for item in image_items if Path(str(item.get("data", {}).get("image_path") or "")).is_file()
+    )
     if figure_count:
         logger.info("Cropped and saved %d figure image(s) to %s", figure_count, figures_dir)
     return ocr_items
+
+
+def _candidate_pdf_for_text_source(source_path: Path) -> Optional[Path]:
+    stem = source_path.stem
+    candidates = [
+        source_path.with_suffix(".pdf"),
+        source_path.parent / f"{stem}.pdf",
+        source_path.parent.parent / f"{stem}.pdf",
+    ]
+    for candidate in candidates:
+        if candidate.is_file():
+            return candidate
+    return None
 
 
 def _extract_pdf_with_paddleocrvl(
@@ -660,16 +822,13 @@ def _extract_pdf_with_paddleocrvl(
             tables_dir = out_dir / "tables"
             _export_tables_to_csv(ocr_items, tables_dir)
 
-        # Crop and persist figure images from the PDF
-        figures_dir = out_dir / "figures"
-        ocr_items = _crop_and_save_figure_images(ocr_items, str(work_pdf), figures_dir)
-
         quality = _build_ocr_quality_report(ocr_items, pp_report, low_conf_thr)
 
         metadata = {
             "backend": backend,
             "model_dir": str(model_dir),
             "pages": len(selected_pages),
+            "render_dpi": render_dpi,
             "image_dir": str(image_dir),
             "ocr_raw_dir": str(raw_dir) if raw_dir is not None else None,
             "doi": doi,
@@ -738,6 +897,7 @@ def _finalize_pdf_parse(
 ) -> Dict[str, Any]:
     if _ocr_items:
         sanitize_ocr_items_vl_artifacts(_ocr_items)
+        normalize_figure_ocr_items(_ocr_items)
 
     structured_text = normalize_leading_masthead_and_title(extracted_text)
     structured_text = structure_sections(structured_text)
@@ -759,6 +919,7 @@ def _finalize_pdf_parse(
         cleaned_text = _append_missing_paragraph_hints(cleaned_text, _ocr_items)
 
     pdf_name = source_path.stem
+    final_md_path: Optional[Path] = None
     if save_intermediate:
         final_md_path = parse_output_dir / f"{pdf_name}_final_output.md"
         with open(final_md_path, "w", encoding="utf-8") as f:
@@ -772,6 +933,8 @@ def _finalize_pdf_parse(
         "doi": resolved_doi,
         "page_level_metadata": metadata.get("page_level_metadata"),
         "ocr_quality": metadata.get("ocr_quality"),
+        "paper_text_path": str(final_md_path) if final_md_path is not None else None,
+        "figure_dir": metadata.get("figure_dir"),
     }
     if save_intermediate:
         meta_path = parse_output_dir / f"{pdf_name}_parse_metadata.json"
@@ -783,6 +946,7 @@ def _finalize_pdf_parse(
         "document_metadata": doc_meta,
         "metadata": doc_meta,
         "ocr_items": _ocr_items or text_to_paragraph_items(cleaned_text),
+        "paper_text_path": str(final_md_path) if final_md_path is not None else None,
     }
 
 
@@ -823,6 +987,19 @@ def parse_pdf_with_paddleocrvl(state: KnowMatState) -> dict:
             except (json.JSONDecodeError, OSError) as exc:
                 logger.debug("Could not read OCR sidecar %s: %s", sidecar_path, exc)
 
+        render_dpi = _env_int("OCR_RENDER_DPI", 300)
+        if sidecar_items:
+            normalize_figure_ocr_items(sidecar_items)
+            source_pdf = _candidate_pdf_for_text_source(source_path)
+            if source_pdf is not None:
+                figures_dir = source_path.parent / "_ocr_cache" / "resolved_figures"
+                sidecar_items = _persist_figure_images(
+                    sidecar_items,
+                    str(source_pdf),
+                    figures_dir,
+                    render_dpi=render_dpi,
+                )
+
         doi_from_sidecar = extract_first_doi_from_ocr_items(sidecar_items)
         doi_from_text = extract_first_doi(cleaned_text[:5000])
         doi = doi_from_sidecar or doi_from_text
@@ -832,6 +1009,7 @@ def parse_pdf_with_paddleocrvl(state: KnowMatState) -> dict:
         if sidecar_items and _append_missing_ocr_paragraphs_enabled():
             cleaned_text = _append_missing_paragraph_hints(cleaned_text, sidecar_items)
 
+        final_md_path: Optional[Path] = None
         if save_intermediate:
             final_md_path = parse_output_dir / f"{stem}_final_output.md"
             with open(final_md_path, "w", encoding="utf-8") as f:
@@ -843,6 +1021,7 @@ def parse_pdf_with_paddleocrvl(state: KnowMatState) -> dict:
             "source_file": str(source_path),
             "doi": doi,
             "ocr_sidecar": str(sidecar_path) if sidecar_path.is_file() else None,
+            "paper_text_path": str(final_md_path) if final_md_path is not None else None,
         }
         if save_intermediate:
             meta_path = parse_output_dir / f"{stem}_parse_metadata.json"
@@ -859,6 +1038,7 @@ def parse_pdf_with_paddleocrvl(state: KnowMatState) -> dict:
             "document_metadata": doc_meta,
             "metadata": doc_meta,
             "ocr_items": ocr_items_out,
+            "paper_text_path": str(final_md_path) if final_md_path is not None else None,
         }
 
     if suffix != ".pdf":
@@ -916,14 +1096,38 @@ def parse_pdf_with_paddleocrvl(state: KnowMatState) -> dict:
     if not skip_cache_read:
         cached = try_load_ocr_cache(cache_bucket)
         if cached is not None:
+            cached_items = list(cached.get("ocr_items") or [])
+            cached_metadata = dict(cached.get("metadata") or {})
+            cached_render_dpi = int(cached_metadata.get("render_dpi") or render_dpi)
+            figures_dir = cache_bucket / "figures"
+            cached_items = _persist_figure_images(
+                cached_items,
+                str(source_path),
+                figures_dir,
+                render_dpi=cached_render_dpi,
+            )
+            if figures_dir.exists():
+                cached_metadata["figure_dir"] = str(figures_dir.resolve())
+            if not no_cache_write:
+                try:
+                    save_ocr_cache(
+                        cache_bucket,
+                        {
+                            "extracted_text": cached["extracted_text"],
+                            "metadata": cached_metadata,
+                            "ocr_items": cached_items,
+                        },
+                    )
+                except OSError as exc:
+                    logger.warning("Could not refresh OCR cache at %s: %s", cache_bucket, exc)
             logger.info("Loaded OCR result from cache: %s", cache_bucket)
             return _finalize_pdf_parse(
                 source_path,
                 parse_output_dir,
                 save_intermediate,
                 cached["extracted_text"],
-                cached["metadata"],
-                list(cached.get("ocr_items") or []),
+                cached_metadata,
+                cached_items,
             )
 
     try:
@@ -934,6 +1138,15 @@ def parse_pdf_with_paddleocrvl(state: KnowMatState) -> dict:
             save_intermediate=save_intermediate,
             page_indices=selected_pages,
         )
+        figures_dir = cache_bucket / "figures"
+        _ocr_items = _persist_figure_images(
+            _ocr_items,
+            str(source_path),
+            figures_dir,
+            render_dpi=int(metadata.get("render_dpi") or render_dpi),
+        )
+        if figures_dir.exists():
+            metadata["figure_dir"] = str(figures_dir.resolve())
         result = _finalize_pdf_parse(
             source_path,
             parse_output_dir,

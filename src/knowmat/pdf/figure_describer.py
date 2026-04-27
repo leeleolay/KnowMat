@@ -19,14 +19,32 @@ import re
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
+from knowmat.pdf.figure_items import iter_resolved_figure_items, normalize_figure_ocr_items
+
 logger = logging.getLogger(__name__)
 
 _SYSTEM_PROMPT = (
     "You are a materials science figure analyst. "
     "Describe the key information shown in this figure from a scientific paper. "
     "Focus on: microstructure features, scale bars, phase labels, measurement values, and trends. "
-    "Be concise (2-4 sentences). Do not repeat the caption verbatim."
+    "Be concise (2-4 sentences). Do not repeat the caption verbatim. "
+    "Return only the final description text. Do not include reasoning, analysis, or <think> tags."
 )
+
+_THINK_BLOCK_RE = re.compile(r"<think>.*?</think>", re.IGNORECASE | re.DOTALL)
+_THINK_TAG_RE = re.compile(r"</?think>", re.IGNORECASE)
+
+
+def _sanitize_figure_description(text: str) -> str:
+    """Strip reasoning tags and keep only the user-facing description."""
+    cleaned = str(text or "").strip()
+    if not cleaned:
+        return ""
+    cleaned = _THINK_BLOCK_RE.sub("", cleaned)
+    cleaned = _THINK_TAG_RE.sub("", cleaned)
+    cleaned = re.sub(r"^\s*final answer:\s*", "", cleaned, flags=re.IGNORECASE)
+    cleaned = re.sub(r"\n{3,}", "\n\n", cleaned).strip()
+    return cleaned
 
 
 def _encode_image_base64(image_path: Path) -> Optional[str]:
@@ -104,6 +122,7 @@ def describe_figure_image(
     user_text = "Please describe this scientific figure."
     if caption:
         user_text = f"Caption context: {caption}\n\n{user_text}"
+    user_text += "\nReturn only the final description. Do not include <think> tags or hidden reasoning."
 
     media_type = _image_media_type(resolved_path)
 
@@ -142,8 +161,9 @@ def describe_figure_image(
 
         response = client.chat.completions.create(**create_kwargs)
         content = response.choices[0].message.content or ""
+        content = _sanitize_figure_description(content)
         logger.debug("Figure description generated (%d chars) for %s", len(content), image_path)
-        return content.strip()
+        return content
     except Exception as exc:
         logger.warning("Figure description LLM call failed for %s: %s", image_path, exc)
         return ""
@@ -163,10 +183,8 @@ def inject_figure_descriptions(
     Called from the extraction stage (not OCR), so every LLM call here is
     intentional and gated by ``settings.figure_description_enabled``.
     """
-    image_items = [
-        it for it in ocr_items
-        if it.get("typer") == "image" and it.get("data", {}).get("image_path")
-    ]
+    normalize_figure_ocr_items(ocr_items)
+    image_items = iter_resolved_figure_items(ocr_items)
     if not image_items:
         return text
 
@@ -181,11 +199,16 @@ def inject_figure_descriptions(
         caption = data.get("caption", "")
         figure_num = data.get("figure_num", "")
         description = describe_figure_image(img_path, caption=caption)
+        description = _sanitize_figure_description(description)
         if not description:
             continue
 
         label = f"Figure {figure_num}" if figure_num else "Figure"
         description_block = f"> [{label} AI Description]: {description}\n\n"
+        if description_block.strip() in text:
+            continue
+        if figure_num and f"> [Figure {figure_num} AI Description]:" in text:
+            continue
 
         # Try to find the caption line in the text and insert above it
         if figure_num:
@@ -195,7 +218,8 @@ def inject_figure_descriptions(
             )
             match = pattern.search(text)
             if match:
-                insert_pos = match.start()
+                line_start = text.rfind("\n", 0, match.start()) + 1
+                insert_pos = line_start if line_start < match.start() else match.start()
                 text = text[:insert_pos] + description_block + text[insert_pos:]
                 logger.debug(
                     "Injected description for Figure %s at position %d", figure_num, insert_pos

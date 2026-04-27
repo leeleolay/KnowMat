@@ -14,6 +14,7 @@ is kept for providers with unstable tool-call compatibility.
 import json
 import logging
 import re
+from pathlib import Path
 from typing import Any, Dict
 
 from knowmat.extractors import CompositionList, extraction_extractor, get_llm
@@ -22,6 +23,18 @@ from knowmat.states import KnowMatState
 from knowmat.app_config import settings
 
 logger = logging.getLogger(__name__)
+
+
+def _persist_paper_text(path_str: Any, paper_text: str) -> None:
+    """Best-effort persistence of enriched paper text back to markdown."""
+    if not path_str:
+        return
+    try:
+        out_path = Path(str(path_str))
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        out_path.write_text(paper_text, encoding="utf-8")
+    except OSError as exc:
+        logger.warning("Could not persist enriched paper text to %s: %s", path_str, exc)
 
 
 def _flatten_message_content(content: Any) -> str:
@@ -83,6 +96,8 @@ def _invoke_plain_json_fallback(full_prompt: str) -> Dict[str, Any]:
 def extract_data(state: KnowMatState) -> Dict[str, Any]:
     """Perform the main LLM extraction and return the structured data."""
     paper_text = state.get("paper_text", "")
+    original_paper_text = paper_text
+    paper_text_path = state.get("paper_text_path")
     sub_field = state.get("sub_field")
     prompt_updates = state.get("updated_prompt", "").strip()
 
@@ -97,6 +112,9 @@ def extract_data(state: KnowMatState) -> Dict[str, Any]:
                 logger.info("✓ Figure descriptions injected.")
             except Exception as exc:
                 logger.warning("Figure description injection failed: %s", exc, exc_info=True)
+
+    if paper_text != original_paper_text:
+        _persist_paper_text(paper_text_path, paper_text)
 
     system_prompt = generate_system_prompt(sub_field=sub_field)
     if prompt_updates:
@@ -147,7 +165,7 @@ def extract_data(state: KnowMatState) -> Dict[str, Any]:
         )
         try:
             extracted_dict = _invoke_plain_json_fallback(full_prompt)
-            return {"latest_extracted_data": extracted_dict}
+            return {"latest_extracted_data": extracted_dict, "paper_text": paper_text}
         except Exception as fallback_exc:
             if structured_error is not None:
                 raise RuntimeError(
@@ -161,4 +179,4 @@ def extract_data(state: KnowMatState) -> Dict[str, Any]:
         extracted_dict = json.loads(response.model_dump_json())
     else:
         extracted_dict = response
-    return {"latest_extracted_data": extracted_dict}
+    return {"latest_extracted_data": extracted_dict, "paper_text": paper_text}
